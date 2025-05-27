@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  mf-validation:
+    build:
+      context: ./microfrontends/mf-validation
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3004:3000"
+    volumes:
+      - ./microfrontends/mf-validation:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:5000
+    depends_on:
+      validation-core:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "./healthcheck.js"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    networks:
+      - conta360-network
+
+  validation-core:
+    build:
+      context: ./backend/Conta360Service
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "5000:80"
+    volumes:
+      - ./backend/Conta360Service:/app
+      - /app/obj
+      - /app/bin
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    networks:
+      - conta360-network
+
+networks:
+  conta360-network:
+    driver: bridge

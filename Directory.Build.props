@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <OutputType Condition="'$(OutputType)' == ''">Library</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Linq" />
+    <Using Include="System.IO" />
+    <Using Include="System.Text" />
+    <Using Include="System.Text.Json" />
+    <Using Include="System.Text.Json.Serialization" />
+    <Using Include="System.ComponentModel" />
+    <Using Include="System.ComponentModel.DataAnnotations" />
+    <Using Include="System.Threading" />
+    <Using Include="System.Threading.Tasks" />
+    <Using Include="System.Diagnostics" />
+    <Using Include="System.Globalization" />
+    <Using Include="System.Reflection" />
+    <Using Include="Microsoft.EntityFrameworkCore" />
+    <Using Include="Microsoft.EntityFrameworkCore.Metadata.Builders" />
+    <Using Include="Npgsql" />
+    <Using Include="AutoMapper" />
+    <Using Include="ClosedXML.Excel" />
+    <Using Include="OfficeOpenXml" />
+    <Using Include="OfficeOpenXml.Style" />
+    <Using Include="HtmlAgilityPack" />
+    <Using Include="Microsoft.IO" />
+    <Using Include="FluentValidation" />
+    <Using Include="FluentValidation.Results" />
+    <Using Include="MediatR" />
+    <Using Include="Serilog" />
+    <Using Include="Microsoft.AspNetCore.OpenApi" />
+  </ItemGroup>
+</Project>
