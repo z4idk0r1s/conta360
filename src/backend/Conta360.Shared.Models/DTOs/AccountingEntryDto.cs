@@ -1,6 +1,6 @@
 using System;
 
-namespace Conta360.Shared.Models.DTOs.AccountingEntryDto
+namespace Conta360.Shared.Models.DTOs
 {
     public class AccountingEntryDto
     {

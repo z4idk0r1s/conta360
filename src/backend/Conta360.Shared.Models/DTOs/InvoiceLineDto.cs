@@ -1,4 +1,4 @@
-namespace Conta360.Shared.Models.DTOs.InvoiceLineDto
+namespace Conta360.Shared.Models.DTOs
 {
     public class InvoiceLineDto
     {
