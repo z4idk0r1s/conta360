@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Conta360.Infrastructure.Adapters.PGCExtractor.Tracker</RootNamespace>
+    <AssemblyName>Conta360.Infrastructure.Adapters.PGCExtractor.Tracker</AssemblyName>
+  </PropertyGroup>  
+  <ItemGroup>
+    <Content Include="..\Data\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PGCExtractor.Core\PGCExtractor.Core.csproj" />
+    <ProjectReference Include="..\PGCExtractor.Data\PGCExtractor.Data.csproj" />
+    <ProjectReference Include="..\PGCExtractor.Logic\PGCExtractor.Logic.csproj" />
+  </ItemGroup>
+</Project>

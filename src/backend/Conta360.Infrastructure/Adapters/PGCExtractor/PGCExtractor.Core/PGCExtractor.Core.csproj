@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Conta360.Infrastructure.Adapters.PGCExtractor.Core</RootNamespace>
+    <AssemblyName>Conta360.Infrastructure.Adapters.PGCExtractor.Core</AssemblyName>
+  </PropertyGroup>
+</Project>

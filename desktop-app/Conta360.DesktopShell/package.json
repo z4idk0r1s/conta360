@@ -1,0 +1,21 @@
+{
+  "name": "conta360-desktop-shell",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev --workspace=root-config",
+    "tauri:dev": "tauri dev",
+    "build:frontend": "npm run build --workspace=root-config && npm run build --workspace=dashboard-app && npm run build --workspace=analisis-app && npm run build --workspace=pgc-app && npm run build --workspace=shared-components",
+    "postbuild:frontend": "node ./scripts/copy-mf-assets.js",
+    "tauri:build": "tauri build",
+    "build:tauri-release": "npm run build:frontend && npm run postbuild:frontend && tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.5.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.0",
+    "rimraf": "^5.0.5"
+  }
+}

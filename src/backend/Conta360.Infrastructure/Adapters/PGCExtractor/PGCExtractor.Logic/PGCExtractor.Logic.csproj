@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Conta360.Infrastructure.Adapters.PGCExtractor.Logic</RootNamespace>
+    <AssemblyName>Conta360.Infrastructure.Adapters.PGCExtractor.Logic</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PGCExtractor.Core\PGCExtractor.Core.csproj" />
+    <ProjectReference Include="..\PGCExtractor.Data\PGCExtractor.Data.csproj" />
+  </ItemGroup>
+</Project>

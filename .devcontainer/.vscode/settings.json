@@ -1,0 +1,7 @@
+{
+  "dotnet.defaultRuntimePath": "/usr/share/dotnet",
+  "dotnetAcquisitionExtension.enabled": false,
+  "omnisharp.useGlobalMono": "never",
+  "omnisharp.enableMsBuildLoadProjectsOnDemand": true,
+  "omnisharp.msbuild.useBundledOnly": false
+}
