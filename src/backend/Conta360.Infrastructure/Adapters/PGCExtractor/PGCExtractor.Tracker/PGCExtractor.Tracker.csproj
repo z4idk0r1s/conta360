@@ -9,8 +9,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PGCExtractor.Core\PGCExtractor.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\Conta360.Domain\Conta360.Domain.csproj" />
+    <ProjectReference Include="..\..\..\..\Conta360.Shared.Models\Conta360.Shared.Models.csproj" />
     <ProjectReference Include="..\PGCExtractor.Data\PGCExtractor.Data.csproj" />
-    <ProjectReference Include="..\PGCExtractor.Logic\PGCExtractor.Logic.csproj" />
   </ItemGroup>
 </Project>

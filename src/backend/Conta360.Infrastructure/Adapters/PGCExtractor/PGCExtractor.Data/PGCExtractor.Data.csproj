@@ -5,13 +5,11 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PGCExtractor.Core\PGCExtractor.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\Conta360.Shared.Models\Conta360.Shared.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" />
     <PackageReference Include="System.Text.Json" />
     <PackageReference Include="HtmlAgilityPack" />
-    <PackageReference Update="ClosedXML" />
-    <PackageReference Update="HtmlAgilityPack" />
-    <PackageReference Update="System.Text.Json" />
   </ItemGroup>
 </Project>

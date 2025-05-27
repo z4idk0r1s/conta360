@@ -5,8 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Conta360.Domain\Conta360.Domain.csproj" />
-    <ProjectReference Include="..\Conta360.Application\Conta360.Application.csproj" />
-    <ProjectReference Include="Adapters\ExcelProcessor\ExcelProcessor.csproj" /> 
+    <ProjectReference Include="..\Conta360.Shared.Models\Conta360.Shared.Models.csproj" />
+    <ProjectReference Include="Adapters\ExcelProcessor\ExcelProcessor.csproj" />
     <ProjectReference Include="Adapters\PGCExtractor\PGCExtractor.Core\PGCExtractor.Core.csproj" />
     <ProjectReference Include="Adapters\PGCExtractor\PGCExtractor.Data\PGCExtractor.Data.csproj" />
     <ProjectReference Include="Adapters\PGCExtractor\PGCExtractor.Logic\PGCExtractor.Logic.csproj" />
@@ -14,7 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" />
-    <PackageReference Include="EPPlus" />
-    <PackageReference Include="HtmlAgilityPack" />
+    <PackageReference Include="Serilog" /> <PackageReference Include="Serilog.Extensions.Logging" />
   </ItemGroup>
 </Project>

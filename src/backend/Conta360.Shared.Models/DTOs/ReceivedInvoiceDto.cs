@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace Conta360.Shared.Models.DTOs.ReceivedInvoiceDto
+namespace Conta360.Shared.Models.DTOs
 {
     public class ReceivedInvoiceDto
     {
