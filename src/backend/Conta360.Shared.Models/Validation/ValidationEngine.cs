@@ -7,7 +7,7 @@ using Conta360.Shared.Models.Validation.Models;
 using Conta360.Shared.Models.Validation;
 
 
-namespace Conta360.Shared.Models.Validation;
+namespace Conta360.Shared.Models.Validation
 {
     public class ValidationEngine : IValidationEngine
     {
