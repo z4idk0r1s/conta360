@@ -16,7 +16,5 @@
     <PackageReference Include="ClosedXML" />
     <PackageReference Include="EPPlus" />
     <PackageReference Include="HtmlAgilityPack" />
-    <PackageReference Include="Serilog.Extensions.Logging" />
-    <PackageReference Include="System.Net.Http.Json" />
   </ItemGroup>
 </Project>
