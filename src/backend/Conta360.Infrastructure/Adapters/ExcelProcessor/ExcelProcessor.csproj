@@ -8,6 +8,5 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" />
-    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" />
   </ItemGroup>
 </Project>
