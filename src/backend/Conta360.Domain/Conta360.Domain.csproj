@@ -6,8 +6,5 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="AutoMapper.Collection" /> 
-    <PackageReference Include="FluentValidation" />
-    <PackageReference Include="MediatR" />
-    <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 </Project>
