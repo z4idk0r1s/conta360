@@ -1,9 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Extensions.Configuration;
-using AutoMapper;
 using Conta360.Shared.Models.DTOs;
-using Conta360.Application.Interfaces;
-using Conta360.Shared.Models.Validation.Models;
+using Microsoft.Extensions.Logging;
+
+
 using Conta360.Shared.Models.Validation;
 
 

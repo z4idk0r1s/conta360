@@ -11,5 +11,6 @@
     <PackageReference Include="EPPlus" />
     <PackageReference Include="HtmlAgilityPack" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 </Project>

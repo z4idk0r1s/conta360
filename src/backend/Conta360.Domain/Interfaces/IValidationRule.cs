@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using FluentValidation.Results;
-using Conta360.Shared.Models.Validation.Models;
+using Conta360.Shared.Models.Validation;
 
 
 namespace Conta360.Domain.Interfaces
