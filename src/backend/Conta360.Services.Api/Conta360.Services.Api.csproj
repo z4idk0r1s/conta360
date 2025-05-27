@@ -8,13 +8,17 @@
     <ProjectReference Include="..\Conta360.Application\Conta360.Application.csproj" />
     <ProjectReference Include="..\Conta360.Infrastructure\Conta360.Infrastructure.csproj" />
     <ProjectReference Include="..\Conta360.Persistence.Postgres\Conta360.Persistence.Postgres.csproj" />
+    <ProjectReference Include="..\Conta360.Persistence.Sqlite\Conta360.Persistence.Sqlite.csproj" />
     <ProjectReference Include="..\Conta360.SDK\Conta360.SDK.csproj" />
+    <ProjectReference Include="..\Conta360.Shared.Models\Conta360.Shared.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" /> 
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
   </ItemGroup>
 </Project>

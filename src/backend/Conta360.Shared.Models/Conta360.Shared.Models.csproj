@@ -4,7 +4,12 @@
     <AssemblyName>Conta360.Shared.Models</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" />    
+    <PackageReference Include="AutoMapper" />
+    <PackageReference Include="System.ComponentModel.Annotations" />
     <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="ClosedXML" />
+    <PackageReference Include="EPPlus" />
+    <PackageReference Include="HtmlAgilityPack" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" />
   </ItemGroup>
 </Project>
