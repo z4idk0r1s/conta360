@@ -4,12 +4,11 @@ namespace Conta360.Shared.Models.DTOs
 {
     public class AccountingEntryDto
     {
-        public string Id { get; set; }
-        public string EntryId { get; set; }
-        public DateTime Date { get; set; }
-        public decimal Amount { get; set; }
-        public string Description { get; set; }
-        public string AccountCode { get; set; }
-        
+        public required string Id { get; set; }
+        public required string EntryId { get; set; }
+        public required DateTime Date { get; set; }
+        public required decimal Amount { get; set; }
+        public required string Description { get; set; }
+        public required string AccountCode { get; set; }
     }
 }

@@ -7,8 +7,6 @@
     <ProjectReference Include="..\Conta360.Shared.Models\Conta360.Shared.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MediatR" />
     <PackageReference Include="FluentValidation" />
-    <PackageReference Include="System.ComponentModel.Annotations" />
   </ItemGroup>
 </Project>
