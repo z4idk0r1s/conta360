@@ -5,8 +5,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PGCExtractor\PGCExtractor.Core\PGCExtractor.Core.csproj" />
-    <ProjectReference Include="..\..\..\..\Conta360.Domain\Conta360.Domain.csproj" />
-    <ProjectReference Include="..\..\..\..\Conta360.Shared.Models\Conta360.Shared.Models.csproj" />
+    <ProjectReference Include="..\..\..\Conta360.Application\Conta360.Application.csproj" />
+    <ProjectReference Include="..\..\..\Conta360.Domain\Conta360.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Conta360.Shared.Models\Conta360.Shared.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" />
