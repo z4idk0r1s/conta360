@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using Conta360.Application.Interfaces;
+using Conta360.Shared.Models.Validation.Models;
+using Conta360.Shared.Models.Validation;
 
-namespace Conta360.Infrastructure.Validation.Models
+namespace Conta360.Shared.Models.Validation.Models;
 {
     public class ValidationResult
     {

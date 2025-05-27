@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using FluentValidation.Results;
+using FluentValidation.Results; 
 using Conta360.Shared.Models.DTOs;
 
 
