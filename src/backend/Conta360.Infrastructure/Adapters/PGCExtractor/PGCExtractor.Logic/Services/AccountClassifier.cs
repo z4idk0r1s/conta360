@@ -100,8 +100,6 @@ using Conta360.Services.Api.Controllers;
 // Conta360.Shared.Models
 using Conta360.Shared.Models;
 using Conta360.Shared.Models.DTOs;
-using Conta360.Shared.Models.Enums;
-
 
 
 namespace Conta360.Infrastructure.Adapters.PGCExtractor.PGCExtractor.Logic.Services

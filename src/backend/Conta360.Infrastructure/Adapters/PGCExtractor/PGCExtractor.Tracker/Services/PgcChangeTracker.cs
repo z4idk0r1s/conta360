@@ -104,61 +104,65 @@ using Conta360.Shared.Models.Enums;
 
 
 namespace Conta360.Infrastructure.Adapters.PGCExtractor.PGCExtractor.Tracker.Services
-
-public class PgcChangeTracker
 {
-    private const string HashPath = "Data/last_hash.txt";
-    private const string SnapshotPath = "Data/last_accounts.json";
-    private const string DiffPath = "Data/diff_log.json";
-    private readonly PgcBoeXmlScraper _scraper;
-    private readonly AccountClassifier _classifier;
 
-    public PgcChangeTracker(PgcBoeXmlScraper scraper, AccountClassifier classifier)
+    public class PgcChangeTracker
     {
-        _scraper = scraper;
-        _classifier = classifier;
-    }
+        private const string HashPath = "Data/last_hash.txt";
+        private const string SnapshotPath = "Data/last_accounts.json";
+        private const string DiffPath = "Data/diff_log.json";
+        private readonly PgcBoeXmlScraper _scraper;
+        private readonly AccountClassifier _classifier;
 
-    public bool CheckForChanges(string xsdPath)
-    {
-        if (!File.Exists(xsdPath)) return false;
-        var xsdContent = File.ReadAllText(xsdPath);
-        var currentHash = ComputeHash(xsdContent);
-        var lastHash = File.Exists(HashPath) ? File.ReadAllText(HashPath) : null;
-        if (lastHash == currentHash) return false;
-        File.WriteAllText(HashPath, currentHash);
-
-        var newAccounts = _scraper.ExtractFromXsd(xsdPath);
-        _classifier.ClassifyAccounts(newAccounts);
-
-        List<AccountNode>? oldAccounts = null;
-        if (File.Exists(SnapshotPath))
-            oldAccounts = JsonSerializer.Deserialize<List<AccountNode>>(File.ReadAllText(SnapshotPath));
-
-        File.WriteAllText(SnapshotPath, JsonSerializer.Serialize(newAccounts, new JsonSerializerOptions { WriteIndented = true }));
-
-        if (oldAccounts != null)
+        public PgcChangeTracker(PgcBoeXmlScraper scraper, AccountClassifier classifier)
         {
-            var diffs = CalculateDiff(oldAccounts, newAccounts);
-            File.AppendAllText(DiffPath, JsonSerializer.Serialize(new { Timestamp = DateTime.UtcNow, Diffs = diffs }, new JsonSerializerOptions { WriteIndented = true }) + " ");
+            _scraper = scraper;
+            _classifier = classifier;
         }
 
-        return true;
-    }
+        public bool CheckForChanges(string xsdPath)
+        {
+            if (!File.Exists(xsdPath)) return false;
+            var xsdContent = File.ReadAllText(xsdPath);
+            var currentHash = ComputeHash(xsdContent);
+            var lastHash = File.Exists(HashPath) ? File.ReadAllText(HashPath) : null;
+            if (lastHash == currentHash) return false;
+            File.WriteAllText(HashPath, currentHash);
+
+            var newAccounts = _scraper.ExtractFromXsd(xsdPath);
+            _classifier.ClassifyAccounts(newAccounts);
+
+            List<AccountNode>? oldAccounts = null;
+            if (File.Exists(SnapshotPath))
+                oldAccounts = JsonSerializer.Deserialize<List<AccountNode>>(File.ReadAllText(SnapshotPath));
+
+            File.WriteAllText(SnapshotPath, JsonSerializer.Serialize(newAccounts, new JsonSerializerOptions { WriteIndented = true }));
+
+            if (oldAccounts != null)
+            {
+                var diffs = CalculateDiff(oldAccounts, newAccounts);
+                File.AppendAllText(DiffPath, JsonSerializer.Serialize(new { Timestamp = DateTime.UtcNow, Diffs = diffs }, new JsonSerializerOptions { WriteIndented = true }) + " ");
+            }
+
+            return true;
+        }
 
 
-    private string ComputeHash(string content)
-    {
-        using var sha = SHA256.Create();
-        var bytes = Encoding.UTF8.GetBytes(content);
-        return Convert.ToHexString(sha.ComputeHash(bytes));
+        private string ComputeHash(string content)
+        {
+            using var sha = SHA256.Create();
+            var bytes = Encoding.UTF8.GetBytes(content);
+            return Convert.ToHexString(sha.ComputeHash(bytes));
+        }
+
+        private object CalculateDiff(List<AccountNode> oldList, List<AccountNode> newList)
+        {
+            var added = newList.Where(n => !oldList.Any(o => o.Code == n.Code)).ToList();
+            var removed = oldList.Where(o => !newList.Any(n => n.Code == o.Code)).ToList();
+            var changed = newList.Where(n => oldList.Any(o => o.Code == n.Code && (o.Name != n.Name || o.Type != n.Type))).ToList();
+            return new { Added = added, Removed = removed, Modified = changed };
+        }
     }
 
-    private object CalculateDiff(List<AccountNode> oldList, List<AccountNode> newList)
-    {
-        var added = newList.Where(n => !oldList.Any(o => o.Code == n.Code)).ToList();
-        var removed = oldList.Where(o => !newList.Any(n => n.Code == o.Code)).ToList();
-        var changed = newList.Where(n => oldList.Any(o => o.Code == n.Code && (o.Name != n.Name || o.Type != n.Type))).ToList();
-        return new { Added = added, Removed = removed, Modified = changed };
-    }
 }
+
