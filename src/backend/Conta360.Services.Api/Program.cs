@@ -1,15 +1,24 @@
 using System.Text;
-using Conta360.Application.Interfaces;
+using Conta360.Application.Interfaces; // Para IValidationRule<T>
 using Conta360.Infrastructure.Adapters.ExcelProcessor;
 using Conta360.Infrastructure.Adapters.ExcelProcessor.Interfaces;
 using Conta360.Infrastructure.Adapters.PGCExtractor;
 using Conta360.Services.Api;
 using Conta360.Shared.Models.DTOs;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Conta360.Shared.Models.Interfaces; // Para IValidationEngine
+using Conta360.Shared.Models.Validation; // Para ValidationEngine
 using Conta360.Infrastructure.Adapters.PGCExtractor.PGCExtractor.Data.Services;
 using Conta360.Infrastructure.Adapters.PGCExtractor.PGCExtractor.Logic.Services;
 using Conta360.Infrastructure.Adapters.PGCExtractor.PGCExtractor.Tracker.Services;
-using Conta360.Domain.Rules.EmittedInvoice;
+using Conta360.Domain.Rules.EmittedInvoice; // Para TotalAmountValidationRule
+
+// Necesarios para la configuración del Host y DI
+using Microsoft.Extensions.DependencyInjection; // <-- ¡Este es CRUCIAL para GetServices/GetRequiredService!
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration; // Si usas builder.Configuration directamente como GetSection
+using AutoMapper; // Si MappingProfile está en otro namespace.
+using AutoMapper.Collections; // Si MappingProfile está en otro namespace.
 
 
 var builder = WebApplication.CreateBuilder(args);
