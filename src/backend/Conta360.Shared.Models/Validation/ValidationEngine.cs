@@ -2,9 +2,6 @@ using Conta360.Shared.Models.DTOs;
 using Microsoft.Extensions.Logging;
 
 
-using Conta360.Shared.Models.Validation;
-
-
 namespace Conta360.Shared.Models.Validation
 {
     public class ValidationEngine : IValidationEngine

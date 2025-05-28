@@ -1,7 +1,5 @@
-using FluentValidation.Results;
-using Conta360.Shared.Models.DTOs;
 using Conta360.Shared.Models.Validation;
-using Conta360.Domain.Interfaces;
+using Conta360.Shared.Models.DTOs;
 
 namespace Conta360.Application.Interfaces
 {

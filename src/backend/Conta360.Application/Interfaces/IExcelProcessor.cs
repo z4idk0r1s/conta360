@@ -1,5 +1,4 @@
 using Conta360.Shared.Models.DTOs;
-using Conta360.Shared.Models.Validation;
 
 
 namespace Conta360.Application.Interfaces
