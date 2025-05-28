@@ -1,6 +1,6 @@
 using Conta360.Shared.Models.DTOs;
 using Microsoft.Extensions.Logging;
-
+using Conta360.Shared.Models.Interfaces;
 
 namespace Conta360.Shared.Models.Validation
 {

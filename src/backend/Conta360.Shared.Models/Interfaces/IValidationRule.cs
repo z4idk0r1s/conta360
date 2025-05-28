@@ -1,7 +1,7 @@
 using Conta360.Shared.Models.Validation;
 
 
-namespace Conta360.Domain.Interfaces
+namespace Conta360.Shared.Models.Interfaces
 {
     public interface IValidationRule<T>
     {
