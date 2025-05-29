@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Conta360.CrossCutting.IoC</RootNamespace>
+    <AssemblyName>Conta360.CrossCutting.IoC</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
+    <ProjectReference Include="../../Core/Conta360.Domain/Conta360.Domain.csproj" />
+    <ProjectReference Include="../../Core/Conta360.Core/Conta360.Core.csproj" />
+    <ProjectReference Include="../../Infrastructure/Conta360.Persistence/Conta360.Persistence.csproj" />
+    <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj" />
+    <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj" />
+    <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj" />
+    <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.PGC/Conta360.Infrastructure.PGC.csproj" />
+    <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.Reporting/Conta360.Infrastructure.Reporting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    </ItemGroup>
+</Project>

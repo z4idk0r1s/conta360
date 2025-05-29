@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>PGCExtractor.Data</RootNamespace>
+    <AssemblyName>PGCExtractor.Data</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PGCExtractor.Core/PGCExtractor.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" />
+    <PackageReference Include="System.Text.Json" />
+  </ItemGroup>
+</Project>

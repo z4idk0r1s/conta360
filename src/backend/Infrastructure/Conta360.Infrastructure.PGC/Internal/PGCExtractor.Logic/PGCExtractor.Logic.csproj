@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>PGCExtractor.Logic</RootNamespace>
+    <AssemblyName>PGCExtractor.Logic</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PGCExtractor.Core/PGCExtractor.Core.csproj" />
+    <ProjectReference Include="../PGCExtractor.Data/PGCExtractor.Data.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    </ItemGroup>
+</Project>

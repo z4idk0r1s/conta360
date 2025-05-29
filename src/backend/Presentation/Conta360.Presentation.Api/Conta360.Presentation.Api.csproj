@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web"> <PropertyGroup>
+    <RootNamespace>Conta360.Presentation.Api</RootNamespace>
+    <AssemblyName>Conta360.Presentation.Api</AssemblyName>
+    <OutputType>Exe</OutputType> </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
+    <ProjectReference Include="../../Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj" />
+    <ProjectReference Include="../../Core/Conta360.Core/Conta360.Core.csproj" />
+    <ProjectReference Include="../../Core/Conta360.Domain/Conta360.Domain.csproj" /> </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>PGCExtractor.Core</RootNamespace>
+    <AssemblyName>PGCExtractor.Core</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    </ItemGroup>
+  <ItemGroup>
+    </ItemGroup>
+</Project>
