@@ -102,396 +102,6 @@ Características Principales
    (Retorno de DTOs de Aplicación, Mapeo a DTOs de API, y Respuesta HTTP)
 
 
-C:.
-│ .dockerignore
-│ .gitignore
-│ Directory.Build.props
-│ Directory.Build.targets
-│ Directory.Packages.props
-│ docker-cleanup.bat
-│ docker-compose.yml
-│ global.json
-│ LICENSE
-│ README.md
-│ readme2.md
-│
-├───.devcontainer
-│   │ .env
-│   │ devcontainer.json
-│   │ Dockerfile
-│   │ star2.sh
-│   │ startup.sh
-│   │ startup1.sh
-│   │
-│   └───.vscode
-│       settings.json
-│
-├───desktop-app
-│   └───Conta360.DesktopShell
-│       ├── .gitignore
-│       ├── package.json
-│       ├── scripts
-│       │   └── copy-mf-assets.js
-│       ├── src-tauri
-│       │   └── src
-│       │       └── main.rs
-│       └── tauri.conf.json
-│
-├───microfrontends
-│   └───root-config
-│       ├── .gitignore
-│       ├── next.config.js
-│       ├── package.json
-│       ├── postcss.config.js
-│       ├── src
-│       │   ├── app
-│       │   │   ├── globals.css
-│       │   │   ├── layout.tsx
-│       │   │   └── page.tsx
-│       │   └── lib
-│       │       └── api.ts
-│       ├── tailwind.config.ts
-│       └── tsconfig.json
-│
-└───src
-    └───backend
-        │ GlobalUsings.cs (Para 'using' globales que apliquen a todo el backend)
-        │
-        ├───Core
-        │   ├───Conta360.Domain
-        │   │   │ Conta360.Domain.csproj
-        │   │   │
-        │   │   ├───Entities
-        │   │   │       Account.cs
-        │   │   │       AccountingEntry.cs
-        │   │   │       AuditLogEntry.cs
-        │   │   │       BaseEntity.cs
-        │   │   │       EmittedInvoice.cs
-        │   │   │       FinancialPeriod.cs
-        │   │   │       Invoice.cs
-        │   │   │       InvoiceLine.cs
-        │   │   │       PGCStructure.cs
-        │   │   │       ReceivedInvoice.cs
-        │   │   │       User.cs
-        │   │   │
-        │   │   ├───Enums
-        │   │   │       AccountGroup.cs
-        │   │   │       AuditLogAction.cs
-        │   │   │       EntryType.cs
-        │   │   │       FinancialReportType.cs
-        │   │   │       InvoiceType.cs
-        │   │   │       KpiType.cs
-        │   │   │
-        │   │   ├───Events
-        │   │   │       AccountingEntryAddedEvent.cs
-        │   │   │       IDomainEvent.cs
-        │   │   │       InvoiceCreatedEvent.cs
-        │   │   │
-        │   │   ├───Rules
-        │   │   │       AccountingEntryValidationRule.cs
-        │   │   │       BalanceStructureValidationRule.cs
-        │   │   │       FinancialPeriodOverlapRule.cs
-        │   │   │       IValidationRule.cs
-        │   │   │       InvoiceDateRangeRule.cs
-        │   │   │       PGCAccountClassificationRule.cs
-        │   │   │       TotalAmountValidationRule.cs
-        │   │   │
-        │   │   └───ValueObjects
-        │   │           Address.cs
-        │   │           ChartOfAccountsCode.cs
-        │   │           Money.cs
-        │   │           TaxIdNumber.cs
-        │   │
-        │   ├───Conta360.Application
-        │   │   │ Conta360.Application.csproj
-        │   │   │
-        │   │   ├───Common
-        │   │   │       BaseCommand.cs
-        │   │   │       BaseQuery.cs
-        │   │   │       PaginatedList.cs
-        │   │   │       ReportParameters.cs
-        │   │   │       UserRoles.cs
-        │   │   │       ValidationMessages.cs
-        │   │   │
-        │   │   ├───DTOs
-        │   │   │       BalanceSheetDto.cs
-        │   │   │       ChangesInEquityDto.cs
-        │   │   │       FinancialReportDto.cs
-        │   │   │       KpiDataDto.cs
-        │   │   │       PGCAccountDetailDto.cs
-        │   │   │       ProfitAndLossDto.cs
-        │   │   │
-        │   │   ├───Interfaces
-        │   │   │       ICurrentUserService.cs
-        │   │   │       IDateTimeProvider.cs
-        │   │   │       IDomainEventDispatcher.cs
-        │   │   │       IExcelProcessor.cs
-        │   │   │       IFinancialReportingService.cs
-        │   │   │       IKpiCalculationService.cs
-        │   │   │       IPGCStructureService.cs
-        │   │   │
-        │   │   ├───Mappers
-        │   │   │       ApplicationMappingProfile.cs
-        │   │   │
-        │   │   ├───PipelineBehaviors
-        │   │   │       AuthorizationBehavior.cs
-        │   │   │       LoggingBehavior.cs
-        │   │   │       UnhandledExceptionBehavior.cs
-        │   │   │       ValidationBehavior.cs
-        │   │   │
-        │   │   └───UseCases
-        │   │       ├───AccountingEntries
-        │   │       │       AccountingEntryDto.cs
-        │   │       │       CreateAccountingEntryCommand.cs
-        │   │       │       CreateAccountingEntryHandler.cs
-        │   │       │       DeleteAccountingEntryCommand.cs
-        │   │       │       DeleteAccountingEntryHandler.cs
-        │   │       │       GetAccountingEntriesByPeriodHandler.cs
-        │   │       │       GetAccountingEntriesByPeriodQuery.cs
-        │   │       │       GetAccountingEntryByIdHandler.cs
-        │   │       │       GetAccountingEntryByIdQuery.cs
-        │   │       │       UpdateAccountingEntryCommand.cs
-        │   │       │       UpdateAccountingEntryHandler.cs
-        │   │       ├───FinancialReports
-        │   │       │       FinancialReportResponse.cs
-        │   │       │       GenerateFinancialReportHandler.cs
-        │   │       │       GenerateFinancialReportQuery.cs
-        │   │       │       GetFinancialReportTypesHandler.cs
-        │   │       │       GetFinancialReportTypesQuery.cs
-        │   │       ├───ImportData
-        │   │       │       ImportAccountingEntriesCommand.cs
-        │   │       │       ImportAccountingEntriesHandler.cs
-        │   │       │       ImportInvoiceCommand.cs
-        │   │       │       ImportInvoiceHandler.cs
-        │   │       │       ImportResultDto.cs
-        │   │       ├───Invoices
-        │   │       │       CreateInvoiceCommand.cs
-        │   │       │       CreateInvoiceHandler.cs
-        │   │       │       GetInvoiceByIdHandler.cs
-        │   │       │       GetInvoiceByIdQuery.cs
-        │   │       │       GetInvoicesByPeriodHandler.cs
-        │   │       │       GetInvoicesByPeriodQuery.cs
-        │   │       │       InvoiceDto.cs
-        │   │       │       InvoiceLineDto.cs
-        │   │       │       UpdateInvoiceCommand.cs
-        │   │       │       UpdateInvoiceHandler.cs
-        │   │       ├───Kpis
-        │   │       │       CalculateKpiHandler.cs
-        │   │       │       CalculateKpiQuery.cs
-        │   │       │       GetAvailableKpisHandler.cs
-        │   │       │       GetAvailableKpisQuery.cs
-        │   │       │       KpiResultResponse.cs
-        │   │       ├───PGCManagement
-        │   │       │       GetPGCStructureHandler.cs
-        │   │       │       GetPGCStructureQuery.cs
-        │   │       │       PGCAccountDto.cs
-        │   │       │       UpdatePGCStructureCommand.cs
-        │   │       │       UpdatePGCStructureHandler.cs
-        │   │       └───UserManagement
-        │   │               AuthResultDto.cs
-        │   │               LoginUserHandler.cs
-        │   │               LoginUserQuery.cs
-        │   │               RegisterUserCommand.cs
-        │   │               RegisterUserHandler.cs
-        │   │               UserDto.cs
-        │   │
-        │   └───Conta360.Core (Renombrado de `Conta360.Common` para mayor claridad en Clean Architecture)
-        │       │ Conta360.Core.csproj
-        │       │
-        │       ├───Common
-        │       │       ApplicationException.cs
-        │       │       DomainException.cs
-        │       │       Error.cs
-        │       │       Guard.cs
-        │       │       OperationResult.cs
-        │       │
-        │       ├───Interfaces
-        │       │       IResult.cs
-        │       │       IValidator.cs
-        │       │
-        │       └───Validation
-        │               ValidationContext.cs
-        │               ValidationEngine.cs
-        │               ValidationResult.cs
-        │
-        ├───Infrastructure
-        │   ├───Conta360.Persistence
-        │   │   │ Conta360.Persistence.csproj
-        │   │   │
-        │   │   ├───Interfaces (Repositorios genéricos y específicos para la capa de persistencia)
-        │   │   │       IAccountRepository.cs
-        │   │   │       IAccountingEntryRepository.cs
-        │   │   │       IAuditLogRepository.cs
-        │   │   │       IInvoiceRepository.cs
-        │   │   │       IPGCStructureRepository.cs
-        │   │   │       IRepository.cs
-        │   │   │       IUnitOfWork.cs
-        │   │   │       IUserRepository.cs
-        │   │   │
-        │   │   └───Specifications
-        │   │           AccountingEntryByPeriodSpecification.cs
-        │   │           BaseSpecification.cs
-        │   │           InvoiceByDateRangeSpecification.cs
-        │   │
-        │   ├───Conta360.Infrastructure.Postgres
-        │   │   │ Conta360.Infrastructure.Postgres.csproj
-        │   │   │
-        │   │   ├───Context
-        │   │   │   ├── AppDbContext.cs
-        │   │   │   └── Configurations
-        │   │   │           AccountConfiguration.cs
-        │   │   │           AccountingEntryConfiguration.cs
-        │   │   │           AuditLogEntryConfiguration.cs
-        │   │   │           FinancialPeriodConfiguration.cs
-        │   │   │           InvoiceConfiguration.cs
-        │   │   │           InvoiceLineConfiguration.cs
-        │   │   │           PGCStructureConfiguration.cs
-        │   │   │           UserConfiguration.cs
-        │   │   │
-        │   │   ├───Migrations
-        │   │   │       20240529120000_InitialMigration.cs
-        │   │   │       AppDbContextModelSnapshot.cs
-        │   │   │
-        │   │   ├───Repositories (Implementaciones concretas para Postgres)
-        │   │   │       AccountRepository.cs
-        │   │   │       AccountingEntryRepository.cs
-        │   │   │       AuditLogRepository.cs
-        │   │   │       BaseRepository.cs
-        │   │   │       InvoiceRepository.cs
-        │   │   │       PGCStructureRepository.cs
-        │   │   │       UnitOfWork.cs
-        │   │   │       UserRepository.cs
-        │   │   │
-        │   │   └───Seed
-        │   │           AppDbContextSeed.cs
-        │   │
-        │   ├───Conta360.Infrastructure.Sqlite
-        │   │   │ Conta360.Infrastructure.Sqlite.csproj
-        │   │   │
-        │   │   ├───Context
-        │   │   │   ├── AppDbContext.cs
-        │   │   │   └── Configurations
-        │   │   │           AccountConfiguration.cs
-        │   │   │
-        │   │   └───Repositories (Implementaciones concretas para Sqlite)
-        │   │           AccountRepository.cs
-        │   │
-        │   ├───Conta360.Infrastructure.Excel
-        │   │   │ Conta360.Infrastructure.Excel.csproj
-        │   │   │
-        │   │   ├───DTOs
-        │   │   │       RawAccountingEntryDto.cs
-        │   │   │       RawInvoiceDto.cs
-        │   │   │
-        │   │   │ ExcelDataMapper.cs
-        │   │   │ ExcelFileValidator.cs
-        │   │   │ ExcelProcessor.cs (Implementa IExcelProcessor de Application)
-        │   │
-        │   ├───Conta360.Infrastructure.PGC
-        │   │   │ Conta360.Infrastructure.PGC.csproj
-        │   │   │
-        │   │   ├───Internal (Proyectos internos que conforman el adaptador PGC)
-        │   │   │   ├───PGCExtractor.Core
-        │   │   │   │   │ PGCExtractor.Core.csproj
-        │   │   │   │   │
-        │   │   │   │   └───Models
-        │   │   │   │           PgcXmlAccount.cs
-        │   │   │   │           PgcXmlGroup.cs
-        │   │   │   │           PgcXmlSubAccount.cs
-        │   │   │   │           PgcXmlSubgroup.cs
-        │   │   │   │
-        │   │   │   ├───PGCExtractor.Data
-        │   │   │   │   │ PGCExtractor.Data.csproj
-        │   │   │   │   │
-        │   │   │   │   └───Services
-        │   │   │   │           PgcBoeXmlScraper.cs
-        │   │   │   │           PgcJsonLoader.cs
-        │   │   │   │           XmlValidator.cs
-        │   │   │   │
-        │   │   │   └───PGCExtractor.Logic
-        │   │   │       │ PGCExtractor.Logic.csproj
-        │   │   │       │
-        │   │   │       └───Services
-        │   │   │               AccountClassifier.cs
-        │   │   │               PgcTaxonomyBuilder.cs
-        │   │   │
-        │   │   └───Services
-        │   │           PGCStructureService.cs (Implementa IPGCStructureService de Application)
-        │   │
-        │   └───Conta360.Infrastructure.Reporting
-        │       │ Conta360.Infrastructure.Reporting.csproj
-        │       │
-        │       ├───Calculators
-        │       │       AcidTestCalculator.cs
-        │       │       CurrentLiquidityCalculator.cs
-        │       │       DebtRatioCalculator.cs
-        │       │       FinancialRatioCalculator.cs
-        │       │       RoACalculator.cs
-        │       │       RoECalculator.cs
-        │       │
-        │       ├───Reports
-        │       │       BalanceSheetGenerator.cs
-        │       │       ChangesInEquityGenerator.cs
-        │       │       ProfitAndLossGenerator.cs
-        │       │       ReportDataAggregator.cs
-        │       │
-        │       └───Services
-        │               FinancialReportingService.cs (Implementa IFinancialReportingService de Application)
-        │               KpiCalculationService.cs (Implementa IKpiCalculationService de Application)
-        │
-        ├───Presentation
-        │   └───Conta360.Presentation.Api
-        │       │ Conta360.Presentation.Api.csproj
-        │       │ appsettings.Development.json
-        │       │ appsettings.json
-        │       │ appsettings.Production.json
-        │       │ Dockerfile
-        │       │ Program.cs
-        │       │
-        │       ├───Controllers
-        │       │       AccountingEntriesController.cs
-        │       │       AuthController.cs
-        │       │       FinancialReportController.cs
-        │       │       ImportController.cs
-        │       │       InvoicesController.cs
-        │       │       KpiController.cs
-        │       │       PGCController.cs
-        │       │       UserController.cs
-        │       │
-        │       ├───DTOs (Modelos específicos de la API: Request/Response para la API)
-        │       │       AccountingEntryApiResponse.cs
-        │       │       ApiFinancialReportRequest.cs
-        │       │       CreateAccountingEntryApiRequest.cs
-        │       │       CreateInvoiceApiRequest.cs
-        │       │       FinancialReportApiDto.cs
-        │       │       ImportRequest.cs
-        │       │       ImportResponse.cs
-        │       │       InvoiceApiResponse.cs
-        │       │       KpiRequest.cs
-        │       │       KpiResponse.cs
-        │       │       LoginRequest.cs
-        │       │       LoginResponse.cs
-        │       │       PGCStructureApiResponse.cs
-        │       │       RegisterUserRequest.cs
-        │       │
-        │       ├───Filters (Filtros de acción, autorización, validación para la API)
-        │       │       ApiExceptionFilter.cs
-        │       │       AuthorizeAttribute.cs
-        │       │       ValidationFilter.cs
-        │       │
-        │       ├───Mappers
-        │       │       ApiMappingProfile.cs
-        │       │
-        │       └───Services (Servicios específicos de la capa de presentación/API)
-        │               CurrentUserService.cs (Implementa ICurrentUserService de Application)
-        │               TokenService.cs
-        │
-        └───Shared
-            └───Conta360.CrossCutting.IoC (Contenedor de Inversión de Control/Inyección de Dependencias)
-                │ Conta360.CrossCutting.IoC.csproj
-                │
-                └───DependencyInjection.cs (Métodos de extensión para configurar la DI en Startup/Program)
-
 Arquitectura y Diseño
 
 El proyecto Conta360 está construido sobre una sólida base de Clean Architecture y el patrón CQRS (Command Query Responsibility Segregation), con MediatR como orquestador de los flujos de comandos y consultas. Esta aproximación garantiza una clara separación de responsabilidades, alta mantenibilidad, escalabilidad y facilidad para realizar pruebas unitarias e integrales.
@@ -572,3 +182,502 @@ Requisitos Previos
     Yarn (o npm)
     Docker Desktop (opcional, para entornos de desarrollo/producción basados en contenedores)
     PostgreSQL (para entorno de producción o desarrollo completo)
+
+    C:.
+│ .dockerignore
+│ .gitignore
+│ Directory.Build.props
+│ Directory.Build.targets
+│ Directory.Packages.props
+│ docker-cleanup.bat
+│ docker-compose.yml
+│ global.json
+│ LICENSE
+│ README.md
+│ readme2.md
+│
+├───.devcontainer
+│   │ .env
+│   │ devcontainer.json
+│   │ Dockerfile
+│   │ star2.sh
+│   │ startup.sh
+│   │ startup1.sh
+│   │
+│   └───.vscode
+│         settings.json
+│
+├───desktop-app
+│   └───Conta360.DesktopShell
+│         ├── .gitignore
+│         ├── package.json
+│         ├── scripts
+│         │   └── copy-mf-assets.js
+│         ├── src-tauri
+│         │   └── src
+│         │         └── main.rs
+│         └── tauri.conf.json
+│
+├───microfrontends
+│   └───root-config
+│         ├── .gitignore
+│         ├── next.config.js
+│         ├── package.json
+│         ├── postcss.config.js
+│         ├── src
+│         │   ├── app
+│         │   │   ├── globals.css
+│         │   │   ├── layout.tsx
+│         │   │   └── page.tsx
+│         │   └── lib
+│         │         └── api.ts
+│         ├── tailwind.config.ts
+│         └── tsconfig.json
+│
+└───src
+    └───backend
+        │ GlobalUsings.cs (Para 'using' globales que apliquen a todo el backend)
+        │
+        ├───Core
+        │   ├───Conta360.Domain (Capas centrales: **Interfaces**, **Entidades**, **Reglas de Negocio**, **Eventos de Dominio**, **Objetos de Valor**)
+        │   │   │ Conta360.Domain.csproj
+        │   │   │
+        │   │   ├───Entities (Define las **entidades** principales del negocio contable como Cuenta, Asiento Contable, Factura, Usuario, etc.)
+        │   │   │       Account.cs
+        │   │   │       AccountingEntry.cs
+        │   │   │       AuditLogEntry.cs
+        │   │   │       BaseEntity.cs
+        │   │   │       EmittedInvoice.cs
+        │   │   │       FinancialPeriod.cs
+        │   │   │       Invoice.cs
+        │   │   │       InvoiceLine.cs
+        │   │   │       PGCStructure.cs
+        │   │   │       ReceivedInvoice.cs
+        │   │   │       User.cs
+        │   │   │
+        │   │   ├───Enums (Enumeraciones que representan estados o tipos específicos del dominio)
+        │   │   │       AccountGroup.cs
+        │   │   │       AuditLogAction.cs
+        │   │   │       EntryType.cs
+        │   │   │       FinancialReportType.cs
+        │   │   │       InvoiceType.cs
+        │   │   │       KpiType.cs
+        │   │   │
+        │   │   ├───Events (Define **eventos de dominio** que ocurren en el sistema y a los que otros componentes pueden reaccionar)
+        │   │   │       AccountingEntryAddedEvent.cs
+        │   │   │       IDomainEvent.cs (**Interfaz** base para todos los eventos de dominio)
+        │   │   │       InvoiceCreatedEvent.cs
+        │   │   │
+        │   │   ├───Rules (Contiene las **reglas de validación y lógica de negocio** core del dominio, implementando la **interfaz** IValidationRule)
+        │   │   │       AccountingEntryValidationRule.cs
+        │   │   │       BalanceStructureValidationRule.cs
+        │   │   │       FinancialPeriodOverlapRule.cs
+        │   │   │       IValidationRule.cs (**Interfaz** para las reglas de validación)
+        │   │   │       InvoiceDateRangeRule.cs
+        │   │   │       PGCAccountClassificationRule.cs
+        │   │   │       TotalAmountValidationRule.cs
+        │   │   │
+        │   │   └───ValueObjects (Define **objetos de valor** que representan conceptos del dominio sin identidad propia)
+        │   │           Address.cs
+        │   │           ChartOfAccountsCode.cs
+        │   │           Money.cs
+        │   │           TaxIdNumber.cs
+        │   │
+        │   ├───Conta360.Application (Capa de Aplicación: **Interfaces de servicios**, **Casos de Uso (comandos y queries)**, **DTOs**, **Comportamientos de pipeline**)
+        │   │   │ Conta360.Application.csproj
+        │   │   │
+        │   │   ├───Common (Clases comunes o base para la capa de aplicación)
+        │   │   │       BaseCommand.cs
+        │   │   │       BaseQuery.cs
+        │   │   │       PaginatedList.cs
+        │   │   │       ReportParameters.cs
+        │   │   │       UserRoles.cs
+        │   │   │       ValidationMessages.cs
+        │   │   │
+        │   │   ├───DTOs (Define los **objetos de transferencia de datos** utilizados entre la capa de aplicación y la presentación/infraestructura)
+        │   │   │       BalanceSheetDto.cs
+        │   │   │       ChangesInEquityDto.cs
+        │   │   │       FinancialReportDto.cs
+        │   │   │       KpiDataDto.cs
+        │   │   │       PGCAccountDetailDto.cs
+        │   │   │       ProfitAndLossDto.cs
+        │   │   │
+        │   │   ├───Interfaces (Define **contratos (interfaces)** para servicios que serán implementados en la capa de infraestructura)
+        │   │   │       ICurrentUserService.cs
+        │   │   │       IDateTimeProvider.cs
+        │   │   │       IDomainEventDispatcher.cs
+        │   │   │       IExcelProcessor.cs
+        │   │   │       IFinancialReportingService.cs
+        │   │   │       IKpiCalculationService.cs
+        │   │   │       IPGCStructureService.cs
+        │   │   │
+        │   │   ├───Mappers (Configuraciones de mapeo entre entidades de dominio y DTOs)
+        │   │   │       ApplicationMappingProfile.cs
+        │   │   │
+        │   │   ├───PipelineBehaviors (Implementa comportamientos transversales como autenticación, logging, manejo de errores y validación, que se aplican a los comandos y queries)
+        │   │   │       AuthorizationBehavior.cs
+        │   │   │       LoggingBehavior.cs
+        │   │   │       UnhandledExceptionBehavior.cs
+        │   │   │       ValidationBehavior.cs
+        │   │   │
+        │   │   └───UseCases (Contiene la **lógica de negocio específica para cada caso de uso**, implementando comandos y queries junto con sus respectivos manejadores)
+        │   │           ├───AccountingEntries (Casos de uso para Asientos Contables: creación, actualización, eliminación, consulta)
+        │   │           │       AccountingEntryDto.cs
+        │   │           │       CreateAccountingEntryCommand.cs
+        │   │           │       CreateAccountingEntryHandler.cs
+        │   │           │       DeleteAccountingEntryCommand.cs
+        │   │           │       DeleteAccountingEntryHandler.cs
+        │   │           │       GetAccountingEntriesByPeriodHandler.cs
+        │   │           │       GetAccountingEntriesByPeriodQuery.cs
+        │   │           │       GetAccountingEntryByIdHandler.cs
+        │   │           │       GetAccountingEntryByIdQuery.cs
+        │   │           │       UpdateAccountingEntryCommand.cs
+        │   │           │       UpdateAccountingEntryHandler.cs
+        │   │           ├───FinancialReports (Casos de uso para la generación y consulta de informes financieros)
+        │   │           │       FinancialReportResponse.cs
+        │   │           │       GenerateFinancialReportHandler.cs
+        │   │           │       GenerateFinancialReportQuery.cs
+        │   │           │       GetFinancialReportTypesHandler.cs
+        │   │           │       GetFinancialReportTypesQuery.cs
+        │   │           ├───ImportData (Casos de uso para la importación de datos)
+        │   │           │       ImportAccountingEntriesCommand.cs
+        │   │           │       ImportAccountingEntriesHandler.cs
+        │   │           │       ImportInvoiceCommand.cs
+        │   │           │       ImportInvoiceHandler.cs
+        │   │           │       ImportResultDto.cs
+        │   │           ├───Invoices (Casos de uso para Facturas: creación, actualización, consulta)
+        │   │           │       CreateInvoiceCommand.cs
+        │   │           │       CreateInvoiceHandler.cs
+        │   │           │       GetInvoiceByIdHandler.cs
+        │   │           │       GetInvoiceByIdQuery.cs
+        │   │           │       GetInvoicesByPeriodHandler.cs
+        │   │           │       GetInvoicesByPeriodQuery.cs
+        │   │           │       InvoiceDto.cs
+        │   │           │       InvoiceLineDto.cs
+        │   │           │       UpdateInvoiceCommand.cs
+        │   │           │       UpdateInvoiceHandler.cs
+        │   │           ├───Kpis (Casos de uso para el cálculo y consulta de KPIs)
+        │   │           │       CalculateKpiHandler.cs
+        │   │           │       CalculateKpiQuery.cs
+        │   │           │       GetAvailableKpisHandler.cs
+        │   │           │       GetAvailableKpisQuery.cs
+        │   │           │       KpiResultResponse.cs
+        │   │           ├───PGCManagement (Casos de uso para la gestión del Plan General Contable)
+        │   │           │       GetPGCStructureHandler.cs
+        │   │           │       GetPGCStructureQuery.cs
+        │   │           │       PGCAccountDto.cs
+        │   │           │       UpdatePGCStructureCommand.cs
+        │   │           │       UpdatePGCStructureHandler.cs
+        │   │           └───UserManagement (Casos de uso para la autenticación y registro de usuarios)
+        │   │                   AuthResultDto.cs
+        │   │                   LoginUserHandler.cs
+        │   │                   LoginUserQuery.cs
+        │   │                   RegisterUserCommand.cs
+        │   │                   RegisterUserHandler.cs
+        │   │                   UserDto.cs
+        │   │
+        │   └───Conta360.Core (Renombrado de `Conta360.Common` para mayor claridad en Clean Architecture)
+        │       │ Conta360.Core.csproj
+        │       │
+        │       ├───Common (Clases comunes transversales a todo el sistema, como manejo de errores y resultados)
+        │       │       ApplicationException.cs
+        │       │       DomainException.cs
+        │       │       Error.cs
+        │       │       Guard.cs
+        │       │       OperationResult.cs
+        │       │
+        │       ├───Interfaces (Interfaces genéricas para resultados de operaciones y validadores)
+        │       │       IResult.cs
+        │       │       IValidator.cs
+        │       │
+        │       └───Validation (Componentes para el motor de validación general)
+        │               ValidationContext.cs
+        │               ValidationEngine.cs
+        │               ValidationResult.cs
+        │
+        ├───Infrastructure
+        │   ├───Conta360.Persistence (Capa de Persistencia: **Interfaces de Repositorios**, **Especificaciones**)
+        │   │   │ Conta360.Persistence.csproj
+        │   │   │
+        │   │   ├───Interfaces (Define los **contratos (interfaces) para los repositorios** de datos, utilizados por la capa de aplicación)
+        │   │   │       IAccountRepository.cs
+        │   │   │       IAccountingEntryRepository.cs
+        │   │   │       IAuditLogRepository.cs
+        │   │   │       IInvoiceRepository.cs
+        │   │   │       IPGCStructureRepository.cs
+        │   │   │       IRepository.cs (**Interfaz** base para repositorios genéricos)
+        │   │   │       IUnitOfWork.cs (**Interfaz** para la unidad de trabajo, orquesta transacciones)
+        │   │   │       IUserRepository.cs
+        │   │   │
+        │   │   └───Specifications (Clases que encapsulan la lógica de consulta para diferentes entidades)
+        │   │           AccountingEntryByPeriodSpecification.cs
+        │   │           BaseSpecification.cs
+        │   │           InvoiceByDateRangeSpecification.cs
+        │   │
+        │   ├───Conta360.Infrastructure.Postgres (Implementación concreta para PostgreSQL: **Contexto DB**, **Configuraciones de Entidades**, **Migraciones**, **Repositorios**)
+        │   │   │ Conta360.Infrastructure.Postgres.csproj
+        │   │   │
+        │   │   ├───Context (Contexto de base de datos para Entity Framework Core)
+        │   │   │   ├── AppDbContext.cs
+        │   │   │   └── Configurations (Clases para la configuración de mapeo de entidades a tablas en la base de datos)
+        │   │   │           AccountConfiguration.cs
+        │   │   │           AccountingEntryConfiguration.cs
+        │   │   │           AuditLogEntryConfiguration.cs
+        │   │   │           FinancialPeriodConfiguration.cs
+        │   │   │           InvoiceConfiguration.cs
+        │   │   │           InvoiceLineConfiguration.cs
+        │   │   │           PGCStructureConfiguration.cs
+        │   │   │           UserConfiguration.cs
+        │   │   │
+        │   │   ├───Migrations (Archivos generados por Entity Framework Core para la gestión de esquemas de base de datos)
+        │   │   │       20240529120000_InitialMigration.cs
+        │   │   │       AppDbContextModelSnapshot.cs
+        │   │   │
+        │   │   ├───Repositories (Implementaciones concretas de las **interfaces de repositorios** definidas en Conta360.Persistence)
+        │   │   │       AccountRepository.cs
+        │   │   │       AccountingEntryRepository.cs
+        │   │   │       AuditLogRepository.cs
+        │   │   │       BaseRepository.cs
+        │   │   │       InvoiceRepository.cs
+        │   │   │       PGCStructureRepository.cs
+        │   │   │       UnitOfWork.cs
+        │   │   │       UserRepository.cs
+        │   │   │
+        │   │   └───Seed (Clase para la inicialización de datos en la base de datos)
+        │   │           AppDbContextSeed.cs
+        │   │
+        │   ├───Conta360.Infrastructure.Sqlite (Implementación concreta para SQLite, similar a Postgres pero para otra base de datos)
+        │   │   │ Conta360.Infrastructure.Sqlite.csproj
+        │   │   │
+        │   │   ├───Context
+        │   │   │   ├── AppDbContext.cs
+        │   │   │   └── Configurations
+        │   │   │           AccountConfiguration.cs
+        │   │   │
+        │   │   └───Repositories (Implementaciones concretas para SQLite)
+        │   │           AccountRepository.cs
+        │   │
+        │   ├───Conta360.Infrastructure.Excel (Implementación de servicios relacionados con la importación y procesamiento de archivos Excel)
+        │   │   │ Conta360.Infrastructure.Excel.csproj
+        │   │   │
+        │   │   ├───DTOs (DTOs específicos para la importación desde Excel)
+        │   │   │       RawAccountingEntryDto.cs
+        │   │   │       RawInvoiceDto.cs
+        │   │   │
+        │   │   │ ExcelDataMapper.cs
+        │   │   │ ExcelFileValidator.cs
+        │   │   │ ExcelProcessor.cs (**Implementación** de IExcelProcessor de Application)
+        │   │
+        │   ├───Conta360.Infrastructure.PGC (Adaptador para la interacción con fuentes externas del Plan General Contable (PGC))
+        │   │   │ Conta360.Infrastructure.PGC.csproj
+        │   │   │
+        │   │   ├───Internal (Proyectos internos que conforman el adaptador PGC, posiblemente para extracción y procesamiento de datos del PGC)
+        │   │   │   ├───PGCExtractor.Core (Modelos de datos internos para el extractor PGC)
+        │   │   │   │   │ PGCExtractor.Core.csproj
+        │   │   │   │   │
+        │   │   │   │   └───Models
+        │   │   │   │           PgcXmlAccount.cs
+        │   │   │   │           PgcXmlGroup.cs
+        │   │   │   │           PgcXmlSubAccount.cs
+        │   │   │   │           PgcXmlSubgroup.cs
+        │   │   │   │
+        │   │   │   ├───PGCExtractor.Data (Servicios de extracción de datos del PGC, como lectura de XML o JSON)
+        │   │   │   │   │ PGCExtractor.Data.csproj
+        │   │   │   │   │
+        │   │   │   │   └───Services
+        │   │   │   │           PgcBoeXmlScraper.cs
+        │   │   │   │           PgcJsonLoader.cs
+        │   │   │   │           XmlValidator.cs
+        │   │   │   │
+        │   │   │   └───PGCExtractor.Logic (Lógica de negocio específica para el procesamiento y clasificación de datos del PGC)
+        │   │   │       │ PGCExtractor.Logic.csproj
+        │   │   │       │
+        │   │   │       └───Services
+        │   │   │               AccountClassifier.cs
+        │   │   │               PgcTaxonomyBuilder.cs
+        │   │   │
+        │   │   └───Services
+        │   │           PGCStructureService.cs (**Implementación** de IPGCStructureService de Application)
+        │   │
+        │   └───Conta360.Infrastructure.Reporting (Implementación de servicios para la generación de informes financieros y cálculo de KPIs)
+        │       │ Conta360.Infrastructure.Reporting.csproj
+        │       │
+        │       ├───Calculators (Clases para el cálculo de ratios financieros)
+        │       │       AcidTestCalculator.cs
+        │       │       CurrentLiquidityCalculator.cs
+        │       │       DebtRatioCalculator.cs
+        │       │       FinancialRatioCalculator.cs
+        │       │       RoACalculator.cs
+        │       │       RoECalculator.cs
+        │       │
+        │       ├───Reports (Generadores específicos para diferentes tipos de informes financieros)
+        │       │       BalanceSheetGenerator.cs
+        │       │       ChangesInEquityGenerator.cs
+        │       │       ProfitAndLossGenerator.cs
+        │       │       ReportDataAggregator.cs
+        │       │
+        │       └───Services
+        │               FinancialReportingService.cs (**Implementación** de IFinancialReportingService de Application)
+        │               KpiCalculationService.cs (**Implementación** de IKpiCalculationService de Application)
+        │
+        ├───Presentation
+        │   └───Conta360.Presentation.Api (Capa de Presentación: **Controladores API**, **DTOs de API**, **Filtros**, **Mappers**, **Servicios de autenticación**)
+        │       │ Conta360.Presentation.Api.csproj
+        │       │ appsettings.Development.json
+        │       │ appsettings.json
+        │       │ appsettings.Production.json
+        │       │ Dockerfile
+        │       │ Program.cs
+        │       │
+        │       ├───Controllers (Controladores ASP.NET Core que exponen los **casos de uso** de la capa de aplicación a través de endpoints HTTP)
+        │       │       AccountingEntriesController.cs
+        │       │       AuthController.cs
+        │       │       FinancialReportController.cs
+        │       │       ImportController.cs
+        │       │       InvoicesController.cs
+        │       │       KpiController.cs
+        │       │       PGCController.cs
+        │       │       UserController.cs
+        │       │
+        │       ├───DTOs (Modelos específicos para las solicitudes y respuestas de la API)
+        │       │       AccountingEntryApiResponse.cs
+        │       │       ApiFinancialReportRequest.cs
+        │       │       CreateAccountingEntryApiRequest.cs
+        │       │       CreateInvoiceApiRequest.cs
+        │       │       FinancialReportApiDto.cs
+        │       │       ImportRequest.cs
+        │       │       ImportResponse.cs
+        │       │       InvoiceApiResponse.cs
+        │       │       KpiRequest.cs
+        │       │       KpiResponse.cs
+        │       │       LoginRequest.cs
+        │       │       LoginResponse.cs
+        │       │       PGCStructureApiResponse.cs
+        │       │       RegisterUserRequest.cs
+        │       │
+        │       ├───Filters (Filtros de acción, autorización y validación que se aplican a las peticiones API)
+        │       │       ApiExceptionFilter.cs
+        │       │       AuthorizeAttribute.cs
+        │       │       ValidationFilter.cs
+        │       │
+        │       ├───Mappers (Mapeo entre DTOs de aplicación y DTOs de API)
+        │       │       ApiMappingProfile.cs
+        │       │
+        │       └───Services (Servicios específicos de la capa de presentación, como el manejo del usuario actual y la generación de tokens)
+        │               CurrentUserService.cs (**Implementación** de ICurrentUserService de Application)
+        │               TokenService.cs
+        │
+        └───Shared
+            └───Conta360.CrossCutting.IoC (Contenedor de Inversión de Control/Inyección de Dependencias)
+                │ Conta360.CrossCutting.IoC.csproj
+                │
+                └───DependencyInjection.cs (Métodos de extensión para configurar la **inyección de dependencias** en el sistema, conectando interfaces con sus implementaciones)
+
+
+
+C:.
+├── .devcontainer
+│   └── .vscode
+├── desktop-app
+│   └── Conta360.DesktopShell
+├── microfrontends
+│   └── root-config
+└── src
+    └── backend
+        ├── Core
+        │   ├── Conta360.Domain
+        │   │   └── Conta360.Domain.csproj
+        │   ├── Conta360.Application
+        │   │   └── Conta360.Application.csproj
+        │   └── Conta360.Core
+        │       └── Conta360.Core.csproj
+        ├── Infrastructure
+        │   ├── Conta360.Persistence
+        │   │   └── Conta360.Persistence.csproj
+        │   ├── Conta360.Infrastructure.Postgres
+        │   │   └── Conta360.Infrastructure.Postgres.csproj
+        │   ├── Conta360.Infrastructure.Sqlite
+        │   │   └── Conta360.Infrastructure.Sqlite.csproj
+        │   ├── Conta360.Infrastructure.Excel
+        │   │   └── Conta360.Infrastructure.Excel.csproj
+        │   ├── Conta360.Infrastructure.PGC
+        │   │   ├── Internal
+        │   │   │   ├── PGCExtractor.Core
+        │   │   │   │   └── PGCExtractor.Core.csproj
+        │   │   │   ├── PGCExtractor.Data
+        │   │   │   │   └── PGCExtractor.Data.csproj
+        │   │   │   └── PGCExtractor.Logic
+        │   │   │       └── PGCExtractor.Logic.csproj
+        │   │   └── Services
+        │   └── Conta360.Infrastructure.Reporting
+        │       ├── Conta360.Infrastructure.Reporting.csproj
+        │       ├── Calculators
+        │       ├── Reports
+        │       └── Services
+        ├── Presentation
+        │   └── Conta360.Presentation.Api
+        │       ├── Conta360.Presentation.Api.csproj
+        │       ├── Controllers
+        │       ├── DTOs
+        │       ├── Filters
+        │       ├── Mappers
+        │       └── Services
+        └── Shared
+            └── Conta360.CrossCutting.IoC
+                └── Conta360.CrossCutting.IoC.csproj
+
+
+1. Core
+
+    Conta360.Domain.csproj:
+        No debería referenciar a ningún otro .csproj. Es el núcleo del dominio y debe ser independiente de otras capas.
+
+    Conta360.Application.csproj:
+        Referencia a: Conta360.Domain.csproj (Necesita las entidades y lógica de negocio del dominio).
+        Referencia a: Conta360.Core.csproj (Para utilizar las clases comunes transversales a todo el sistema, como manejo de errores y resultados).
+
+    Conta360.Core.csproj:
+        No debería referenciar a ningún otro .csproj. Contiene componentes comunes y debe ser independiente.
+
+2. Infrastructure
+
+    Conta360.Persistence.csproj:
+        Referencia a: Conta360.Domain.csproj (Necesita las entidades del dominio para definir los repositorios).
+
+    Conta360.Infrastructure.Postgres.csproj:
+        Referencia a: Conta360.Persistence.csproj (Implementa las interfaces de los repositorios).
+        Referencia a: Conta360.Domain.csproj (Para poder mapear las entidades a la base de datos).
+
+    Conta360.Infrastructure.Sqlite.csproj:
+        Referencia a: Conta360.Persistence.csproj (Implementa las interfaces de los repositorios).
+        Referencia a: Conta360.Domain.csproj (Para poder mapear las entidades a la base de datos).
+
+    Conta360.Infrastructure.Excel.csproj:
+        Referencia a: Conta360.Application.csproj (Implementa la interfaz IExcelProcessor).
+        Referencia a: Conta360.Domain.csproj (Puede necesitar las entidades para mapear los datos del Excel).
+
+    Conta360.Infrastructure.PGC.csproj:
+        Referencia a: Conta360.Application.csproj (Implementa la interfaz IPGCStructureService).
+        Referencia a: PGCExtractor.Core.csproj, PGCExtractor.Data.csproj, PGCExtractor.Logic.csproj (Estos son proyectos internos que conforman el adaptador PGC).
+
+    Conta360.Infrastructure.Reporting.csproj:
+        Referencia a: Conta360.Application.csproj (Implementa las interfaces IFinancialReportingService y IKpiCalculationService).
+        Referencia a: Conta360.Domain.csproj (Necesita las entidades y sus datos para poder generar los informes).
+
+3. Presentation
+
+    Conta360.Presentation.Api.csproj:
+        Referencia a: Conta360.Application.csproj (Utiliza los casos de uso definidos en la capa de aplicación).
+        Referencia a: Conta360.Domain.csproj (Aunque idealmente debería interactuar solo con la capa de Application, puede necesitar las entidades para los DTOs de la API).
+
+4. Shared
+
+    Conta360.CrossCutting.IoC.csproj:
+        Referencia a: Todos los demás proyectos .csproj (Necesita conocer todos los servicios e implementaciones para poder configurar la inyección de dependencias).
+
+Resumen:
+
+    Las capas Core (Domain, Application, Core) son las más internas y menos dependientes.
+    La capa Infrastructure implementa las interfaces definidas en Application y depende de Domain para las entidades.
+    La capa Presentation depende principalmente de Application.
+    La capa Shared (IoC) es la más dependiente, ya que necesita conocer todas las demás capas.
