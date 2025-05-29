@@ -8,6 +8,11 @@ namespace Conta360.Core.Common
     {
         private readonly TValue? _value;
 
+        public static OperationResult<TValue> Failure(Error error)
+        {
+            return new OperationResult<TValue>(default, false, error);
+        }
+
         protected internal OperationResult(TValue? value, bool isSuccess, Error error)
             : base(isSuccess, error)
         {
