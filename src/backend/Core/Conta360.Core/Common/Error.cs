@@ -1,3 +1,5 @@
+using System;
+
 namespace Conta360.Core.Common
 {
     public class Error
@@ -7,13 +9,15 @@ namespace Conta360.Core.Common
 
         public Error(string code, string description)
         {
-            Code = code;
-            Description = description;
+            Code = code ?? throw new ArgumentNullException(nameof(code));
+            Description = description ?? throw new ArgumentNullException(nameof(description));
         }
 
-        public static readonly Error None = new Error(string.Empty, string.Empty);
-        public static readonly Error NullValue = new Error("Error.NullValue", "Null value was provided.");
-        public static readonly Error Validation = new Error("Error.Validation", "Validation failed.");
-        // Add more common errors
+        public static readonly Error None = new(string.Empty, string.Empty);
+        public static readonly Error NullValue = new("Error.NullValue", "Null value was provided.");
+        public static readonly Error Validation = new("Error.Validation", "Validation failed.");
+        // Puedes agregar más errores comunes aquí
+
+        public override string ToString() => $"{Code}: {Description}";
     }
 }

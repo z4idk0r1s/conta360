@@ -7,9 +7,4 @@ namespace Conta360.Domain.Entities
 
         // Add other properties as needed
     }
-
-    public abstract class BaseEntity
-    {
-        public Guid Id { get; set; }
-    }
 }

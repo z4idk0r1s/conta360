@@ -4,8 +4,7 @@
     <AssemblyName>Conta360.Domain</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    </ItemGroup>
+  </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" />
   </ItemGroup>
 </Project>
