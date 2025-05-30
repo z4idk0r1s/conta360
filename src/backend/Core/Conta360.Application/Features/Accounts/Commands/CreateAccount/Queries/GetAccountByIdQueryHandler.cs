@@ -22,7 +22,7 @@ namespace Conta360.Application.Features.Accounts.Queries.GetAccountById
             var account = await _accountRepository.GetByIdAsync(request.Id);
             if (account == null)
             {
-                return OperationResult<AccountDto>.Failure(new Error("Account.NotFound", "Account not found."));
+                return OperationResult.Failure<AccountDto>(new Error("Account.NotFound", "Account not found."));
             }
             var accountDto = _mapper.Map<AccountDto>(account);
             return OperationResult<AccountDto>.Success(accountDto);
