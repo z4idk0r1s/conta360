@@ -8,5 +8,5 @@
     <ProjectReference Include="../PGCExtractor.Data/PGCExtractor.Data.csproj" />
   </ItemGroup>
   <ItemGroup>
-    </ItemGroup>
+  </ItemGroup>
 </Project>
