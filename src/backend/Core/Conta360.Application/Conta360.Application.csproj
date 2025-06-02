@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Conta360.Application</RootNamespace>
+    <AssemblyName>Conta360.Application</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Conta360.Domain/Conta360.Domain.csproj" />
+    <ProjectReference Include="../Conta360.Core/Conta360.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="AutoMapper" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Conta360.Core</RootNamespace>
+    <AssemblyName>Conta360.Core</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
