@@ -3,7 +3,7 @@ using Conta360.Core.Common;
 using PGCExtractor.Logic.Services;
 using System.Text.Json;
 
-namespace Conta360.Infrastructure.PGC.Services
+namespace PGCExtractor.Core.Services
 {
     public class PGCStructureService : IPGCStructureService
     {
