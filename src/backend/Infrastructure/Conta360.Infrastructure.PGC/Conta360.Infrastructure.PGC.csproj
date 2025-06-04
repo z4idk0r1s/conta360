@@ -4,7 +4,6 @@
     <AssemblyName>Conta360.Infrastructure.PGC</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
     <ProjectReference Include="Internal/PGCExtractor.Core/PGCExtractor.Core.csproj" />
     <ProjectReference Include="Internal/PGCExtractor.Data/PGCExtractor.Data.csproj" />
     <ProjectReference Include="Internal/PGCExtractor.Logic/PGCExtractor.Logic.csproj" />
