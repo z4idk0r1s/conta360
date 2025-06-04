@@ -7,6 +7,19 @@
     <ProjectReference Include="../PGCExtractor.Core/PGCExtractor.Core.csproj" />
     <ProjectReference Include="../PGCExtractor.Data/PGCExtractor.Data.csproj" />
   </ItemGroup>
+    <ItemGroup>
+    <!-- 1) Para usar tipos de Domain (como PgcAccount) -->
+    <ProjectReference Include="../../../../Conta360.Domain/Conta360.Domain.csproj" />
+
+    <!-- 2) Para usar interfaces y OperationResult<> de Core -->
+    <ProjectReference Include="../../../../Conta360.Core/Conta360.Core.csproj" />
+
+    <!-- 3) Para usar ApplicationDbContext e IApplicationDbContext -->
+    <ProjectReference Include="../../../Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj" />
+
+    <!-- 4) Para usar implementaciones de PgcTaxonomyDownloader, PgcImporter (en Infrastructure.Services.PGCTaxonomy) -->
+    <ProjectReference Include="../../../../Conta360.Infrastructure/Conta360.Infrastructure.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
