@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Conta360.Domain.Entities;
+using Conta360.Domain.Entities; // Asumiendo que tus entidades están en este namespace
 
 namespace Conta360.Core.Interfaces
 {

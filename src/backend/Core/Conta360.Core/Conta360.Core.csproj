@@ -4,7 +4,8 @@
     <AssemblyName>Conta360.Core</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    </ItemGroup>
+  </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 </Project>
