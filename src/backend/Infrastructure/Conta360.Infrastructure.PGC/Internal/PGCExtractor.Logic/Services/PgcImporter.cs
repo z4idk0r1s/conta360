@@ -1,5 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Conta360.Application.Interfaces;
+using Conta360.Infrastructure.Internal;
 using Conta360.Core.Interfaces;
 
 namespace PGCExtractor.Logic.Services

@@ -1,7 +1,7 @@
 using MediatR;
 using Conta360.Core.Common;
 using Conta360.Application.DTOs;
-using Conta360.Persistence.Interfaces;
+using Conta360.Domain.Interfaces;
 using AutoMapper;
 
 namespace Conta360.Application.Features.Accounts.Queries.GetAccountById

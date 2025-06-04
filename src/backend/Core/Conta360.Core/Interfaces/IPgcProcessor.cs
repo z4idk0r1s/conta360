@@ -1,6 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Conta360.Core.Interfaces
 {
     /// <summary>
