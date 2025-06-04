@@ -8,9 +8,7 @@ using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Conta360.Domain.Entities;
-using Conta360.Core.Interfaces;
-using Conta360.Infrastructure.Persistence;
+
 
 namespace PGCExtractor.Logic.Services
 {

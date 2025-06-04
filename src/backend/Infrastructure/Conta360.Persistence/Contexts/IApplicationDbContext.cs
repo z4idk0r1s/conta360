@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities; // Asumiendo que tus entidades están en este namespace
 
-namespace Conta360.Core.Interfaces
+namespace Conta360.Persistence.Contexts
 {
     public interface IApplicationDbContext
     {

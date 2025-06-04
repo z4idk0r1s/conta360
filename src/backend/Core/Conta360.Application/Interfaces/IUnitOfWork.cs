@@ -1,4 +1,4 @@
-namespace Conta360.Persistence.Interfaces
+namespace Conta360.Application.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

@@ -1,4 +1,4 @@
-namespace Conta360.Infrastructure.PGC.Internal
+namespace PGCExtractor.Core.Models
 {
     public class PGCEntity
     {

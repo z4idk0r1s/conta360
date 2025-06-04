@@ -1,15 +1,17 @@
-using Conta360.Application.Interfaces;
-using Conta360.Core.Common;
+using Conta360.Application;
+using Conta360.Core.Interfaces;
 using PGCExtractor.Logic.Services;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
-namespace PGCExtractor.Core.Services
+
+namespace PGCExtractor.Logic.Services
 {
     public class PGCStructureService : IPGCStructureService
     {
-        private readonly PGCProcessor _pgcProcessor;
+        private readonly PgcProcessor _pgcProcessor;
 
-        public PGCStructureService(PGCProcessor pgcProcessor)
+        public PGCStructureService(PgcProcessor pgcProcessor)
         {
             _pgcProcessor = pgcProcessor;
         }
