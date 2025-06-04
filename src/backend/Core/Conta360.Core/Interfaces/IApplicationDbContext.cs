@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities;
 
-namespace Conta360.Persistence.Contexts
+namespace Conta360.Core.Interfaces
 {
     public interface IApplicationDbContext
     {
