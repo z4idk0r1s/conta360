@@ -26,7 +26,7 @@ namespace Conta360.Domain.Entities
         /// <summary>
         /// Código de la cuenta padre (por ejemplo, padre de "5701" es "570").
         /// </summary>
-        public string ParentCode { get; set; } = string.Empty;
+        public string? ParentCode { get; set; } = string.Empty;
 
         /// <summary>
         /// Indica si esta cuenta acumula saldos (true para cuentas y subcuentas, false para grupos/subgrupos).

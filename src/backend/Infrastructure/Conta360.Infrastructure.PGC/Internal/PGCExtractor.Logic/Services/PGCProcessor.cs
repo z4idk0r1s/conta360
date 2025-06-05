@@ -5,7 +5,6 @@ using Conta360.Persistence.Contexts;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-
 namespace PGCExtractor.Logic.Services
 {
     /// <inheritdoc />

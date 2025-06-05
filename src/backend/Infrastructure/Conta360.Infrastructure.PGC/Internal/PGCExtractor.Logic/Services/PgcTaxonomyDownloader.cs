@@ -1,13 +1,7 @@
-using System;
-using System.IO;
 using System.IO.Compression;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
-using Conta360.Infrastructure.Internal;
 using Conta360.Core.Interfaces;
 
 namespace PGCExtractor.Logic.Services
@@ -55,7 +49,7 @@ namespace PGCExtractor.Logic.Services
                     "[PGCTaxonomyDownloader] Descargando taxonomía desde {Url}",
                     _options.TaxonomyZipUrl);
 
-                using var sw = Stopwatch.StartNew();
+                var sw = Stopwatch.StartNew();
                 using var response = await _httpClient
                     .GetAsync(_options.TaxonomyZipUrl, cancellationToken);
                 response.EnsureSuccessStatusCode();
