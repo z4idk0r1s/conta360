@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.EntityFrameworkCore;
+using Conta360.Core.Interfaces;
+using Conta360.Domain.Entities;
+using Conta360.Persistence.Contexts;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

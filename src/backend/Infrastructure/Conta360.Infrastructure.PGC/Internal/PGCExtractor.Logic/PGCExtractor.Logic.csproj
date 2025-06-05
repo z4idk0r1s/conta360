@@ -6,13 +6,10 @@
   <ItemGroup>
     <ProjectReference Include="../PGCExtractor.Core/PGCExtractor.Core.csproj" />
     <ProjectReference Include="../PGCExtractor.Data/PGCExtractor.Data.csproj" />
-  <ItemGroup>
     <!-- 1) Entidades de dominio (p.ej. PgcAccount, Account, Transaction) -->
     <ProjectReference Include="../../../../Core/Conta360.Domain/Conta360.Domain.csproj" />
-
     <!-- 2) Core de la aplicación (OperationResult<>, IPgcImporter, IPGCStructureService, etc.) -->
     <ProjectReference Include="../../../../Core/Conta360.Core/Conta360.Core.csproj" />
-
     <!-- 3) DbContext e IApplicationDbContext concretos (SQLite) -->
     <ProjectReference Include="../../../Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj" />
   </ItemGroup>
