@@ -2,6 +2,7 @@
   <PropertyGroup>
     <RootNamespace>PGCExtractor.Logic</RootNamespace>
     <AssemblyName>PGCExtractor.Logic</AssemblyName>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../PGCExtractor.Core/PGCExtractor.Core.csproj" />

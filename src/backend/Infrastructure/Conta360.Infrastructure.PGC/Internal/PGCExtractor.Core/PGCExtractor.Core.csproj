@@ -2,6 +2,7 @@
   <PropertyGroup>
     <RootNamespace>PGCExtractor.Core</RootNamespace>
     <AssemblyName>PGCExtractor.Core</AssemblyName>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../../../Core/Conta360.Core/Conta360.Core.csproj" />
