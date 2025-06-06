@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <RootNamespace>Conta360.Persistence</RootNamespace>
-    <AssemblyName>Conta360.Persistence</AssemblyName>
+    <RootNamespace>Conta360.Infrastructure.Persistence</RootNamespace>
+    <AssemblyName>Conta360.Infrastructure.Persistence</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />

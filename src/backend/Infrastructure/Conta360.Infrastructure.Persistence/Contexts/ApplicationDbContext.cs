@@ -1,7 +1,7 @@
 using Conta360.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Conta360.Persistence.Contexts
+namespace Conta360.Infrastructure.Persistence.Contexts
 {
     /// <summary>
     /// Implementación de IApplicationDbContext usando SQLite.

@@ -3,7 +3,7 @@ using Conta360.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Conta360.Persistence.Contexts
+namespace Conta360.Infrastructure.Persistence.Contexts
 {
     public interface IApplicationDbContext
     {
