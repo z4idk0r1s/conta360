@@ -2,7 +2,7 @@ using HtmlAgilityPack;
 using System.Text.Json;
 using PGCExtractor.Core.Models;
 
-namespace PGCExtractor.Data.Services
+namespace Conta360.Infrastructure.PGC.Extraction
 {
     public class PGCDataExtractor
     {

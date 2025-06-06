@@ -4,13 +4,10 @@
     <AssemblyName>Conta360.Infrastructure.PGC</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="Internal/PGCExtractor.Core/PGCExtractor.Core.csproj" />
-    <ProjectReference Include="Internal/PGCExtractor.Data/PGCExtractor.Data.csproj" />
-    <ProjectReference Include="Internal/PGCExtractor.Logic/PGCExtractor.Logic.csproj" />
+    <ProjectReference Include="../../Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj" />
+    <ProjectReference Include="../Conta360.Persistence/Conta360.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 </Project>

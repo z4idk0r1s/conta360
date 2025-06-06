@@ -5,7 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Conta360.Persistence/Conta360.Persistence.csproj" />
-    <ProjectReference Include="../../Core/Conta360.Domain/Conta360.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />

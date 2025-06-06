@@ -11,7 +11,7 @@ using Conta360.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Conta360.Infrastructure.Sqlite;
 
-namespace PGCExtractor.Logic.Services
+namespace Conta360.Infrastructure.PGC.Processing
 {
     /// <inheritdoc />
     public class PgcProcessor : IPgcProcessor
