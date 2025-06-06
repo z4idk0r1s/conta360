@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Conta360.Core.Interfaces;
 using Conta360.Domain.Entities;

@@ -7,10 +7,15 @@ using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Serilog
+// 0) Configurar PgcExtractorOptions desde appsettings.json
+builder.Services.Configure<PgcExtractorOptions>(builder.Configuration.GetSection("Pgc"));
+
+// 1) Configurar Serilog
 builder.Host.UseSerilog((context, services, configuration) => configuration
     .ReadFrom.Configuration(context.Configuration)
     .ReadFrom.Services(services)
@@ -18,15 +23,16 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .WriteTo.Console()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day));
 
-// Add services to the container.
-builder.Services.AddControllers(); // For traditional controllers if needed
+// 2) Añadir servicios para controladores, Swagger y endpoints
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddConta360Infrastructure(builder.Configuration); // From CrossCutting.IoC
-builder.Services.AddConta360Application(); // From CrossCutting.IoC
+// 3) Registrar Application + Infrastructure
+builder.Services.AddConta360Infrastructure(builder.Configuration);
+builder.Services.AddConta360Application();
 
-// Add JWT Authentication
+// 4) Configurar JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -36,16 +42,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"], // Replace with actual config
-            ValidAudience = builder.Configuration["Jwt:Audience"], // Replace with actual config
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new ArgumentNullException("Jwt:Key is missing."))) // Replace with actual config
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    builder.Configuration["Jwt:Key"] 
+                    ?? throw new ArgumentNullException("Jwt:Key is missing.")
+                )
+            )
         };
     });
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 5) En el arranque, procesar la taxonomía PGC (si EnableStartupDownload == true)
+using (var scope = app.Services.CreateScope())
+{
+    var pgcProcessor = scope.ServiceProvider.GetRequiredService<IPgcProcessor>();
+    await pgcProcessor.SystemProcessAsync(CancellationToken.None);
+}
+
+// 6) Configurar pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -53,18 +71,24 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication(); // Must be before Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers(); // For traditional controllers
+app.MapControllers(); // Para controladores tradicionales (si hay)
 
-// Minimal API Endpoints
+
+// 7) Minimal API Endpoints para Cuentas (opcional, puedes moverlos a un Controller si prefieres)
 app.MapPost("/api/accounts", async (CreateAccountRequest request, IMediator mediator) =>
 {
-    var command = new CreateAccountCommand { Name = request.Name, InitialBalance = request.InitialBalance };
+    var command = new CreateAccountCommand 
+    { 
+        Name = request.Name, 
+        InitialBalance = request.InitialBalance 
+    };
     var result = await mediator.Send(command);
-    return result.IsSuccess ? Results.Created($"/api/accounts/{result.Value}", result.Value) : Results.BadRequest(result.Error);
+    return result.IsSuccess 
+        ? Results.Created($"/api/accounts/{result.Value}", result.Value) 
+        : Results.BadRequest(result.Error);
 })
 .WithName("CreateAccount")
 .Produces<Guid>(StatusCodes.Status201Created)
@@ -74,7 +98,9 @@ app.MapGet("/api/accounts/{id}", async (Guid id, IMediator mediator) =>
 {
     var query = new GetAccountByIdQuery { Id = id };
     var result = await mediator.Send(query);
-    return result.IsSuccess ? Results.Ok(result.Value) : Results.NotFound(result.Error);
+    return result.IsSuccess 
+        ? Results.Ok(result.Value) 
+        : Results.NotFound(result.Error);
 })
 .WithName("GetAccountById")
 .Produces<Conta360.Application.DTOs.AccountDto>(StatusCodes.Status200OK)

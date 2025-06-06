@@ -22,11 +22,6 @@ namespace PGCExtractor.Logic.Services
         public string ExtractDirectory { get; set; } = "./Data/PGC";
 
         /// <summary>
-        /// Tiempo en milisegundos que considera válido un ZIP local antes de volver a descargar.
-        /// </summary>
-        public int CacheDurationMs { get; set; } = 24 * 60 * 60 * 1000;
-
-        /// <summary>
         /// Si es true, al arrancar la aplicación descargará y procesará la taxonomía automáticamente.
         /// </summary>
         public bool EnableStartupDownload { get; set; } = true;

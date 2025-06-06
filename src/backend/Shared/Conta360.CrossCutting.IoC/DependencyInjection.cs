@@ -1,13 +1,12 @@
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
+using Conta360.Core.Common;
+using Conta360.Core.Interfaces;
 using Conta360.Infrastructure.Excel.Services;
 using Conta360.Infrastructure.PGC.Services;
-using Conta360.Infrastructure.Postgres.Contexts;
-using Conta360.Infrastructure.Postgres.Repositories;
+using Conta360.Infrastructure.Sqlite.Contexts;
 using Conta360.Infrastructure.Reporting.Services;
-using Conta360.Infrastructure.Postgres; // For UnitOfWork
-using Conta360.Persistence.Contexts;
 using Conta360.Persistence.Interfaces;
 using FluentValidation;
 using MediatR;
@@ -15,8 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Conta360.Core.Interfaces; // For IDateTimeProvider, ICurrentUserService
-using Conta360.Core.Common; // For Guard, Error, OperationResult (though not services for DI)
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -24,58 +21,67 @@ namespace Conta360.CrossCutting.IoC
     {
         public static IServiceCollection AddConta360Application(this IServiceCollection services)
         {
-            // MediatR Configuration
-            services.AddMediatR(cfg => {
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()); // This assembly (IoC)
-                cfg.RegisterServicesFromAssembly(typeof(MappingProfile).Assembly); // Application assembly
-
+            // 1) MediatR Configuration
+            services.AddMediatR(cfg =>
+            {
+                // Registra handlers y comportamientos en el ensamblado de Application
+                cfg.RegisterServicesFromAssembly(typeof(MappingProfile).Assembly);
+                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
 
-            // AutoMapper Configuration
-            services.AddAutoMapper(Assembly.GetExecutingAssembly()); // This assembly
-            services.AddAutoMapper(typeof(MappingProfile).Assembly); // Application assembly
+            // 2) AutoMapper Configuration
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            // FluentValidation Configuration
-            services.AddValidatorsFromAssembly(typeof(MappingProfile).Assembly); // Scans Application assembly for validators
+            // 3) FluentValidation Configuration
+            services.AddValidatorsFromAssembly(typeof(MappingProfile).Assembly);
 
             return services;
         }
 
         public static IServiceCollection AddConta360Infrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            // Persistence
-            services.AddScoped<IApplicationDbContext, PostgresDbContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped(typeof(IRepository<>), typeof(AccountRepository)); // Generic repository, placeholder for all
-                                                                               // In a real app, you would have specific implementations for each IRepository<T> if needed
+            // 1) Configurar opciones de PGC (IOptions<PgcExtractorOptions>)
+            services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
 
-            // Add EF Core DbContext for Postgres
-            services.AddDbContext<PostgresDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("PostgresConnection"),
-                    b => b.MigrationsAssembly(typeof(PostgresDbContext).Assembly.FullName)));
-
-            // Add EF Core DbContext for Sqlite (if used for testing/local, conditional setup might be better)
-            services.AddDbContext<Conta360.Infrastructure.Sqlite.Contexts.SqliteDbContext>(options =>
+            // 2) Registrar DbContext SQLite como IApplicationDbContext
+            //    (deja esto preparado para cambiar fácilmente a Postgres en el futuro)
+            services.AddDbContext<SqliteDbContext>(options =>
                 options.UseSqlite(configuration.GetConnectionString("SqliteConnection"),
-                    b => b.MigrationsAssembly(typeof(Conta360.Infrastructure.Sqlite.Contexts.SqliteDbContext).Assembly.FullName)));
+                    b => b.MigrationsAssembly(typeof(SqliteDbContext).Assembly.FullName)));
+            services.AddScoped<IApplicationDbContext, SqliteDbContext>();
 
+            //    --- Si en el futuro se desea cambiar a Postgres,
+            //    reemplazar lo anterior por:
+            //    services.AddDbContext<PostgresDbContext>(options =>
+            //        options.UseNpgsql(configuration.GetConnectionString("PostgresConnection"),
+            //            b => b.MigrationsAssembly(typeof(PostgresDbContext).Assembly.FullName)));
+            //    services.AddScoped<IApplicationDbContext, PostgresDbContext>();
 
-            // Infrastructure Services
+            // 3) Repositorios y UnitOfWork (Postgres o SQLite, según contexto)
+            //    (suponiendo que IAccountRepository y UnitOfWork estén adaptados a IApplicationDbContext)
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //    En caso de tener repositorios genéricos:
+            //    services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+            // 4) Servicios de Infraestructura (no relacionados con PGC)
             services.AddScoped<IExcelProcessor, ExcelProcessor>();
             services.AddScoped<IPGCStructureService, PGCStructureService>();
             services.AddScoped<IFinancialReportingService, FinancialReportingService>();
             services.AddScoped<IKpiCalculationService, KpiCalculationService>();
 
-            // Internal PGC Extractor Services
-            services.AddScoped<PGCExtractor.Data.Services.PGCDataExtractor>();
-            services.AddScoped<PGCExtractor.Logic.Services.PGCProcessor>();
+            // 5) PGC Extractor: downloader + processor
+            //    * IPgcTaxonomyDownloader  → PgcTaxonomyDownloader (HttpClient configurado)
+            services.AddHttpClient<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>(client =>
+            {
+                client.Timeout = TimeSpan.FromMinutes(2);
+            });
 
-            // Core Services (if they have concrete implementations and are not just interfaces/statics)
-            // For example, if ICurrentUserService has a concrete implementation:
-            // services.AddScoped<ICurrentUserService, CurrentUserService>(); // Assuming CurrentUserService is in API or Infrastructure
+            //    * IPgcProcessor → PgcProcessor
+            services.AddScoped<IPgcProcessor, PgcProcessor>();
 
             return services;
         }
