@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities;
-using Conta360.Persistence.Interfaces;
+using Conta360.Domain.Interfaces;
 using Conta360.Persistence.Contexts;
 using System.Linq.Expressions;
 
@@ -38,6 +38,21 @@ namespace Conta360.Infrastructure.Sqlite.Repositories
         public async Task<bool> ExistsAsync(Expression<Func<Account, bool>> predicate)
         {
             return await _context.Accounts.AnyAsync(predicate);
+        }
+
+        public Task<IReadOnlyList<Account>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IReadOnlyList<Account>> GetAsync(Expression<Func<Account, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> CountAsync(Expression<Func<Account, bool>> predicate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

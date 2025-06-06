@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Conta360.Domain.Entities;
 
-namespace Conta360.Persistence.Interfaces
+namespace Conta360.Domain.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : BaseEntity
     {

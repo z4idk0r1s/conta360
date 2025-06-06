@@ -1,5 +1,5 @@
-using Conta360.Persistence.Interfaces;
 using Conta360.Persistence.Contexts;
+using Conta360.Application.Interfaces;
 
 namespace Conta360.Infrastructure.Sqlite
 {

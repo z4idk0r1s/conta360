@@ -1,6 +1,6 @@
-using PGCExtractor.Core.Models;
 using HtmlAgilityPack;
 using System.Text.Json;
+using PGCExtractor.Core.Models;
 
 namespace PGCExtractor.Data.Services
 {

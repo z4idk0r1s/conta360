@@ -1,7 +1,8 @@
 using MediatR;
 using Conta360.Core.Common;
 using Conta360.Domain.Entities;
-using Conta360.Persistence.Interfaces;
+using Conta360.Domain.Interfaces;
+using Conta360.Application.Interfaces;
 using AutoMapper;
 
 namespace Conta360.Application.Features.Accounts.Commands.CreateAccount
