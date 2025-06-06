@@ -7,6 +7,9 @@ using Conta360.Domain.Entities;
 using Conta360.Persistence.Contexts;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Conta360.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Conta360.Infrastructure.Sqlite;
 
 namespace PGCExtractor.Logic.Services
 {
@@ -16,13 +19,13 @@ namespace PGCExtractor.Logic.Services
         private readonly IPgcTaxonomyDownloader _downloader;
         private readonly ILogger<PgcProcessor> _logger;
         private readonly PgcExtractorOptions _options;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IApplicationDbContext _dbContext;
 
         public PgcProcessor(
             IPgcTaxonomyDownloader downloader,
             IOptions<PgcExtractorOptions> options,
             ILogger<PgcProcessor> logger,
-            ApplicationDbContext dbContext)
+            IApplicationDbContext dbContext)
         {
             _downloader = downloader;
             _options = options.Value;

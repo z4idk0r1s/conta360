@@ -1,47 +1,52 @@
-using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities;
-using Conta360.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Conta360.Persistence.Contexts
 {
-      /// <summary>
-      /// Implementación concreta del DbContext que persiste entidades de dominio
-      /// en SQLite (o cualquier otro proveedor EF Core).
-      /// </summary>
-      public class ApplicationDbContext : DbContext, IApplicationDbContext
-      {
-            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-                : base(options)
-            {
-            }
+    /// <summary>
+    /// Implementación de IApplicationDbContext usando SQLite.
+    /// </summary>
+    public class SqliteDbContext : DbContext, IApplicationDbContext
+    {
+        public SqliteDbContext(DbContextOptions<SqliteDbContext> options)
+            : base(options)
+        {
+        }
 
-            /// <inheritdoc/>
-            public DbSet<Account> Accounts { get; set; }
+        // Estos miembros deben existir para cumplir IApplicationDbContext:
+        public DbSet<PgcAccount> PgcAccounts { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
-            /// <inheritdoc/>
-            public DbSet<Transaction> Transactions { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-            public DbSet<PgcAccount> PgcAccounts { get; set; }
+            // Índice único para el código PGC
+            modelBuilder.Entity<PgcAccount>()
+                .HasIndex(a => a.Code)
+                .IsUnique();
 
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
-            {
-                  base.OnModelCreating(modelBuilder);
+            // Relación padre‐hijo en PgcAccount
+            modelBuilder.Entity<PgcAccount>()
+                .HasMany(a => a.Children)
+                .WithOne(a => a.Parent)
+                .HasForeignKey(a => a.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-                  modelBuilder.Entity<PgcAccount>()
-                        .HasIndex(a => a.Code)
-                        .IsUnique();
+            // Relación Transaction → PgcAccount
+            modelBuilder.Entity<Transaction>()
+                .HasOne(t => t.PgcAccount)
+                .WithMany()
+                .HasForeignKey(t => t.PgcAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-                  modelBuilder.Entity<PgcAccount>()
-                        .HasMany(a => a.Children)
-                        .WithOne(a => a.Parent)
-                        .HasForeignKey(a => a.ParentId)
-                        .OnDelete(DeleteBehavior.Restrict);
+            // (Opcional) Configuraciones adicionales para Account, Transaction….
+        }
 
-                  modelBuilder.Entity<Transaction>()
-                        .HasOne(t => t.PgcAccount)
-                        .WithMany()
-                        .HasForeignKey(t => t.PgcAccountId)
-                        .OnDelete(DeleteBehavior.Cascade);
-            }
-      }
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return base.SaveChangesAsync(cancellationToken);
+        }
+    }
 }

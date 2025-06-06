@@ -11,8 +11,6 @@ namespace Conta360.Domain.Entities
     /// </summary>
     public class PgcAccount : BaseEntity
     {   
-        [Key]
-        public int Id { get; set; }
         /// <summary>
         /// Código completo de la cuenta (por ejemplo, "5701", "476.01", etc.).
         /// </summary>

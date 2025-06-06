@@ -10,12 +10,9 @@ namespace Conta360.Domain.Entities
         
         public int AccountId { get; set; }
 
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
@@ -24,7 +21,7 @@ namespace Conta360.Domain.Entities
         public int PgcAccountId { get; set; }
 
         [ForeignKey("PgcAccountId")]
-        public PgcAccount PgcAccount { get; set; }
+        public PgcAccount? PgcAccount { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
