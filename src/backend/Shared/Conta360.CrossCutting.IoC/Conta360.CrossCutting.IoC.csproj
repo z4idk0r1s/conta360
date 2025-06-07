@@ -7,7 +7,7 @@
     <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
     <ProjectReference Include="../../Core/Conta360.Domain/Conta360.Domain.csproj" />
     <ProjectReference Include="../../Core/Conta360.Core/Conta360.Core.csproj" />
-    <ProjectReference Include="../../Infrastructure/Conta360.Persistence/Conta360.Persistence.csproj" />
+    <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.Persistence/Conta360.Infrastructure.Persistence.csproj" />
     <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj" />
     <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj" />
     <ProjectReference Include="../../Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj" />

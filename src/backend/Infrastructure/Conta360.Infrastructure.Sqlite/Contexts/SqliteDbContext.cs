@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities;
-using Conta360.Persistence.Contexts;
+using Conta360.Infrastructure.Persistence.Contexts;
 
 namespace Conta360.Infrastructure.Sqlite.Contexts
 {

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities;
-using Conta360.Persistence.Interfaces;
-using Conta360.Persistence.Contexts;
+using Conta360.Infrastructure.Persistence.Contexts;
 using System.Linq.Expressions;
+using Conta360.Domain.Interfaces;
 
 namespace Conta360.Infrastructure.Postgres.Repositories
 {

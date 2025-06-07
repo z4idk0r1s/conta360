@@ -8,7 +8,7 @@ using Conta360.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace PGCExtractor.Logic.Services
+namespace Conta360.Infrastructure.PGC.Processing
 {
     public class PgcTaxonomyDownloader : IPgcTaxonomyDownloader
     {

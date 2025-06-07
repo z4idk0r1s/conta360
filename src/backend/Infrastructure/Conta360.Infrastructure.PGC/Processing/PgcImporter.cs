@@ -1,6 +1,6 @@
 using Conta360.Core.Interfaces;
 
-namespace PGCExtractor.Logic.Services
+namespace Conta360.Infrastructure.PGC.Processing
 {
     /// <inheritdoc />
     public class PgcImporter : IPgcImporter

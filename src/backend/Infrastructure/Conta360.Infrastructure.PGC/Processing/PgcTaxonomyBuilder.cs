@@ -1,12 +1,11 @@
 using Conta360.Application;
 using Conta360.Core.Interfaces;
-using PGCExtractor.Logic.Services;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Conta360.Application.Interfaces;
 using Conta360.Core.Common;
 
-namespace PGCExtractor.Logic.Services
+namespace Conta360.Infrastructure.PGC.Processing
 {
     public class PgcTaxonomyBuilder : IPGCStructureService
     {

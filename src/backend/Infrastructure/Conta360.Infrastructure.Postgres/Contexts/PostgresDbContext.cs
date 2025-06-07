@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities;
-using Conta360.Persistence.Contexts;
+using Conta360.Infrastructure.Persistence.Contexts;
 
 namespace Conta360.Infrastructure.Postgres.Contexts
 {
@@ -10,6 +10,7 @@ namespace Conta360.Infrastructure.Postgres.Contexts
 
         public DbSet<Account> Accounts { get; set; } = null!;
         public DbSet<Transaction> Transactions { get; set; } = null!;
+        public DbSet<PgcAccount> PgcAccounts { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
