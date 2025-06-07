@@ -1,4 +1,5 @@
 using Conta360.Infrastructure.Persistence.Contexts;
+using Conta360.Application.Interfaces;
 
 namespace Conta360.Infrastructure.Postgres
 {

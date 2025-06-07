@@ -10,6 +10,7 @@ namespace Conta360.Infrastructure.Postgres.Contexts
 
         public DbSet<Account> Accounts { get; set; } = null!;
         public DbSet<Transaction> Transactions { get; set; } = null!;
+        public DbSet<PgcAccount> PgcAccounts { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
