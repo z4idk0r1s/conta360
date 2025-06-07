@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Conta360.Core.Interfaces;
 using Conta360.Domain.Entities;
-using Conta360.Infrastructure.Persistence.Contexts;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using Conta360.Infrastructure.Sqlite;
+using Conta360.Application.Interfaces;
 
 namespace Conta360.Infrastructure.PGC.Processing
 {

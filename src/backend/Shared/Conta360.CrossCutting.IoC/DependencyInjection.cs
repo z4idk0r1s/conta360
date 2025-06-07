@@ -1,18 +1,15 @@
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
-using Conta360.Core.Common;
 using Conta360.Core.Interfaces;
 using Conta360.Infrastructure.Excel.Services;
-using Conta360.Infrastructure.PGC;
 using Conta360.Infrastructure.Sqlite.Contexts;
 using Conta360.Infrastructure.Reporting.Services;
-using FluentValidation;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Conta360.Infrastructure.PGC.Processing;
+using Conta360.Infrastructure.Postgres;
+using Conta360.Infrastructure.Postgres.Repositories;
+using Conta360.Domain.Interfaces;
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -69,7 +66,6 @@ namespace Conta360.CrossCutting.IoC
             // 4) Servicios de Infraestructura (no relacionados con PGC)
             services.AddScoped<IExcelProcessor, ExcelProcessor>();
             services.AddScoped<IPGCStructureService, PGCStructureService>();
-            services.AddScoped<IFinancialReportingService, FinancialReportingService>();
             services.AddScoped<IKpiCalculationService, KpiCalculationService>();
 
             // 5) PGC Extractor: downloader + processor
