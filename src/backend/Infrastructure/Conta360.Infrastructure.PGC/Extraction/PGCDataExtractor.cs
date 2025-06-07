@@ -1,6 +1,6 @@
-using HtmlAgilityPack;
 using System.Text.Json;
-using PGCExtractor.Core.Models;
+using Conta360.Infrastructure.PGC.Domain.Models;
+using System.Xml;
 
 namespace Conta360.Infrastructure.PGC.Extraction
 {
@@ -9,8 +9,8 @@ namespace Conta360.Infrastructure.PGC.Extraction
         public async Task<IEnumerable<PGCEntity>> ExtractFromHtmlAsync(string htmlContent)
         {
             // Placeholder: Simulate HTML parsing with HtmlAgilityPack
-            var doc = new HtmlDocument();
-            doc.LoadHtml(htmlContent);
+            var doc = new XmlDocument();
+            doc.LoadXml(htmlContent);
 
             var entities = new List<PGCEntity>();
             // Example: find elements and map to PGCEntity
