@@ -67,6 +67,7 @@ namespace Conta360.CrossCutting.IoC
             // 4) Servicios de Infraestructura (no relacionados con PGC)
             services.AddScoped<IExcelProcessor, ExcelProcessor>();
             services.AddScoped<IPGCStructureService, PGCStructureService>();
+            services.AddScoped<IFinancialReportingService, FinancialReportingService>();
             services.AddScoped<IKpiCalculationService, KpiCalculationService>();
 
             // 5) PGC Extractor: downloader + processor
