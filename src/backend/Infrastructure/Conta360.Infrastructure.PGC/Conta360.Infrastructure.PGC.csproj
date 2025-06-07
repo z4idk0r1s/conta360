@@ -4,8 +4,6 @@
     <AssemblyName>Conta360.Infrastructure.PGC</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj" />
-    <ProjectReference Include="../Conta360.Infrastructure.Persistence/Conta360.Infrastructure.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />

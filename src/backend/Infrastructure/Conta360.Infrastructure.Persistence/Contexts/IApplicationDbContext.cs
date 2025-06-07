@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using Conta360.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
+using System.Collections.Generic;
 
 namespace Conta360.Infrastructure.Persistence.Contexts
 {

@@ -4,7 +4,6 @@
     <AssemblyName>Conta360.Infrastructure.Reporting</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../Conta360.Infrastructure.Persistence/Conta360.Infrastructure.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
