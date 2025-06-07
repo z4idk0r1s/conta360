@@ -7,7 +7,6 @@ using Conta360.Infrastructure.Excel.Services;
 using Conta360.Infrastructure.PGC;
 using Conta360.Infrastructure.Sqlite.Contexts;
 using Conta360.Infrastructure.Reporting.Services;
-using Conta360.Infrastructure.Persistence;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

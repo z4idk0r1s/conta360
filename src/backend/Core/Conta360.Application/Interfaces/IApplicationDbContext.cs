@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Collections.Generic;
 
-namespace Conta360.Infrastructure.Persistence.Contexts
+namespace Conta360.Application.Interfaces
 {
     public interface IApplicationDbContext
     {

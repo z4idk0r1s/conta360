@@ -1,20 +1,53 @@
-using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities;
-using Conta360.Infrastructure.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Conta360.Application.Interfaces;
 
 namespace Conta360.Infrastructure.Sqlite.Contexts
 {
-    public class SqliteDbContext : DbContext
+    /// <summary>
+    /// Implementación de IApplicationDbContext usando SQLite.
+    /// </summary>
+    public class SqliteDbContext : DbContext, IApplicationDbContext
     {
-        public SqliteDbContext(DbContextOptions<SqliteDbContext> options) : base(options) { }
-
-        DbSet<PgcAccount> PgcAccounts { get; set; }
-        DbSet<Transaction> Transactions { get; set; }
-        DbSet<Account> Accounts { get; set; }
-
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public SqliteDbContext(DbContextOptions<SqliteDbContext> options)
+            : base(options)
         {
-            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        // Estos miembros deben existir para cumplir IApplicationDbContext:
+        public DbSet<PgcAccount> PgcAccounts { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Índice único para el código PGC
+            modelBuilder.Entity<PgcAccount>()
+                .HasIndex(a => a.Code)
+                .IsUnique();
+
+            // Relación padre‐hijo en PgcAccount
+            modelBuilder.Entity<PgcAccount>()
+                .HasMany(a => a.Children)
+                .WithOne(a => a.Parent)
+                .HasForeignKey(a => a.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Transaction → PgcAccount
+            modelBuilder.Entity<Transaction>()
+                .HasOne(t => t.PgcAccount)
+                .WithMany()
+                .HasForeignKey(t => t.PgcAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // (Opcional) Configuraciones adicionales para Account, Transaction….
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }
