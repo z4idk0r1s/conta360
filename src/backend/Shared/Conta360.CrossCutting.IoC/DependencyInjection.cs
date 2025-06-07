@@ -10,6 +10,7 @@ using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Infrastructure.Postgres;
 using Conta360.Infrastructure.Postgres.Repositories;
 using Conta360.Domain.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Conta360.CrossCutting.IoC
 {
