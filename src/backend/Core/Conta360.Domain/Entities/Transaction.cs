@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Conta360.Domain.Entities
 {
-    public class Transaction : BaseEntity
+    public class Transact : BaseEntity
     {
         public Account? Account { get; set; }
         

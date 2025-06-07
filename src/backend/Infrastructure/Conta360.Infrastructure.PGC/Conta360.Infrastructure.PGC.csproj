@@ -4,6 +4,7 @@
     <AssemblyName>Conta360.Infrastructure.PGC</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
