@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Conta360.Presentation.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

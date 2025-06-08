@@ -4,6 +4,7 @@ using Conta360.Infrastructure.PGC.Processing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System.Net.Http;
 
 namespace Conta360.Infrastructure.PGC.Services
 {

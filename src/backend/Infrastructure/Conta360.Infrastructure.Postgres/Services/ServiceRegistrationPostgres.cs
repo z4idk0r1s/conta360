@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Net.Http;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 
 namespace Conta360.Infrastructure.Postgres.Services
@@ -13,7 +15,7 @@ namespace Conta360.Infrastructure.Postgres.Services
         public static IServiceCollection AddPostgresInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<PostgresDbContext>(options =>
-                options.UsePostgres(configuration.GetConnectionString("PostgresConnection"),
+                options.UseNpgsql(configuration.GetConnectionString("PostgresConnection"),
                     b => b.MigrationsAssembly(typeof(PostgresDbContext).Assembly.FullName)));
 
             services.AddScoped<IApplicationDbContext, PostgresDbContext>();
