@@ -1,14 +1,14 @@
+using Conta360.Core.Interfaces;
+using Conta360.Domain.Interfaces;
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
-using Conta360.Core.Interfaces;
 using Conta360.Infrastructure.Excel.Services;
 using Conta360.Infrastructure.Sqlite.Contexts;
 using Conta360.Infrastructure.Reporting.Services;
 using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Infrastructure.Postgres;
 using Conta360.Infrastructure.Postgres.Repositories;
-using Conta360.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MediatR;
