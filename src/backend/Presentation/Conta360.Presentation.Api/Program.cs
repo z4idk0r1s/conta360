@@ -10,6 +10,8 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Conta360.Presentation.Api.Models;
+using Conta360.Infrastructure.PGC.Processing;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

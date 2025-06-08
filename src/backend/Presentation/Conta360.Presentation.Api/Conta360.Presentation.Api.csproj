@@ -10,6 +10,7 @@
     <ProjectReference Include="../../Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Serilog.AspNetCore" />
