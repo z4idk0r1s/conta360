@@ -7,7 +7,6 @@ using Microsoft.Extensions.Options;
 using System.Net.Http;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 
-
 namespace Conta360.Infrastructure.Postgres.Services
 {
     public static class ServiceRegistrationPostgres
