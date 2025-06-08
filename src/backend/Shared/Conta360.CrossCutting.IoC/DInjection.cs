@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Conta360.CrossCutting.IoC
 {
-    public static class DependencyInjection
+    public static class DInjection
     {
         public static IServiceCollection AddConta360Application(this IServiceCollection services)
         {
