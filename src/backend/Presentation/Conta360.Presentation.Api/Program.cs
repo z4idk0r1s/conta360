@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Conta360.Presentation.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
