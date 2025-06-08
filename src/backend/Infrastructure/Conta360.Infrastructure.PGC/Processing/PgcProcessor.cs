@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Conta360.Application.Interfaces;
+using Conta360.Core.Common;
 
 namespace Conta360.Infrastructure.PGC.Processing
 {

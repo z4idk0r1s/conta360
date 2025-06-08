@@ -1,4 +1,4 @@
-namespace Conta360.Infrastructure.PGC.Processing
+namespace Conta360.Core.Common
 {
     /// <summary>
     /// Opciones configurables para descargar y procesar la taxonomía PGC.

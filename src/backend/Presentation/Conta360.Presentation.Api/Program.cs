@@ -13,6 +13,7 @@ using Conta360.Presentation.Api.Models;
 using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Application.Interfaces;
 using Conta360.Core.Interfaces;
+using Conta360.Core.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,5 @@
 using Conta360.Core.Interfaces;
+using Conta360.Core.Common;
 
 namespace Conta360.Infrastructure.PGC.Processing
 {

@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Conta360.Infrastructure.PGC.Domain.Models;
 using System.Xml;
+using Conta360.Core.Common;
 
 namespace Conta360.Infrastructure.PGC.Extraction
 {

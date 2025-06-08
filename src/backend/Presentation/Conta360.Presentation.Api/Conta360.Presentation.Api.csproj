@@ -8,6 +8,8 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj" />
+    <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
+    <ProjectReference Include="../../Core/Conta360.Core/Conta360.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" />
