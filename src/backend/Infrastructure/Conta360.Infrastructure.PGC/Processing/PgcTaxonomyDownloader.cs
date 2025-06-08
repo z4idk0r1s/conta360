@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Conta360.Core.Interfaces;
+using Conta360.Application.Common;
+using Conta360.Core.Common;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

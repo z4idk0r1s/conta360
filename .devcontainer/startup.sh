@@ -33,13 +33,11 @@ for proj in "${csproj_files[@]}"; do
     dotnet build "$proj" --configuration Debug
 done
 
-echo "✅ Compilación de proyectos .NET completada."
+echo "✅ Compilación de proyectos .NET completada <<<<<<<<<<<<<<<<<"
 
 # 4. Instalar dependencias npm
 MICROFRONTEND_DIRS=(
     "src/microfrontends/root-config"
-    "src/microfrontends/dashboard-app"
-    "src/microfrontends/analisis-app"
 )
 
 echo "📦 Instalando dependencias npm..."
@@ -58,7 +56,7 @@ done
 # 5. Ejecutar pruebas
 echo "🧪 Ejecutando pruebas..."
 
-API_PROJECT="src/backend/Conta360.Services.Api/Conta360.Services.Api.csproj"
+API_PROJECT="src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
 if [ -f "$API_PROJECT" ]; then
     echo "🧪 dotnet test: $API_PROJECT"
     dotnet test "$API_PROJECT" || echo "⚠️ Pruebas de backend fallaron."
@@ -80,7 +78,7 @@ for dir in "${MICROFRONTEND_DIRS[@]}"; do
 done
 
 # 6. Detener instancias previas
-pkill -f "dotnet run --project .*Conta360.Services.Api.csproj" 2>/dev/null \
+pkill -f "dotnet run --project .*Conta360.Presentation.Api.csproj" 2>/dev/null \
   && echo "🛑 Backend detenido" || echo "ℹ️ No había backend corriendo"
 
 pkill -f "npm run dev.*root-config" 2>/dev/null \

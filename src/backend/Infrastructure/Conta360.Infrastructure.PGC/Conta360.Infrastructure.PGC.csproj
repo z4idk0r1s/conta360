@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
+    <ProjectReference Include="../../Core/Conta360.Core/Conta360.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />

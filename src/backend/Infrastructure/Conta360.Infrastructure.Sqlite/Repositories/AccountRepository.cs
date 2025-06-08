@@ -1,6 +1,6 @@
+using Conta360.Application.Interfaces;
 using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
-using Conta360.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
