@@ -11,7 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Conta360.Presentation.Api.Models;
 using Conta360.Infrastructure.PGC.Processing;
-
+using Conta360.Application.Interfaces;
+using Conta360.Core.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
