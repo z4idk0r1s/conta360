@@ -1,9 +1,6 @@
 using Conta360.Application.Interfaces;
 using Conta360.Infrastructure.Sqlite.Contexts;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore.Sqlite;
 
 namespace Conta360.Infrastructure.Sqlite.Services;
 
