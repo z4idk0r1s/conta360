@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Conta360.Infrastructure.Sqlite.Services;
 
 public static class ServiceRegistrationSqlite
