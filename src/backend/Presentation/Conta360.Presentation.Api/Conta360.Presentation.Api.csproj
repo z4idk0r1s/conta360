@@ -4,6 +4,7 @@
     <RootNamespace>Conta360.Presentation.Api</RootNamespace>
     <AssemblyName>Conta360.Presentation.Api</AssemblyName>
     <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj" />
@@ -15,5 +16,7 @@
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="FluentValidation" />
   </ItemGroup>
 </Project>
