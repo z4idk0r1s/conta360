@@ -4,9 +4,9 @@ using Conta360.Infrastructure.PGC.Processing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
-namespace Conta360.Infrastructure.PGC
+namespace Conta360.Infrastructure.PGC.Services
 {
-    public static class ServiceRegistration
+    public static class ServiceRegistrationPgc
     {
         public static IServiceCollection AddPGCInfrastructure(this IServiceCollection services, IConfiguration config)
         {

@@ -1,4 +1,5 @@
 using Conta360.Core.Interfaces;
+using Conta360.Core.Common;
 using Conta360.Domain.Interfaces;
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;

@@ -1,19 +1,19 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using Serilog;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount;
 using Conta360.Application.Features.Accounts.Queries.GetAccountById;
 using Conta360.Core.Common;
-using Conta360.CrossCutting.IoC;
-using MediatR;
-using Serilog;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Conta360.Presentation.Api.Models;
-using Conta360.Infrastructure.PGC.Processing;
-using Conta360.Application.Interfaces;
 using Conta360.Core.Interfaces;
-using Conta360.Core.Common;
+using Conta360.Application.Interfaces;
+using Conta360.Infrastructure.PGC.Processing;
+using Conta360.Presentation.Api.Models;
+using Conta360.CrossCutting.IoC;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,30 +34,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // 3) Registrar Application + Infrastructure
-builder.Services.AddConta360Infrastructure(builder.Configuration);
-builder.Services.AddConta360Application();
+builder.Services
+    .AddConta360Application()
+    .AddSqliteInfrastructure(builder.Configuration)
+    .AddExcelInfrastructure()
+    .AddPGCInfrastructure(builder.Configuration);
 
-// 4) Configurar JWT Authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(
-                    builder.Configuration["Jwt:Key"] 
-                    ?? throw new ArgumentNullException("Jwt:Key is missing.")
-                )
-            )
-        };
-    });
-builder.Services.AddAuthorization();
+// 4) Configurar JWT Authentication (en este momento no hay nada implementado)
 
 var app = builder.Build();
 
@@ -76,8 +59,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers(); // Para controladores tradicionales (si hay)
 
