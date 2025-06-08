@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Conta360.Infrastructure.Postgres.Services;
+namespace Conta360.Infrastructure.Postgres.Services
 
 public static class ServiceRegistrationPostgres
 {
