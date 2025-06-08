@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Conta360.CrossCutting.IoC</RootNamespace>
     <AssemblyName>Conta360.CrossCutting.IoC</AssemblyName>
   </PropertyGroup>
