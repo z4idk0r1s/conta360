@@ -16,7 +16,7 @@ namespace Conta360.Infrastructure.Sqlite.Contexts
 
         // Estos miembros deben existir para cumplir IApplicationDbContext:
         public DbSet<PgcAccount> PgcAccounts { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Transact> Transactions { get; set; }
         public DbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace Conta360.Infrastructure.Sqlite.Contexts
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Relación Transaction → PgcAccount
-            modelBuilder.Entity<Transaction>()
+            modelBuilder.Entity<Transact>()
                 .HasOne(t => t.PgcAccount)
                 .WithMany()
                 .HasForeignKey(t => t.PgcAccountId)
