@@ -23,7 +23,7 @@ const nextConfig = {
           shared: {
             react: { singleton: true, eager: true, requiredVersion: '^18.2.0' },
             'react-dom': { singleton: true, eager: true, requiredVersion: '^18.2.0' },
-            next: { singleton: true, eager: true, requiredVersion: '^14.1.0' },
+            next: { singleton: true, eager: true, requiredVersion: '^13.5.6' },
             axios: { singleton: true, eager: true, requiredVersion: '^1.6.8' }
           },
         })
