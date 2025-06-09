@@ -1,14 +1,22 @@
-namespace Conta360.Infrastructure.Sqlite.Services;
+using Conta360.Application.Interfaces;
+using Conta360.Infrastructure.Sqlite.Contexts;
+using Microsoft.EntityFrameworkCore.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
-public static class ServiceRegistrationSqlite
+namespace Conta360.Infrastructure.Sqlite.Services
 {
-    public static IServiceCollection AddSqliteInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static class ServiceRegistrationSqlite
     {
-        services.AddDbContext<SqliteDbContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("SqliteConnection"),
-                b => b.MigrationsAssembly(typeof(SqliteDbContext).Assembly.FullName)));
+        public static IServiceCollection AddSqliteInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<SqliteDbContext>(options =>
+                options.UseSqlite(configuration.GetConnectionString("SqliteConnection"),
+                    b => b.MigrationsAssembly(typeof(SqliteDbContext).Assembly.FullName)));
 
-        services.AddScoped<IApplicationDbContext, SqliteDbContext>();
-        return services;
+            services.AddScoped<IApplicationDbContext, SqliteDbContext>();
+            return services;
+        }
     }
 }

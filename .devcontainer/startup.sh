@@ -11,7 +11,7 @@ for cmd in dotnet node npm git curl; do
     }
 done
 
-echo "🛠️ Iniciando configuración del entorno Conta360..."
+echo "🛠️ Iniciando configuración del entorno Conta360....."
 
 trap 'echo "❌ Error inesperado en línea $LINENO. Saliendo."; exit 1' ERR
 
