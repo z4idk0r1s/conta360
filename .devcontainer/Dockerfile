@@ -8,8 +8,11 @@ ENV ASPNETCORE_URLS=http://+:5000
 # === PERMISOS DE USUARIO ===
 # Asegura que la caché de NPM pertenezca al usuario 'vscode' con los permisos correctos.
 # Esto previene el error EACCES.
-RUN sudo mkdir -p /home/vscode/.npm && sudo chown -R vscode:vscode /home/vscode/.npm
+USER root
+RUN mkdir -p /home/vscode/.npm && chown -R vscode:vscode /home/vscode/.npm
+USER vscode
 ENV npm_config_cache=/home/vscode/.npm
+
 # ===============================
 
 # Variables dinámicas
