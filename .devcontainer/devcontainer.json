@@ -7,11 +7,6 @@
       "WORKSPACE_NAME": "${localWorkspaceFolderBasename}"
     }
   },
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20.11.1"
-    }
-  },
   "forwardPorts": [3000, 3004, 5000, 5001],
   "postCreateCommand": "bash ./.devcontainer/startup.sh",
   "customizations": {
