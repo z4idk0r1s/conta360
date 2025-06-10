@@ -681,3 +681,228 @@ Resumen:
     La capa Infrastructure implementa las interfaces definidas en Application y depende de Domain para las entidades.
     La capa Presentation depende principalmente de Application.
     La capa Shared (IoC) es la más dependiente, ya que necesita conocer todas las demás capas.
+
+
+
+
+
+
+
+    --------------------------------------------------
+
+
+    C:.
+│   .dockerignore
+│   .gitignore
+│   Directory.Build.props
+│   Directory.Build.targets
+│   Directory.Packages.props
+│   docker-cleanup.bat
+│   docker-compose.yml
+│   global.json
+│   LICENSE
+│   README.md
+│   readme2.md
+│
+├───.devcontainer
+│   │   .env
+│   │   devcontainer.json
+│   │   Dockerfile
+│   │   star2.sh
+│   │   startup.sh
+│   │   startup1.sh
+│   │
+│   └───.vscode
+│           settings.json
+│
+├───desktop-app
+│   └───Conta360.DesktopShell
+│       │   .gitignore
+│       │   package.json
+│       │   tauri.conf.json
+│       │
+│       ├───scripts
+│       │       copy-mf-assets.js
+│       │
+│       └───src-tauri
+│           │   Cargo.toml
+│           │
+│           └───src
+│                   main.rs
+│
+└───src
+    ├───backend
+    │   ├───Core
+    │   │   ├───Conta360.Application
+    │   │   │   │   Conta360.Application.csproj
+    │   │   │   │
+    │   │   │   ├───Behaviours
+    │   │   │   │       LoggingBehavior.cs
+    │   │   │   │       ValidationBehavior.cs
+    │   │   │   │
+    │   │   │   ├───DTOs
+    │   │   │   │       AccountDto.cs
+    │   │   │   │
+    │   │   │   ├───Features
+    │   │   │   │   └───Accounts
+    │   │   │   │       └───Commands
+    │   │   │   │           └───CreateAccount
+    │   │   │   │               │   CreateAccountCommand.cs
+    │   │   │   │               │   CreateAccountCommandHandler.cs
+    │   │   │   │               │   CreateAccountCommandValidator.cs
+    │   │   │   │               │
+    │   │   │   │               └───Queries
+    │   │   │   │                       GetAccountByIdQuery.cs
+    │   │   │   │                       GetAccountByIdQueryHandler.cs
+    │   │   │   │
+    │   │   │   ├───Interfaces
+    │   │   │   │       IApplicationDbContext.cs
+    │   │   │   │       IExcelProcessor.cs
+    │   │   │   │       IFinancialReportingService.cs
+    │   │   │   │       IKpiCalculationService.cs
+    │   │   │   │       IPGCStructureService.cs
+    │   │   │   │       IUnitOfWork.cs
+    │   │   │   │
+    │   │   │   └───Mappings
+    │   │   │           MappingProfile.cs
+    │   │   │
+    │   │   ├───Conta360.Core
+    │   │   │   │   Conta360.Core.csproj
+    │   │   │   │
+    │   │   │   ├───Common
+    │   │   │   │       Error.cs
+    │   │   │   │       Guard.cs
+    │   │   │   │       OperationResult.cs
+    │   │   │   │       PgcExtractorOptions.cs
+    │   │   │   │
+    │   │   │   └───Interfaces
+    │   │   │           ICurrentUserService.cs
+    │   │   │           IDateTimeProvider.cs
+    │   │   │           IPgcImporter.cs
+    │   │   │           IPgcProcessor.cs
+    │   │   │           IPgcTaxonomyDownloader.cs
+    │   │   │           IValidator.cs
+    │   │   │
+    │   │   └───Conta360.Domain
+    │   │       │   Conta360.Domain.csproj
+    │   │       │
+    │   │       ├───Entities
+    │   │       │       Account.cs
+    │   │       │       BaseEntity.cs
+    │   │       │       PgcAccount.cs
+    │   │       │       Transaction.cs
+    │   │       │
+    │   │       ├───Interfaces
+    │   │       │       IAccountRepository.cs
+    │   │       │       IRepository.cs
+    │   │       │
+    │   │       └───ValueObjects
+    │   │               Address.cs
+    │   │
+    │   ├───Infrastructure
+    │   │   ├───Conta360.Infrastructure.Excel
+    │   │   │   │   Conta360.Infrastructure.Excel.csproj
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           ExcelProcessor.cs
+    │   │   │           ServiceRegistrationExcel.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.PGC
+    │   │   │   │   Conta360.Infrastructure.PGC.csproj
+    │   │   │   │
+    │   │   │   ├───Domain
+    │   │   │   │   │   XmlTaxonomySerializer.cs
+    │   │   │   │   │
+    │   │   │   │   └───Models
+    │   │   │   │           PGCEntity.cs
+    │   │   │   │
+    │   │   │   ├───Extraction
+    │   │   │   │       PGCDataExtractor.cs
+    │   │   │   │
+    │   │   │   ├───Processing
+    │   │   │   │       PgcImporter.cs
+    │   │   │   │       PgcProcessor.cs
+    │   │   │   │       PgcTaxonomyBuilder.cs
+    │   │   │   │       PgcTaxonomyDownloader.cs
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           ServiceRegistrationPcg.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.Postgres
+    │   │   │   │   Conta360.Infrastructure.Postgres.csproj
+    │   │   │   │
+    │   │   │   ├───Contexts
+    │   │   │   │       PostgresDbContext.cs
+    │   │   │   │
+    │   │   │   ├───Repositories
+    │   │   │   │       AccountRepository.cs
+    │   │   │   │       UnitOfWork.cs
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           ServiceRegistrationPostgres.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.Reporting
+    │   │   │   │   Conta360.Infrastructure.Reporting.csproj
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           KpiCalculationService.cs
+    │   │   │
+    │   │   └───Conta360.Infrastructure.Sqlite
+    │   │       │   Conta360.Infrastructure.Sqlite.csproj
+    │   │       │
+    │   │       ├───Contexts
+    │   │       │       SqliteDbContext.cs
+    │   │       │
+    │   │       ├───Repositories
+    │   │       │       AccountRepository.cs
+    │   │       │       UnitOfWork.cs
+    │   │       │
+    │   │       └───Services
+    │   │               ServiceRegistrationSqlite.cs
+    │   │
+    │   ├───Presentation
+    │   │   │   appsettings.Development.json
+    │   │   │   appsettings.json
+    │   │   │   Dockerfile
+    │   │   │
+    │   │   └───Conta360.Presentation.Api
+    │   │       │   Conta360.Presentation.Api.csproj
+    │   │       │   Program.cs
+    │   │       │
+    │   │       ├───Controllers
+    │   │       │       AccountsController.cs
+    │   │       │
+    │   │       ├───Data
+    │   │       │   └───PGC
+    │   │       │           taxonomiaPGC2007.zip
+    │   │       │
+    │   │       ├───logs
+    │   │       │       log-20250609.txt
+    │   │       │
+    │   │       └───Models
+    │   │               CreateAccountRequest.cs
+    │   │
+    │   └───Shared
+    │       └───Conta360.CrossCutting.IoC
+    │               Conta360.CrossCutting.IoC.csproj
+    │               DInjection.cs
+    │
+    └───microfrontends
+        └───root-config
+            │   .gitignore
+            │   next-env.d.ts
+            │   next.config.js
+            │   package-lock.json
+            │   package.json
+            │   postcss.config.js
+            │   tailwind.config.ts
+            │   tsconfig.json
+            │
+            └───src
+                ├───app
+                │       globals.css
+                │       layout.tsx
+                │       page.tsx
+                │
+                └───lib
+                        api.ts
