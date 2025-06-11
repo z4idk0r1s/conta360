@@ -1,6 +1,6 @@
 using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
-using System.Xml;
+using JeffFerguson.Gepsio;
 using System.Xml.Schema;
 
 namespace Conta360.Infrastructure.PGC.Processing
@@ -16,32 +16,33 @@ namespace Conta360.Infrastructure.PGC.Processing
 
         public async Task<List<PgcAccount>> ParseAndPersistAccountsFromXsdAsync(string path)
         {
+            var xbrlDoc = new XbrlDocument();
+            xbrlDoc.Load(path);
+            var concepts = xbrlDoc.Schemas.First().Concepts;
+
             var accounts = new List<PgcAccount>();
-            var schemaSet = new XmlSchemaSet();
-            schemaSet.Add(null, path);
-            schemaSet.Compile();
 
-            foreach (XmlSchema schema in schemaSet.Schemas())
+            foreach (var concept in concepts)
             {
-                foreach (XmlSchemaElement element in schema.Elements.Values)
-                {
-                    if (element.QualifiedName.Namespace.Contains("pgc07"))
-                    {
-                        var name = element.QualifiedName.Name;
-                        var description = element.Annotation?.Items
-                            .OfType<XmlSchemaDocumentation>()
-                            .FirstOrDefault()?.Markup?.FirstOrDefault()?.Value;
+                if (concept.Name.StartsWith("pgc"))
+                    continue;
 
-                        if (int.TryParse(name, out var code))
-                        {
-                            accounts.Add(new PgcAccount
-                            {
-                                Code = code.ToString("D3"),
-                                Description = description ?? name
-                            });
-                        }
-                    }
-                }
+                if (!int.TryParse(concept.Name, out var code))
+                    continue;
+
+                var label = concept.Labels
+                    .Where(l => l.Role.Contains("label"))
+                    .FirstOrDefault()?.Text ?? concept.Name;
+
+                accounts.Add(new PgcAccount
+                {
+                    Code = code.ToString("D3"),
+                    Description = label,
+                    IsAbstract = concept.IsAbstract,
+                    Balance = concept.BalanceType?.ToString(),
+                    Namespace = concept.Namespace,
+                    ConceptId = concept.Id
+                });
             }
 
             foreach (var acc in accounts)
