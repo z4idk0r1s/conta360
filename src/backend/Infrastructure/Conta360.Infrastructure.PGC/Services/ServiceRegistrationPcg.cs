@@ -14,8 +14,6 @@ namespace Conta360.Infrastructure.PGC.Services
         {
             services.Configure<PgcExtractorOptions>(config.GetSection("Pgc"));
             services.AddHttpClient<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>();
-            services.AddScoped<IPgcProcessor, PgcProcessor>();
-            services.AddScoped<IPgcImporter, PgcImporter>();
             services.AddScoped<IPgcTaxonomyValidator, PgcTaxonomyValidator>();
             services.AddScoped<PgcTaxonomyBuilder>();
             services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>();
