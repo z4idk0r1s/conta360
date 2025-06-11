@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Xml;
 using System.Xml.Schema;
+using Conta360.Core.Common;
 using Conta360.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 

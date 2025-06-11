@@ -2,6 +2,7 @@ using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
 using JeffFerguson.Gepsio;
 using System.Xml.Schema;
+using System.Xml;
 
 namespace Conta360.Infrastructure.PGC.Processing
 {
