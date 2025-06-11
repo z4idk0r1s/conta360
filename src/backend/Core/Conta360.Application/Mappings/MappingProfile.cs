@@ -8,10 +8,10 @@ namespace Conta360.Application.Mappings
     public class MappingProfile : Profile
     {
         public MappingProfile()
-        {
+        {   
+            CreateMap<PgcAccount, PgcAccountDto>();
             CreateMap<Account, AccountDto>().ReverseMap();
             CreateMap<CreateAccountCommand, Account>();
-            // Add more mappings as needed
         }
     }
 }

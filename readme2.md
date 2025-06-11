@@ -906,3 +906,231 @@ Resumen:
                 │
                 └───lib
                         api.ts
+
+
+
+
+# fefature6::
+
+C:.
+│   .dockerignore
+│   .gitignore
+│   Directory.Build.props
+│   Directory.Build.targets
+│   Directory.Packages.props
+│   docker-cleanup.bat
+│   docker-compose.yml
+│   global.json
+│   LICENSE
+│   README.md
+│   readme2.md
+│
+├───.devcontainer
+│   │   .env
+│   │   devcontainer.json
+│   │   Dockerfile
+│   │   star2.sh
+│   │   startup.sh
+│   │   startup1.sh
+│   │
+│   └───.vscode
+│           settings.json
+│
+├───desktop-app
+│   └───Conta360.DesktopShell
+│       │   .gitignore
+│       │   package.json
+│       │   tauri.conf.json
+│       │
+│       ├───scripts
+│       │       copy-mf-assets.js
+│       │
+│       └───src-tauri
+│           │   Cargo.toml
+│           │
+│           └───src
+│                   main.rs
+│
+└───src
+    ├───backend
+    │   ├───Core
+    │   │   ├───Conta360.Application
+    │   │   │   │   Conta360.Application.csproj
+    │   │   │   │
+    │   │   │   ├───Behaviours
+    │   │   │   │       LoggingBehavior.cs
+    │   │   │   │       ValidationBehavior.cs
+    │   │   │   │
+    │   │   │   ├───DTOs
+    │   │   │   │       AccountDto.cs
+    │   │   │   │       PgcAccountDto.cs
+    │   │   │   │
+    │   │   │   ├───Features
+    │   │   │   │   └───Accounts
+    │   │   │   │       └───Commands
+    │   │   │   │           └───CreateAccount
+    │   │   │   │               │   CreateAccountCommand.cs
+    │   │   │   │               │   CreateAccountCommandHandler.cs
+    │   │   │   │               │   CreateAccountCommandValidator.cs
+    │   │   │   │               │
+    │   │   │   │               └───Queries
+    │   │   │   │                       GetAccountByIdQuery.cs
+    │   │   │   │                       GetAccountByIdQueryHandler.cs
+    │   │   │   │                       GetAllPgcAccountsQuery.cs
+    │   │   │   │                       GetAllPgcAccountsQueryHandler.cs
+    │   │   │   │
+    │   │   │   ├───Interfaces
+    │   │   │   │       IApplicationDbContext.cs
+    │   │   │   │       IExcelProcessor.cs
+    │   │   │   │       IFinancialReportingService.cs
+    │   │   │   │       IKpiCalculationService.cs
+    │   │   │   │       IPGCStructureService.cs
+    │   │   │   │       IUnitOfWork.cs
+    │   │   │   │
+    │   │   │   └───Mappings
+    │   │   │           MappingProfile.cs
+    │   │   │
+    │   │   ├───Conta360.Core
+    │   │   │   │   Conta360.Core.csproj
+    │   │   │   │
+    │   │   │   ├───Common
+    │   │   │   │       Error.cs
+    │   │   │   │       Guard.cs
+    │   │   │   │       OperationResult.cs
+    │   │   │   │       PgcExtractorOptions.cs
+    │   │   │   │       PgcModelType.cs
+    │   │   │   │       ValidationResult.cs
+    │   │   │   │
+    │   │   │   └───Interfaces
+    │   │   │           ICurrentUserService.cs
+    │   │   │           IDateTimeProvider.cs
+    │   │   │           IPgcImporter.cs
+    │   │   │           IPgcProcessor.cs
+    │   │   │           IPgcTaxonomyDownloader.cs
+    │   │   │           IPgcTaxonomyValidator.cs
+    │   │   │           IValidator.cs
+    │   │   │
+    │   │   └───Conta360.Domain
+    │   │       │   Conta360.Domain.csproj
+    │   │       │
+    │   │       ├───Entities
+    │   │       │       Account.cs
+    │   │       │       BaseEntity.cs
+    │   │       │       PgcAccount.cs
+    │   │       │       Transaction.cs
+    │   │       │
+    │   │       ├───Interfaces
+    │   │       │       IAccountRepository.cs
+    │   │       │       IRepository.cs
+    │   │       │
+    │   │       └───ValueObjects
+    │   │               Address.cs
+    │   │
+    │   ├───Infrastructure
+    │   │   ├───Conta360.Infrastructure.Excel
+    │   │   │   │   Conta360.Infrastructure.Excel.csproj
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           ExcelProcessor.cs
+    │   │   │           ServiceRegistrationExcel.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.PGC
+    │   │   │   │   Conta360.Infrastructure.PGC.csproj
+    │   │   │   │
+    │   │   │   ├───Domain
+    │   │   │   │   │   XmlTaxonomySerializer.cs
+    │   │   │   │   │
+    │   │   │   │   └───Models
+    │   │   │   │           PGCEntity.cs
+    │   │   │   │
+    │   │   │   ├───Extraction
+    │   │   │   │       PGCDataExtractor.cs
+    │   │   │   │
+    │   │   │   ├───Processing
+    │   │   │   │       PgcImporter.cs
+    │   │   │   │       PgcProcessor.cs
+    │   │   │   │       PgcTaxonomyBuilder.cs
+    │   │   │   │       PgcTaxonomyDownloader.cs
+    │   │   │   │       PgcTaxonomyValidator.cs
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           PcgTaxonomyService.cs
+    │   │   │           ServiceRegistrationPcg.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.Postgres
+    │   │   │   │   Conta360.Infrastructure.Postgres.csproj
+    │   │   │   │
+    │   │   │   ├───Contexts
+    │   │   │   │       PostgresDbContext.cs
+    │   │   │   │
+    │   │   │   ├───Repositories
+    │   │   │   │       AccountRepository.cs
+    │   │   │   │       UnitOfWork.cs
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           ServiceRegistrationPostgres.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.Reporting
+    │   │   │   │   Conta360.Infrastructure.Reporting.csproj
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           KpiCalculationService.cs
+    │   │   │
+    │   │   └───Conta360.Infrastructure.Sqlite
+    │   │       │   Conta360.Infrastructure.Sqlite.csproj
+    │   │       │
+    │   │       ├───Contexts
+    │   │       │       SqliteDbContext.cs
+    │   │       │
+    │   │       ├───Repositories
+    │   │       │       AccountRepository.cs
+    │   │       │       UnitOfWork.cs
+    │   │       │
+    │   │       └───Services
+    │   │               ServiceRegistrationSqlite.cs
+    │   │
+    │   ├───Presentation
+    │   │   │   appsettings.Development.json
+    │   │   │   appsettings.json
+    │   │   │   Dockerfile
+    │   │   │
+    │   │   └───Conta360.Presentation.Api
+    │   │       │   Conta360.Presentation.Api.csproj
+    │   │       │   Program.cs
+    │   │       │
+    │   │       ├───Controllers
+    │   │       │       AccountsController.cs
+    │   │       │       PgcAccountsController.cs
+    │   │       │
+    │   │       ├───Data
+    │   │       │   └───PGC
+    │   │       │           taxonomiaPGC2007.zip
+    │   │       │
+    │   │       ├───logs
+    │   │       │       log-20250609.txt
+    │   │       │
+    │   │       └───Models
+    │   │               CreateAccountRequest.cs
+    │   │
+    │   └───Shared
+    │       └───Conta360.CrossCutting.IoC
+    │               Conta360.CrossCutting.IoC.csproj
+    │               DInjection.cs
+    │
+    └───microfrontends
+        └───root-config
+            │   .gitignore
+            │   next.config.js
+            │   package.json
+            │   postcss.config.js
+            │   tailwind.config.ts
+            │   tsconfig.json
+            │
+            └───src
+                ├───app
+                │       globals.css
+                │       layout.tsx
+                │       page.tsx
+                │
+                └───lib
+                        api.ts

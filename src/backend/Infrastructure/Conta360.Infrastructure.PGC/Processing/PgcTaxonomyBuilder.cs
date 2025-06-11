@@ -1,39 +1,55 @@
-using Conta360.Application;
-using Conta360.Core.Interfaces;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using Conta360.Application.Interfaces;
-using Conta360.Core.Common;
+using Conta360.Domain.Entities;
+using Conta360.Domain.Interfaces;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace Conta360.Infrastructure.PGC.Processing
 {
-    public class PgcTaxonomyBuilder : IPGCStructureService
+    public class PgcTaxonomyBuilder
     {
-        private readonly PgcProcessor _pgcProcessor;
+        private readonly IAccountRepository _accountRepository;
 
-        public PgcTaxonomyBuilder(PgcProcessor pgcProcessor)
+        public PgcTaxonomyBuilder(IAccountRepository accountRepository)
         {
-            _pgcProcessor = pgcProcessor;
+            _accountRepository = accountRepository;
         }
 
-        public async Task<OperationResult<string>> GetPGCStructureAsync(string year)
+        public async Task<List<PgcAccount>> ParseAndPersistAccountsFromXsdAsync(string path)
         {
-            // Ejecutamos la generación del string en un Task.Run para usar await de forma legítima
-            string rawData = await Task.Run(() =>
+            var accounts = new List<PgcAccount>();
+            var schemaSet = new XmlSchemaSet();
+            schemaSet.Add(null, path);
+            schemaSet.Compile();
+
+            foreach (XmlSchema schema in schemaSet.Schemas())
             {
-                return $"{{ \"code\": \"100\", \"description\": \"Example PGC for {year}\" }}";
-            });
+                foreach (XmlSchemaElement element in schema.Elements.Values)
+                {
+                    if (element.QualifiedName.Namespace.Contains("pgc07"))
+                    {
+                        var name = element.QualifiedName.Name;
+                        var description = element.Annotation?.Items
+                            .OfType<XmlSchemaDocumentation>()
+                            .FirstOrDefault()?.Markup?.FirstOrDefault()?.Value;
 
-            return OperationResult<string>.Success(rawData);
-        }
+                        if (int.TryParse(name, out var code))
+                        {
+                            accounts.Add(new PgcAccount
+                            {
+                                Code = code.ToString("D3"),
+                                Description = description ?? name
+                            });
+                        }
+                    }
+                }
+            }
 
-        public async Task<OperationResult> ProcessPGCStructureAsync(string rawData)
-        {
-            // Inserta un await legítimo para que el método sea verdaderamente asíncrono
-            await Task.Yield();
+            foreach (var acc in accounts)
+            {
+                await _accountRepository.AddAsync(acc);
+            }
 
-            // Aquí iría la lógica real, pero mínimo devolvemos éxito:
-            return OperationResult.Success();
+            return accounts;
         }
     }
 }
