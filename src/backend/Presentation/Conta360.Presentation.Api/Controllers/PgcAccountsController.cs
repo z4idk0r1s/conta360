@@ -23,5 +23,11 @@ namespace Conta360.Presentation.Api.Controllers
             var result = await _mediator.Send(new GetAllPgcAccountsQuery());
             return Ok(result);
         }
+        [HttpGet("tree")]
+        public async Task<ActionResult<List<PgcAccountTreeDto>>> GetTree()
+        {
+            var result = await _mediator.Send(new GetPgcAccountTreeQuery());
+            return Ok(result);
+        }
     }
 }
