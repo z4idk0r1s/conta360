@@ -1,9 +1,8 @@
 using Conta360.Application.Features.Accounts.Commands.CreateAccount;
 using Conta360.Application.Features.Accounts.Queries.GetAccountById;
 using Conta360.CrossCutting.IoC;
-using Conta360.Core.Interfaces;
+using Conta360.Infrastructure.PGC.Services; // 
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Conta360.Presentation.Api.Models;
@@ -26,18 +25,19 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Conta360 API", Version = "v1" });
 });
 
-// Registro de servicios y DI
+// Registro de dependencias
 builder.Services
     .AddConta360Application()
-    .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite"); // Cambiar a "Postgres" si es necesario
+    .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite") // o "Postgres"
+    .AddPGCTaxonomyServices(); // <-- Asegúrate de registrar tus servicios PGC
 
 var app = builder.Build();
 
-// Pre-carga de taxonomía PGC
+// ✅ Pre-carga de taxonomía PGC con la nueva arquitectura
 using (var scope = app.Services.CreateScope())
 {
-    var pgcProcessor = scope.ServiceProvider.GetRequiredService<IPgcProcessor>();
-    await pgcProcessor.SystemProcessAsync(CancellationToken.None);
+    var pgcService = scope.ServiceProvider.GetRequiredService<IPgcTaxonomyService>();
+    await pgcService.RunAsync();
 }
 
 // Pipeline HTTP
@@ -50,7 +50,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 
-// Endpoints mínimos
+// Endpoints mínimos (usando MediatR)
 app.MapPost("/api/accounts", async (CreateAccountRequest request, IMediator mediator) =>
 {
     var command = new CreateAccountCommand { Name = request.Name, InitialBalance = request.InitialBalance };
