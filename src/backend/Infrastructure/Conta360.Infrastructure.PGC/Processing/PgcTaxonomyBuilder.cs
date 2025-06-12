@@ -1,8 +1,12 @@
 using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
-using JeffFerguson.Gepsio;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Conta360.Application.DTOs;
+using Conta360.Infrastructure.PGC.Gepsio; // ← Usa el namespace local
 using System.Xml.Schema;
-using System.Xml;
 
 namespace Conta360.Infrastructure.PGC.Processing
 {
@@ -19,8 +23,12 @@ namespace Conta360.Infrastructure.PGC.Processing
         {
             var xbrlDoc = new XbrlDocument();
             xbrlDoc.Load(path);
-            var concepts = xbrlDoc.Schemas.First().Concepts;
+            var schema = xbrlDoc.Schemas.FirstOrDefault();
 
+            if (schema == null)
+                throw new InvalidOperationException("No se encontraron esquemas XBRL en el documento.");
+
+            var concepts = schema.Concepts;
             var accounts = new List<PgcAccount>();
 
             foreach (var concept in concepts)
@@ -31,9 +39,9 @@ namespace Conta360.Infrastructure.PGC.Processing
                 if (!int.TryParse(concept.Name, out var code))
                     continue;
 
-                var label = concept.Labels
-                    .Where(l => l.Role.Contains("label"))
-                    .FirstOrDefault()?.Text ?? concept.Name;
+                var label = concept.Labels?
+                    .FirstOrDefault(l => l.Role != null && l.Role.Contains("label"))?
+                    .Text ?? concept.Name;
 
                 accounts.Add(new PgcAccount
                 {
