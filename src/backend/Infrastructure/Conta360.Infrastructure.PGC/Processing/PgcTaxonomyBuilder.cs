@@ -1,39 +1,65 @@
-using Conta360.Application;
-using Conta360.Core.Interfaces;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using Conta360.Application.Interfaces;
-using Conta360.Core.Common;
+using Conta360.Domain.Entities;
+using Conta360.Domain.Interfaces;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Conta360.Application.DTOs;
+using JeffFerguson.Gepsio;
+using System.Xml.Schema;
 
 namespace Conta360.Infrastructure.PGC.Processing
 {
-    public class PgcTaxonomyBuilder : IPGCStructureService
+    public class PgcTaxonomyBuilder
     {
-        private readonly PgcProcessor _pgcProcessor;
+        private readonly IAccountRepository _accountRepository;
 
-        public PgcTaxonomyBuilder(PgcProcessor pgcProcessor)
+        public PgcTaxonomyBuilder(IAccountRepository accountRepository)
         {
-            _pgcProcessor = pgcProcessor;
+            _accountRepository = accountRepository;
         }
 
-        public async Task<OperationResult<string>> GetPGCStructureAsync(string year)
+        public async Task<List<PgcAccount>> ParseAndPersistAccountsFromXsdAsync(string path)
         {
-            // Ejecutamos la generación del string en un Task.Run para usar await de forma legítima
-            string rawData = await Task.Run(() =>
+            var xbrlDoc = new XbrlDocument();
+            xbrlDoc.Load(path);
+            var schema = xbrlDoc.Schemas.FirstOrDefault();
+
+            if (schema == null)
+                throw new InvalidOperationException("No se encontraron esquemas XBRL en el documento.");
+
+            var concepts = schema.Concepts;
+            var accounts = new List<PgcAccount>();
+
+            foreach (var concept in concepts)
             {
-                return $"{{ \"code\": \"100\", \"description\": \"Example PGC for {year}\" }}";
-            });
+                if (concept.Name.StartsWith("pgc"))
+                    continue;
 
-            return OperationResult<string>.Success(rawData);
-        }
+                if (!int.TryParse(concept.Name, out var code))
+                    continue;
 
-        public async Task<OperationResult> ProcessPGCStructureAsync(string rawData)
-        {
-            // Inserta un await legítimo para que el método sea verdaderamente asíncrono
-            await Task.Yield();
+                var label = concept.Labels?
+                    .FirstOrDefault(l => l.Role != null && l.Role.Contains("label"))?
+                    .Text ?? concept.Name;
 
-            // Aquí iría la lógica real, pero mínimo devolvemos éxito:
-            return OperationResult.Success();
+                accounts.Add(new PgcAccount
+                {
+                    Code = code.ToString("D3"),
+                    Description = label,
+                    IsAbstract = concept.IsAbstract,
+                    Balance = concept.BalanceType?.ToString(),
+                    Namespace = concept.Namespace,
+                    ConceptId = concept.Id
+                });
+            }
+
+            foreach (var acc in accounts)
+            {
+                await _accountRepository.AddAsync(acc);
+            }
+
+            return accounts;
         }
     }
 }
