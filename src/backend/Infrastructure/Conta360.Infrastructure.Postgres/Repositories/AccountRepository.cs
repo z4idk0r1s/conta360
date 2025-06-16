@@ -6,7 +6,7 @@ using Conta360.Application.Interfaces;
 
 namespace Conta360.Infrastructure.Postgres.Repositories
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : IRepository
     {
         private readonly IApplicationDbContext _context;
 

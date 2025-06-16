@@ -4,14 +4,14 @@ using Conta360.Application.DTOs;
 using Conta360.Domain.Interfaces;
 using AutoMapper;
 
-namespace Conta360.Application.Features.Accounts.Queries.GetAccountById
+namespace Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries
 {
     public class GetAccountByIdQueryHandler : IRequestHandler<GetAccountByIdQuery, OperationResult<AccountDto>>
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly IPgcAccountRepository _accountRepository;
         private readonly IMapper _mapper;
 
-        public GetAccountByIdQueryHandler(IAccountRepository accountRepository, IMapper mapper)
+        public GetAccountByIdQueryHandler(IPgcAccountRepository accountRepository, IMapper mapper)
         {
             _accountRepository = accountRepository;
             _mapper = mapper;

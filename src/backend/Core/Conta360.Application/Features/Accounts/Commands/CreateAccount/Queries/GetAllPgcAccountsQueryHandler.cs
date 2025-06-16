@@ -3,14 +3,14 @@ using Conta360.Application.DTOs;
 using Conta360.Domain.Interfaces;
 using MediatR;
 
-namespace Conta360.Application.Features.PgcAccounts.Queries
+namespace Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries
 {
     public class GetAllPgcAccountsQueryHandler : IRequestHandler<GetAllPgcAccountsQuery, List<PgcAccountDto>>
     {
-        private readonly IAccountRepository _repository;
+        private readonly IPgcAccountRepository _repository;
         private readonly IMapper _mapper;
 
-        public GetAllPgcAccountsQueryHandler(IAccountRepository repository, IMapper mapper)
+        public GetAllPgcAccountsQueryHandler(IPgcAccountRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
