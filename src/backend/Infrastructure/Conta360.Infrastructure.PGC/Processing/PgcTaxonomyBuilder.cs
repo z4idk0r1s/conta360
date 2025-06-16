@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Conta360.Application.DTOs;
-using Conta360.Infrastructure.PGC.Gepsio; // ← Usa el namespace local
+using JeffFerguson.Gepsio;
 using System.Xml.Schema;
 
 namespace Conta360.Infrastructure.PGC.Processing

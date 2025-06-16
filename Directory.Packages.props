@@ -36,6 +36,6 @@
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="8.0.0" />     
     <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
-    <PackageVersion Include="XbrlProcessor.NET" Version="1.1.0" />
+    <PackageVersion Include="Gepsio" Version="2.1.0.20" />
   </ItemGroup>
 </Project>

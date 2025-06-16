@@ -13,6 +13,6 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-    <PackageReference Include="XbrlProcessor.NET" />
+    <PackageReference Include="Gepsio" />
   </ItemGroup>
 </Project>
