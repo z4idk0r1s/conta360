@@ -2,8 +2,10 @@ using Conta360.Domain.Entities;
 
 namespace Conta360.Domain.Interfaces
 {
-    public interface IAccountRepository : IRepository<Account>
+    public interface IPgcAccountRepository : IRepository<PgcAccount>
     {
-        // Add account-specific methods if any
+        Task<List<PgcAccount>> GetTreeStructureAsync();
+        Task<List<PgcAccount>> GetByParentCodeAsync(string? parentCode);
+        Task<List<PgcAccount>> GetRootAccountsAsync();
     }
 }

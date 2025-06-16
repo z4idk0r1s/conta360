@@ -5,7 +5,7 @@ namespace Conta360.Application.Services
 {
     public static class PgcAccountTreeBuilder
     {
-        public static List<PgcAccountTreeDto> BuildTree(List<PgcAccount> flatAccounts)
+        public static List<PgcAccountTreeDto> BuildTree(List<PgcAccountDto> flatAccounts)
         {
             var lookup = flatAccounts.ToDictionary(a => a.Code, a => new PgcAccountTreeDto
             {

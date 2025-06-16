@@ -1,10 +1,13 @@
 using AutoMapper;
 using Conta360.Application.DTOs;
+using Conta360.Application.Interfaces;
+using Conta360.Application.Features.PgcAccounts.Queries;
 using Conta360.Application.Services;
 using Conta360.Domain.Interfaces;
 using MediatR;
+using System.Collections.Generic;
 
-namespace Conta360.Application.Features.PgcAccounts.Queries
+namespace Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries
 {
     public class GetPgcAccountTreeQueryHandler : IRequestHandler<GetPgcAccountTreeQuery, List<PgcAccountTreeDto>>
     {

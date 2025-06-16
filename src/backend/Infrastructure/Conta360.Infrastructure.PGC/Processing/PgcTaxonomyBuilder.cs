@@ -29,7 +29,7 @@ namespace Conta360.Infrastructure.PGC.Processing
                 throw new InvalidOperationException("No se encontraron esquemas XBRL en el documento.");
 
             var concepts = schema.Concepts;
-            var accounts = new List<PgcAccount>();
+            var accounts = new List<PgcAccountDto>();
 
             foreach (var concept in concepts)
             {
