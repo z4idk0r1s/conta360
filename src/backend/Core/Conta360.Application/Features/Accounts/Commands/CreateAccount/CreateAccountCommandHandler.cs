@@ -10,10 +10,10 @@ namespace Conta360.Application.Features.Accounts.Commands.CreateAccount
     public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, OperationResult<Guid>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAccountRepository _accountRepository;
+        private readonly IPgcAccountRepository _accountRepository;
         private readonly IMapper _mapper;
 
-        public CreateAccountCommandHandler(IUnitOfWork unitOfWork, IAccountRepository accountRepository, IMapper mapper)
+        public CreateAccountCommandHandler(IUnitOfWork unitOfWork, IPgcAccountRepository accountRepository, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _accountRepository = accountRepository;
@@ -22,7 +22,7 @@ namespace Conta360.Application.Features.Accounts.Commands.CreateAccount
 
         public async Task<OperationResult<Guid>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
-            var account = _mapper.Map<Account>(request);
+            var account = _mapper.Map<PgcAccount>(request);
             await _accountRepository.AddAsync(account);
             await _unitOfWork.CommitAsync();
 

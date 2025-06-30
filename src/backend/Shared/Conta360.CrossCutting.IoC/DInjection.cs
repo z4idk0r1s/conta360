@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -44,7 +45,7 @@ namespace Conta360.CrossCutting.IoC
             services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
 
             // Base repositorios
-            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IPgcAccountRepository, AccountRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IKpiCalculationService, KpiCalculationService>();
 

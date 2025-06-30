@@ -1,5 +1,7 @@
 using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
+using Conta360.Application.Interfaces;
+using Conta360.Core.Interfaces;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,9 +14,9 @@ namespace Conta360.Infrastructure.PGC.Processing
 {
     public class PgcTaxonomyBuilder
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly IPgcAccountRepository _accountRepository;
 
-        public PgcTaxonomyBuilder(IAccountRepository accountRepository)
+        public PgcTaxonomyBuilder(IPgcAccountRepository accountRepository)
         {
             _accountRepository = accountRepository;
         }
@@ -29,7 +31,7 @@ namespace Conta360.Infrastructure.PGC.Processing
                 throw new InvalidOperationException("No se encontraron esquemas XBRL en el documento.");
 
             var concepts = schema.Concepts;
-            var accounts = new List<PgcAccount>();
+            var accounts = new List<PgcAccountDto>();
 
             foreach (var concept in concepts)
             {
