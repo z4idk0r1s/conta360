@@ -5,11 +5,8 @@ using Conta360.Core.Common;
 using Conta360.Core.Interfaces;
 using Conta360.Domain.Interfaces;
 using Conta360.Infrastructure.Excel.Services;
-using Conta360.Infrastructure.PGC.Services;
 using Conta360.Infrastructure.Postgres;
 using Conta360.Infrastructure.Postgres.Contexts;
-using Conta360.Infrastructure.Postgres.Repositories;
-using Conta360.Infrastructure.Reporting.Services;
 using Conta360.Infrastructure.Sqlite.Contexts;
 using FluentValidation;
 using MediatR;
@@ -45,12 +42,11 @@ namespace Conta360.CrossCutting.IoC
             services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
 
             // Base repositorios
-            services.AddScoped<IPgcAccountRepository, AccountRepository>();
+            services.AddScoped<IPgcAccountRepository, IPgcAccountRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IKpiCalculationService, KpiCalculationService>();
 
             // Infraestructuras específicas (uso de métodos modulares)
-            services.AddPGCInfrastructure(configuration);
+            services.AddExcelFiscalServices(configuration);
             services.AddExcelInfrastructure(configuration);
 
             // Base de datos

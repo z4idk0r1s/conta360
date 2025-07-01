@@ -1,4 +1,4 @@
-using Conta360.Application.Interfaces;
+/*using Conta360.Application.Interfaces;
 using Conta360.Core.Common;
 using Conta360.Domain.Interfaces;
 
@@ -26,3 +26,4 @@ namespace Conta360.Infrastructure.Reporting.Services
         }
     }
 }
+*/

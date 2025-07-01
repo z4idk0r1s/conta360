@@ -1,3 +1,4 @@
+/*
 using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
 using Conta360.Application.Interfaces;
@@ -65,3 +66,4 @@ namespace Conta360.Infrastructure.PGC.Processing
         }
     }
 }
+*/

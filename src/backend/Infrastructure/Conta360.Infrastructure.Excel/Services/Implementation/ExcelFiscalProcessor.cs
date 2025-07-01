@@ -26,7 +26,8 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
             _logger = logger;
         }
 
-        public async Task<ResumenFiscalResponse> ProcesarResumenFiscalAsync(
+        // Elimina el 'async' y retorna un Task directamente
+        public Task<ResumenFiscalResponse> ProcesarResumenFiscalAsync(
             CancellationToken cancellationToken = default)
         {
             try
@@ -34,7 +35,7 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                 using var workbook = new XLWorkbook(_settings.RutaExcel);
                 var worksheet = workbook.Worksheet(_settings.HojaResumen);
 
-                var (empresa, nombreComercial, fechaDesde, fechaHasta) = 
+                var (empresa, nombreComercial, fechaDesde, fechaHasta) =
                     ExtraerDatosCabecera(worksheet);
 
                 var detallesDiarios = new List<DetalleDiario>();
@@ -43,14 +44,14 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     var firstCell = worksheet.Cell(currentRow, 1).GetString().Trim();
-                    
+
                     // Si llegamos a la fila de totales
                     if (firstCell == "Total")
                     {
                         var totalesGenerales = ExtraerTotalesGenerales(
                             worksheet.Row(currentRow));
-                        
-                        return new ResumenFiscalResponse
+
+                        return Task.FromResult(new ResumenFiscalResponse
                         {
                             FechaInforme = DateTime.UtcNow,
                             FechaDesde = fechaDesde,
@@ -62,12 +63,12 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                             DetallesPorDia = detallesDiarios
                                 .OrderBy(d => d.Fecha)
                                 .ToList()
-                        };
+                        });
                     }
 
                     // Si es una línea de total diario
-                    if (firstCell.StartsWith("Total") && 
-                        firstCell.Contains("(") && 
+                    if (firstCell.StartsWith("Total") &&
+                        firstCell.Contains("(") &&
                         firstCell.Contains(")"))
                     {
                         var detalleDiario = ExtraerDetalleDiario(
@@ -86,25 +87,25 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, 
-                    "Error procesando archivo Excel: {Path}", 
+                _logger.LogError(ex,
+                    "Error procesando archivo Excel: {Path}",
                     _settings.RutaExcel);
                 throw;
             }
         }
 
-        private static (string empresa, string nombreComercial, 
+        private static (string empresa, string nombreComercial,
             DateTime fechaDesde, DateTime fechaHasta) ExtraerDatosCabecera(
             IXLWorksheet worksheet)
         {
             var empresa = worksheet.Cell("B4").GetString().Trim();
             var nombreComercial = worksheet.Cell("B5").GetString().Trim();
-            
+
             var fechaDesde = DateTime.ParseExact(
                 worksheet.Cell("G4").GetString().Trim(),
                 "dd/MM/yyyy",
                 CultureInfo.InvariantCulture);
-            
+
             var fechaHasta = DateTime.ParseExact(
                 worksheet.Cell("G5").GetString().Trim(),
                 "dd/MM/yyyy",

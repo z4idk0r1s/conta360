@@ -1,4 +1,4 @@
-using Conta360.Application.Interfaces;
+/*using Conta360.Application.Interfaces;
 using Conta360.Infrastructure.Postgres.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,3 +22,4 @@ namespace Conta360.Infrastructure.Postgres.Services
         }
     }
 }
+*/
