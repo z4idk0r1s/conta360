@@ -2,7 +2,7 @@
 using Conta360.Infrastructure.Postgres.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.DependencyInjection.Abstractions;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using Npgsql.EntityFrameworkCore.PostgreSQL;

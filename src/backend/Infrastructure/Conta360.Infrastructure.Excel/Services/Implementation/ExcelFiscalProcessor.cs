@@ -22,11 +22,10 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
             IOptions<ExcelSettings> settings,
             ILogger<ExcelFiscalProcessor> logger)
         {
-            _settings = settings.Value;
-            _logger = logger;
+            _settings = settings.Value ?? throw new ArgumentNullException(nameof(settings));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        // Elimina el 'async' y retorna un Task directamente
         public Task<ResumenFiscalResponse> ProcesarResumenFiscalAsync(
             CancellationToken cancellationToken = default)
         {
@@ -46,10 +45,9 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                     var firstCell = worksheet.Cell(currentRow, 1).GetString().Trim();
 
                     // Si llegamos a la fila de totales
-                    if (firstCell == "Total")
+                    if (string.Equals(firstCell, "Total", StringComparison.OrdinalIgnoreCase))
                     {
-                        var totalesGenerales = ExtraerTotalesGenerales(
-                            worksheet.Row(currentRow));
+                        var totalesGenerales = ExtraerTotalesGenerales(worksheet.Row(currentRow));
 
                         return Task.FromResult(new ResumenFiscalResponse
                         {
@@ -67,12 +65,11 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                     }
 
                     // Si es una línea de total diario
-                    if (firstCell.StartsWith("Total") &&
+                    if (firstCell.StartsWith("Total", StringComparison.OrdinalIgnoreCase) &&
                         firstCell.Contains("(") &&
                         firstCell.Contains(")"))
                     {
-                        var detalleDiario = ExtraerDetalleDiario(
-                            worksheet.Row(currentRow));
+                        var detalleDiario = ExtraerDetalleDiario(worksheet.Row(currentRow));
                         if (detalleDiario != null)
                         {
                             detallesDiarios.Add(detalleDiario);
@@ -94,38 +91,67 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
             }
         }
 
-        private static (string empresa, string nombreComercial,
-            DateTime fechaDesde, DateTime fechaHasta) ExtraerDatosCabecera(
-            IXLWorksheet worksheet)
+        private static (string empresa, string nombreComercial, DateTime fechaDesde, DateTime fechaHasta) ExtraerDatosCabecera(IXLWorksheet worksheet)
         {
             var empresa = worksheet.Cell("B4").GetString().Trim();
             var nombreComercial = worksheet.Cell("B5").GetString().Trim();
 
-            var fechaDesde = DateTime.ParseExact(
-                worksheet.Cell("G4").GetString().Trim(),
-                "dd/MM/yyyy",
-                CultureInfo.InvariantCulture);
-
-            var fechaHasta = DateTime.ParseExact(
-                worksheet.Cell("G5").GetString().Trim(),
-                "dd/MM/yyyy",
-                CultureInfo.InvariantCulture);
+            var fechaDesde = LeerFechaRobusta(worksheet.Cell("G4"));
+            var fechaHasta = LeerFechaRobusta(worksheet.Cell("G5"));
 
             return (empresa, nombreComercial, fechaDesde, fechaHasta);
         }
 
+        private static DateTime LeerFechaRobusta(IXLCell cell)
+        {
+            if (cell == null || cell.IsEmpty())
+                throw new InvalidOperationException("La celda de fecha está vacía.");
+
+            if (cell.DataType == XLDataType.DateTime)
+                return cell.GetDateTime();
+
+            // Serial de Excel (número)
+            if (cell.DataType == XLDataType.Number)
+            {
+                try
+                {
+                    return cell.GetDateTime();
+                }
+                catch
+                {
+                    // Fallback si no es serial de fecha
+                }
+            }
+
+            var fechaStr = cell.GetString()?.Trim();
+            if (string.IsNullOrWhiteSpace(fechaStr))
+                throw new InvalidOperationException("La celda de fecha contiene solo espacios o está vacía.");
+
+            DateTime fecha;
+            var formatos = new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd", "M/d/yyyy", "dd-MM-yyyy" };
+
+            if (DateTime.TryParseExact(fechaStr, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha))
+                return fecha;
+
+            if (DateTime.TryParse(fechaStr, out fecha))
+                return fecha;
+
+            throw new FormatException($"El valor '{fechaStr}' no es reconocible como fecha.");
+        }
+
         private static DetalleDiario? ExtraerDetalleDiario(IXLRow row)
         {
-            var fechaStr = row.Cell(1).GetString()
-                .Split('(', ')')[1]
-                .Trim();
+            var cellValue = row.Cell(1).GetString();
+            if (string.IsNullOrWhiteSpace(cellValue) || !cellValue.Contains("(") || !cellValue.Contains(")"))
+                return null;
 
-            if (!DateTime.TryParseExact(
-                fechaStr,
-                "dd/MM/yyyy",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out var fecha))
+            var fechaStr = cellValue.Split('(', ')')[1].Trim();
+
+            DateTime fecha;
+            var formatos = new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd", "M/d/yyyy", "dd-MM-yyyy" };
+
+            if (!DateTime.TryParseExact(fechaStr, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha) &&
+                !DateTime.TryParse(fechaStr, out fecha))
             {
                 return null;
             }
@@ -157,6 +183,13 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
 
         private static decimal ParseDecimal(IXLCell cell)
         {
+            if (cell == null || cell.IsEmpty())
+                return 0m;
+
+            // Si es número directo
+            if (cell.DataType == XLDataType.Number)
+                return Convert.ToDecimal(cell.GetDouble());
+
             var value = cell.GetString().Trim();
             if (string.IsNullOrWhiteSpace(value)) return 0m;
 
@@ -166,11 +199,9 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                 .Replace(",", ".")
                 .Trim();
 
-            return decimal.TryParse(
-                value,
-                NumberStyles.Any,
-                CultureInfo.InvariantCulture,
-                out var result) ? result : 0m;
+            return decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var result)
+                ? result
+                : 0m;
         }
     }
 }
