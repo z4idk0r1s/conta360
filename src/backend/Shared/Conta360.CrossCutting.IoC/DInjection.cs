@@ -2,7 +2,6 @@ using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
 using Conta360.Core.Common;
-using Conta360.Core.Interfaces;
 using Conta360.Domain.Interfaces;
 using Conta360.Infrastructure.Excel.Services;
 using Conta360.Infrastructure.PGC.Services;
@@ -14,9 +13,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
 using System.Reflection;
+using Conta360.Infrastructure.PGC.Processing;
+using Conta360.Infrastructure.Sqlite.Repositories;
+using Conta360.Infraestructura.Postgres.Repositories;
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -58,6 +58,8 @@ namespace Conta360.CrossCutting.IoC
                         b => b.MigrationsAssembly(typeof(PostgresDbContext).Assembly.FullName)));
 
                 services.AddScoped<IApplicationDbContext, PostgresDbContext>();
+                services.AddScoped<IPgcAccountRepository, AccountRepositoryPostgres>();
+                services.AddScoped<IUnitOfWork, UnitOfWorkPostgres>();
             }
             else
             {
@@ -66,11 +68,12 @@ namespace Conta360.CrossCutting.IoC
                         b => b.MigrationsAssembly(typeof(SqliteDbContext).Assembly.FullName)));
 
                 services.AddScoped<IApplicationDbContext, SqliteDbContext>();
+                services.AddScoped<IPgcAccountRepository, AccountRepositorySqlite>();
+                services.AddScoped<IUnitOfWork, UnitOfWorkSqlite>();
             }
 
-            // Registro de repositorios y unit of work (ajusta la implementación si es necesario)
-            // services.AddScoped<IPgcAccountRepository, PgcAccountRepository>();
-            // services.AddScoped<IUnitOfWork, UnitOfWork>();
+            // ...otros registros...
+            services.AddScoped<PgcTaxonomyDownloader>(); // Si hace falta (se esta llamando en run init)
 
             return services;
         }

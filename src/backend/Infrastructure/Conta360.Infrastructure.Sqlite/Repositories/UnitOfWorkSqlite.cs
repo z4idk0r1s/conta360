@@ -2,11 +2,11 @@ using Conta360.Application.Interfaces;
 
 namespace Conta360.Infrastructure.Sqlite.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWorkSqlite : IUnitOfWork
     {
         private readonly IApplicationDbContext _context;
 
-        public UnitOfWork(IApplicationDbContext context)
+        public UnitOfWorkSqlite(IApplicationDbContext context)
         {
             _context = context;
         }

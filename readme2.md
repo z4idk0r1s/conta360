@@ -691,7 +691,7 @@ Resumen:
     --------------------------------------------------
 
 
-    C:.
+C:.
 │   .dockerignore
 │   .gitignore
 │   Directory.Build.props
@@ -742,6 +742,8 @@ Resumen:
     │   │   │   │
     │   │   │   ├───DTOs
     │   │   │   │       AccountDto.cs
+    │   │   │   │       PgcAccountDto.cs
+    │   │   │   │       PgcAccountTreeDto.cs
     │   │   │   │
     │   │   │   ├───Features
     │   │   │   │   └───Accounts
@@ -754,6 +756,10 @@ Resumen:
     │   │   │   │               └───Queries
     │   │   │   │                       GetAccountByIdQuery.cs
     │   │   │   │                       GetAccountByIdQueryHandler.cs
+    │   │   │   │                       GetAllPgcAccountsQuery.cs
+    │   │   │   │                       GetAllPgcAccountsQueryHandler.cs
+    │   │   │   │                       GetPgcAccountTreeQuery.cs
+    │   │   │   │                       GetPgcAccountTreeQueryHandler.cs
     │   │   │   │
     │   │   │   ├───Interfaces
     │   │   │   │       IApplicationDbContext.cs
@@ -761,26 +767,30 @@ Resumen:
     │   │   │   │       IFinancialReportingService.cs
     │   │   │   │       IKpiCalculationService.cs
     │   │   │   │       IPGCStructureService.cs
+    │   │   │   │       IPgcTaxonomyService.cs
     │   │   │   │       IUnitOfWork.cs
     │   │   │   │
-    │   │   │   └───Mappings
-    │   │   │           MappingProfile.cs
+    │   │   │   ├───Mappings
+    │   │   │   │       MappingProfile.cs
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           PgcAccountTreeBuilder.cs
     │   │   │
     │   │   ├───Conta360.Core
     │   │   │   │   Conta360.Core.csproj
     │   │   │   │
     │   │   │   ├───Common
     │   │   │   │       Error.cs
-    │   │   │   │       Guard.cs
     │   │   │   │       OperationResult.cs
     │   │   │   │       PgcExtractorOptions.cs
+    │   │   │   │       PgcModelType.cs
+    │   │   │   │       ValidationResult.cs
     │   │   │   │
     │   │   │   └───Interfaces
     │   │   │           ICurrentUserService.cs
     │   │   │           IDateTimeProvider.cs
-    │   │   │           IPgcImporter.cs
-    │   │   │           IPgcProcessor.cs
     │   │   │           IPgcTaxonomyDownloader.cs
+    │   │   │           IPgcTaxonomyValidator.cs
     │   │   │           IValidator.cs
     │   │   │
     │   │   └───Conta360.Domain
@@ -793,7 +803,7 @@ Resumen:
     │   │       │       Transaction.cs
     │   │       │
     │   │       ├───Interfaces
-    │   │       │       IAccountRepository.cs
+    │   │       │       IPgcAccountRepository.cs
     │   │       │       IRepository.cs
     │   │       │
     │   │       └───ValueObjects
@@ -803,9 +813,23 @@ Resumen:
     │   │   ├───Conta360.Infrastructure.Excel
     │   │   │   │   Conta360.Infrastructure.Excel.csproj
     │   │   │   │
+    │   │   │   ├───Configuration
+    │   │   │   │       ExcelSettings.cs
+    │   │   │   │
+    │   │   │   ├───Models
+    │   │   │   │       DetalleDiario.cs
+    │   │   │   │       ResumenFiscalResponse.cs
+    │   │   │   │       TotalesGenerales.cs
+    │   │   │   │
     │   │   │   └───Services
-    │   │   │           ExcelProcessor.cs
-    │   │   │           ServiceRegistrationExcel.cs
+    │   │   │       │   ExcelProcessor.cs
+    │   │   │       │   ServiceRegistrationExcel.cs
+    │   │   │       │
+    │   │   │       ├───Implementation
+    │   │   │       │       ExcelFiscalProcessor.cs
+    │   │   │       │
+    │   │   │       └───Interaces
+    │   │   │               IExcelFiscalProcessor.cs
     │   │   │
     │   │   ├───Conta360.Infrastructure.PGC
     │   │   │   │   Conta360.Infrastructure.PGC.csproj
@@ -820,12 +844,12 @@ Resumen:
     │   │   │   │       PGCDataExtractor.cs
     │   │   │   │
     │   │   │   ├───Processing
-    │   │   │   │       PgcImporter.cs
-    │   │   │   │       PgcProcessor.cs
     │   │   │   │       PgcTaxonomyBuilder.cs
     │   │   │   │       PgcTaxonomyDownloader.cs
+    │   │   │   │       PgcTaxonomyValidator.cs
     │   │   │   │
     │   │   │   └───Services
+    │   │   │           PcgTaxonomyService.cs
     │   │   │           ServiceRegistrationPcg.cs
     │   │   │
     │   │   ├───Conta360.Infrastructure.Postgres
@@ -835,8 +859,8 @@ Resumen:
     │   │   │   │       PostgresDbContext.cs
     │   │   │   │
     │   │   │   ├───Repositories
-    │   │   │   │       AccountRepository.cs
-    │   │   │   │       UnitOfWork.cs
+    │   │   │   │       AccountRepositoryPostgres.cs
+    │   │   │   │       UnitOfWorkPostgres.cs
     │   │   │   │
     │   │   │   └───Services
     │   │   │           ServiceRegistrationPostgres.cs
@@ -854,8 +878,8 @@ Resumen:
     │   │       │       SqliteDbContext.cs
     │   │       │
     │   │       ├───Repositories
-    │   │       │       AccountRepository.cs
-    │   │       │       UnitOfWork.cs
+    │   │       │       AccountRepositorySqlite.cs
+    │   │       │       UnitOfWorkSqlite.cs
     │   │       │
     │   │       └───Services
     │   │               ServiceRegistrationSqlite.cs
@@ -871,6 +895,7 @@ Resumen:
     │   │       │
     │   │       ├───Controllers
     │   │       │       AccountsController.cs
+    │   │       │       PgcAccountsController.cs
     │   │       │
     │   │       ├───Data
     │   │       │   └───PGC
@@ -892,7 +917,6 @@ Resumen:
             │   .gitignore
             │   next-env.d.ts
             │   next.config.js
-            │   package-lock.json
             │   package.json
             │   postcss.config.js
             │   tailwind.config.ts
