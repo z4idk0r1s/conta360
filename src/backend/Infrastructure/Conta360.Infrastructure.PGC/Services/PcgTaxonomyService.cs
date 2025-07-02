@@ -1,4 +1,3 @@
-/*
 using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Application.Interfaces;
 using Microsoft.Extensions.Options;
@@ -35,4 +34,3 @@ namespace Conta360.Infrastructure.PGC.Services
         }
     }
 }
-*/

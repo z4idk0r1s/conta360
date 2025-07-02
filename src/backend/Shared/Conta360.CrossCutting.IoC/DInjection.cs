@@ -5,6 +5,7 @@ using Conta360.Core.Common;
 using Conta360.Core.Interfaces;
 using Conta360.Domain.Interfaces;
 using Conta360.Infrastructure.Excel.Services;
+using Conta360.Infrastructure.PGC.Services;
 using Conta360.Infrastructure.Postgres;
 using Conta360.Infrastructure.Postgres.Contexts;
 using Conta360.Infrastructure.Sqlite.Contexts;
@@ -14,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using System.Collections.Generic;
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -30,9 +30,6 @@ namespace Conta360.CrossCutting.IoC
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
 
-            // Configuración global
-            services.Configure<PgcExtractorOptions>(configuration.GetSection("ExcelSettings"));
-
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
             services.AddValidatorsFromAssembly(typeof(MappingProfile).Assembly);
 
@@ -41,18 +38,17 @@ namespace Conta360.CrossCutting.IoC
 
         public static IServiceCollection AddConta360Infrastructure(this IServiceCollection services, IConfiguration configuration, string dbProvider = "Sqlite")
         {
-            // Configuración global
+            // Configuración global para PGC
             services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
 
-            // Base repositorios
-            services.AddScoped<IPgcAccountRepository, IPgcAccountRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            // Infraestructuras específicas (uso de métodos modulares)
+            // Infraestructura Excel
             services.AddExcelFiscalServices(configuration);
             services.AddExcelInfrastructure(configuration);
 
-            // Base de datos
+            // Infraestructura PGC (descarga, validación, builder, service)
+            services.AddPGCInfrastructure(configuration);
+
+            // Base de datos y Unit of Work
             if (dbProvider == "Postgres")
             {
                 services.AddDbContext<PostgresDbContext>(options =>
@@ -69,6 +65,10 @@ namespace Conta360.CrossCutting.IoC
 
                 services.AddScoped<IApplicationDbContext, SqliteDbContext>();
             }
+
+            // Registro de repositorios y unit of work (ajusta la implementación si es necesario)
+            // services.AddScoped<IPgcAccountRepository, PgcAccountRepository>();
+            // services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
