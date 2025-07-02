@@ -16,7 +16,7 @@ using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Infrastructure.Sqlite.Repositories;
-using Conta360.Infraestructura.Postgres.Repositories;
+using Conta360.Infrastructure.Postgres.Repositories;
 
 namespace Conta360.CrossCutting.IoC
 {

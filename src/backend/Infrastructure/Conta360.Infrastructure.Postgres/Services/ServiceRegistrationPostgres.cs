@@ -1,8 +1,8 @@
-/*using Conta360.Application.Interfaces;
+using Conta360.Application.Interfaces;
 using Conta360.Infrastructure.Postgres.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.DependencyInjection.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
@@ -22,4 +22,3 @@ namespace Conta360.Infrastructure.Postgres.Services
         }
     }
 }
-*/
