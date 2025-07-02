@@ -5,9 +5,9 @@ namespace Conta360.Core.Common
     /// </summary>
     public class PgcExtractorOptions
     {
-        public string TaxonomyZipUrl { get; set; }
-        public string ZipFileName { get; set; }
-        public string ExtractDirectory { get; set; }
+        public string? TaxonomyZipUrl { get; set; }
+        public string? ZipFileName { get; set; }
+        public string? ExtractDirectory { get; set; }
         public bool EnableStartupDownload { get; set; }
     }
 }

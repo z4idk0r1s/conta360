@@ -3,6 +3,9 @@ using System.Xml;
 using System.Xml.Schema;
 using Conta360.Core.Common;
 using Conta360.Core.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 
 namespace Conta360.Infrastructure.PGC.Processing;

@@ -12,8 +12,10 @@ using Conta360.Infrastructure.Sqlite.Contexts;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 namespace Conta360.CrossCutting.IoC
