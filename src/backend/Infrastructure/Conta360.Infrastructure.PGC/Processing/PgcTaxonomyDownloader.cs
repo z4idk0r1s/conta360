@@ -6,8 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Conta360.Core.Interfaces;
 using Conta360.Core.Common;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace Conta360.Infrastructure.PGC.Processing
 {
@@ -29,9 +31,22 @@ namespace Conta360.Infrastructure.PGC.Processing
 
         public async Task DownloadAndExtractAsync(CancellationToken cancellationToken = default)
         {
+            _logger.LogInformation(
+                "[PGCTaxonomyDownloader][DIAGNOSTICO] Opciones cargadas: TaxonomyZipUrl={TaxonomyZipUrl}, ZipFileName={ZipFileName}, ExtractDirectory={ExtractDirectory}, EnableStartupDownload={EnableStartupDownload}",
+                _options.TaxonomyZipUrl, _options.ZipFileName, _options.ExtractDirectory, _options.EnableStartupDownload);
+
+            // Validación robusta de configuración
+            if (string.IsNullOrWhiteSpace(_options.ExtractDirectory))
+                throw new ArgumentException("ExtractDirectory no puede ser null o vacío en la configuración.");
+            if (string.IsNullOrWhiteSpace(_options.ZipFileName))
+                throw new ArgumentException("ZipFileName no puede ser null o vacío en la configuración.");
+            if (string.IsNullOrWhiteSpace(_options.TaxonomyZipUrl))
+                throw new ArgumentException("TaxonomyZipUrl no puede ser null o vacío en la configuración.");
+
             var destDir = _options.ExtractDirectory;
-            Directory.CreateDirectory(destDir);
-            var zipPath = Path.Combine(destDir, _options.ZipFileName);
+            Directory.CreateDirectory(destDir!); // Ya está validado
+
+            var zipPath = Path.Combine(destDir!, _options.ZipFileName!);
 
             _logger.LogInformation(
                 "[PGCTaxonomyDownloader] Descargando taxonomía desde {Url}",

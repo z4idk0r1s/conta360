@@ -6,6 +6,10 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Conta360.Presentation.Api.Models;
 using Conta360.Application.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +33,6 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services
     .AddConta360Application(builder.Configuration)
     .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite"); // o "Postgres"
-    //.AddPGCTaxonomyServices(); // <-- Asegúrate de registrar tus servicios PGC
 
 var app = builder.Build();
 
