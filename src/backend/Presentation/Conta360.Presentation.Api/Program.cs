@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Registro de dependencias
 builder.Services
-    .AddConta360Application()
+    .AddConta360Application(builder.Configuration)
     .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite"); // o "Postgres"
     //.AddPGCTaxonomyServices(); // <-- Asegúrate de registrar tus servicios PGC
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
@@ -18,190 +19,213 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
         private readonly ExcelSettings _settings;
         private readonly ILogger<ExcelFiscalProcessor> _logger;
 
+        // Constantes de columnas (evita números mágicos)
+        private const int ColBaseImponible4 = 8;
+        private const int ColCuotaIva4 = 9;
+        private const int ColBaseImponible10 = 11;
+        private const int ColCuotaIva10 = 12;
+        private const int ColBaseImponible21 = 14;
+        private const int ColCuotaIva21 = 15;
+        private const int ColNombreTotal = 1;
+
         public ExcelFiscalProcessor(
             IOptions<ExcelSettings> settings,
             ILogger<ExcelFiscalProcessor> logger)
         {
-            _settings = settings.Value ?? throw new ArgumentNullException(nameof(settings));
+            _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Task<ResumenFiscalResponse> ProcesarResumenFiscalAsync(
-            CancellationToken cancellationToken = default)
+        public async Task<ResumenFiscalResponse> ProcesarResumenFiscalAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                using var workbook = new XLWorkbook(_settings.RutaExcel);
-                var worksheet = workbook.Worksheet(_settings.HojaResumen);
-
-                var (empresa, nombreComercial, fechaDesde, fechaHasta) =
-                    ExtraerDatosCabecera(worksheet);
-
-                var detallesDiarios = new List<DetalleDiario>();
-                var currentRow = _settings.FilaInicioResumen;
-
-                while (!cancellationToken.IsCancellationRequested)
+                return await Task.Run(() =>
                 {
-                    var firstCell = worksheet.Cell(currentRow, 1).GetString().Trim();
+                    using var workbook = new XLWorkbook(_settings.RutaExcel);
+                    var worksheet = workbook.Worksheet(_settings.HojaResumen)
+                                     ?? throw new InvalidOperationException($"No se encontró la hoja: {_settings.HojaResumen}");
 
-                    // Si llegamos a la fila de totales
-                    if (string.Equals(firstCell, "Total", StringComparison.OrdinalIgnoreCase))
+                    var (empresa, nombreComercial, fechaDesde, fechaHasta) = ExtraerDatosCabecera(worksheet);
+
+                    var detallesDiarios = new List<DetalleDiario>();
+                    int currentRow = _settings.FilaInicioResumen;
+                    int ultimaFila = worksheet.LastRowUsed()?.RowNumber() ?? 10000;
+
+                    while (currentRow <= ultimaFila && !cancellationToken.IsCancellationRequested)
                     {
-                        var totalesGenerales = ExtraerTotalesGenerales(worksheet.Row(currentRow));
+                        var celdaTexto = worksheet.Cell(currentRow, ColNombreTotal).GetString().Trim();
 
-                        return Task.FromResult(new ResumenFiscalResponse
+                        // Total general
+                        if (string.Equals(celdaTexto, "Total", StringComparison.OrdinalIgnoreCase))
                         {
-                            FechaInforme = DateTime.UtcNow,
-                            FechaDesde = fechaDesde,
-                            FechaHasta = fechaHasta,
-                            Usuario = Environment.UserName,
-                            Empresa = empresa,
-                            NombreComercial = nombreComercial,
-                            Totales = totalesGenerales,
-                            DetallesPorDia = detallesDiarios
-                                .OrderBy(d => d.Fecha)
-                                .ToList()
-                        });
-                    }
-
-                    // Si es una línea de total diario
-                    if (firstCell.StartsWith("Total", StringComparison.OrdinalIgnoreCase) &&
-                        firstCell.Contains("(") &&
-                        firstCell.Contains(")"))
-                    {
-                        var detalleDiario = ExtraerDetalleDiario(worksheet.Row(currentRow));
-                        if (detalleDiario != null)
-                        {
-                            detallesDiarios.Add(detalleDiario);
+                            var totales = ExtraerTotalesGenerales(worksheet.Row(currentRow));
+                            return new ResumenFiscalResponse
+                            {
+                                FechaInforme = DateTime.UtcNow,
+                                FechaDesde = fechaDesde,
+                                FechaHasta = fechaHasta,
+                                Usuario = Environment.UserName,
+                                Empresa = empresa,
+                                NombreComercial = nombreComercial,
+                                Totales = totales,
+                                DetallesPorDia = detallesDiarios.OrderBy(d => d.Fecha).ToList()
+                            };
                         }
+
+                        // Totales diarios
+                        if (EsLineaTotalDiario(celdaTexto))
+                        {
+                            var detalle = ExtraerDetalleDiario(worksheet.Row(currentRow));
+                            if (detalle != null)
+                                detallesDiarios.Add(detalle);
+                        }
+
+                        currentRow++;
                     }
 
-                    currentRow++;
-                }
-
-                throw new InvalidOperationException(
-                    "No se encontró la fila de totales en el archivo Excel.");
+                    throw new InvalidOperationException("No se encontró la fila de totales generales en el Excel.");
+                }, cancellationToken);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex,
-                    "Error procesando archivo Excel: {Path}",
-                    _settings.RutaExcel);
-                throw;
+                _logger.LogError(ex, "Error procesando archivo Excel: {Ruta}", _settings.RutaExcel);
+                throw new ApplicationException("Error crítico al procesar el resumen fiscal. Detalles en el log.", ex);
             }
         }
 
         private static (string empresa, string nombreComercial, DateTime fechaDesde, DateTime fechaHasta) ExtraerDatosCabecera(IXLWorksheet worksheet)
         {
-            var empresa = worksheet.Cell("B4").GetString().Trim();
-            var nombreComercial = worksheet.Cell("B5").GetString().Trim();
+            try
+            {
+                var empresa = worksheet.Cell("B4").GetString().Trim();
+                var nombreComercial = worksheet.Cell("B5").GetString().Trim();
+                var fechaDesde = LeerFechaSegura(worksheet.Cell("G4"));
+                var fechaHasta = LeerFechaSegura(worksheet.Cell("G5"));
 
-            var fechaDesde = LeerFechaRobusta(worksheet.Cell("G4"));
-            var fechaHasta = LeerFechaRobusta(worksheet.Cell("G5"));
+                if (string.IsNullOrWhiteSpace(empresa) || string.IsNullOrWhiteSpace(nombreComercial))
+                    throw new InvalidOperationException("Los datos de empresa o nombre comercial están vacíos.");
 
-            return (empresa, nombreComercial, fechaDesde, fechaHasta);
+                return (empresa, nombreComercial, fechaDesde, fechaHasta);
+            }
+            catch (Exception ex)
+            {
+                throw new FormatException("Error leyendo cabecera del Excel.", ex);
+            }
         }
 
-        private static DateTime LeerFechaRobusta(IXLCell cell)
+        private static DateTime LeerFechaSegura(IXLCell cell)
         {
             if (cell == null || cell.IsEmpty())
                 throw new InvalidOperationException("La celda de fecha está vacía.");
 
-            if (cell.DataType == XLDataType.DateTime)
-                return cell.GetDateTime();
-
-            // Serial de Excel (número)
-            if (cell.DataType == XLDataType.Number)
+            try
             {
-                try
-                {
+                if (cell.DataType == XLDataType.DateTime)
                     return cell.GetDateTime();
-                }
-                catch
-                {
-                    // Fallback si no es serial de fecha
-                }
+
+                if (cell.DataType == XLDataType.Number)
+                    return DateTime.FromOADate(cell.GetDouble());
+
+                var valorTexto = cell.GetString().Trim();
+                var formatos = new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "M/d/yyyy" };
+
+                if (DateTime.TryParseExact(valorTexto, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fecha))
+                    return fecha;
+
+                if (DateTime.TryParse(valorTexto, out fecha))
+                    return fecha;
+
+                throw new FormatException($"Formato de fecha no reconocido: '{valorTexto}'");
             }
+            catch (Exception ex)
+            {
+                throw new FormatException($"Error interpretando la fecha en la celda: {cell.Address}", ex);
+            }
+        }
 
-            var fechaStr = cell.GetString()?.Trim();
-            if (string.IsNullOrWhiteSpace(fechaStr))
-                throw new InvalidOperationException("La celda de fecha contiene solo espacios o está vacía.");
+        private static bool EsLineaTotalDiario(string textoCelda)
+        {
+            if (string.IsNullOrWhiteSpace(textoCelda))
+                return false;
 
-            DateTime fecha;
-            var formatos = new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd", "M/d/yyyy", "dd-MM-yyyy" };
-
-            if (DateTime.TryParseExact(fechaStr, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha))
-                return fecha;
-
-            if (DateTime.TryParse(fechaStr, out fecha))
-                return fecha;
-
-            throw new FormatException($"El valor '{fechaStr}' no es reconocible como fecha.");
+            var pattern = @"^Total\s*\(\s*\d{1,2}[/\-]\d{1,2}[/\-]\d{2,4}\s*\)";
+            return Regex.IsMatch(textoCelda, pattern, RegexOptions.IgnoreCase);
         }
 
         private static DetalleDiario? ExtraerDetalleDiario(IXLRow row)
         {
-            var cellValue = row.Cell(1).GetString();
-            if (string.IsNullOrWhiteSpace(cellValue) || !cellValue.Contains("(") || !cellValue.Contains(")"))
-                return null;
+            try
+            {
+                var texto = row.Cell(ColNombreTotal).GetString();
+                var match = Regex.Match(texto, @"\(([^)]+)\)");
 
-            var fechaStr = cellValue.Split('(', ')')[1].Trim();
+                if (!match.Success)
+                    return null;
 
-            DateTime fecha;
-            var formatos = new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd", "M/d/yyyy", "dd-MM-yyyy" };
+                var fechaStr = match.Groups[1].Value.Trim();
+                var formatos = new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "M/d/yyyy" };
 
-            if (!DateTime.TryParseExact(fechaStr, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha) &&
-                !DateTime.TryParse(fechaStr, out fecha))
+                if (!DateTime.TryParseExact(fechaStr, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out var fecha) &&
+                    !DateTime.TryParse(fechaStr, out fecha))
+                {
+                    return null;
+                }
+
+                return new DetalleDiario
+                {
+                    Fecha = fecha,
+                    BaseImponible4 = ParseDecimalSeguro(row.Cell(ColBaseImponible4)),
+                    CuotaIva4 = ParseDecimalSeguro(row.Cell(ColCuotaIva4)),
+                    BaseImponible10 = ParseDecimalSeguro(row.Cell(ColBaseImponible10)),
+                    CuotaIva10 = ParseDecimalSeguro(row.Cell(ColCuotaIva10)),
+                    BaseImponible21 = ParseDecimalSeguro(row.Cell(ColBaseImponible21)),
+                    CuotaIva21 = ParseDecimalSeguro(row.Cell(ColCuotaIva21))
+                };
+            }
+            catch
             {
                 return null;
             }
-
-            return new DetalleDiario
-            {
-                Fecha = fecha,
-                BaseImponible4 = ParseDecimal(row.Cell(8)),
-                CuotaIva4 = ParseDecimal(row.Cell(9)),
-                BaseImponible10 = ParseDecimal(row.Cell(11)),
-                CuotaIva10 = ParseDecimal(row.Cell(12)),
-                BaseImponible21 = ParseDecimal(row.Cell(14)),
-                CuotaIva21 = ParseDecimal(row.Cell(15))
-            };
         }
 
         private static TotalesGenerales ExtraerTotalesGenerales(IXLRow row)
         {
             return new TotalesGenerales
             {
-                BaseImponible4 = ParseDecimal(row.Cell(8)),
-                CuotaIva4 = ParseDecimal(row.Cell(9)),
-                BaseImponible10 = ParseDecimal(row.Cell(11)),
-                CuotaIva10 = ParseDecimal(row.Cell(12)),
-                BaseImponible21 = ParseDecimal(row.Cell(14)),
-                CuotaIva21 = ParseDecimal(row.Cell(15))
+                BaseImponible4 = ParseDecimalSeguro(row.Cell(ColBaseImponible4)),
+                CuotaIva4 = ParseDecimalSeguro(row.Cell(ColCuotaIva4)),
+                BaseImponible10 = ParseDecimalSeguro(row.Cell(ColBaseImponible10)),
+                CuotaIva10 = ParseDecimalSeguro(row.Cell(ColCuotaIva10)),
+                BaseImponible21 = ParseDecimalSeguro(row.Cell(ColBaseImponible21)),
+                CuotaIva21 = ParseDecimalSeguro(row.Cell(ColCuotaIva21))
             };
         }
 
-        private static decimal ParseDecimal(IXLCell cell)
+        private static decimal ParseDecimalSeguro(IXLCell cell)
         {
-            if (cell == null || cell.IsEmpty())
+            try
+            {
+                if (cell == null || cell.IsEmpty())
+                    return 0m;
+
+                if (cell.DataType == XLDataType.Number)
+                    return Convert.ToDecimal(cell.GetDouble());
+
+                var valor = cell.GetString()
+                    .Replace("€", "")
+                    .Replace(".", "")
+                    .Replace(",", ".")
+                    .Trim();
+
+                return decimal.TryParse(valor, NumberStyles.Any, CultureInfo.InvariantCulture, out var resultado)
+                    ? resultado
+                    : 0m;
+            }
+            catch
+            {
                 return 0m;
-
-            // Si es número directo
-            if (cell.DataType == XLDataType.Number)
-                return Convert.ToDecimal(cell.GetDouble());
-
-            var value = cell.GetString().Trim();
-            if (string.IsNullOrWhiteSpace(value)) return 0m;
-
-            value = value
-                .Replace("€", "")
-                .Replace(".", "")
-                .Replace(",", ".")
-                .Trim();
-
-            return decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var result)
-                ? result
-                : 0m;
+            }
         }
     }
 }

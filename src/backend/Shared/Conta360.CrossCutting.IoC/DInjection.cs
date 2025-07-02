@@ -20,7 +20,7 @@ namespace Conta360.CrossCutting.IoC
 {
     public static class DInjection
     {
-        public static IServiceCollection AddConta360Application(this IServiceCollection services)
+        public static IServiceCollection AddConta360Application(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(cfg =>
             {
@@ -29,6 +29,9 @@ namespace Conta360.CrossCutting.IoC
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
+
+            // Configuración global
+            services.Configure<PgcExtractorOptions>(configuration.GetSection("ExcelSettings"));
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
             services.AddValidatorsFromAssembly(typeof(MappingProfile).Assembly);
