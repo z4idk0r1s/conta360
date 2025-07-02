@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount;
-using Conta360.Application.Features.Accounts.Queries.GetAccountById;
+using Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries;
 using Conta360.Presentation.Api.Models;
 using Conta360.Core.Common;
 

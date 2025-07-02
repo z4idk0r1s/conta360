@@ -1,4 +1,4 @@
-using Conta360.Application.Interfaces;
+/*using Conta360.Application.Interfaces;
 using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Conta360.Infrastructure.Sqlite.Repositories
 {
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : IPgcAccountRepository
     {
         private readonly IApplicationDbContext _context;
 
@@ -56,3 +56,4 @@ namespace Conta360.Infrastructure.Sqlite.Repositories
         }
     }
 }
+*/

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Conta360.Infrastructure.Excel.Services.Interfaces;
 using Conta360.Infrastructure.Excel.Services.Implementation;
+using Conta360.Infrastructure.Excel.Configuration;
 
 namespace Conta360.Infrastructure.Excel.Services
 {

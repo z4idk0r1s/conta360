@@ -1,12 +1,11 @@
-using Microsoft.EntityFrameworkCore;
+/*using Conta360.Application.Interfaces;
 using Conta360.Domain.Entities;
-using System.Linq.Expressions;
 using Conta360.Domain.Interfaces;
-using Conta360.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Conta360.Infrastructure.Postgres.Repositories
 {
-    public class AccountRepository : IRepository
+    public class AccountRepository : IPgcAccountRepository
     {
         private readonly IApplicationDbContext _context;
 
@@ -15,44 +14,78 @@ namespace Conta360.Infrastructure.Postgres.Repositories
             _context = context;
         }
 
-        public async Task<Account?> GetByIdAsync(Guid id)
+        public async Task<PgcAccount?> GetByIdAsync(Guid id)
         {
-            return await _context.Accounts.FindAsync(id);
+            return await _context.PgcAccounts.FindAsync(id);
         }
 
-        public async Task<IReadOnlyList<Account>> GetAllAsync()
+        public async Task<IReadOnlyList<PgcAccount>> GetAllAsync()
         {
-            return await _context.Accounts.ToListAsync();
+            return await _context.PgcAccounts.ToListAsync();
         }
 
-        public async Task<IReadOnlyList<Account>> GetAsync(Expression<Func<Account, bool>> predicate)
+        public async Task<IReadOnlyList<PgcAccount>> GetAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
         {
-            return await _context.Accounts.Where(predicate).ToListAsync();
+            return await _context.PgcAccounts.Where(predicate).ToListAsync();
         }
 
-        public async Task AddAsync(Account entity)
+        public async Task AddAsync(PgcAccount entity)
         {
-            await _context.Accounts.AddAsync(entity);
+            await _context.PgcAccounts.AddAsync(entity);
         }
 
-        public void Update(Account entity)
+        public void Update(PgcAccount entity)
         {
-            _context.Accounts.Update(entity);
+            _context.PgcAccounts.Update(entity);
         }
 
-        public void Delete(Account entity)
+        public void Delete(PgcAccount entity)
         {
-            _context.Accounts.Remove(entity);
+            _context.PgcAccounts.Remove(entity);
         }
 
-        public async Task<int> CountAsync(Expression<Func<Account, bool>> predicate)
+        public async Task<int> CountAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
         {
-            return await _context.Accounts.CountAsync(predicate);
+            return await _context.PgcAccounts.CountAsync(predicate);
         }
 
-        public async Task<bool> ExistsAsync(Expression<Func<Account, bool>> predicate)
+        public async Task<bool> ExistsAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
         {
-            return await _context.Accounts.AnyAsync(predicate);
+            return await _context.PgcAccounts.AnyAsync(predicate);
+        }
+
+        public async Task<List<PgcAccount>> GetTreeStructureAsync()
+        {
+            var allAccounts = await _context.PgcAccounts.ToListAsync();
+            return BuildTree(allAccounts, null);
+        }
+
+        public async Task<List<PgcAccount>> GetByParentCodeAsync(string? parentCode)
+        {
+            return await _context.PgcAccounts
+                .Where(a => a.ParentCode == parentCode)
+                .ToListAsync();
+        }
+
+        public async Task<List<PgcAccount>> GetRootAccountsAsync()
+        {
+            return await _context.PgcAccounts
+                .Where(a => string.IsNullOrEmpty(a.ParentCode))
+                .ToListAsync();
+        }
+
+        // Helper interno para construir jerarquía recursiva
+        private List<PgcAccount> BuildTree(List<PgcAccount> allAccounts, string? parentCode)
+        {
+            return allAccounts
+                .Where(a => a.ParentCode == parentCode)
+                .Select(a =>
+                {
+                    a.Children = BuildTree(allAccounts, a.Code);
+                    return a;
+                })
+                .ToList();
         }
     }
 }
+*/

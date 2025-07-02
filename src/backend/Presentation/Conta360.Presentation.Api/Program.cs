@@ -1,11 +1,11 @@
 using Conta360.Application.Features.Accounts.Commands.CreateAccount;
-using Conta360.Application.Features.Accounts.Queries.GetAccountById;
+using Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries;
 using Conta360.CrossCutting.IoC;
-using Conta360.Infrastructure.PGC.Services; // 
 using MediatR;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Conta360.Presentation.Api.Models;
+using Conta360.Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,9 +27,9 @@ builder.Services.AddSwaggerGen(c =>
 
 // Registro de dependencias
 builder.Services
-    .AddConta360Application()
-    .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite") // o "Postgres"
-    .AddPGCTaxonomyServices(); // <-- Asegúrate de registrar tus servicios PGC
+    .AddConta360Application(builder.Configuration)
+    .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite"); // o "Postgres"
+    //.AddPGCTaxonomyServices(); // <-- Asegúrate de registrar tus servicios PGC
 
 var app = builder.Build();
 
