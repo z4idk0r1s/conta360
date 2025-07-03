@@ -28,9 +28,37 @@ namespace Conta360.Infrastructure.Postgres.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Claves primarias
             modelBuilder.Entity<Account>().HasKey(a => a.Id);
             modelBuilder.Entity<Transact>().HasKey(t => t.Id);
-            // Configuración adicional (índices, relaciones, etc.)
+            modelBuilder.Entity<PgcAccount>().HasKey(p => p.Id);
+
+            // Índice único para el código de cuenta PGC
+            modelBuilder.Entity<PgcAccount>()
+                .HasIndex(a => a.Code)
+                .IsUnique();
+
+            // Relación padre-hijo para cuentas PGC
+            modelBuilder.Entity<PgcAccount>()
+                .HasMany(p => p.Children)
+                .WithOne(p => p.Parent)
+                .HasForeignKey(p => p.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación Transact → PgcAccount
+            modelBuilder.Entity<Transact>()
+                .HasOne(t => t.PgcAccount)
+                .WithMany()
+                .HasForeignKey(t => t.PgcAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Relación Transact → Account (¡esto es lo que evita el warning!)
+            modelBuilder.Entity<Transact>()
+                .HasOne(t => t.Account)
+                .WithMany(a => a.Transactions)
+                .HasForeignKey(t => t.AccountId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

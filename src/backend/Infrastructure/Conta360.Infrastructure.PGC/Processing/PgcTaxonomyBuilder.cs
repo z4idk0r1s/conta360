@@ -30,11 +30,11 @@ namespace Conta360.Infrastructure.PGC.Processing
             var codes = ParseCodesFromXsd(xsdPath);
             var labels = ParseLabels(labelPath);
             var hierarchy = ParseHierarchy(presentationPath);
-
-            // Calcula nivel (profundidad) de cada código usando el árbol de relaciones
             var levels = CalculateLevelsFromHierarchy(hierarchy);
 
             var accounts = new List<PgcAccount>();
+
+            // Paso 1: Crear cuentas con Id asignado
             foreach (var code in codes)
             {
                 var name = labels.TryGetValue(code, out var label) ? label : code;
@@ -43,18 +43,35 @@ namespace Conta360.Infrastructure.PGC.Processing
 
                 accounts.Add(new PgcAccount
                 {
+                    Id = Guid.NewGuid(),
                     Code = code,
                     Name = name,
                     ParentCode = parentCode,
-                    Level = level
+                    Level = level,
+                    IsMovable = level >= 3
                 });
             }
 
+            // Paso 2: Asignar ParentId usando ParentCode
             foreach (var account in accounts)
+            {
+                if (!string.IsNullOrEmpty(account.ParentCode))
+                {
+                    var parent = accounts.FirstOrDefault(a => a.Code == account.ParentCode);
+                    if (parent != null)
+                        account.ParentId = parent.Id;
+                }
+            }
+
+            // Paso 3: Persistir en BD
+            foreach (var account in accounts)
+            {
                 await _accountRepository.AddAsync(account);
+            }
 
             return accounts;
         }
+
 
         private List<string> ParseCodesFromXsd(string xsdPath)
         {

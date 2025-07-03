@@ -6,10 +6,9 @@ namespace Conta360.Domain.Entities
 {
     public class Transact : BaseEntity
     {
+        public Guid AccountId { get; set; } 
         public Account? Account { get; set; }
         
-        public int AccountId { get; set; }
-
         [Required]
         [MaxLength(500)]
         public string? Description { get; set; }
