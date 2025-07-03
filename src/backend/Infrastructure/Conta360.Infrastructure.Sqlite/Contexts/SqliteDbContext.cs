@@ -21,7 +21,6 @@ namespace Conta360.Infrastructure.Sqlite.Contexts
         public DbSet<Transact> Transactions { get; set; } = null!;
         public DbSet<PgcAccount> PgcAccounts { get; set; } = null!;
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,7 +44,12 @@ namespace Conta360.Infrastructure.Sqlite.Contexts
                 .HasForeignKey(t => t.PgcAccountId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // (Opcional) Configuraciones adicionales para Account, Transaction…
+            // Relación Transaction → Account
+            modelBuilder.Entity<Transact>()
+                .HasOne(t => t.Account)
+                .WithMany(a => a.Transactions)
+                .HasForeignKey(t => t.AccountId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

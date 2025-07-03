@@ -18,7 +18,7 @@ namespace Conta360.Domain.Entities
         public DateTime Date { get; set; }
 
         [Required]
-        public int PgcAccountId { get; set; }
+        public Guid PgcAccountId { get; set; }
 
         [ForeignKey("PgcAccountId")]
         public PgcAccount? PgcAccount { get; set; }
