@@ -11,6 +11,5 @@
     <PackageReference Include="MediatR" />
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="FluentValidation" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 </Project>

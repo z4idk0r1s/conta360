@@ -5,11 +5,8 @@ using MediatR;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Conta360.Presentation.Api.Models;
-using Conta360.Application.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
+using Conta360.Application.Interfaces; // Necesario para IApplicationDbContext
+using Microsoft.EntityFrameworkCore;    // Necesario para Database.Migrate()
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,14 +26,55 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Conta360 API", Version = "v1" });
 });
 
-// Registro de dependencias
+// Registro de dependencias de la aplicación e infraestructura
 builder.Services
     .AddConta360Application(builder.Configuration)
     .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite"); // o "Postgres"
 
 var app = builder.Build();
 
+// --- INICIO: Gestión de Migraciones de EF Core (Condicional) ---
+// La migración automática se ejecuta si:
+// 1. El entorno es 'Development'.
+// O
+// 2. La variable de configuración 'EFCORE_AUTOMIGRATE' está explícitamente establecida a 'true'.
+// Esto asegura migraciones automáticas en desarrollo y control manual en producción.
+var autoMigrateEnabled = builder.Configuration.GetValue<bool>("EFCORE_AUTOMIGRATE", false);
+
+if (app.Environment.IsDevelopment() || autoMigrateEnabled)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        try
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>() as DbContext;
+
+            if (dbContext == null)
+            {
+                app.Logger.LogCritical("CRÍTICO: IApplicationDbContext no pudo ser resuelto como DbContext para migraciones.");
+                throw new InvalidOperationException("No se pudo obtener el DbContext para aplicar migraciones.");
+            }
+
+            dbContext.Database.Migrate();
+            app.Logger.LogInformation("✔️ Migraciones de EF Core aplicadas correctamente.");
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "❌ ERROR FATAL: Fallo al aplicar las migraciones de EF Core.");
+            // En cualquier entorno, la aplicación NO debe continuar si las migraciones fallan.
+            throw; // Provoca que el proceso de la API termine inmediatamente.
+        }
+    }
+}
+else
+{
+    app.Logger.LogInformation("ℹ️ Migraciones automáticas de EF Core deshabilitadas. Se espera migración externa (CI/CD).");
+}
+// --- FIN: Gestión de Migraciones de EF Core ---
+
+
 // ✅ Pre-carga de taxonomía PGC con la nueva arquitectura
+// Este paso se ejecuta AHORA después de que las migraciones aseguren que la BD está lista.
 using (var scope = app.Services.CreateScope())
 {
     var pgcService = scope.ServiceProvider.GetRequiredService<IPgcTaxonomyService>();

@@ -1,23 +1,25 @@
 using Conta360.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Conta360.Application.Interfaces;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Conta360.Infrastructure.Sqlite.Contexts
 {
     /// <summary>
-    /// Implementación de IApplicationDbContext usando SQLite.
+    /// Implementación de IApplicationDbContext usando SQLite y respetando la exposición de DbSet.
     /// </summary>
     public class SqliteDbContext : DbContext, IApplicationDbContext
     {
-        public SqliteDbContext(DbContextOptions<SqliteDbContext> options)
-            : base(options)
-        {
-        }
+        public SqliteDbContext(DbContextOptions<SqliteDbContext> options) : base(options) { }
 
-        // Estos miembros deben existir para cumplir IApplicationDbContext:
-        public DbSet<PgcAccount> PgcAccounts { get; set; }
-        public DbSet<Transact> Transactions { get; set; }
-        public DbSet<Account> Accounts { get; set; }
+        IQueryable<PgcAccount> IApplicationDbContext.PgcAccounts => PgcAccounts;
+        IQueryable<Transact> IApplicationDbContext.Transactions => Transactions;
+        IQueryable<Account> IApplicationDbContext.Accounts => Accounts;
+
+        public DbSet<Account> Accounts { get; set; } = null!;
+        public DbSet<Transact> Transactions { get; set; } = null!;
+        public DbSet<PgcAccount> PgcAccounts { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,11 +44,17 @@ namespace Conta360.Infrastructure.Sqlite.Contexts
                 .HasForeignKey(t => t.PgcAccountId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // (Opcional) Configuraciones adicionales para Account, Transaction….
+            // Relación Transaction → Account
+            modelBuilder.Entity<Transact>()
+                .HasOne(t => t.Account)
+                .WithMany(a => a.Transactions)
+                .HasForeignKey(t => t.AccountId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            // Puedes agregar lógica extra aquí si necesitas auditar cambios, etc.
             return base.SaveChangesAsync(cancellationToken);
         }
     }

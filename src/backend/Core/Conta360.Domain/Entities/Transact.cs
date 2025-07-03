@@ -6,10 +6,9 @@ namespace Conta360.Domain.Entities
 {
     public class Transact : BaseEntity
     {
+        public Guid AccountId { get; set; } 
         public Account? Account { get; set; }
         
-        public int AccountId { get; set; }
-
         [Required]
         [MaxLength(500)]
         public string? Description { get; set; }
@@ -18,7 +17,7 @@ namespace Conta360.Domain.Entities
         public DateTime Date { get; set; }
 
         [Required]
-        public int PgcAccountId { get; set; }
+        public Guid PgcAccountId { get; set; }
 
         [ForeignKey("PgcAccountId")]
         public PgcAccount? PgcAccount { get; set; }
