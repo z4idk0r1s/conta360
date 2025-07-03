@@ -1,54 +1,121 @@
+# docker-compose.yml
+# Define y ejecuta aplicaciones Docker multi-contenedor.
+# Version 3.8 es compatible con características modernas de Docker Compose.
 version: '3.8'
 
 services:
-  mf-validation:
+  # Servicio para el microfrontend principal (root-config).
+  root-config:
+    # Construye la imagen Docker a partir del Dockerfile ubicado en el directorio del microfrontend.
     build:
-      context: ./microfrontends/mf-validation
+      context: ./src/microfrontends/root-config
       dockerfile: Dockerfile
-      target: development
+      # target: development # Descomentar si el Dockerfile del frontend usa etapas (stages).
+    # Mapea el puerto 3000 del host al puerto 3000 del contenedor, permitiendo el acceso externo.
     ports:
-      - "3004:3000"
+      - "3000:3000"
+    # Monta el código fuente para hot reload y desarrollo interactivo.
+    # El volumen anonimo para node_modules previene conflictos con el node_modules del host.
     volumes:
-      - ./microfrontends/mf-validation:/app
+      - ./src/microfrontends/root-config:/app
       - /app/node_modules
+    # Variables de entorno inyectadas en el contenedor para el microfrontend.
     environment:
       - NODE_ENV=development
-      - REACT_APP_API_URL=http://localhost:5000
+      # CRÍTICO: La URL del backend debe apuntar al nombre del servicio Docker y su puerto INTERNO.
+      - NEXT_PUBLIC_API_URL=http://validation-core:80
+      # CRÍTICO: Nueva variable de entorno para indicar al MF que está en Docker Compose.
+      - IS_DOCKER_COMPOSE=true # <--- ¡Este es el cambio CRÍTICO aquí!
+    # Asegura que el backend esté saludable antes de iniciar este servicio.
     depends_on:
       validation-core:
         condition: service_healthy
+    # Define un chequeo de salud para verificar si el microfrontend está respondiendo.
     healthcheck:
-      test: ["CMD", "node", "./healthcheck.js"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000"] # Verifica que el servidor Next.js está levantado.
       interval: 30s
-      timeout: 3s
+      timeout: 5s
       retries: 3
+    # Asigna el servicio a una red definida por el usuario para comunicación aislada.
     networks:
       - conta360-network
 
+  # Servicio para el backend .NET (API principal).
   validation-core:
+    # Construye la imagen Docker para el backend API.
     build:
-      context: ./backend/Presentation/Conta360.Presentation.Api
+      context: ./src/backend/Presentation/Conta360.Presentation.Api
       dockerfile: Dockerfile
-      target: development
+      target: development # Usa la etapa 'development' del Dockerfile para hot reload.
+    # Mapea el puerto 5000 del host al puerto 80 del contenedor, para acceso externo.
     ports:
       - "5000:80"
+    # Monta el código fuente completo del backend para habilitar el hot reload con dotnet watch.
+    # El volumen persistente 'validation-core-data' se usa para la base de datos SQLite.
     volumes:
-      - ./backend/Presentation/Conta360.Presentation.Api:/app
-      - /app/obj
-      - /app/bin
+      - ./src/backend:/app/backend
+      - validation-core-data:/app/data
+    # Variables de entorno para el contenedor del backend.
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=http://+:80 # La aplicación escucha internamente en el puerto 80.
+      # Habilita la detección de cambios de archivos para hot reload en volúmenes montados.
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-    command: dotnet watch --project Conta360.Presentation.Api.csproj run --urls "http://+:80"
+      # Cadena de conexión para SQLite, apuntando al volumen montado para persistencia.
+      - ConnectionStrings__SqliteConnection=Data Source=/app/data/conta360.db
+      # Opcional: Configuración para PostgreSQL si se utilizara en desarrollo (ejemplo comentado).
+      # - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=conta360_dev;Username=user;Password=yourpassword
+      # - DatabaseProvider=Postgres # Si la inyección de dependencias lo necesita.
+    # Comando ejecutado al iniciar el contenedor: aplica migraciones EF Core y luego inicia la API con hot reload.
+    command: >
+      sh -c "dotnet ef database update --project backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj && dotnet watch --project backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj run --urls 'http://+:80'"
+    # Define un chequeo de salud para verificar si el backend está respondiendo a su endpoint /health.
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
       timeout: 3s
       retries: 3
+    # Asigna el servicio a la red definida por el usuario.
     networks:
       - conta360-network
 
+  # --- Ejemplo de cómo añadir un nuevo Microfrontend Remoto (Dashboard) ---
+  # Para añadir un nuevo MF, duplica este bloque y ajusta los valores.
+  dashboard-app: # Nombre del servicio Docker. Debe coincidir con 'mfName' en mf-remotes.config.js
+    build:
+      context: ./src/microfrontends/dashboard-app # Ruta al contexto del build de este MF
+      dockerfile: Dockerfile # Dockerfile específico para el Dashboard
+    ports:
+      - "3001:3001" # Mapea el puerto del host al puerto interno del contenedor. Coincide con REMOTE_PORTS.dashboardApp
+    volumes:
+      - ./src/microfrontends/dashboard-app:/app # Monta el código fuente para hot reload
+      - /app/node_modules # Evita conflictos con node_modules del host
+    environment:
+      - NODE_ENV=development
+      # Este MF remoto también podría necesitar la URL del backend si lo consume directamente.
+      - NEXT_PUBLIC_API_URL=http://validation-core:80
+      - IS_DOCKER_COMPOSE=true # Indicar que está en Docker Compose
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"] # Verifica que el MF está levantado
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - conta360-network
+
+  # --- Repite este patrón para 'analisisApp', 'pgcApp', 'sharedComponents', etc. ---
+  # Asegúrate de que:
+  # - El nombre del servicio Docker (ej. `analisis-app`) coincida con el nombre en `REMOTE_PORTS` (ej. `analisisApp`).
+  # - El puerto expuesto (`ports`) coincida con el puerto definido en `REMOTE_PORTS`.
+  # - El `context` de `build` apunte al directorio correcto del microfrontend.
+  # - Exista un `Dockerfile` adecuado en el directorio de cada microfrontend.
+
+# Definición de redes de Docker.
 networks:
   conta360-network:
-    driver: bridge
+    driver: bridge # Tipo de red por defecto, permite comunicación entre servicios por nombre.
+
+# Definición de volúmenes persistentes.
+volumes:
+  validation-core-data:
+    driver: local # El volumen se gestiona por Docker en el host.

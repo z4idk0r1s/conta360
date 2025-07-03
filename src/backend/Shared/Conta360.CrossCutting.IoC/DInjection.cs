@@ -12,7 +12,6 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Abstractions;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using Conta360.Infrastructure.PGC.Processing;

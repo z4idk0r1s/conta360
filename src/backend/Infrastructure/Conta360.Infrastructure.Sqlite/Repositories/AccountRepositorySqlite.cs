@@ -14,11 +14,11 @@ namespace Conta360.Infrastructure.Sqlite.Repositories
     /// Implementación concreta del repositorio de cuentas PGC para Sqlite.
     /// Totalmente desacoplado de Application: usa directamente el DbContext de infraestructura.
     /// </summary>
-    public class AccountRepositoryPostgres : IPgcAccountRepository
+    public class AccountRepositorySqlite : IPgcAccountRepository
     {
         private readonly SqliteDbContext _context;
 
-        public AccountRepositoryPostgres(SqliteDbContext context)
+        public AccountRepositorySqlite(SqliteDbContext context)
         {
             _context = context;
         }
