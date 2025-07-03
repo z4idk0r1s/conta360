@@ -40,7 +40,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-    command: dotnet watch --no-hot-reload --project Conta360.Presentation.Api.csproj run --urls "http://+:80"
+    command: dotnet watch --project Conta360.Presentation.Api.csproj run --urls "http://+:80"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s

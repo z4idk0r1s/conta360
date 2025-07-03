@@ -5,14 +5,20 @@ using Microsoft.EntityFrameworkCore.Sqlite;
 using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Conta360.Infrastructure.Sqlite.Contexts;
+
 
 namespace Conta360.Infrastructure.Sqlite.Repositories
 {
-    public class AccountRepositorySqlite : IPgcAccountRepository
+    /// <summary>
+    /// Implementación concreta del repositorio de cuentas PGC para Sqlite.
+    /// Totalmente desacoplado de Application: usa directamente el DbContext de infraestructura.
+    /// </summary>
+    public class AccountRepositoryPostgres : IPgcAccountRepository
     {
-        private readonly IApplicationDbContext _context;
+        private readonly SqliteDbContext _context;
 
-        public AccountRepositorySqlite(IApplicationDbContext context)
+        public AccountRepositoryPostgres(SqliteDbContext context)
         {
             _context = context;
         }
@@ -27,7 +33,7 @@ namespace Conta360.Infrastructure.Sqlite.Repositories
             return await _context.PgcAccounts.ToListAsync();
         }
 
-        public async Task<IReadOnlyList<PgcAccount>> GetAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
+        public async Task<IReadOnlyList<PgcAccount>> GetAsync(Expression<Func<PgcAccount, bool>> predicate)
         {
             return await _context.PgcAccounts.Where(predicate).ToListAsync();
         }
@@ -47,12 +53,12 @@ namespace Conta360.Infrastructure.Sqlite.Repositories
             _context.PgcAccounts.Remove(entity);
         }
 
-        public async Task<int> CountAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
+        public async Task<int> CountAsync(Expression<Func<PgcAccount, bool>> predicate)
         {
             return await _context.PgcAccounts.CountAsync(predicate);
         }
 
-        public async Task<bool> ExistsAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
+        public async Task<bool> ExistsAsync(Expression<Func<PgcAccount, bool>> predicate)
         {
             return await _context.PgcAccounts.AnyAsync(predicate);
         }
@@ -77,7 +83,7 @@ namespace Conta360.Infrastructure.Sqlite.Repositories
                 .ToListAsync();
         }
 
-        // Helper interno para construir jerarquía recursiva
+        // Helper interno para construir jerarquía recursiva de cuentas
         private List<PgcAccount> BuildTree(List<PgcAccount> allAccounts, string? parentCode)
         {
             return allAccounts

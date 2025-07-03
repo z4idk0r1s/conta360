@@ -1,15 +1,24 @@
-using Conta360.Application.Interfaces;
-using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
+using Conta360.Domain.Entities;
+using Conta360.Infrastructure.Postgres.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Conta360.Infrastructure.Postgres.Repositories
 {
+    /// <summary>
+    /// Implementación concreta del repositorio de cuentas PGC para Postgres.
+    /// Totalmente desacoplado de Application: usa directamente el DbContext de infraestructura.
+    /// </summary>
     public class AccountRepositoryPostgres : IPgcAccountRepository
     {
-        private readonly IApplicationDbContext _context;
+        private readonly PostgresDbContext _context;
 
-        public AccountRepositoryPostgres(IApplicationDbContext context)
+        public AccountRepositoryPostgres(PostgresDbContext context)
         {
             _context = context;
         }
@@ -24,7 +33,7 @@ namespace Conta360.Infrastructure.Postgres.Repositories
             return await _context.PgcAccounts.ToListAsync();
         }
 
-        public async Task<IReadOnlyList<PgcAccount>> GetAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
+        public async Task<IReadOnlyList<PgcAccount>> GetAsync(Expression<Func<PgcAccount, bool>> predicate)
         {
             return await _context.PgcAccounts.Where(predicate).ToListAsync();
         }
@@ -44,12 +53,12 @@ namespace Conta360.Infrastructure.Postgres.Repositories
             _context.PgcAccounts.Remove(entity);
         }
 
-        public async Task<int> CountAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
+        public async Task<int> CountAsync(Expression<Func<PgcAccount, bool>> predicate)
         {
             return await _context.PgcAccounts.CountAsync(predicate);
         }
 
-        public async Task<bool> ExistsAsync(System.Linq.Expressions.Expression<Func<PgcAccount, bool>> predicate)
+        public async Task<bool> ExistsAsync(Expression<Func<PgcAccount, bool>> predicate)
         {
             return await _context.PgcAccounts.AnyAsync(predicate);
         }
@@ -74,7 +83,7 @@ namespace Conta360.Infrastructure.Postgres.Repositories
                 .ToListAsync();
         }
 
-        // Helper interno para construir jerarquía recursiva
+        // Helper interno para construir jerarquía recursiva de cuentas
         private List<PgcAccount> BuildTree(List<PgcAccount> allAccounts, string? parentCode)
         {
             return allAccounts
