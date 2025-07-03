@@ -2,11 +2,11 @@ using Conta360.Application.Interfaces;
 
 namespace Conta360.Infrastructure.Postgres
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWorkPostgres : IUnitOfWork
     {
         private readonly IApplicationDbContext _context;
 
-        public UnitOfWork(IApplicationDbContext context)
+        public UnitOfWorkPostgres(IApplicationDbContext context)
         {
             _context = context;
         }

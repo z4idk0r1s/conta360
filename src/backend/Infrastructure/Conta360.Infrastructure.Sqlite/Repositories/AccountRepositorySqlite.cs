@@ -1,15 +1,18 @@
 using Conta360.Application.Interfaces;
 using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore.Sqlite;
+using System.Linq.Expressions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
-namespace Conta360.Infrastructure.Postgres.Repositories
+namespace Conta360.Infrastructure.Sqlite.Repositories
 {
-    public class AccountRepository : IPgcAccountRepository
+    public class AccountRepositorySqlite : IPgcAccountRepository
     {
         private readonly IApplicationDbContext _context;
 
-        public AccountRepository(IApplicationDbContext context)
+        public AccountRepositorySqlite(IApplicationDbContext context)
         {
             _context = context;
         }
