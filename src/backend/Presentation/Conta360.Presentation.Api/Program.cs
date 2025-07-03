@@ -78,4 +78,6 @@ app.MapGet("/api/accounts/{id}", async (Guid id, IMediator mediator) =>
 .Produces<Conta360.Application.DTOs.AccountDto>(StatusCodes.Status200OK)
 .ProducesProblem(StatusCodes.Status404NotFound);
 
+app.MapGet("/health", () => Results.Ok("Healthy"));
+
 app.Run();
