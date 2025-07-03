@@ -19,7 +19,7 @@ namespace Conta360.Infrastructure.Sqlite.Contexts
 
         public DbSet<Account> Accounts { get; set; } = null!;
         public DbSet<Transact> Transactions { get; set; } = null!;
-       public DbSet<PgcAccount> PgcAccounts { get; set; } = null!;
+        public DbSet<PgcAccount> PgcAccounts { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

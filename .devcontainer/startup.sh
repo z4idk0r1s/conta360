@@ -55,7 +55,8 @@ fi
 
 # 5. Instalar dependencias npm
 MICROFRONTEND_DIRS=(
-  "src/microfrontends/root-config"
+  "src/microfrontends/root-config" # Corregido: sin coma al final
+  "src/microfrontends/dashboard-app"
 )
 
 echo "📦 Instalando dependencias npm..."
@@ -97,6 +98,11 @@ pkill -f "dotnet run --project .*Conta360.Presentation.Api.csproj" 2>/dev/null \
 pkill -f "npm run dev.*root-config" 2>/dev/null \
   && echo "🛑 root-config detenido" || echo "ℹ️ No había root-config activo"
 
+# NUEVO: Detener servicio de dashboard-app si está corriendo
+pkill -f "npm run dev.*dashboard-app" 2>/dev/null \
+  && echo "🛑 dashboard-app detenido" || echo "ℹ️ No había dashboard-app activo"
+
+
 # 8. Iniciar servicios
 echo "🚀 Iniciando servicios..."
 
@@ -111,6 +117,14 @@ cd src/microfrontends/root-config
 nohup npm run dev > /tmp/frontend_root_config_log.log 2>&1 &
 cd ../../..
 echo "✅ Microfrontend Root Config iniciado. Logs en /tmp/frontend_root_config_log.log"
+
+# NUEVO: Iniciar Microfrontend Dashboard App
+echo "🚀 Iniciando Microfrontend Dashboard App..."
+cd src/microfrontends/dashboard-app
+nohup npm run dev > /tmp/frontend_dashboard_app_log.log 2>&1 &
+cd ../../..
+echo "✅ Microfrontend Dashboard App iniciado. Logs en /tmp/frontend_dashboard_app_log.log"
+
 
 # 9. Esperar disponibilidad
 wait_for_service() {
@@ -132,6 +146,7 @@ wait_for_service() {
 
 wait_for_service "Backend API" "http://localhost:5000/health" || { echo "❌ Falló el inicio del Backend API."; exit 1; }
 wait_for_service "Frontend Root Config" "http://localhost:3000" || { echo "❌ Falló el inicio del Frontend Root Config."; exit 1; }
+wait_for_service "Frontend Dashboard App" "http://localhost:3001" || { echo "❌ Falló el inicio del Frontend Dashboard App."; exit 1; } # NUEVO: Esperar al dashboard-app
 
 echo ""
 echo "✅ Todo listo. Puedes trabajar con Conta360."
@@ -139,3 +154,4 @@ echo "👉 Abre VSCode o tus editores preferidos. Inicia microfrontends restante
 echo "Para ver logs:"
 echo " tail -f /tmp/backend_log.log"
 echo " tail -f /tmp/frontend_root_config_log.log"
+echo " tail -f /tmp/frontend_dashboard_app_log.log" # NUEVO: Log del dashboard-app

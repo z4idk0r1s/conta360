@@ -36,7 +36,8 @@ namespace Conta360.Domain.Entities
         /// </summary>
         public bool IsMovable { get; set; }
 
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
+
         
         /// <summary>
         /// Nivel jerárquico: 1 = Grupo, 2 = Subgrupo, 3 = Cuenta, 4 = Subcuenta.

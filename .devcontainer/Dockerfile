@@ -23,6 +23,10 @@ RUN mkdir -p $NODE_DIR && \
 ENV npm_config_cache=/home/vscode/.npm
 RUN mkdir -p /home/vscode/.npm
 
+# === EF === Instalar dotnet-ef como herramienta global en el contenedor
+ENV PATH="$PATH:/home/vscode/.dotnet/tools"
+RUN dotnet tool install --global dotnet-ef
+
 # Variables dinámicas
 ARG WORKSPACE_NAME
 WORKDIR /workspaces/${WORKSPACE_NAME}
