@@ -16,6 +16,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
-    <PackageReference Include="EFCore.BulkExtensions" />    
+    <PackageReference Include="EFCore.BulkExtensions" />
   </ItemGroup>
 </Project>
