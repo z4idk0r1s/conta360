@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
+using Conta360.Infrastructure.PGC.Extraction;
 
 namespace Conta360.Infrastructure.PGC.Services
 {
