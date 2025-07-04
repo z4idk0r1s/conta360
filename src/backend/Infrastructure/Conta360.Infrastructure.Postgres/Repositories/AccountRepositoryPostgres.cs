@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using EFCore.BulkExtensions; // Importante añadir esta referencia
 
 namespace Conta360.Infrastructure.Postgres.Repositories
 {
@@ -61,6 +62,13 @@ namespace Conta360.Infrastructure.Postgres.Repositories
         public async Task<bool> ExistsAsync(Expression<Func<PgcAccount, bool>> predicate)
         {
             return await _context.PgcAccounts.AnyAsync(predicate);
+        }
+
+        // Nuevo método para inserción/actualización masiva
+        public async Task BulkInsertOrUpdateAsync(List<PgcAccount> entities)
+        {
+            // BulkInsertOrUpdateAsync maneja internamente la transacción y SaveChanges para PostgreSQL también.
+            await _context.BulkInsertOrUpdateAsync(entities);
         }
 
         public async Task<List<PgcAccount>> GetTreeStructureAsync()

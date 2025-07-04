@@ -1,7 +1,7 @@
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
-using Conta360.Application.Services;
+using Conta360.Application.Services; 
 using Conta360.Core.Common;
 using Conta360.Domain.Interfaces;
 using Conta360.Infrastructure.Excel.Services;
@@ -19,6 +19,7 @@ using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Infrastructure.Sqlite.Repositories;
 using Conta360.Infrastructure.Postgres.Repositories;
 using Microsoft.Extensions.Options;
+using Conta360.Core.Interfaces;
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -50,7 +51,10 @@ namespace Conta360.CrossCutting.IoC
             services.AddExcelInfrastructure(configuration);
 
             // Infraestructura PGC (descarga, validación, builder, service)
-            services.AddPGCInfrastructure(configuration);
+            services.AddScoped<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>(); // 
+            services.AddScoped<PgcTaxonomyValidator>();
+            services.AddScoped<PgcTaxonomyBuilder>(); // Ahora sin IPgcAccountRepository en el constructor
+            services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>(); 
 
             // Base de datos y Unit of Work
             if (dbProvider == "Postgres")
@@ -63,7 +67,7 @@ namespace Conta360.CrossCutting.IoC
                 services.AddScoped<IPgcAccountRepository, AccountRepositoryPostgres>();
                 services.AddScoped<IUnitOfWork, UnitOfWorkPostgres>();
             }
-            else
+            else // Default a Sqlite
             {
                 services.AddDbContext<SqliteDbContext>(options =>
                     options.UseSqlite(configuration.GetConnectionString("SqliteConnection"),
@@ -74,8 +78,8 @@ namespace Conta360.CrossCutting.IoC
                 services.AddScoped<IUnitOfWork, UnitOfWorkSqlite>();
             }
 
-            // ...otros registros...
-            services.AddScoped<PgcTaxonomyDownloader>(); // Si hace falta (se esta llamando en run init)
+            // Registrar HttpClient para PgcTaxonomyDownloader
+            services.AddHttpClient<PgcTaxonomyDownloader>();
 
             return services;
         }

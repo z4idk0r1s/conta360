@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Conta360.Infrastructure.Sqlite.Contexts;
-
+using EFCore.BulkExtensions; // Importante añadir esta referencia
 
 namespace Conta360.Infrastructure.Sqlite.Repositories
 {
@@ -61,6 +61,14 @@ namespace Conta360.Infrastructure.Sqlite.Repositories
         public async Task<bool> ExistsAsync(Expression<Func<PgcAccount, bool>> predicate)
         {
             return await _context.PgcAccounts.AnyAsync(predicate);
+        }
+
+        // Implementación del método de inserción/actualización masiva
+        public async Task BulkInsertOrUpdateAsync(List<PgcAccount> entities)
+        {
+            // BulkInsertOrUpdateAsync maneja internamente la transacción y SaveChanges.
+            // No es necesario un BeginTransaction/Commit explícito aquí.
+            await _context.BulkInsertOrUpdateAsync(entities);
         }
 
         public async Task<List<PgcAccount>> GetTreeStructureAsync()
