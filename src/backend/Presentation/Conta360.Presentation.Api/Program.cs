@@ -7,6 +7,7 @@ using Serilog;
 using Conta360.Presentation.Api.Models;
 using Conta360.Application.Interfaces; // Necesario para IApplicationDbContext
 using Microsoft.EntityFrameworkCore;    // Necesario para Database.Migrate()
+using Microsoft.Extensions.Logging;     // Necesario para ILoggerFactory y LoggingBuilder
 using Conta360.Application.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,29 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .Enrich.FromLogContext()
     .WriteTo.Console()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day));
+
+// --- INICIO: CÓDIGO DE DIAGNÓSTICO DE CONFIGURACIÓN PGC ---
+// Este código es temporal para depuración y debe eliminarse después de resolver el problema.
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddConsole();
+    loggingBuilder.AddDebug();
+});
+var logger = LoggerFactory.Create(config => config.AddConsole()).CreateLogger<Program>();
+
+var pgcSection = builder.Configuration.GetSection("Pgc");
+var extractDirectoryValue = pgcSection["ExtractDirectory"];
+var taxonomyZipUrlValue = pgcSection["TaxonomyZipUrl"]; // También diagnosticamos este
+
+logger.LogInformation("DIAGNÓSTICO CONFIGURACIÓN PGC:");
+logger.LogInformation("  Sección 'Pgc' existe: {PgcSectionExists}", pgcSection != null);
+if (pgcSection != null)
+{
+    logger.LogInformation("  ExtractDirectory desde IConfiguration: '{ExtractDirectory}'", extractDirectoryValue);
+    logger.LogInformation("  TaxonomyZipUrl desde IConfiguration: '{TaxonomyZipUrl}'", taxonomyZipUrlValue);
+}
+// --- FIN: CÓDIGO DE DIAGNÓSTICO DE CONFIGURACIÓN PGC ---
+
 
 // Servicios
 builder.Services.AddControllers();
