@@ -7,6 +7,7 @@ using Serilog;
 using Conta360.Presentation.Api.Models;
 using Conta360.Application.Interfaces; // Necesario para IApplicationDbContext
 using Microsoft.EntityFrameworkCore;    // Necesario para Database.Migrate()
+using Conta360.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
