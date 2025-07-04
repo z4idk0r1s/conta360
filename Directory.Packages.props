@@ -15,12 +15,12 @@
     <PackageVersion Include="EPPlus" Version="7.0.10" />
     <PackageVersion Include="HtmlAgilityPack" Version="1.11.63" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8" />
-    <PackageVersion Include="Npgsql" Version="8.0.5" />
-    <PackageVersion Include="System.Text.Json" Version="8.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
+    <PackageVersion Include="Npgsql" Version="8.0.0" />
+    <PackageVersion Include="System.Text.Json" Version="8.0.0" />
     <PackageVersion Include="Serilog" Version="4.1.0" /> 
     <PackageVersion Include="Serilog.AspNetCore" Version="8.0.1" /> 
     <PackageVersion Include="Serilog.Enrichers.Span" Version="2.0.1" />
@@ -43,6 +43,6 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
     <PackageVersion Include="Moq" Version="4.20.70" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-    <PackageVersion Include="EFCore.BulkExtensions" Version="8.0.4" />
+    <PackageVersion Include="EFCore.BulkExtensions.MIT" Version="8.19.0" />
   </ItemGroup>
 </Project>

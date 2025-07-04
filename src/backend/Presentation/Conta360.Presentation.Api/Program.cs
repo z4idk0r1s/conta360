@@ -98,7 +98,7 @@ else
 using (var scope = app.Services.CreateScope())
 {
     var pgcService = scope.ServiceProvider.GetRequiredService<IPgcTaxonomyService>();
-    var result = await pgcService.RunAndGetAccountsAsync(); // Llamar al nuevo método
+    var result = await pgcService.RunAndGetAccountsAsync(); 
 
     if (result.IsSuccess)
     {
