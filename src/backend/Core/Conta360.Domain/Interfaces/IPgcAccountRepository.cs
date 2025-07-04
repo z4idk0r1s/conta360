@@ -16,6 +16,7 @@ namespace Conta360.Domain.Interfaces
         void Delete(PgcAccount entity);
         Task<int> CountAsync(Expression<Func<PgcAccount, bool>> predicate);
         Task<bool> ExistsAsync(Expression<Func<PgcAccount, bool>> predicate);
-        // Otros métodos específicos de dominio
+        // Nuevo Método para inserción/actualización masiva
+        Task BulkInsertOrUpdateAsync(List<PgcAccount> entities);
     }
 }

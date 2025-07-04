@@ -5,10 +5,10 @@ using MediatR;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Conta360.Presentation.Api.Models;
-using Conta360.Application.Interfaces; // Necesario para IApplicationDbContext
-using Microsoft.EntityFrameworkCore;    // Necesario para Database.Migrate()
-using Microsoft.Extensions.Logging;     // Necesario para ILoggerFactory y LoggingBuilder
-using Conta360.Application.Services;
+using Conta360.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Conta360.Application.Services; // Para la interfaz IPgcTaxonomyService
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
@@ -33,17 +33,16 @@ var logger = LoggerFactory.Create(config => config.AddConsole()).CreateLogger<Pr
 
 var pgcSection = builder.Configuration.GetSection("Pgc");
 var extractDirectoryValue = pgcSection["ExtractDirectory"];
-var taxonomyZipUrlValue = pgcSection["TaxonomyZipUrl"]; // También diagnosticamos este
+var taxonomyZipUrlValue = pgcSection["TaxonomyZipUrl"];
 
 logger.LogInformation("DIAGNÓSTICO CONFIGURACIÓN PGC:");
-logger.LogInformation("  Sección 'Pgc' existe: {PgcSectionExists}", pgcSection != null);
+logger.LogInformation("   Sección 'Pgc' existe: {PgcSectionExists}", pgcSection != null);
 if (pgcSection != null)
 {
-    logger.LogInformation("  ExtractDirectory desde IConfiguration: '{ExtractDirectory}'", extractDirectoryValue);
-    logger.LogInformation("  TaxonomyZipUrl desde IConfiguration: '{TaxonomyZipUrl}'", taxonomyZipUrlValue);
+    logger.LogInformation("   ExtractDirectory desde IConfiguration: '{ExtractDirectory}'", extractDirectoryValue);
+    logger.LogInformation("   TaxonomyZipUrl desde IConfiguration: '{TaxonomyZipUrl}'", taxonomyZipUrlValue);
 }
 // --- FIN: CÓDIGO DE DIAGNÓSTICO DE CONFIGURACIÓN PGC ---
-
 
 // Servicios
 builder.Services.AddControllers();
@@ -61,11 +60,6 @@ builder.Services
 var app = builder.Build();
 
 // --- INICIO: Gestión de Migraciones de EF Core (Condicional) ---
-// La migración automática se ejecuta si:
-// 1. El entorno es 'Development'.
-// O
-// 2. La variable de configuración 'EFCORE_AUTOMIGRATE' está explícitamente establecida a 'true'.
-// Esto asegura migraciones automáticas en desarrollo y control manual en producción.
 var autoMigrateEnabled = builder.Configuration.GetValue<bool>("EFCORE_AUTOMIGRATE", false);
 
 if (app.Environment.IsDevelopment() || autoMigrateEnabled)
@@ -88,8 +82,7 @@ if (app.Environment.IsDevelopment() || autoMigrateEnabled)
         catch (Exception ex)
         {
             app.Logger.LogError(ex, "❌ ERROR FATAL: Fallo al aplicar las migraciones de EF Core.");
-            // En cualquier entorno, la aplicación NO debe continuar si las migraciones fallan.
-            throw; // Provoca que el proceso de la API termine inmediatamente.
+            throw;
         }
     }
 }
@@ -105,7 +98,19 @@ else
 using (var scope = app.Services.CreateScope())
 {
     var pgcService = scope.ServiceProvider.GetRequiredService<IPgcTaxonomyService>();
-    await pgcService.RunAsync();
+    var result = await pgcService.RunAndGetAccountsAsync(); // Llamar al nuevo método
+
+    if (result.IsSuccess)
+    {
+        app.Logger.LogInformation("✔️ Carga de taxonomía PGC completada con éxito. Se procesaron {Count} cuentas.", result.Value?.Count ?? 0);
+    }
+    else
+    {
+        app.Logger.LogError("❌ ERROR: Fallo en la carga de la taxonomía PGC: {ErrorMessage}", result.Error?.Message ?? "Error desconocido");
+        // Dependiendo de la criticidad, podrías decidir terminar la aplicación o solo loguear.
+        // Por la criticidad del PGC, un error aquí podría ser fatal para la funcionalidad principal.
+        // throw new InvalidOperationException($"La aplicación no pudo inicializar la taxonomía PGC: {result.Error?.Message}");
+    }
 }
 
 // Pipeline HTTP

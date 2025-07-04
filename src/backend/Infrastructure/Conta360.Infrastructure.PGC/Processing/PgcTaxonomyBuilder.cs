@@ -1,29 +1,35 @@
 using Conta360.Domain.Entities;
-using Conta360.Domain.Interfaces;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using Conta360.Application.Services;
+using Conta360.Application.Services; // Se mantiene por PgcAccountTreeBuilder si lo usara, pero no es el caso.
 
 namespace Conta360.Infrastructure.PGC.Processing
 {
     public class PgcTaxonomyBuilder
     {
-        private readonly IPgcAccountRepository _accountRepository;
+        // PgcTaxonomyBuilder ya no necesita el repositorio para persistir.
+        // Se elimina la dependencia de IPgcAccountRepository.
+        // private readonly IPgcAccountRepository _accountRepository;
 
-        public PgcTaxonomyBuilder(IPgcAccountRepository accountRepository)
+        // Si el constructor original existía para _accountRepository, lo quitamos.
+        // public PgcTaxonomyBuilder(IPgcAccountRepository accountRepository)
+        // {
+        //     _accountRepository = accountRepository;
+        // }
+
+        public PgcTaxonomyBuilder()
         {
-            _accountRepository = accountRepository;
+            // Constructor vacío o sin dependencias de persistencia directa.
         }
 
         /// <summary>
         /// Importa cuentas del PGC con jerarquía (ParentCode y Level) usando XSD, label-es.xml y presentation.xml.
+        /// Ahora, DEVUELVE la lista de cuentas en lugar de persistirlas directamente.
         /// </summary>
-        public async Task<List<PgcAccount>> ParseAndPersistAccountsFromXsdLabelPresentationAsync(
+        public async Task<List<PgcAccount>> BuildAccountsFromXsdLabelPresentationAsync(
             string xsdPath,
             string labelPath,
             string presentationPath)
@@ -64,12 +70,7 @@ namespace Conta360.Infrastructure.PGC.Processing
                 }
             }
 
-            // Paso 3: Persistir en BD
-            foreach (var account in accounts)
-            {
-                await _accountRepository.AddAsync(account);
-            }
-
+            // Paso 3: Retornar las cuentas, no persistirlas aquí.
             return accounts;
         }
 
