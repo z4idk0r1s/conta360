@@ -106,7 +106,7 @@ using (var scope = app.Services.CreateScope())
     }
     else
     {
-        app.Logger.LogError("❌ ERROR: Fallo en la carga de la taxonomía PGC: {ErrorMessage}", result.Error?.Message ?? "Error desconocido");
+        app.Logger.LogError("❌ ERROR: Fallo en la carga de la taxonomía PGC: {ErrorMessage}", result.Error?.Description ?? "Error desconocido");
         // Dependiendo de la criticidad, podrías decidir terminar la aplicación o solo loguear.
         // Por la criticidad del PGC, un error aquí podría ser fatal para la funcionalidad principal.
         // throw new InvalidOperationException($"La aplicación no pudo inicializar la taxonomía PGC: {result.Error?.Message}");
