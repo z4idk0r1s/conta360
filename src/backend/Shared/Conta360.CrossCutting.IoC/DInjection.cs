@@ -19,6 +19,7 @@ using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Infrastructure.Sqlite.Repositories;
 using Conta360.Infrastructure.Postgres.Repositories;
 using Microsoft.Extensions.Options;
+using Conta360.Core.Interfaces;
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -50,10 +51,10 @@ namespace Conta360.CrossCutting.IoC
             services.AddExcelInfrastructure(configuration);
 
             // Infraestructura PGC (descarga, validación, builder, service)
-            services.AddScoped<PgcTaxonomyDownloader>(); // Mantener si se necesita inyección directa en otros lugares
+            services.AddScoped<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>(); // 
             services.AddScoped<PgcTaxonomyValidator>();
             services.AddScoped<PgcTaxonomyBuilder>(); // Ahora sin IPgcAccountRepository en el constructor
-            services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>(); // Registrar la interfaz con su implementación
+            services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>(); 
 
             // Base de datos y Unit of Work
             if (dbProvider == "Postgres")
