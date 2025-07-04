@@ -1,5 +1,6 @@
 using Conta360.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using Conta360.Application.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;

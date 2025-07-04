@@ -1,5 +1,6 @@
 using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Application.Interfaces;
+using Conta360.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
