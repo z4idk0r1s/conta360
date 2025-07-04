@@ -1,5 +1,6 @@
 using Conta360.Core.Interfaces;
 using Conta360.Application.Interfaces;
+using Conta360.Application.Services;
 using Conta360.Core.Common;
 using Conta360.Infrastructure.PGC.Processing;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
+using Conta360.Infrastructure.PGC.Extraction;
 
 namespace Conta360.Infrastructure.PGC.Services
 {

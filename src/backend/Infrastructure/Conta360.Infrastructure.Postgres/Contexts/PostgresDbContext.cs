@@ -1,8 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Conta360.Domain.Entities;
 using Conta360.Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Conta360.Infrastructure.Postgres.Contexts
 {

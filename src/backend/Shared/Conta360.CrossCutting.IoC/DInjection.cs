@@ -1,6 +1,7 @@
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
+using Conta360.Application.Services;
 using Conta360.Core.Common;
 using Conta360.Domain.Interfaces;
 using Conta360.Infrastructure.Excel.Services;
@@ -17,6 +18,7 @@ using System.Reflection;
 using Conta360.Infrastructure.PGC.Processing;
 using Conta360.Infrastructure.Sqlite.Repositories;
 using Conta360.Infrastructure.Postgres.Repositories;
+using Microsoft.Extensions.Options;
 
 namespace Conta360.CrossCutting.IoC
 {

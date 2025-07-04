@@ -687,9 +687,8 @@ Resumen:
 
 
 
-
+cat /tmp/backend_log.log
     --------------------------------------------------
-
 
 C:.
 │   .dockerignore
@@ -702,6 +701,7 @@ C:.
 │   global.json
 │   LICENSE
 │   README.md
+│   README.Migraciones.md
 │   readme2.md
 │
 ├───.devcontainer
@@ -782,7 +782,6 @@ C:.
     │   │   │   ├───Common
     │   │   │   │       Error.cs
     │   │   │   │       OperationResult.cs
-    │   │   │   │       PgcExtractorOptions.cs
     │   │   │   │       PgcModelType.cs
     │   │   │   │       ValidationResult.cs
     │   │   │   │
@@ -800,7 +799,7 @@ C:.
     │   │       │       Account.cs
     │   │       │       BaseEntity.cs
     │   │       │       PgcAccount.cs
-    │   │       │       Transaction.cs
+    │   │       │       Transact.cs
     │   │       │
     │   │       ├───Interfaces
     │   │       │       IPgcAccountRepository.cs
@@ -842,6 +841,7 @@ C:.
     │   │   │   │
     │   │   │   ├───Extraction
     │   │   │   │       PGCDataExtractor.cs
+    │   │   │   │       PgcExtractorOptions.cs
     │   │   │   │
     │   │   │   ├───Processing
     │   │   │   │       PgcTaxonomyBuilder.cs
@@ -903,6 +903,7 @@ C:.
     │   │       │
     │   │       ├───logs
     │   │       │       log-20250609.txt
+    │   │       │       log-20250703.txt
     │   │       │
     │   │       └───Models
     │   │               CreateAccountRequest.cs
@@ -913,10 +914,33 @@ C:.
     │               DInjection.cs
     │
     └───microfrontends
+        ├───dashboard-app
+        │   │   .gitignore
+        │   │   Dockerfile
+        │   │   next-env.d.ts
+        │   │   next.config.js
+        │   │   package-lock.json
+        │   │   package.json
+        │   │   postcss.config.js
+        │   │   tailwind.config.ts
+        │   │   tsconfig.json
+        │   │
+        │   └───src
+        │       ├───app
+        │       │       globals.css
+        │       │       layout.tsx
+        │       │       page.tsx
+        │       │
+        │       └───lib
+        │               api.ts
+        │
         └───root-config
             │   .gitignore
+            │   Dockerfile
+            │   mf-remotes.config.js
             │   next-env.d.ts
             │   next.config.js
+            │   package-lock.json
             │   package.json
             │   postcss.config.js
             │   tailwind.config.ts
@@ -931,3 +955,6 @@ C:.
                 └───lib
                         api.ts
 
+
+
+                        
