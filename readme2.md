@@ -775,6 +775,7 @@ C:.
     │   │   │   │
     │   │   │   └───Services
     │   │   │           PgcAccountTreeBuilder.cs
+    │   │   │           PgcExtractorOptions.cs
     │   │   │
     │   │   ├───Conta360.Core
     │   │   │   │   Conta360.Core.csproj
@@ -841,7 +842,6 @@ C:.
     │   │   │   │
     │   │   │   ├───Extraction
     │   │   │   │       PGCDataExtractor.cs
-    │   │   │   │       PgcExtractorOptions.cs
     │   │   │   │
     │   │   │   ├───Processing
     │   │   │   │       PgcTaxonomyBuilder.cs
@@ -885,11 +885,13 @@ C:.
     │   │               ServiceRegistrationSqlite.cs
     │   │
     │   ├───Presentation
-    │   │   │   appsettings.Development.json
-    │   │   │   appsettings.json
     │   │   │   Dockerfile
     │   │   │
     │   │   └───Conta360.Presentation.Api
+    │   │       │   appsettings.Development.json
+    │   │       │   appsettings.json
+    │   │       │   conta360.db-shm
+    │   │       │   conta360.db-wal
     │   │       │   Conta360.Presentation.Api.csproj
     │   │       │   Program.cs
     │   │       │
@@ -902,8 +904,7 @@ C:.
     │   │       │           taxonomiaPGC2007.zip
     │   │       │
     │   │       ├───logs
-    │   │       │       log-20250609.txt
-    │   │       │       log-20250703.txt
+    │   │       │       log-20250704.txt
     │   │       │
     │   │       └───Models
     │   │               CreateAccountRequest.cs
@@ -954,7 +955,3 @@ C:.
                 │
                 └───lib
                         api.ts
-
-
-
-                        
