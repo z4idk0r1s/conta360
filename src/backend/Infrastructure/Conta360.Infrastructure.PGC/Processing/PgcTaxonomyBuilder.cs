@@ -1,43 +1,52 @@
 using Conta360.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading.Tasks; // ¡Nuevo using necesario!
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using Conta360.Application.Services; // Se mantiene por PgcAccountTreeBuilder si lo usara, pero no es el caso.
 
 namespace Conta360.Infrastructure.PGC.Processing
 {
     public class PgcTaxonomyBuilder
     {
-        // PgcTaxonomyBuilder ya no necesita el repositorio para persistir.
-        // Se elimina la dependencia de IPgcAccountRepository.
-        // private readonly IPgcAccountRepository _accountRepository;
-
-        // Si el constructor original existía para _accountRepository, lo quitamos.
-        // public PgcTaxonomyBuilder(IPgcAccountRepository accountRepository)
-        // {
-        //     _accountRepository = accountRepository;
-        // }
-
         public PgcTaxonomyBuilder()
         {
-            // Constructor vacío o sin dependencias de persistencia directa.
+            // Constructor vacío, sin dependencias de persistencia directa.
         }
 
         /// <summary>
         /// Importa cuentas del PGC con jerarquía (ParentCode y Level) usando XSD, label-es.xml y presentation.xml.
-        /// Ahora, DEVUELVE la lista de cuentas en lugar de persistirlas directamente.
+        /// Devuelve la lista de cuentas en lugar de persistirlas directamente.
         /// </summary>
-        public async Task<List<PgcAccount>> BuildAccountsFromXsdLabelPresentationAsync(
+        // ¡El método principal ahora es ASÍNCRONO!
+        public async Task<List<PgcAccount>> BuildAccountsFromXsdLabelPresentation(
             string xsdPath,
             string labelPath,
             string presentationPath)
         {
-            var codes = ParseCodesFromXsd(xsdPath);
-            var labels = ParseLabels(labelPath);
-            var hierarchy = ParseHierarchy(presentationPath);
-            var levels = CalculateLevelsFromHierarchy(hierarchy);
+            // Validaciones robustas: Aseguramos que los archivos existan antes de intentar leerlos.
+            // Las verificaciones File.Exists no tienen una versión async, así que se mantienen síncronas.
+            if (!File.Exists(xsdPath))
+            {
+                throw new FileNotFoundException($"El archivo XSD no fue encontrado: {xsdPath}");
+            }
+            if (!File.Exists(labelPath))
+            {
+                throw new FileNotFoundException($"El archivo de etiquetas no fue encontrado: {labelPath}");
+            }
+            if (!File.Exists(presentationPath))
+            {
+                throw new FileNotFoundException($"El archivo de presentación no fue encontrado: {presentationPath}");
+            }
+
+            // ¡Ahora usamos 'await' para llamar a los métodos asíncronos!
+            var codes = await ParseCodesFromXsd(xsdPath);
+            var labels = await ParseLabels(labelPath);
+            var hierarchy = await ParseHierarchy(presentationPath);
+            var levels = CalculateLevelsFromHierarchy(hierarchy); // Este sigue siendo síncrono, no hace E/S
 
             var accounts = new List<PgcAccount>();
 
@@ -55,7 +64,7 @@ namespace Conta360.Infrastructure.PGC.Processing
                     Name = name,
                     ParentCode = parentCode,
                     Level = level,
-                    IsMovable = level >= 3
+                    IsMovable = level >= 3 // Lógica de ejemplo para IsMovable
                 });
             }
 
@@ -70,18 +79,21 @@ namespace Conta360.Infrastructure.PGC.Processing
                 }
             }
 
-            // Paso 3: Retornar las cuentas, no persistirlas aquí.
+            // Paso 3: Retornar las cuentas.
             return accounts;
         }
 
-
-        private List<string> ParseCodesFromXsd(string xsdPath)
+        // Método ahora ASÍNCRONO
+        private async Task<List<string>> ParseCodesFromXsd(string xsdPath)
         {
             var codes = new List<string>();
-            using (var fs = File.OpenRead(xsdPath))
-            using (var reader = XmlReader.Create(fs))
+            // Usamos FileStream para abrir de forma asíncrona y luego XmlReader.Create
+            // XmlSchema.Read no tiene una versión async directa, así que la lectura de esquema
+            // se hará síncrona sobre el stream ya abierto asíncronamente.
+            await using (var fs = new FileStream(xsdPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true))
+            using (var reader = XmlReader.Create(fs, new XmlReaderSettings { Async = true })) // Es importante configurar Async = true
             {
-                var schema = XmlSchema.Read(reader, null);
+                var schema = XmlSchema.Read(reader, null); // Esta lectura es síncrona
                 if (schema == null)
                     throw new InvalidDataException($"No se pudo leer el esquema XSD: {xsdPath}");
 
@@ -99,10 +111,16 @@ namespace Conta360.Infrastructure.PGC.Processing
             return codes;
         }
 
-        private Dictionary<string, string> ParseLabels(string labelPath)
+        // Método ahora ASÍNCRONO
+        private async Task<Dictionary<string, string>> ParseLabels(string labelPath)
         {
             var dict = new Dictionary<string, string>();
-            var doc = XDocument.Load(labelPath);
+            // XDocument.Load no tiene un LoadAsync directo.
+            // La forma más simple es leer todo el contenido del archivo asíncronamente
+            // y luego parsear la cadena síncronamente.
+            var xmlContent = await File.ReadAllTextAsync(labelPath);
+            var doc = XDocument.Parse(xmlContent); // Parseo de la cadena es síncrono
+
             XNamespace xlink = "http://www.w3.org/1999/xlink";
 
             foreach (var labelElem in doc.Descendants().Where(e => e.Name.LocalName == "label"))
@@ -122,10 +140,13 @@ namespace Conta360.Infrastructure.PGC.Processing
         /// <summary>
         /// Devuelve un diccionario código->ParentCode según el árbol de presentation.xml.
         /// </summary>
-        private Dictionary<string, string?> ParseHierarchy(string presentationPath)
+        // Método ahora ASÍNCRONO
+        private async Task<Dictionary<string, string?>> ParseHierarchy(string presentationPath)
         {
-            var doc = XDocument.Load(presentationPath);
-            XNamespace link = "http://www.xbrl.org/2003/linkbase";
+            // Similar a ParseLabels, leemos el contenido asíncronamente.
+            var xmlContent = await File.ReadAllTextAsync(presentationPath);
+            var doc = XDocument.Parse(xmlContent); // Parseo de la cadena es síncrono
+
             XNamespace xlink = "http://www.w3.org/1999/xlink";
 
             // 1. Relaciona label->código XSD (usando xlink:href)
@@ -160,7 +181,10 @@ namespace Conta360.Infrastructure.PGC.Processing
 
                 // Solo añade si es un código numérico típico de cuenta
                 if (!int.TryParse(childCode, out _)) continue;
+                // Si el parentCode no es numérico, lo tratamos como nulo
                 if (!int.TryParse(parentCode, out _)) parentCode = null;
+                
+                // Añadir al diccionario, sobrescribiendo si ya existe (el último arc gana si hay duplicados).
                 childToParent[childCode] = parentCode;
             }
 
@@ -169,20 +193,55 @@ namespace Conta360.Infrastructure.PGC.Processing
 
         /// <summary>
         /// Calcula el nivel jerárquico de cada código (raíz=1).
+        /// Implementación más robusta para evitar ciclos y garantizar el cálculo para todos los nodos.
+        /// Este método no realiza E/S, por lo que permanece síncrono.
         /// </summary>
         private Dictionary<string, int> CalculateLevelsFromHierarchy(Dictionary<string, string?> hierarchy)
         {
             var levels = new Dictionary<string, int>();
-            foreach (var code in hierarchy.Keys)
+
+            foreach (string code in hierarchy.Keys.Concat(hierarchy.Values.Where(v => v != null)).Distinct().Cast<string>())
             {
-                var level = 1;
-                var parent = hierarchy[code];
-                while (!string.IsNullOrEmpty(parent))
+                if (levels.ContainsKey(code)) continue;
+
+                var currentCode = code;
+                var path = new Stack<string>();
+                var visitedInPath = new HashSet<string>();
+
+                while (!string.IsNullOrEmpty(currentCode) && !levels.ContainsKey(currentCode) && !visitedInPath.Contains(currentCode))
                 {
-                    level++;
-                    if (!hierarchy.TryGetValue(parent, out parent)) break;
+                    path.Push(currentCode);
+                    visitedInPath.Add(currentCode);
+
+                    if (!hierarchy.TryGetValue(currentCode, out var parent))
+                    {
+                        parent = null;
+                    }
+                    currentCode = parent;
                 }
-                levels[code] = level;
+
+                int baseLevel = 0;
+                if (currentCode == null)
+                {
+                    baseLevel = 0;
+                }
+                else if (currentCode != null && levels.ContainsKey(currentCode))
+                {
+                    baseLevel = levels[currentCode];
+                }
+                else if (currentCode != null && visitedInPath.Contains(currentCode))
+                {
+                    baseLevel = 1;
+                }
+
+                while (path.Any())
+                {
+                    var node = path.Pop();
+                    if (!string.IsNullOrEmpty(node) && !levels.ContainsKey(node))
+                    {
+                        levels[node] = baseLevel + path.Count + 1;
+                    }
+                }
             }
             return levels;
         }
