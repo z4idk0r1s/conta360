@@ -3,15 +3,15 @@ using Conta360.Application.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using Conta360.Domain.Interfaces;
-using Conta360.Core.Common; // Asegúrate de que esta referencia sea correcta para OperationResult
+using Conta360.Core.Common; 
 using Conta360.Domain.Entities;
 using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Conta360.Core.Interfaces; // Asegúrate de que IPgcTaxonomyDownloader esté aquí
-using Conta360.Application.Services; // Asegúrate de que PgcExtractorOptions esté aquí
+using Conta360.Core.Interfaces; 
+using Conta360.Application.Services; 
 
 namespace Conta360.Infrastructure.PGC.Services
 {
@@ -63,12 +63,8 @@ namespace Conta360.Infrastructure.PGC.Services
                 throw new ArgumentException("TaxonomyZipUrl no puede ser null o vacío en la configuración.", nameof(_options.TaxonomyZipUrl));
             }
 
-
             _extractDirectory = _options.ExtractDirectory;
 
-            // *** CORRECCIÓN CLAVE AQUÍ: Calcular la ruta de la carpeta raíz dentro del ZIP ***
-            // La descompresión de un ZIP (como el de ICAC) crea una carpeta con el nombre del ZIP original (de la URL),
-            // y dentro de esa carpeta están los contenidos.
             var uri = new Uri(_options.TaxonomyZipUrl);
             var zipFileNameFromUrl = Path.GetFileName(uri.LocalPath);
             var extractedRootFolderName = Path.GetFileNameWithoutExtension(zipFileNameFromUrl);
