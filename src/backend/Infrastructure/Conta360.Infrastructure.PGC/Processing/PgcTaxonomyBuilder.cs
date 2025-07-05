@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks; // ¡Nuevo using necesario!
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
@@ -21,7 +21,6 @@ namespace Conta360.Infrastructure.PGC.Processing
         /// Importa cuentas del PGC con jerarquía (ParentCode y Level) usando XSD, label-es.xml y presentation.xml.
         /// Devuelve la lista de cuentas en lugar de persistirlas directamente.
         /// </summary>
-        // ¡El método principal ahora es ASÍNCRONO!
         public async Task<List<PgcAccount>> BuildAccountsFromXsdLabelPresentation(
             string xsdPath,
             string labelPath,
@@ -42,7 +41,6 @@ namespace Conta360.Infrastructure.PGC.Processing
                 throw new FileNotFoundException($"El archivo de presentación no fue encontrado: {presentationPath}");
             }
 
-            // ¡Ahora usamos 'await' para llamar a los métodos asíncronos!
             var codes = await ParseCodesFromXsd(xsdPath);
             var labels = await ParseLabels(labelPath);
             var hierarchy = await ParseHierarchy(presentationPath);
@@ -53,9 +51,23 @@ namespace Conta360.Infrastructure.PGC.Processing
             // Paso 1: Crear cuentas con Id asignado
             foreach (var code in codes)
             {
-                var name = labels.TryGetValue(code, out var label) ? label : code;
-                var parentCode = hierarchy.TryGetValue(code, out var parent) ? parent : null;
-                var level = levels.TryGetValue(code, out var lvl) ? lvl : 1;
+                // TryGetValue devuelve un string?
+                labels.TryGetValue(code, out var label);
+                var name = string.IsNullOrWhiteSpace(label) ? code : label;
+
+                // TryGetValue devuelve un string?
+                hierarchy.TryGetValue(code, out var parent);
+                var parentCode = parent; // Puede ser null
+
+                levels.TryGetValue(code, out var lvl); // TryGetValue devuelve el valor predeterminado (0 para int) si no se encuentra
+                // Asignar 1 si no se encuentra en 'levels' (no tiene nivel calculado, ergo es raíz o aislado).
+                // Si levels.ContainsKey(code) es true pero lvl es 0, significa que su nivel es 0, lo cual es inusual si la lógica es raíz=1.
+                // Sin embargo, si la lógica original es 0 para raíces y luego se incrementa, se mantiene.
+                // Pero, dado que se busca baseLevel + path.Count + 1, un 0 inicial resultaría en 1 para las raíces.
+                // Así que `lvl` ya debería ser correcto o `0` si no se encontró y luego se corrige.
+                // Simplificando: si no está en levels, su nivel inicial es 1.
+                var level = levels.ContainsKey(code) ? lvl : 1; 
+
 
                 accounts.Add(new PgcAccount
                 {
@@ -75,7 +87,9 @@ namespace Conta360.Infrastructure.PGC.Processing
                 {
                     var parent = accounts.FirstOrDefault(a => a.Code == account.ParentCode);
                     if (parent != null)
+                    {
                         account.ParentId = parent.Id;
+                    }
                 }
             }
 
@@ -83,55 +97,56 @@ namespace Conta360.Infrastructure.PGC.Processing
             return accounts;
         }
 
-        // Método ahora ASÍNCRONO
         private async Task<List<string>> ParseCodesFromXsd(string xsdPath)
         {
             var codes = new List<string>();
-            // Usamos FileStream para abrir de forma asíncrona y luego XmlReader.Create
-            // XmlSchema.Read no tiene una versión async directa, así que la lectura de esquema
-            // se hará síncrona sobre el stream ya abierto asíncronamente.
             await using (var fs = new FileStream(xsdPath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true))
-            using (var reader = XmlReader.Create(fs, new XmlReaderSettings { Async = true })) // Es importante configurar Async = true
+            using (var reader = XmlReader.Create(fs, new XmlReaderSettings { Async = true })) 
             {
-                var schema = XmlSchema.Read(reader, null); // Esta lectura es síncrona
+                // Esta lectura es síncrona. No hay una versión asíncrona de XmlSchema.Read.
+                var schema = XmlSchema.Read(reader, null); 
                 if (schema == null)
                     throw new InvalidDataException($"No se pudo leer el esquema XSD: {xsdPath}");
 
                 foreach (var item in schema.Items)
                 {
-                    if (item is XmlSchemaElement element && !string.IsNullOrWhiteSpace(element.Name))
+                    if (item is XmlSchemaElement element)
                     {
-                        var code = element.Name.Trim();
-                        // Solo códigos numéricos típicos de cuentas
-                        if (int.TryParse(code, out _))
-                            codes.Add(code);
+                        if (!string.IsNullOrWhiteSpace(element.Name))
+                        {
+                            var code = element.Name.Trim();
+                            // Asume que los códigos son siempre numéricos.
+                            if (int.TryParse(code, out _))
+                            {
+                                codes.Add(code);
+                            }
+                        }
                     }
                 }
             }
             return codes;
         }
 
-        // Método ahora ASÍNCRONO
         private async Task<Dictionary<string, string>> ParseLabels(string labelPath)
         {
             var dict = new Dictionary<string, string>();
-            // XDocument.Load no tiene un LoadAsync directo.
-            // La forma más simple es leer todo el contenido del archivo asíncronamente
-            // y luego parsear la cadena síncronamente.
             var xmlContent = await File.ReadAllTextAsync(labelPath);
-            var doc = XDocument.Parse(xmlContent); // Parseo de la cadena es síncrono
+            var doc = XDocument.Parse(xmlContent); // El parseo de la cadena es síncrono
 
             XNamespace xlink = "http://www.w3.org/1999/xlink";
 
             foreach (var labelElem in doc.Descendants().Where(e => e.Name.LocalName == "label"))
             {
-                var xlinkLabel = labelElem.Attribute(xlink + "label")?.Value ?? "";
-                if (xlinkLabel.StartsWith("label_"))
+                string? xlinkLabel = labelElem.Attribute(xlink + "label")?.Value;
+                
+                if (!string.IsNullOrWhiteSpace(xlinkLabel) && xlinkLabel.StartsWith("label_", StringComparison.OrdinalIgnoreCase))
                 {
                     var code = xlinkLabel.Substring("label_".Length);
                     var text = labelElem.Value.Trim();
                     if (!string.IsNullOrWhiteSpace(code) && !string.IsNullOrWhiteSpace(text))
+                    {
                         dict[code] = text;
+                    }
                 }
             }
             return dict;
@@ -140,12 +155,10 @@ namespace Conta360.Infrastructure.PGC.Processing
         /// <summary>
         /// Devuelve un diccionario código->ParentCode según el árbol de presentation.xml.
         /// </summary>
-        // Método ahora ASÍNCRONO
         private async Task<Dictionary<string, string?>> ParseHierarchy(string presentationPath)
         {
-            // Similar a ParseLabels, leemos el contenido asíncronamente.
             var xmlContent = await File.ReadAllTextAsync(presentationPath);
-            var doc = XDocument.Parse(xmlContent); // Parseo de la cadena es síncrono
+            var doc = XDocument.Parse(xmlContent); // El parseo de la cadena es síncrono
 
             XNamespace xlink = "http://www.w3.org/1999/xlink";
 
@@ -158,7 +171,7 @@ namespace Conta360.Infrastructure.PGC.Processing
                     Code = e.Attribute(xlink + "href")?.Value?.Split('#').Last()
                 })
                 .Where(x => !string.IsNullOrEmpty(x.Label) && !string.IsNullOrEmpty(x.Code))
-                .ToDictionary(x => x.Label!, x => x.Code!);
+                .ToDictionary(x => x.Label!, x => x.Code!); 
 
             // 2. Lee los arcs padre-hijo
             var arcs = doc.Descendants()
@@ -176,16 +189,23 @@ namespace Conta360.Infrastructure.PGC.Processing
 
             foreach (var arc in arcs)
             {
-                if (!locators.TryGetValue(arc.ParentLabel!, out var parentCode)) continue;
-                if (!locators.TryGetValue(arc.ChildLabel!, out var childCode)) continue;
+                // Usamos TryGetValue y comprobamos el resultado para evitar nulidad.
+                if (!locators.TryGetValue(arc.ParentLabel!, out string? parentLabelCode) || parentLabelCode == null) continue;
+                if (!locators.TryGetValue(arc.ChildLabel!, out string? childLabelCode) || childLabelCode == null) continue;
 
-                // Solo añade si es un código numérico típico de cuenta
+                string parentCode = parentLabelCode; 
+                string childCode = childLabelCode;   
+
                 if (!int.TryParse(childCode, out _)) continue;
-                // Si el parentCode no es numérico, lo tratamos como nulo
-                if (!int.TryParse(parentCode, out _)) parentCode = null;
+
+                string? finalParentCode = null;
+                // Solo si el ParentCode es numérico lo consideramos válido.
+                if (int.TryParse(parentCode, out _))
+                {
+                    finalParentCode = parentCode;
+                }
                 
-                // Añadir al diccionario, sobrescribiendo si ya existe (el último arc gana si hay duplicados).
-                childToParent[childCode] = parentCode;
+                childToParent[childCode] = finalParentCode;
             }
 
             return childToParent;
@@ -200,22 +220,30 @@ namespace Conta360.Infrastructure.PGC.Processing
         {
             var levels = new Dictionary<string, int>();
 
-            foreach (string code in hierarchy.Keys.Concat(hierarchy.Values.Where(v => v != null)).Distinct().Cast<string>())
+            // Filtrar los valores nulos directamente en la enumeración
+            var allNodes = hierarchy.Keys
+                                    .Concat(hierarchy.Values.Where(v => v != null).Select(v => v!)) 
+                                    .Distinct()
+                                    .ToList();
+
+            foreach (string code in allNodes) 
             {
+                // Si el nodo ya ha sido procesado (su nivel ya está calculado), saltar.
                 if (levels.ContainsKey(code)) continue;
 
-                var currentCode = code;
+                string? currentCode = code;
                 var path = new Stack<string>();
-                var visitedInPath = new HashSet<string>();
+                var visitedInPath = new HashSet<string>(); // Detectar ciclos en la ruta actual
 
-                while (!string.IsNullOrEmpty(currentCode) && !levels.ContainsKey(currentCode) && !visitedInPath.Contains(currentCode))
+                while (currentCode != null && !levels.ContainsKey(currentCode) && !visitedInPath.Contains(currentCode))
                 {
                     path.Push(currentCode);
                     visitedInPath.Add(currentCode);
 
-                    if (!hierarchy.TryGetValue(currentCode, out var parent))
+                    // Obtener el padre. Si no existe en la jerarquía, es una raíz o un nodo aislado.
+                    if (!hierarchy.TryGetValue(currentCode, out string? parent))
                     {
-                        parent = null;
+                        parent = null; 
                     }
                     currentCode = parent;
                 }
@@ -223,22 +251,27 @@ namespace Conta360.Infrastructure.PGC.Processing
                 int baseLevel = 0;
                 if (currentCode == null)
                 {
-                    baseLevel = 0;
+                    // Si llegamos a un 'null' significa que es una raíz de la jerarquía (o un nodo sin padre).
+                    baseLevel = 0; 
                 }
-                else if (currentCode != null && levels.ContainsKey(currentCode))
+                else if (levels.TryGetValue(currentCode, out int existingLevel))
                 {
-                    baseLevel = levels[currentCode];
+                    // Si ya calculamos el nivel de un nodo superior, usamos ese nivel como base.
+                    baseLevel = existingLevel;
                 }
-                else if (currentCode != null && visitedInPath.Contains(currentCode))
+                else 
                 {
-                    baseLevel = 1;
+                    // Esto indica un ciclo o un nodo aislado no conectado a una raíz ya procesada. 
+                    // Para evitar bucles infinitos en el cálculo, asumimos un nivel base de 1.
+                    baseLevel = 1; 
                 }
 
                 while (path.Any())
                 {
-                    var node = path.Pop();
-                    if (!string.IsNullOrEmpty(node) && !levels.ContainsKey(node))
+                    var node = path.Pop(); 
+                    if (!levels.ContainsKey(node)) 
                     {
+                        // El nivel es el nivel base + la cantidad de nodos restantes en el camino (que son sus descendientes) + 1 (el propio nodo).
                         levels[node] = baseLevel + path.Count + 1;
                     }
                 }
