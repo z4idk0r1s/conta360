@@ -22,6 +22,8 @@ using Conta360.Infrastructure.Sqlite.Contexts;
 using Conta360.Infrastructure.Sqlite.Repositories;
 using Conta360.Infrastructure.PGC.Services;
 using Conta360.Infrastructure.PGC.Processing;
+using Conta360.Infrastructure.Postgres.Services;
+using Conta360.Infrastructure.Sqlite.Services;
 
 
 namespace Conta360.CrossCutting.IoC
@@ -44,7 +46,7 @@ namespace Conta360.CrossCutting.IoC
             return services;
         }
 
-        public static IServiceCollection AddConta360Infrastructure(this IServiceCollection services, IConfiguration configuration, string dbProvider = "Sqlite")
+        public static IServiceCollection AddConta360Infrastructure(this IServiceCollection services, IConfiguration configuration, string dbProvider)
         {
             // Configuración global para PGC
             services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
@@ -57,11 +59,11 @@ namespace Conta360.CrossCutting.IoC
             services.AddPGCInfrastructure(configuration);
 
             // Base de datos y Unit of Work
-            if (dbProvider == "Postgres")
+            if (dbProvider?.Equals("postgres", StringComparison.OrdinalIgnoreCase) == true)
             {
                 services.AddPostgresInfrastructure(configuration);
             }
-            else // Default a Sqlite
+            else
             {
                 services.AddSqliteInfrastructure(configuration);
             }

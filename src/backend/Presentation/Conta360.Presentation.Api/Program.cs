@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
-var dbProvider = builder.Configuration.GetValue<string>("Database:Provider") ?? "Sqlite";
+var dbProvider = builder.Configuration.GetValue<string>("Database:Provider") ?? "sqlite";
 
 // Logging profesional con Serilog
 builder.Host.UseSerilog((context, services, configuration) => configuration
@@ -36,6 +36,7 @@ var pgcSection = builder.Configuration.GetSection("Pgc");
 var extractDirectoryValue = pgcSection["ExtractDirectory"];
 var taxonomyZipUrlValue = pgcSection["TaxonomyZipUrl"];
 
+logger.LogInformation("Database Provider leído: {dbProvider}", dbProvider);
 logger.LogInformation("DIAGNÓSTICO CONFIGURACIÓN PGC:");
 logger.LogInformation("   Sección 'Pgc' existe: {PgcSectionExists}", pgcSection != null);
 if (pgcSection != null)
