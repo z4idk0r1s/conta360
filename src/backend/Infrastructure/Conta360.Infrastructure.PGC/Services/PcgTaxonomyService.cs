@@ -30,8 +30,7 @@ namespace Conta360.Infrastructure.PGC.Services
         private readonly string _taxonomyDateSuffix; // Nueva variable para almacenar el sufijo de fecha
 
         // Se añade EIRL si existe en tu ZIP y necesitas procesarlo.
-        // Añadimos "mixto" a las modalidades si vas a procesarlo, según el último tree /F.
-        private readonly string[] _modalidades = { "normal", "abreviado", "pymes", "comun", "eirl", "mixto" }; 
+        private readonly string[] _modalidades = { "normal", "abreviado", "pymes", "comun", "eirl"}; 
 
         public PgcTaxonomyService(
             IPgcTaxonomyDownloader downloader,
@@ -145,8 +144,7 @@ namespace Conta360.Infrastructure.PGC.Services
                     { "abreviado", Path.Combine(_actualExtractedRootDirectory, "pgc07-abreviado-completo.xsd") },
                     { "pymes", Path.Combine(_actualExtractedRootDirectory, "pgc07-pymes-completo.xsd") },
                     { "comun", Path.Combine(_actualExtractedRootDirectory, "pgc07-comun-completo.xsd") },
-                    { "eirl", Path.Combine(_actualExtractedRootDirectory, "pgc07-eirl-completo.xsd") },
-                    { "mixto", Path.Combine(_actualExtractedRootDirectory, "pgc07-mixto-completo.xsd") }
+                    { "eirl", Path.Combine(_actualExtractedRootDirectory, "pgc07-eirl-completo.xsd") }
                 };
 
                 // --- Paso 3: Procesamiento de Cada Modalidad de Taxonomía ---
