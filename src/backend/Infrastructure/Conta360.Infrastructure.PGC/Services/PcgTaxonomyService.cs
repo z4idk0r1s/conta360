@@ -174,7 +174,6 @@ namespace Conta360.Infrastructure.PGC.Services
                     // --- LÓGICA DE SELECCIÓN DE UN ÚNICO ARCHIVO DE ETIQUETAS (LABEL) ---
                     // Los archivos de labels dentro de las carpetas de modalidad usan el prefijo 'pgc-07' y SÍ LLEVAN SUFIJO DE FECHA.
                     string? primaryLabelPath = null;
-                    // El sufijo de fecha para linkbases es YYYYMMDD.
                     string generalLabelBaseName = $"pgc-07-{modalidad[0]}-{_taxonomyDateSuffix}"; 
 
                     // 1. Prioridad: Buscar el label principal de la modalidad (sin sufijos de módulos, ej: -m4-flujefec)
@@ -216,8 +215,8 @@ namespace Conta360.Infrastructure.PGC.Services
                         var etcpnDir = Path.Combine(modalidadDir, "EstadoTotalCambiosPatrimonioNeto"); 
                         if (Directory.Exists(etcpnDir))
                         {
-                            // Prefijos específicos para archivos de ETCPS: pgc07n- o pgc07c-. También con sufijo de fecha.
-                            string etcpnPrefix = $"pgc07{modalidad[0]}-"; 
+                            // Prefijos específicos para archivos de ETCPS: pgc-07-n- o pgc-07-c-. También con sufijo de fecha.
+                            string etcpnPrefix = $"pgc-07-{modalidad[0]}-"; 
                             var etcpnPresentation = Directory.GetFiles(etcpnDir, $"{etcpnPrefix}*-{_taxonomyDateSuffix}-presentation.xml").FirstOrDefault(); 
                             
                             if (etcpnPresentation != null)

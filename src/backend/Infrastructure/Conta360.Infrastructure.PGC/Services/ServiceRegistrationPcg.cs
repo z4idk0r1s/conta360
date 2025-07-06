@@ -20,6 +20,7 @@ namespace Conta360.Infrastructure.PGC.Services
             services.AddHttpClient<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>();
             services.AddScoped<IPgcTaxonomyValidator, PgcTaxonomyValidator>();
             services.AddScoped<PgcTaxonomyBuilder>();
+            services.AddScoped<PgcTaxonomyParser>();
             services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>();
             return services;
         }
