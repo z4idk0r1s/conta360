@@ -29,7 +29,7 @@ namespace Conta360.Infrastructure.PGC.Services
 
         // Se añade EIRL si existe en tu ZIP y necesitas procesarlo.
         // Si la taxonomía EIRL no está dentro de estas carpetas, se omitirá su procesamiento.
-        private readonly string[] _modalidades = { "normal", "abreviado", "pymes", "mixto", "eirl" }; // Añadido "mixto"
+        private readonly string[] _modalidades = { "normal", "abreviado", "pymes", "comun", "eirl" }; 
 
         public PgcTaxonomyService(
             IPgcTaxonomyDownloader downloader,
