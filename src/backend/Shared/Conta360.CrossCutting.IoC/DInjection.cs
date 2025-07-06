@@ -50,9 +50,10 @@ namespace Conta360.CrossCutting.IoC
             services.AddExcelFiscalServices(configuration);
             services.AddExcelInfrastructure(configuration);
 
-            // Infraestructura PGC (descarga, validación, builder, service)
+            // Infraestructura PGC (descarga, validación, parser, builder, service)
             services.AddScoped<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>(); // 
             services.AddScoped<PgcTaxonomyValidator>();
+            services.AddScoped<PgcTaxonomyParser>(); // Registra PgcTaxonomyParser
             services.AddScoped<PgcTaxonomyBuilder>(); // Ahora sin IPgcAccountRepository en el constructor
             services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>(); 
 

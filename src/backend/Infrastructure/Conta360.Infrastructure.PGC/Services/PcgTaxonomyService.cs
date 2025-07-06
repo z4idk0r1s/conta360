@@ -161,7 +161,9 @@ namespace Conta360.Infrastructure.PGC.Services
 
                     // Buscamos todos los archivos XSD específicos de cada estado dentro del directorio de la modalidad.
                     // Estos son los que referencian los archivos de presentación correspondientes.
-                    var xsdFiles = Directory.GetFiles(modalidadDir, "*.xsd", SearchOption.TopDirectoryOnly);
+                    var xsdFiles = Directory.EnumerateFiles(modalidadDir, "*.xsd", SearchOption.TopDirectoryOnly)
+                                           .Where(f => !f.Contains("completo", StringComparison.OrdinalIgnoreCase)) // Ignorar los XSD "completo" aquí, ya que se usan como puntos de entrada generales.
+                                           .ToList(); // Convertir a lista para evitar múltiples enumeraciones.
                     
                     if (!xsdFiles.Any())
                     {
@@ -186,20 +188,22 @@ namespace Conta360.Infrastructure.PGC.Services
 
                         // La lógica para el XSD principal de la modalidad (ej: pgc-07-n-2024-01-01)
                         // Para estos XSD, no se espera un archivo de presentación específico, por lo que 'presentationPath' será null.
-                        if (baseName.Equals(generalLabelBaseName))
-                        {
-                            _logger.LogInformation("[PgcTaxonomyService] Manejando XSD principal de la modalidad: {XsdFileName}. No se espera archivo de presentación.", Path.GetFileName(xsd));
-                            // presentationPath se mantiene null.
-                        }
-                        else // Para los XSD de módulos (m1-balance, m2-pyg, m3-patnetA, m4-flujefec, etc.)
-                        {
+                        // Esta comprobación ahora debería ser redundante porque ya filtramos los XSD "completo" arriba.
+                        // Deberíamos procesar cada XSD de módulo que tenga un presentation.xml asociado.
+                        // if (baseName.Equals(generalLabelBaseName))
+                        // {
+                        //     _logger.LogInformation("[PgcTaxonomyService] Manejando XSD principal de la modalidad: {XsdFileName}. No se espera archivo de presentación.", Path.GetFileName(xsd));
+                        //     // presentationPath se mantiene null.
+                        // }
+                        // else // Para los XSD de módulos (m1-balance, m2-pyg, m3-patnetA, m4-flujefec, etc.)
+                        // {
                             presentationPath = Directory.GetFiles(modalidadDir, $"{baseName}-presentation.xml").FirstOrDefault();
                             if (presentationPath == null)
                             {
                                 _logger.LogWarning("[PgcTaxonomyService] Archivo de presentación '{PresentationFileName}' no encontrado para XSD '{XsdFileName}' en {ModalidadDir}. Se omitirá el procesamiento de este XSD.", $"{baseName}-presentation.xml", Path.GetFileName(xsd), modalidadDir);
                                 continue;
                             }
-                        }
+                        // }
 
                         _logger.LogInformation("[PgcTaxonomyService] Procesando taxonomía para modalidad '{Modalidad}' con XSD completo: {MainEntryPointXsdFileName}, XSD específico (para presentación): {XsdFileName}, Label: {LabelFileName}, Presentation: {PresentationFileName}.", 
                             modalidad, 
