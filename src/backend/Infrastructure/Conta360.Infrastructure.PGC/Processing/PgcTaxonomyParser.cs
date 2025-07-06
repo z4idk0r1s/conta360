@@ -106,28 +106,67 @@ namespace Conta360.Infrastructure.PGC.Processing
         public async Task<Dictionary<string, string>> ParseLabels(string labelPath)
         {
             _logger.LogDebug("[PgcTaxonomyParser.ParseLabels] Iniciando parseo de etiquetas desde archivo: '{LabelPath}'", labelPath);
-            var dict = new Dictionary<string, string>();
+            var conceptLabels = new Dictionary<string, string>();
             try
             {
                 var xmlContent = await File.ReadAllTextAsync(labelPath);
                 var doc = XDocument.Parse(xmlContent);
 
                 XNamespace xlink = "http://www.w3.org/1999/xlink";
+                XNamespace link = "http://www.xbrl.org/2003/linkbase";
+                // XNamespace xbrli = "http://www.xbrl.org/2003/instance"; // No es estrictamente necesario aquí si no se usa directamente para buscar elementos/atributos
 
-                foreach (var labelElem in doc.Descendants().Where(e => e.Name.LocalName == "label"))
-                {
-                    string? xlinkLabel = labelElem.Attribute(xlink + "label")?.Value;
-
-                    if (!string.IsNullOrWhiteSpace(xlinkLabel) && xlinkLabel.StartsWith("label_", StringComparison.OrdinalIgnoreCase))
+                // Paso 1: Mapear los locators (en este caso, los href de los conceptos a sus xlink:label)
+                var locators = doc.Descendants(link + "loc")
+                    .Select(e => new
                     {
-                        var code = xlinkLabel.Substring("label_".Length);
-                        var text = labelElem.Value.Trim();
+                        Label = e.Attribute(xlink + "label")?.Value,
+                        Code = e.Attribute(xlink + "href")?.Value?.Split('#').Last()
+                    })
+                    .Where(x => !string.IsNullOrEmpty(x.Label) && !string.IsNullOrEmpty(x.Code))
+                    .ToDictionary(x => x.Label!, x => x.Code!);
 
-                        if (!string.IsNullOrWhiteSpace(code) && !string.IsNullOrWhiteSpace(text))
-                        {
-                            dict[code] = text;
-                        }
+                // Paso 2: Recolectar las etiquetas por su xlink:label y asegurar el idioma español
+                // CORRECTED: Buscar el atributo 'lang' con el namespace 'http://www.w3.org/XML/1998/namespace'
+                var labelsByXlinkLabel = doc.Descendants(link + "label")
+                    .Where(e => 
+                    {
+                        var langAttribute = e.Attribute(XNamespace.Xml + "lang"); // Correcto para xml:lang
+                        return langAttribute?.Value?.ToLower() == "es";
+                    })
+                    .Select(e => new
+                    {
+                        XlinklLabel = e.Attribute(xlink + "label")?.Value,
+                        Text = e.Value.Trim()
+                    })
+                    .Where(x => !string.IsNullOrEmpty(x.XlinklLabel) && !string.IsNullOrEmpty(x.Text))
+                    .ToDictionary(x => x.XlinklLabel!, x => x.Text);
+
+                // Paso 3: Usar los labelArc para conectar los locators con las etiquetas
+                foreach (var labelArc in doc.Descendants(link + "labelArc"))
+                {
+                    string? fromLabel = labelArc.Attribute(xlink + "from")?.Value;
+                    string? toLabel = labelArc.Attribute(xlink + "to")?.Value;
+
+                    if (string.IsNullOrWhiteSpace(fromLabel) || string.IsNullOrWhiteSpace(toLabel))
+                    {
+                        _logger.LogWarning("[PgcTaxonomyParser.ParseLabels] labelArc incompleto encontrado en '{LabelPath}'. Se omitirá.", labelPath);
+                        continue;
                     }
+
+                    if (!locators.TryGetValue(fromLabel, out string? conceptCode) || conceptCode == null)
+                    {
+                        _logger.LogWarning("[PgcTaxonomyParser.ParseLabels] Origen de labelArc '{FromLabel}' no encontrado en locators para '{LabelPath}'. Se omitirá esta relación de etiqueta.", fromLabel, labelPath);
+                        continue;
+                    }
+
+                    if (!labelsByXlinkLabel.TryGetValue(toLabel, out string? labelText) || labelText == null)
+                    {
+                        _logger.LogWarning("[PgcTaxonomyParser.ParseLabels] Destino de labelArc '{ToLabel}' no encontrado en etiquetas para '{LabelPath}'. Se omitirá esta relación de etiqueta.", toLabel, labelPath);
+                        continue;
+                    }
+
+                    conceptLabels[conceptCode] = labelText;
                 }
             }
             catch (Exception ex)
@@ -135,8 +174,8 @@ namespace Conta360.Infrastructure.PGC.Processing
                 _logger.LogError(ex, "[PgcTaxonomyParser.ParseLabels] Error al parsear archivo de etiquetas '{LabelPath}': {Message}", labelPath, ex.Message);
                 throw;
             }
-            _logger.LogInformation("[PgcTaxonomyParser.ParseLabels] Se encontraron {Count} etiquetas en el archivo '{LabelPath}'.", dict.Count, labelPath);
-            return dict;
+            _logger.LogInformation("[PgcTaxonomyParser.ParseLabels] Se encontraron {Count} etiquetas en el archivo '{LabelPath}'.", conceptLabels.Count, labelPath);
+            return conceptLabels;
         }
 
         /// <summary>
@@ -154,9 +193,9 @@ namespace Conta360.Infrastructure.PGC.Processing
                 var doc = XDocument.Parse(xmlContent);
 
                 XNamespace xlink = "http://www.w3.org/1999/xlink";
+                XNamespace link = "http://www.xbrl.org/2003/linkbase";
 
-                var locators = doc.Descendants()
-                    .Where(e => e.Name.LocalName == "loc")
+                var locators = doc.Descendants(link + "loc")
                     .Select(e => new
                     {
                         Label = e.Attribute(xlink + "label")?.Value,
@@ -165,8 +204,7 @@ namespace Conta360.Infrastructure.PGC.Processing
                     .Where(x => !string.IsNullOrEmpty(x.Label) && !string.IsNullOrEmpty(x.Code))
                     .ToDictionary(x => x.Label!, x => x.Code!);
 
-                var arcs = doc.Descendants()
-                    .Where(e => e.Name.LocalName == "presentationArc")
+                var arcs = doc.Descendants(link + "presentationArc")
                     .Select(e => new
                     {
                         ParentLabel = e.Attribute(xlink + "from")?.Value,

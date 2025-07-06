@@ -23,9 +23,6 @@ Thumbs.db
 # Ignorar todo dentro de /Data/PGC
 /Data/PGC/*
 
-# No ignores la carpeta misma /Data/PGC
-!/Data/PGC/
-
 # Ignore test results
 TestResults/
 *.trx
