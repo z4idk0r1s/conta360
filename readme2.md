@@ -689,7 +689,6 @@ Resumen:
 
 cat /tmp/backend_log.log
     --------------------------------------------------
-
 C:.
 │   .dockerignore
 │   .gitignore
@@ -740,17 +739,6 @@ C:.
     │   │   │   │       LoggingBehavior.cs
     │   │   │   │       ValidationBehavior.cs
     │   │   │   │
-    │   │   │   ├───bin
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │               Conta360.Application.deps.json
-    │   │   │   │               Conta360.Application.dll
-    │   │   │   │               Conta360.Application.pdb
-    │   │   │   │               Conta360.Core.dll
-    │   │   │   │               Conta360.Core.pdb
-    │   │   │   │               Conta360.Domain.dll
-    │   │   │   │               Conta360.Domain.pdb
-    │   │   │   │
     │   │   │   ├───DTOs
     │   │   │   │       AccountDto.cs
     │   │   │   │       PgcAccountDto.cs
@@ -784,33 +772,6 @@ C:.
     │   │   │   ├───Mappings
     │   │   │   │       MappingProfile.cs
     │   │   │   │
-    │   │   │   ├───obj
-    │   │   │   │   │   Conta360.Application.csproj.nuget.dgspec.json
-    │   │   │   │   │   Conta360.Application.csproj.nuget.g.props
-    │   │   │   │   │   Conta360.Application.csproj.nuget.g.targets
-    │   │   │   │   │   project.assets.json
-    │   │   │   │   │   project.nuget.cache
-    │   │   │   │   │
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │   │   │           │   Conta360.0E22A500.Up2Date
-    │   │   │   │           │   Conta360.Application.assets.cache
-    │   │   │   │           │   Conta360.Application.csproj.AssemblyReference.cache
-    │   │   │   │           │   Conta360.Application.csproj.CoreCompileInputs.cache
-    │   │   │   │           │   Conta360.Application.csproj.FileListAbsolute.txt
-    │   │   │   │           │   Conta360.Application.dll
-    │   │   │   │           │   Conta360.Application.GeneratedMSBuildEditorConfig.editorconfig
-    │   │   │   │           │   Conta360.Application.GlobalUsings.g.cs
-    │   │   │   │           │   Conta360.Application.pdb
-    │   │   │   │           │   Conta360.Application.sourcelink.json
-    │   │   │   │           │
-    │   │   │   │           ├───ref
-    │   │   │   │           │       Conta360.Application.dll
-    │   │   │   │           │
-    │   │   │   │           └───refint
-    │   │   │   │                   Conta360.Application.dll
-    │   │   │   │
     │   │   │   └───Services
     │   │   │           PgcAccountTreeBuilder.cs
     │   │   │           PgcExtractorOptions.cs
@@ -818,60 +779,21 @@ C:.
     │   │   ├───Conta360.Core
     │   │   │   │   Conta360.Core.csproj
     │   │   │   │
-    │   │   │   ├───bin
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │               Conta360.Core.deps.json
-    │   │   │   │               Conta360.Core.dll
-    │   │   │   │               Conta360.Core.pdb
-    │   │   │   │
     │   │   │   ├───Common
     │   │   │   │       Error.cs
     │   │   │   │       OperationResult.cs
     │   │   │   │       PgcModelType.cs
     │   │   │   │       ValidationResult.cs
     │   │   │   │
-    │   │   │   ├───Interfaces
-    │   │   │   │       ICurrentUserService.cs
-    │   │   │   │       IDateTimeProvider.cs
-    │   │   │   │       IPgcTaxonomyDownloader.cs
-    │   │   │   │       IPgcTaxonomyValidator.cs
-    │   │   │   │       IValidator.cs
-    │   │   │   │
-    │   │   │   └───obj
-    │   │   │       │   Conta360.Core.csproj.nuget.dgspec.json
-    │   │   │       │   Conta360.Core.csproj.nuget.g.props
-    │   │   │       │   Conta360.Core.csproj.nuget.g.targets
-    │   │   │       │   project.assets.json
-    │   │   │       │   project.nuget.cache
-    │   │   │       │
-    │   │   │       └───Debug
-    │   │   │           └───net8.0
-    │   │   │               │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │   │               │   Conta360.Core.assets.cache
-    │   │   │               │   Conta360.Core.csproj.CoreCompileInputs.cache
-    │   │   │               │   Conta360.Core.csproj.FileListAbsolute.txt
-    │   │   │               │   Conta360.Core.dll
-    │   │   │               │   Conta360.Core.GeneratedMSBuildEditorConfig.editorconfig
-    │   │   │               │   Conta360.Core.GlobalUsings.g.cs
-    │   │   │               │   Conta360.Core.pdb
-    │   │   │               │   Conta360.Core.sourcelink.json
-    │   │   │               │
-    │   │   │               ├───ref
-    │   │   │               │       Conta360.Core.dll
-    │   │   │               │
-    │   │   │               └───refint
-    │   │   │                       Conta360.Core.dll
+    │   │   │   └───Interfaces
+    │   │   │           ICurrentUserService.cs
+    │   │   │           IDateTimeProvider.cs
+    │   │   │           IPgcTaxonomyDownloader.cs
+    │   │   │           IPgcTaxonomyValidator.cs
+    │   │   │           IValidator.cs
     │   │   │
     │   │   └───Conta360.Domain
     │   │       │   Conta360.Domain.csproj
-    │   │       │
-    │   │       ├───bin
-    │   │       │   └───Debug
-    │   │       │       └───net8.0
-    │   │       │               Conta360.Domain.deps.json
-    │   │       │               Conta360.Domain.dll
-    │   │       │               Conta360.Domain.pdb
     │   │       │
     │   │       ├───Entities
     │   │       │       Account.cs
@@ -883,51 +805,12 @@ C:.
     │   │       │       IPgcAccountRepository.cs
     │   │       │       IRepository.cs
     │   │       │
-    │   │       ├───obj
-    │   │       │   │   Conta360.Domain.csproj.nuget.dgspec.json
-    │   │       │   │   Conta360.Domain.csproj.nuget.g.props
-    │   │       │   │   Conta360.Domain.csproj.nuget.g.targets
-    │   │       │   │   project.assets.json
-    │   │       │   │   project.nuget.cache
-    │   │       │   │
-    │   │       │   └───Debug
-    │   │       │       └───net8.0
-    │   │       │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │       │           │   Conta360.Domain.assets.cache
-    │   │       │           │   Conta360.Domain.csproj.AssemblyReference.cache
-    │   │       │           │   Conta360.Domain.csproj.CoreCompileInputs.cache
-    │   │       │           │   Conta360.Domain.csproj.FileListAbsolute.txt
-    │   │       │           │   Conta360.Domain.dll
-    │   │       │           │   Conta360.Domain.GeneratedMSBuildEditorConfig.editorconfig
-    │   │       │           │   Conta360.Domain.GlobalUsings.g.cs
-    │   │       │           │   Conta360.Domain.pdb
-    │   │       │           │   Conta360.Domain.sourcelink.json
-    │   │       │           │
-    │   │       │           ├───ref
-    │   │       │           │       Conta360.Domain.dll
-    │   │       │           │
-    │   │       │           └───refint
-    │   │       │                   Conta360.Domain.dll
-    │   │       │
     │   │       └───ValueObjects
     │   │               Address.cs
     │   │
     │   ├───Infrastructure
     │   │   ├───Conta360.Infrastructure.Excel
     │   │   │   │   Conta360.Infrastructure.Excel.csproj
-    │   │   │   │
-    │   │   │   ├───bin
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │               Conta360.Application.dll
-    │   │   │   │               Conta360.Application.pdb
-    │   │   │   │               Conta360.Core.dll
-    │   │   │   │               Conta360.Core.pdb
-    │   │   │   │               Conta360.Domain.dll
-    │   │   │   │               Conta360.Domain.pdb
-    │   │   │   │               Conta360.Infrastructure.Excel.deps.json
-    │   │   │   │               Conta360.Infrastructure.Excel.dll
-    │   │   │   │               Conta360.Infrastructure.Excel.pdb
     │   │   │   │
     │   │   │   ├───Configuration
     │   │   │   │       ExcelSettings.cs
@@ -936,33 +819,6 @@ C:.
     │   │   │   │       DetalleDiario.cs
     │   │   │   │       ResumenFiscalResponse.cs
     │   │   │   │       TotalesGenerales.cs
-    │   │   │   │
-    │   │   │   ├───obj
-    │   │   │   │   │   Conta360.Infrastructure.Excel.csproj.nuget.dgspec.json
-    │   │   │   │   │   Conta360.Infrastructure.Excel.csproj.nuget.g.props
-    │   │   │   │   │   Conta360.Infrastructure.Excel.csproj.nuget.g.targets
-    │   │   │   │   │   project.assets.json
-    │   │   │   │   │   project.nuget.cache
-    │   │   │   │   │
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │   │   │           │   Conta360.B422326C.Up2Date
-    │   │   │   │           │   Conta360.Infrastructure.Excel.assets.cache
-    │   │   │   │           │   Conta360.Infrastructure.Excel.csproj.AssemblyReference.cache
-    │   │   │   │           │   Conta360.Infrastructure.Excel.csproj.CoreCompileInputs.cache
-    │   │   │   │           │   Conta360.Infrastructure.Excel.csproj.FileListAbsolute.txt
-    │   │   │   │           │   Conta360.Infrastructure.Excel.dll
-    │   │   │   │           │   Conta360.Infrastructure.Excel.GeneratedMSBuildEditorConfig.editorconfig
-    │   │   │   │           │   Conta360.Infrastructure.Excel.GlobalUsings.g.cs
-    │   │   │   │           │   Conta360.Infrastructure.Excel.pdb
-    │   │   │   │           │   Conta360.Infrastructure.Excel.sourcelink.json
-    │   │   │   │           │
-    │   │   │   │           ├───ref
-    │   │   │   │           │       Conta360.Infrastructure.Excel.dll
-    │   │   │   │           │
-    │   │   │   │           └───refint
-    │   │   │   │                   Conta360.Infrastructure.Excel.dll
     │   │   │   │
     │   │   │   └───Services
     │   │   │       │   ExcelProcessor.cs
@@ -977,19 +833,6 @@ C:.
     │   │   ├───Conta360.Infrastructure.PGC
     │   │   │   │   Conta360.Infrastructure.PGC.csproj
     │   │   │   │
-    │   │   │   ├───bin
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │               Conta360.Application.dll
-    │   │   │   │               Conta360.Application.pdb
-    │   │   │   │               Conta360.Core.dll
-    │   │   │   │               Conta360.Core.pdb
-    │   │   │   │               Conta360.Domain.dll
-    │   │   │   │               Conta360.Domain.pdb
-    │   │   │   │               Conta360.Infrastructure.PGC.deps.json
-    │   │   │   │               Conta360.Infrastructure.PGC.dll
-    │   │   │   │               Conta360.Infrastructure.PGC.pdb
-    │   │   │   │
     │   │   │   ├───Domain
     │   │   │   │   │   XmlTaxonomySerializer.cs
     │   │   │   │   │
@@ -999,36 +842,10 @@ C:.
     │   │   │   ├───Extraction
     │   │   │   │       PGCDataExtractor.cs
     │   │   │   │
-    │   │   │   ├───obj
-    │   │   │   │   │   Conta360.Infrastructure.PGC.csproj.nuget.dgspec.json
-    │   │   │   │   │   Conta360.Infrastructure.PGC.csproj.nuget.g.props
-    │   │   │   │   │   Conta360.Infrastructure.PGC.csproj.nuget.g.targets
-    │   │   │   │   │   project.assets.json
-    │   │   │   │   │   project.nuget.cache
-    │   │   │   │   │
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │   │   │           │   Conta360.62902E05.Up2Date
-    │   │   │   │           │   Conta360.Infrastructure.PGC.assets.cache
-    │   │   │   │           │   Conta360.Infrastructure.PGC.csproj.AssemblyReference.cache
-    │   │   │   │           │   Conta360.Infrastructure.PGC.csproj.CoreCompileInputs.cache
-    │   │   │   │           │   Conta360.Infrastructure.PGC.csproj.FileListAbsolute.txt
-    │   │   │   │           │   Conta360.Infrastructure.PGC.dll
-    │   │   │   │           │   Conta360.Infrastructure.PGC.GeneratedMSBuildEditorConfig.editorconfig
-    │   │   │   │           │   Conta360.Infrastructure.PGC.GlobalUsings.g.cs
-    │   │   │   │           │   Conta360.Infrastructure.PGC.pdb
-    │   │   │   │           │   Conta360.Infrastructure.PGC.sourcelink.json
-    │   │   │   │           │
-    │   │   │   │           ├───ref
-    │   │   │   │           │       Conta360.Infrastructure.PGC.dll
-    │   │   │   │           │
-    │   │   │   │           └───refint
-    │   │   │   │                   Conta360.Infrastructure.PGC.dll
-    │   │   │   │
     │   │   │   ├───Processing
     │   │   │   │       PgcTaxonomyBuilder.cs
     │   │   │   │       PgcTaxonomyDownloader.cs
+    │   │   │   │       PgcTaxonomyParser.cs
     │   │   │   │       PgcTaxonomyValidator.cs
     │   │   │   │
     │   │   │   └───Services
@@ -1038,50 +855,8 @@ C:.
     │   │   ├───Conta360.Infrastructure.Postgres
     │   │   │   │   Conta360.Infrastructure.Postgres.csproj
     │   │   │   │
-    │   │   │   ├───bin
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │               Conta360.Application.dll
-    │   │   │   │               Conta360.Application.pdb
-    │   │   │   │               Conta360.Core.dll
-    │   │   │   │               Conta360.Core.pdb
-    │   │   │   │               Conta360.Domain.dll
-    │   │   │   │               Conta360.Domain.pdb
-    │   │   │   │               Conta360.Infrastructure.Postgres.deps.json
-    │   │   │   │               Conta360.Infrastructure.Postgres.dll
-    │   │   │   │               Conta360.Infrastructure.Postgres.pdb
-    │   │   │   │               Conta360.Infrastructure.Postgres.runtimeconfig.json
-    │   │   │   │
     │   │   │   ├───Contexts
     │   │   │   │       PostgresDbContext.cs
-    │   │   │   │
-    │   │   │   ├───obj
-    │   │   │   │   │   Conta360.Infrastructure.Postgres.csproj.nuget.dgspec.json
-    │   │   │   │   │   Conta360.Infrastructure.Postgres.csproj.nuget.g.props
-    │   │   │   │   │   Conta360.Infrastructure.Postgres.csproj.nuget.g.targets
-    │   │   │   │   │   project.assets.json
-    │   │   │   │   │   project.nuget.cache
-    │   │   │   │   │
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │   │   │           │   Conta360.DC00351B.Up2Date
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.assets.cache
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.csproj.AssemblyReference.cache
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.csproj.CoreCompileInputs.cache
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.csproj.FileListAbsolute.txt
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.dll
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.GeneratedMSBuildEditorConfig.editorconfig
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.genruntimeconfig.cache
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.GlobalUsings.g.cs
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.pdb
-    │   │   │   │           │   Conta360.Infrastructure.Postgres.sourcelink.json
-    │   │   │   │           │
-    │   │   │   │           ├───ref
-    │   │   │   │           │       Conta360.Infrastructure.Postgres.dll
-    │   │   │   │           │
-    │   │   │   │           └───refint
-    │   │   │   │                   Conta360.Infrastructure.Postgres.dll
     │   │   │   │
     │   │   │   ├───Repositories
     │   │   │   │       AccountRepositoryPostgres.cs
@@ -1093,96 +868,14 @@ C:.
     │   │   ├───Conta360.Infrastructure.Reporting
     │   │   │   │   Conta360.Infrastructure.Reporting.csproj
     │   │   │   │
-    │   │   │   ├───bin
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │               Conta360.Application.dll
-    │   │   │   │               Conta360.Application.pdb
-    │   │   │   │               Conta360.Core.dll
-    │   │   │   │               Conta360.Core.pdb
-    │   │   │   │               Conta360.Domain.dll
-    │   │   │   │               Conta360.Domain.pdb
-    │   │   │   │               Conta360.Infrastructure.Reporting.deps.json
-    │   │   │   │               Conta360.Infrastructure.Reporting.dll
-    │   │   │   │               Conta360.Infrastructure.Reporting.pdb
-    │   │   │   │
-    │   │   │   ├───obj
-    │   │   │   │   │   Conta360.Infrastructure.Reporting.csproj.nuget.dgspec.json
-    │   │   │   │   │   Conta360.Infrastructure.Reporting.csproj.nuget.g.props
-    │   │   │   │   │   Conta360.Infrastructure.Reporting.csproj.nuget.g.targets
-    │   │   │   │   │   project.assets.json
-    │   │   │   │   │   project.nuget.cache
-    │   │   │   │   │
-    │   │   │   │   └───Debug
-    │   │   │   │       └───net8.0
-    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │   │   │           │   Conta360.7CEB0AE5.Up2Date
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.assets.cache
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.csproj.AssemblyReference.cache
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.csproj.CoreCompileInputs.cache
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.csproj.FileListAbsolute.txt
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.dll
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.GeneratedMSBuildEditorConfig.editorconfig
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.GlobalUsings.g.cs
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.pdb
-    │   │   │   │           │   Conta360.Infrastructure.Reporting.sourcelink.json
-    │   │   │   │           │
-    │   │   │   │           ├───ref
-    │   │   │   │           │       Conta360.Infrastructure.Reporting.dll
-    │   │   │   │           │
-    │   │   │   │           └───refint
-    │   │   │   │                   Conta360.Infrastructure.Reporting.dll
-    │   │   │   │
     │   │   │   └───Services
     │   │   │           KpiCalculationService.cs
     │   │   │
     │   │   └───Conta360.Infrastructure.Sqlite
     │   │       │   Conta360.Infrastructure.Sqlite.csproj
     │   │       │
-    │   │       ├───bin
-    │   │       │   └───Debug
-    │   │       │       └───net8.0
-    │   │       │               Conta360.Application.dll
-    │   │       │               Conta360.Application.pdb
-    │   │       │               Conta360.Core.dll
-    │   │       │               Conta360.Core.pdb
-    │   │       │               Conta360.Domain.dll
-    │   │       │               Conta360.Domain.pdb
-    │   │       │               Conta360.Infrastructure.Sqlite.deps.json
-    │   │       │               Conta360.Infrastructure.Sqlite.dll
-    │   │       │               Conta360.Infrastructure.Sqlite.pdb
-    │   │       │               Conta360.Infrastructure.Sqlite.runtimeconfig.json
-    │   │       │
     │   │       ├───Contexts
     │   │       │       SqliteDbContext.cs
-    │   │       │
-    │   │       ├───obj
-    │   │       │   │   Conta360.Infrastructure.Sqlite.csproj.nuget.dgspec.json
-    │   │       │   │   Conta360.Infrastructure.Sqlite.csproj.nuget.g.props
-    │   │       │   │   Conta360.Infrastructure.Sqlite.csproj.nuget.g.targets
-    │   │       │   │   project.assets.json
-    │   │       │   │   project.nuget.cache
-    │   │       │   │
-    │   │       │   └───Debug
-    │   │       │       └───net8.0
-    │   │       │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │       │           │   Conta360.9B2B662B.Up2Date
-    │   │       │           │   Conta360.Infrastructure.Sqlite.assets.cache
-    │   │       │           │   Conta360.Infrastructure.Sqlite.csproj.AssemblyReference.cache
-    │   │       │           │   Conta360.Infrastructure.Sqlite.csproj.CoreCompileInputs.cache
-    │   │       │           │   Conta360.Infrastructure.Sqlite.csproj.FileListAbsolute.txt
-    │   │       │           │   Conta360.Infrastructure.Sqlite.dll
-    │   │       │           │   Conta360.Infrastructure.Sqlite.GeneratedMSBuildEditorConfig.editorconfig
-    │   │       │           │   Conta360.Infrastructure.Sqlite.genruntimeconfig.cache
-    │   │       │           │   Conta360.Infrastructure.Sqlite.GlobalUsings.g.cs
-    │   │       │           │   Conta360.Infrastructure.Sqlite.pdb
-    │   │       │           │   Conta360.Infrastructure.Sqlite.sourcelink.json
-    │   │       │           │
-    │   │       │           ├───ref
-    │   │       │           │       Conta360.Infrastructure.Sqlite.dll
-    │   │       │           │
-    │   │       │           └───refint
-    │   │       │                   Conta360.Infrastructure.Sqlite.dll
     │   │       │
     │   │       ├───Repositories
     │   │       │       AccountRepositorySqlite.cs
@@ -1195,347 +888,12 @@ C:.
     │   │   │   Dockerfile
     │   │   │
     │   │   └───Conta360.Presentation.Api
+    │   │       │   .gitignore
     │   │       │   appsettings.Development.json
     │   │       │   appsettings.json
     │   │       │   conta360.db
     │   │       │   Conta360.Presentation.Api.csproj
     │   │       │   Program.cs
-    │   │       │
-    │   │       ├───bin
-    │   │       │   └───Debug
-    │   │       │       └───net8.0
-    │   │       │           │   appsettings.Development.json
-    │   │       │           │   appsettings.json
-    │   │       │           │   AutoMapper.dll
-    │   │       │           │   AutoMapper.Extensions.Microsoft.DependencyInjection.dll
-    │   │       │           │   Azure.Core.dll
-    │   │       │           │   Azure.Identity.dll
-    │   │       │           │   ClosedXML.dll
-    │   │       │           │   ClosedXML.Parser.dll
-    │   │       │           │   Conta360.Application.dll
-    │   │       │           │   Conta360.Application.pdb
-    │   │       │           │   Conta360.Core.dll
-    │   │       │           │   Conta360.Core.pdb
-    │   │       │           │   Conta360.CrossCutting.IoC.dll
-    │   │       │           │   Conta360.CrossCutting.IoC.pdb
-    │   │       │           │   Conta360.Domain.dll
-    │   │       │           │   Conta360.Domain.pdb
-    │   │       │           │   Conta360.Infrastructure.Excel.dll
-    │   │       │           │   Conta360.Infrastructure.Excel.pdb
-    │   │       │           │   Conta360.Infrastructure.PGC.dll
-    │   │       │           │   Conta360.Infrastructure.PGC.pdb
-    │   │       │           │   Conta360.Infrastructure.Postgres.dll
-    │   │       │           │   Conta360.Infrastructure.Postgres.pdb
-    │   │       │           │   Conta360.Infrastructure.Reporting.dll
-    │   │       │           │   Conta360.Infrastructure.Reporting.pdb
-    │   │       │           │   Conta360.Infrastructure.Sqlite.dll
-    │   │       │           │   Conta360.Infrastructure.Sqlite.pdb
-    │   │       │           │   Conta360.Presentation.Api
-    │   │       │           │   Conta360.Presentation.Api.deps.json
-    │   │       │           │   Conta360.Presentation.Api.dll
-    │   │       │           │   Conta360.Presentation.Api.pdb
-    │   │       │           │   Conta360.Presentation.Api.runtimeconfig.json
-    │   │       │           │   DocumentFormat.OpenXml.dll
-    │   │       │           │   DocumentFormat.OpenXml.Framework.dll
-    │   │       │           │   EFCore.BulkExtensions.v8.dll
-    │   │       │           │   EPPlus.dll
-    │   │       │           │   EPPlus.Interfaces.dll
-    │   │       │           │   EPPlus.System.Drawing.dll
-    │   │       │           │   ExcelNumberFormat.dll
-    │   │       │           │   FluentValidation.DependencyInjectionExtensions.dll
-    │   │       │           │   FluentValidation.dll
-    │   │       │           │   Humanizer.dll
-    │   │       │           │   JeffFerguson.Gepsio.dll
-    │   │       │           │   MedallionTopologicalSort.dll
-    │   │       │           │   MediatR.Contracts.dll
-    │   │       │           │   MediatR.dll
-    │   │       │           │   Microsoft.AspNetCore.Authentication.JwtBearer.dll
-    │   │       │           │   Microsoft.AspNetCore.OpenApi.dll
-    │   │       │           │   Microsoft.Bcl.AsyncInterfaces.dll
-    │   │       │           │   Microsoft.CodeAnalysis.CSharp.dll
-    │   │       │           │   Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-    │   │       │           │   Microsoft.CodeAnalysis.dll
-    │   │       │           │   Microsoft.CodeAnalysis.Workspaces.dll
-    │   │       │           │   Microsoft.Data.SqlClient.dll
-    │   │       │           │   Microsoft.Data.Sqlite.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.Abstractions.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.Design.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.Relational.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.Sqlite.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.SqlServer.Abstractions.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.SqlServer.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.SqlServer.HierarchyId.dll
-    │   │       │           │   Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite.dll
-    │   │       │           │   Microsoft.Extensions.Caching.Memory.dll
-    │   │       │           │   Microsoft.Extensions.Configuration.Abstractions.dll
-    │   │       │           │   Microsoft.Extensions.Configuration.Binder.dll
-    │   │       │           │   Microsoft.Extensions.Configuration.dll
-    │   │       │           │   Microsoft.Extensions.DependencyInjection.Abstractions.dll
-    │   │       │           │   Microsoft.Extensions.DependencyInjection.dll
-    │   │       │           │   Microsoft.Extensions.DependencyModel.dll
-    │   │       │           │   Microsoft.Extensions.Diagnostics.Abstractions.dll
-    │   │       │           │   Microsoft.Extensions.Diagnostics.dll
-    │   │       │           │   Microsoft.Extensions.Http.dll
-    │   │       │           │   Microsoft.Extensions.Logging.Abstractions.dll
-    │   │       │           │   Microsoft.Extensions.Logging.dll
-    │   │       │           │   Microsoft.Extensions.Options.ConfigurationExtensions.dll
-    │   │       │           │   Microsoft.Extensions.Options.dll
-    │   │       │           │   Microsoft.Extensions.Primitives.dll
-    │   │       │           │   Microsoft.Identity.Client.dll
-    │   │       │           │   Microsoft.Identity.Client.Extensions.Msal.dll
-    │   │       │           │   Microsoft.IdentityModel.Abstractions.dll
-    │   │       │           │   Microsoft.IdentityModel.JsonWebTokens.dll
-    │   │       │           │   Microsoft.IdentityModel.Logging.dll
-    │   │       │           │   Microsoft.IdentityModel.Protocols.dll
-    │   │       │           │   Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-    │   │       │           │   Microsoft.IdentityModel.Tokens.dll
-    │   │       │           │   Microsoft.IO.RecyclableMemoryStream.dll
-    │   │       │           │   Microsoft.OpenApi.dll
-    │   │       │           │   Microsoft.SqlServer.Server.dll
-    │   │       │           │   Microsoft.SqlServer.Types.dll
-    │   │       │           │   Microsoft.Win32.SystemEvents.dll
-    │   │       │           │   Mono.TextTemplating.dll
-    │   │       │           │   MySqlConnector.dll
-    │   │       │           │   NetTopologySuite.dll
-    │   │       │           │   NetTopologySuite.IO.SpatiaLite.dll
-    │   │       │           │   NetTopologySuite.IO.SqlServerBytes.dll
-    │   │       │           │   Npgsql.dll
-    │   │       │           │   Npgsql.EntityFrameworkCore.PostgreSQL.dll
-    │   │       │           │   Pomelo.EntityFrameworkCore.MySql.dll
-    │   │       │           │   RBush.dll
-    │   │       │           │   Serilog.AspNetCore.dll
-    │   │       │           │   Serilog.dll
-    │   │       │           │   Serilog.Extensions.Hosting.dll
-    │   │       │           │   Serilog.Extensions.Logging.dll
-    │   │       │           │   Serilog.Formatting.Compact.dll
-    │   │       │           │   Serilog.Settings.Configuration.dll
-    │   │       │           │   Serilog.Sinks.Console.dll
-    │   │       │           │   Serilog.Sinks.Debug.dll
-    │   │       │           │   Serilog.Sinks.File.dll
-    │   │       │           │   SixLabors.Fonts.dll
-    │   │       │           │   SQLitePCLRaw.batteries_v2.dll
-    │   │       │           │   SQLitePCLRaw.core.dll
-    │   │       │           │   SQLitePCLRaw.provider.e_sqlite3.dll
-    │   │       │           │   Swashbuckle.AspNetCore.Swagger.dll
-    │   │       │           │   Swashbuckle.AspNetCore.SwaggerGen.dll
-    │   │       │           │   Swashbuckle.AspNetCore.SwaggerUI.dll
-    │   │       │           │   System.ClientModel.dll
-    │   │       │           │   System.CodeDom.dll
-    │   │       │           │   System.Composition.AttributedModel.dll
-    │   │       │           │   System.Composition.Convention.dll
-    │   │       │           │   System.Composition.Hosting.dll
-    │   │       │           │   System.Composition.Runtime.dll
-    │   │       │           │   System.Composition.TypedParts.dll
-    │   │       │           │   System.Configuration.ConfigurationManager.dll
-    │   │       │           │   System.Diagnostics.DiagnosticSource.dll
-    │   │       │           │   System.Drawing.Common.dll
-    │   │       │           │   System.IdentityModel.Tokens.Jwt.dll
-    │   │       │           │   System.IO.Packaging.dll
-    │   │       │           │   System.Memory.Data.dll
-    │   │       │           │   System.Runtime.Caching.dll
-    │   │       │           │   System.Security.Cryptography.ProtectedData.dll
-    │   │       │           │
-    │   │       │           ├───cs
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │
-    │   │       │           ├───de
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           ├───es
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           ├───fr
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           ├───it
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           ├───ja
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           ├───ko
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           ├───pl
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │
-    │   │       │           ├───pt-BR
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           ├───ru
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           ├───runtimes
-    │   │       │           │   ├───browser-wasm
-    │   │       │           │   │   └───nativeassets
-    │   │       │           │   │       └───net8.0
-    │   │       │           │   │               e_sqlite3.a
-    │   │       │           │   │
-    │   │       │           │   ├───linux-arm
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-arm64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-armel
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-mips64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-musl-arm
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-musl-arm64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-musl-x64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-ppc64le
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-s390x
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-x64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───linux-x86
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.so
-    │   │       │           │   │
-    │   │       │           │   ├───maccatalyst-arm64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.dylib
-    │   │       │           │   │
-    │   │       │           │   ├───maccatalyst-x64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.dylib
-    │   │       │           │   │
-    │   │       │           │   ├───osx-arm64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.dylib
-    │   │       │           │   │
-    │   │       │           │   ├───osx-x64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           libe_sqlite3.dylib
-    │   │       │           │   │
-    │   │       │           │   ├───unix
-    │   │       │           │   │   └───lib
-    │   │       │           │   │       └───net8.0
-    │   │       │           │   │               Microsoft.Data.SqlClient.dll
-    │   │       │           │   │
-    │   │       │           │   ├───win
-    │   │       │           │   │   └───lib
-    │   │       │           │   │       ├───net7.0
-    │   │       │           │   │       │       Microsoft.Win32.SystemEvents.dll
-    │   │       │           │   │       │       System.Drawing.Common.dll
-    │   │       │           │   │       │
-    │   │       │           │   │       └───net8.0
-    │   │       │           │   │               Microsoft.Data.SqlClient.dll
-    │   │       │           │   │               System.Runtime.Caching.dll
-    │   │       │           │   │
-    │   │       │           │   ├───win-arm
-    │   │       │           │   │   └───native
-    │   │       │           │   │           e_sqlite3.dll
-    │   │       │           │   │           Microsoft.Data.SqlClient.SNI.dll
-    │   │       │           │   │
-    │   │       │           │   ├───win-arm64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           e_sqlite3.dll
-    │   │       │           │   │           Microsoft.Data.SqlClient.SNI.dll
-    │   │       │           │   │
-    │   │       │           │   ├───win-x64
-    │   │       │           │   │   └───native
-    │   │       │           │   │           e_sqlite3.dll
-    │   │       │           │   │           Microsoft.Data.SqlClient.SNI.dll
-    │   │       │           │   │           SqlServerSpatial160.dll
-    │   │       │           │   │
-    │   │       │           │   └───win-x86
-    │   │       │           │       └───native
-    │   │       │           │               e_sqlite3.dll
-    │   │       │           │               Microsoft.Data.SqlClient.SNI.dll
-    │   │       │           │               SqlServerSpatial160.dll
-    │   │       │           │
-    │   │       │           ├───tr
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │
-    │   │       │           ├───zh-Hans
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.resources.dll
-    │   │       │           │       Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │           │       Microsoft.Data.SqlClient.resources.dll
-    │   │       │           │       Microsoft.SqlServer.Types.resources.dll
-    │   │       │           │
-    │   │       │           └───zh-Hant
-    │   │       │                   Microsoft.CodeAnalysis.CSharp.resources.dll
-    │   │       │                   Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-    │   │       │                   Microsoft.CodeAnalysis.resources.dll
-    │   │       │                   Microsoft.CodeAnalysis.Workspaces.resources.dll
-    │   │       │                   Microsoft.Data.SqlClient.resources.dll
-    │   │       │                   Microsoft.SqlServer.Types.resources.dll
     │   │       │
     │   │       ├───Controllers
     │   │       │       AccountsController.cs
@@ -1543,104 +901,747 @@ C:.
     │   │       │
     │   │       ├───Data
     │   │       │   └───PGC
+    │   │       │       │   taxonomiaPGC2007.zip
+    │   │       │       │
+    │   │       │       └───taxonomiaPGC2007_v1.7.0_20240101_r1-EIRL
+    │   │       │           ├───documentacion
+    │   │       │           │   │   20240101_IdentificadorTaxonomiaPGC2007.doc
+    │   │       │           │   │   Control de Cambios entre versiones PGC2007 v1.6.1 y PGC2007 v1.7.0.xls
+    │   │       │           │   │   Descripcion-PGC2007.doc
+    │   │       │           │   │   Descripcion-PGC2007.pdf
+    │   │       │           │   │   DiccionarioDatos_PGC2007-XBRL_2024 v1.7.0.xls
+    │   │       │           │   │   Informe_Final_Revisi�n_PGC2007_v1.7.0.doc
+    │   │       │           │   │   Informe_Pruebas_PGC2007-2024-01-01.doc
+    │   │       │           │   │   Solicitud Revision PGC2007 v1.7.0.xls
+    │   │       │           │   │
+    │   │       │           │   ├───controlCambios
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.2 y PGC2007v1.4.3.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.3 y PGC2007v1.4.4.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.4 y PGC2007v1.5.0.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.5.0 y PGC2007v1.5.1.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.6.0 y PGC2007v1.6.1.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.1 a PGCv1.2.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.2 a PGCv1.3.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.3 a PGCv1.4.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.4 a PGCv1.4-fe-erratas14mayo.xls
+    │   │       │           │   │
+    │   │       │           │   └───InformesEjemplo
+    │   │       │           │       ├───EstadosCuentasAnuales
+    │   │       │           │       │       Caso01-Modelo Normal PGC 2007.xls
+    │   │       │           │       │       Caso01a.xbrl
+    │   │       │           │       │       Caso01b.xbrl
+    │   │       │           │       │       Caso01c.xbrl
+    │   │       │           │       │       CASO02-Modelo Abreviado PGC 2007.xls
+    │   │       │           │       │       Caso02a.xbrl
+    │   │       │           │       │       Caso02b.xbrl
+    │   │       │           │       │       Caso03a.xbrl
+    │   │       │           │       │       Caso03b.xbrl
+    │   │       │           │       │       Caso03d.xbrl
+    │   │       │           │       │       Caso03e.xbrl
+    │   │       │           │       │       Caso03f.xbrl
+    │   │       │           │       │       Caso03f_erroresRedondeo.xbrl
+    │   │       │           │       │       CASO03_Modelo PGC 2007 PYMES.xls
+    │   │       │           │       │       Caso04_DescuadreActivoPasivo.xbrl
+    │   │       │           │       │       Caso04_Modelo PGC 2007 PYMES.xls
+    │   │       │           │       │       Caso05.xbrl
+    │   │       │           │       │       Caso05_Modelo Abreviado PGC 2007.xls
+    │   │       │           │       │       Caso06.xbrl
+    │   │       │           │       │       Caso06_Modelo Normal PGC 2007.xls
+    │   │       │           │       │       Caso07.xbrl
+    │   │       │           │       │       CASO07_Modelo PGC 2007 EIRL.xls
+    │   │       │           │       │
+    │   │       │           │       └───Memoria
+    │   │       │           │               caso01.xbrl
+    │   │       │           │               caso01_08Enero2013_InstanciaPGC2007_NormalMemoria_apartado9r.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado10.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado11.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado12.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado13.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado14.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado15.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado16.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado18.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado21.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado23.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado24.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado3.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado5.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado6.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado8.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado9r.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado19-1.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado19.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado27.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado7.xbrl
+    │   │       │           │               caso02.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado0.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado10.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado4.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado5.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado6.xbrl
+    │   │       │           │               caso03.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado10.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado4.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado5.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado6.xbrl
+    │   │       │           │               caso04.xbrl
+    │   │       │           │               caso05.xbrl
+    │   │       │           │
+    │   │       │           └───taxonomia
+    │   │       │               │   pgc07-abreviado-completo.xsd
+    │   │       │               │   pgc07-abreviado-memoria.xsd
+    │   │       │               │   pgc07-abreviado.xsd
+    │   │       │               │   pgc07-eirl-completo.xsd
+    │   │       │               │   pgc07-eirl.xsd
+    │   │       │               │   pgc07-mixto-completo.xsd
+    │   │       │               │   pgc07-mixto.xsd
+    │   │       │               │   pgc07-normal-completo.xsd
+    │   │       │               │   pgc07-normal-memoria.xsd
+    │   │       │               │   pgc07-normal.xsd
+    │   │       │               │   pgc07-pymes-completo.xsd
+    │   │       │               │   pgc07-pymes-memoria.xsd
+    │   │       │               │   pgc07-pymes.xsd
+    │   │       │               │
+    │   │       │               ├───auxiliares
+    │   │       │               │   │   pgc-07-ref-2024-01-01.xsd
+    │   │       │               │   │   pgc-07-types-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───dgi-code
+    │   │       │               │           dgi-cnae-09-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-dat-inf-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-eco-bas-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-est-gen-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-gen-ex-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-lc-es-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-lc-int-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-rel-2024-01-01-label-es-code.xml
+    │   │       │               │
+    │   │       │               ├───EstadosCuentasAnuales
+    │   │       │               │   ├───abreviado
+    │   │       │               │   │       pgc-07-a-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-a-2024-01-01-reference.xml
+    │   │       │               │   │       pgc-07-a-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-label.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───comun
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-c-bs-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-bs-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-f1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-c-f1-balance-2024-01-01-definition.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-roles-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───EstadoTotalCambiosPatrimonioNeto
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01.xsd
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───eirl
+    │   │       │               │   │       pgc-07-e-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-e-2024-01-01-reference.xml
+    │   │       │               │   │       pgc-07-e-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───normal
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───EstadoTotalCambiosPatrimonioNeto
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01.xsd
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01.xsd
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───pymes
+    │   │       │               │           pgc-07-p-2024-01-01-label-es.xml
+    │   │       │               │           pgc-07-p-2024-01-01-reference.xml
+    │   │       │               │           pgc-07-p-2024-01-01.xsd
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-label.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01.xsd
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               ├───Identificacion
+    │   │       │               │       pgc07ma-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07ma-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07ma-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-label-es-code.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-reference.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07me-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-label.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mn-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07mn-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-label-es-code.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-reference.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               ├───Memoria
+    │   │       │               │   ├───abreviado
+    │   │       │               │   │   │   pgc07ma-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-en.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado10
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado2
+    │   │       │               │   │   │       pgc07ma-apdo2-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo2-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado3
+    │   │       │               │   │   │       pgc07ma-apdo3-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo3-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado4
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado5
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado6
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado7
+    │   │       │               │   │   │       pgc07ma-apdo7-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo7-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado8
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───apartado9
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-label.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-presentation.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───comun
+    │   │       │               │   │   │   pgc07m-roles-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-bs-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-bs-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado23
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-CategoriasProfesionales
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-InstrumentosFinancieros
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-PartesVinculadas
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-PartesVinculadas-ap
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───dim-PeriodoMedioPago
+    │   │       │               │   │           pgc07d-perio-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───normal
+    │   │       │               │   │   │   pgc07mn-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-en.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado10
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado11
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado12
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado13
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado14
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado16
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado17
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado18
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado19
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado2
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado20
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado21
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado22
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado23
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado24
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado25
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado27
+    │   │       │               │   │   │       pgc07mn-apdo27-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo27-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado3
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado4
+    │   │       │               │   │   │       pgc07mn-apdo4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo4-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado5
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado6
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado7
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado8
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───apartado9
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-definition.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01.xsd
+    │   │       │               │   │       │
+    │   │       │               │   │       └───dim-InstrumentosFinancieros
+    │   │       │               │   │               pgc07d-clase-2024-01-01-definition.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-label-es-code.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-label-es.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-reference.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───pymes
+    │   │       │               │       │   pgc07mp-2024-01-01-label-es-code.xml
+    │   │       │               │       │   pgc07mp-2024-01-01-label-es.xml
+    │   │       │               │       │   pgc07mp-2024-01-01-reference.xml
+    │   │       │               │       │   pgc07mp-2024-01-01.xsd
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-en.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-es.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-presentation.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-reference.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado10
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado2
+    │   │       │               │       │       pgc07mp-apdo2-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo2-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado3
+    │   │       │               │       │       pgc07mp-apdo3-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo3-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado4
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01.xsd
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-label.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado5
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado6
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado7
+    │   │       │               │       │       pgc07mp-apdo7-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo7-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado8
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01.xsd
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       └───apartado9
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-definition.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-label-es-code.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-label-es.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-presentation.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-reference.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               └───NotaMedioAmbiente
+    │   │       │                   └───normal
+    │   │       │                           pgc07mn-apdo15-2024-01-01-label-es.xml
+    │   │       │                           pgc07mn-apdo15-2024-01-01-presentation.xml
+    │   │       │                           pgc07mn-apdo15-2024-01-01.xsd
+    │   │       │                           pgc07mn-apdo26-2024-01-01-label-es.xml
+    │   │       │                           pgc07mn-apdo26-2024-01-01-presentation.xml
+    │   │       │                           pgc07mn-apdo26-2024-01-01.xsd
+    │   │       │
     │   │       ├───logs
     │   │       │       log-20250705.txt
+    │   │       │       log-20250706.txt
     │   │       │
-    │   │       ├───Models
-    │   │       │       CreateAccountRequest.cs
-    │   │       │
-    │   │       └───obj
-    │   │           │   Conta360.Presentation.Api.csproj.EntityFrameworkCore.targets
-    │   │           │   Conta360.Presentation.Api.csproj.nuget.dgspec.json
-    │   │           │   Conta360.Presentation.Api.csproj.nuget.g.props
-    │   │           │   Conta360.Presentation.Api.csproj.nuget.g.targets
-    │   │           │   project.assets.json
-    │   │           │   project.nuget.cache
-    │   │           │
-    │   │           └───Debug
-    │   │               └───net8.0
-    │   │                   │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │   │                   │   apphost
-    │   │                   │   Conta360.3523BC59.Up2Date
-    │   │                   │   Conta360.Presentation.Api.assets.cache
-    │   │                   │   Conta360.Presentation.Api.csproj.AssemblyReference.cache
-    │   │                   │   Conta360.Presentation.Api.csproj.CoreCompileInputs.cache
-    │   │                   │   Conta360.Presentation.Api.csproj.FileListAbsolute.txt
-    │   │                   │   Conta360.Presentation.Api.dll
-    │   │                   │   Conta360.Presentation.Api.GeneratedMSBuildEditorConfig.editorconfig
-    │   │                   │   Conta360.Presentation.Api.genruntimeconfig.cache
-    │   │                   │   Conta360.Presentation.Api.GlobalUsings.g.cs
-    │   │                   │   Conta360.Presentation.Api.MvcApplicationPartsAssemblyInfo.cache
-    │   │                   │   Conta360.Presentation.Api.MvcApplicationPartsAssemblyInfo.cs
-    │   │                   │   Conta360.Presentation.Api.pdb
-    │   │                   │   Conta360.Presentation.Api.sourcelink.json
-    │   │                   │   staticwebassets.build.json
-    │   │                   │
-    │   │                   ├───ref
-    │   │                   │       Conta360.Presentation.Api.dll
-    │   │                   │
-    │   │                   ├───refint
-    │   │                   │       Conta360.Presentation.Api.dll
-    │   │                   │
-    │   │                   └───staticwebassets
-    │   │                           msbuild.build.Conta360.Presentation.Api.props
-    │   │                           msbuild.buildMultiTargeting.Conta360.Presentation.Api.props
-    │   │                           msbuild.buildTransitive.Conta360.Presentation.Api.props
+    │   │       └───Models
+    │   │               CreateAccountRequest.cs
     │   │
     │   └───Shared
     │       └───Conta360.CrossCutting.IoC
-    │           │   Conta360.CrossCutting.IoC.csproj
-    │           │   DInjection.cs
-    │           │
-    │           ├───bin
-    │           │   └───Debug
-    │           │       └───net8.0
-    │           │               Conta360.Application.dll
-    │           │               Conta360.Application.pdb
-    │           │               Conta360.Core.dll
-    │           │               Conta360.Core.pdb
-    │           │               Conta360.CrossCutting.IoC.deps.json
-    │           │               Conta360.CrossCutting.IoC.dll
-    │           │               Conta360.CrossCutting.IoC.pdb
-    │           │               Conta360.Domain.dll
-    │           │               Conta360.Domain.pdb
-    │           │               Conta360.Infrastructure.Excel.dll
-    │           │               Conta360.Infrastructure.Excel.pdb
-    │           │               Conta360.Infrastructure.PGC.dll
-    │           │               Conta360.Infrastructure.PGC.pdb
-    │           │               Conta360.Infrastructure.Postgres.dll
-    │           │               Conta360.Infrastructure.Postgres.pdb
-    │           │               Conta360.Infrastructure.Reporting.dll
-    │           │               Conta360.Infrastructure.Reporting.pdb
-    │           │               Conta360.Infrastructure.Sqlite.dll
-    │           │               Conta360.Infrastructure.Sqlite.pdb
-    │           │
-    │           └───obj
-    │               │   Conta360.CrossCutting.IoC.csproj.nuget.dgspec.json
-    │               │   Conta360.CrossCutting.IoC.csproj.nuget.g.props
-    │               │   Conta360.CrossCutting.IoC.csproj.nuget.g.targets
-    │               │   project.assets.json
-    │               │   project.nuget.cache
-    │               │
-    │               └───Debug
-    │                   └───net8.0
-    │                       │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
-    │                       │   Conta360.9DDA1D2B.Up2Date
-    │                       │   Conta360.CrossCutting.IoC.assets.cache
-    │                       │   Conta360.CrossCutting.IoC.csproj.AssemblyReference.cache
-    │                       │   Conta360.CrossCutting.IoC.csproj.CoreCompileInputs.cache
-    │                       │   Conta360.CrossCutting.IoC.csproj.FileListAbsolute.txt
-    │                       │   Conta360.CrossCutting.IoC.dll
-    │                       │   Conta360.CrossCutting.IoC.GeneratedMSBuildEditorConfig.editorconfig
-    │                       │   Conta360.CrossCutting.IoC.GlobalUsings.g.cs
-    │                       │   Conta360.CrossCutting.IoC.pdb
-    │                       │   Conta360.CrossCutting.IoC.sourcelink.json
-    │                       │
-    │                       ├───ref
-    │                       │       Conta360.CrossCutting.IoC.dll
-    │                       │
-    │                       └───refint
-    │                               Conta360.CrossCutting.IoC.dll
+    │               Conta360.CrossCutting.IoC.csproj
+    │               DInjection.cs
     │
     └───microfrontends
         ├───dashboard-app
@@ -1649,6 +1650,7 @@ C:.
         │   │   Dockerfile
         │   │   next-env.d.ts
         │   │   next.config.js
+        │   │   package-lock.json
         │   │   package.json
         │   │   postcss.config.js
         │   │   tailwind.config.ts
@@ -1684,4 +1686,3 @@ C:.
                 │
                 └───lib
                         api.ts
-

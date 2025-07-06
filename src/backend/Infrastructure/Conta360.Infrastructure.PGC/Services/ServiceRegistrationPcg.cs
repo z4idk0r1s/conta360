@@ -14,13 +14,13 @@ namespace Conta360.Infrastructure.PGC.Services
 {
     public static class ServiceRegistrationPgc
     {
-        public static IServiceCollection AddPGCInfrastructure(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddPGCInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<PgcExtractorOptions>(config.GetSection("Pgc"));
+            services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
             services.AddHttpClient<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>();
-            services.AddScoped<IPgcTaxonomyValidator, PgcTaxonomyValidator>();
-            services.AddScoped<PgcTaxonomyBuilder>();
+            services.AddScoped<PgcTaxonomyValidator>();
             services.AddScoped<PgcTaxonomyParser>();
+            services.AddScoped<PgcTaxonomyBuilder>(); 
             services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>();
             return services;
         }

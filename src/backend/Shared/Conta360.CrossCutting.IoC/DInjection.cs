@@ -51,11 +51,7 @@ namespace Conta360.CrossCutting.IoC
             services.AddExcelInfrastructure(configuration);
 
             // Infraestructura PGC (descarga, validación, parser, builder, service)
-            services.AddScoped<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>();
-            services.AddScoped<PgcTaxonomyValidator>();
-            services.AddScoped<PgcTaxonomyParser>();
-            services.AddScoped<PgcTaxonomyBuilder>(); 
-            services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>(); 
+            services.AddPGCInfrastructure(configuration);
 
             // Base de datos y Unit of Work
             if (dbProvider == "Postgres")
@@ -78,9 +74,6 @@ namespace Conta360.CrossCutting.IoC
                 services.AddScoped<IPgcAccountRepository, AccountRepositorySqlite>();
                 services.AddScoped<IUnitOfWork, UnitOfWorkSqlite>();
             }
-
-            // Registrar HttpClient para PgcTaxonomyDownloader
-            services.AddHttpClient<PgcTaxonomyDownloader>();
 
             return services;
         }
