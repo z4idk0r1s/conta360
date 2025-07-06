@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+var dbProvider = builder.Configuration.GetValue<string>("Database:Provider") ?? "Sqlite";
 
 // Logging profesional con Serilog
 builder.Host.UseSerilog((context, services, configuration) => configuration
@@ -55,7 +56,7 @@ builder.Services.AddSwaggerGen(c =>
 // Registro de dependencias de la aplicación e infraestructura
 builder.Services
     .AddConta360Application(builder.Configuration)
-    .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite"); // o "Postgres"
+    .AddConta360Infrastructure(builder.Configuration, dbProvider);
 
 var app = builder.Build();
 
