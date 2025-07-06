@@ -76,16 +76,19 @@ namespace Conta360.Infrastructure.PGC.Services
             _actualExtractedRootDirectory = Path.Combine(_extractDirectory, extractedZipFolderName, "taxonomia");
 
             // --- Extraer el sufijo de fecha de la carpeta del ZIP ---
-            // Buscamos un patrón YYYYMMDD en el nombre de la carpeta extraída.
-            var match = Regex.Match(extractedZipFolderName, @"(\d{8})");
+            // Buscamos un patrón YYYY-MM-DD en el nombre de la carpeta extraída.
+            // Esto es si los archivos internos tienen la fecha con guiones.
+            var match = Regex.Match(extractedZipFolderName, @"(\d{4}-\d{2}-\d{2})"); // CAMBIO AQUÍ: Buscar YYYY-MM-DD
             if (match.Success)
             {
-                _taxonomyDateSuffix = match.Groups[1].Value;
+                _taxonomyDateSuffix = match.Groups[1].Value; // Será "2024-01-01"
                 _logger.LogInformation("[PgcTaxonomyService][DIAGNÓSTICO] Sufijo de fecha de taxonomía detectado: {TaxonomyDateSuffix}", _taxonomyDateSuffix);
             }
             else
             {
-                _taxonomyDateSuffix = "2024-01-01"; // Valor por defecto actualizado.
+                // Si no se encuentra un patrón con guiones, se usa un valor por defecto.
+                // DEBE COINCIDIR CON EL FORMATO REAL DE LOS ARCHIVOS INTERNOS SI ESTOS SON "YYYY-MM-DD".
+                _taxonomyDateSuffix = "2024-01-01"; // VALOR POR DEFECTO MANTENIDO COMO YA ESTABA
                 _logger.LogWarning("[PgcTaxonomyService][DIAGNÓSTICO] No se pudo extraer el sufijo de fecha (YYYY-MM-DD) del nombre de la carpeta ZIP '{ZipFolderName}'. Se usará el valor por defecto: {DefaultSuffix}", extractedZipFolderName, _taxonomyDateSuffix);
             }
 
