@@ -15,14 +15,14 @@ namespace Conta360.Infrastructure.Sqlite.Services
         public static IServiceCollection AddSqliteInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<SqliteDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("SqliteConnection"),
+                options.UseSqlite(configuration.GetConnectionString("SqliteConnection"),
                     b => b.MigrationsAssembly(typeof(SqliteDbContext).Assembly.FullName)));
 
             services.AddScoped<IApplicationDbContext, SqliteDbContext>();
             services.AddScoped<IPgcAccountRepository, AccountRepositorySqlite>();
             services.AddScoped<IUnitOfWork, UnitOfWorkSqlite>();
 
-            return services;            
+            return services;
         }
     }
 }
