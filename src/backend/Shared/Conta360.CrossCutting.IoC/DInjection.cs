@@ -2,7 +2,6 @@ using System.Reflection;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -31,6 +30,8 @@ using Conta360.Infrastructure.Sqlite.Contexts;
 using Conta360.Infrastructure.Sqlite.Repositories;
 using Conta360.Infrastructure.Postgres;
 using Conta360.Infrastructure.Excel.Services;
+using Conta360.Application.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Conta360.CrossCutting.IoC
 {
