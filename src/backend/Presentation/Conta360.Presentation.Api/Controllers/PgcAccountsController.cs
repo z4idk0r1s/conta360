@@ -1,8 +1,8 @@
-
 using Conta360.Application.DTOs;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Conta360.Presentation.Api.Controllers
 {

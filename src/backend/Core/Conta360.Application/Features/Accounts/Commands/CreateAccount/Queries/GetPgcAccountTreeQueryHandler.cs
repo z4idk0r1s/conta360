@@ -4,8 +4,9 @@ using Conta360.Application.Interfaces;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries;
 using Conta360.Application.Services;
 using Conta360.Domain.Interfaces;
-using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using MediatR;
 
 namespace Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries
 {

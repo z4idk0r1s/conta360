@@ -689,7 +689,6 @@ Resumen:
 
 cat /tmp/backend_log.log
     --------------------------------------------------
-
 C:.
 │   .dockerignore
 │   .gitignore
@@ -846,6 +845,7 @@ C:.
     │   │   │   ├───Processing
     │   │   │   │       PgcTaxonomyBuilder.cs
     │   │   │   │       PgcTaxonomyDownloader.cs
+    │   │   │   │       PgcTaxonomyParser.cs
     │   │   │   │       PgcTaxonomyValidator.cs
     │   │   │   │
     │   │   │   └───Services
@@ -888,10 +888,10 @@ C:.
     │   │   │   Dockerfile
     │   │   │
     │   │   └───Conta360.Presentation.Api
+    │   │       │   .gitignore
     │   │       │   appsettings.Development.json
     │   │       │   appsettings.json
-    │   │       │   conta360.db-shm
-    │   │       │   conta360.db-wal
+    │   │       │   conta360.db
     │   │       │   Conta360.Presentation.Api.csproj
     │   │       │   Program.cs
     │   │       │
@@ -901,10 +901,739 @@ C:.
     │   │       │
     │   │       ├───Data
     │   │       │   └───PGC
-    │   │       │           taxonomiaPGC2007.zip
+    │   │       │       │   taxonomiaPGC2007.zip
+    │   │       │       │
+    │   │       │       └───taxonomiaPGC2007_v1.7.0_20240101_r1-EIRL
+    │   │       │           ├───documentacion
+    │   │       │           │   │   20240101_IdentificadorTaxonomiaPGC2007.doc
+    │   │       │           │   │   Control de Cambios entre versiones PGC2007 v1.6.1 y PGC2007 v1.7.0.xls
+    │   │       │           │   │   Descripcion-PGC2007.doc
+    │   │       │           │   │   Descripcion-PGC2007.pdf
+    │   │       │           │   │   DiccionarioDatos_PGC2007-XBRL_2024 v1.7.0.xls
+    │   │       │           │   │   Informe_Final_Revisi�n_PGC2007_v1.7.0.doc
+    │   │       │           │   │   Informe_Pruebas_PGC2007-2024-01-01.doc
+    │   │       │           │   │   Solicitud Revision PGC2007 v1.7.0.xls
+    │   │       │           │   │
+    │   │       │           │   ├───controlCambios
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.2 y PGC2007v1.4.3.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.3 y PGC2007v1.4.4.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.4 y PGC2007v1.5.0.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.5.0 y PGC2007v1.5.1.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.6.0 y PGC2007v1.6.1.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.1 a PGCv1.2.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.2 a PGCv1.3.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.3 a PGCv1.4.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.4 a PGCv1.4-fe-erratas14mayo.xls
+    │   │       │           │   │
+    │   │       │           │   └───InformesEjemplo
+    │   │       │           │       ├───EstadosCuentasAnuales
+    │   │       │           │       │       Caso01-Modelo Normal PGC 2007.xls
+    │   │       │           │       │       Caso01a.xbrl
+    │   │       │           │       │       Caso01b.xbrl
+    │   │       │           │       │       Caso01c.xbrl
+    │   │       │           │       │       CASO02-Modelo Abreviado PGC 2007.xls
+    │   │       │           │       │       Caso02a.xbrl
+    │   │       │           │       │       Caso02b.xbrl
+    │   │       │           │       │       Caso03a.xbrl
+    │   │       │           │       │       Caso03b.xbrl
+    │   │       │           │       │       Caso03d.xbrl
+    │   │       │           │       │       Caso03e.xbrl
+    │   │       │           │       │       Caso03f.xbrl
+    │   │       │           │       │       Caso03f_erroresRedondeo.xbrl
+    │   │       │           │       │       CASO03_Modelo PGC 2007 PYMES.xls
+    │   │       │           │       │       Caso04_DescuadreActivoPasivo.xbrl
+    │   │       │           │       │       Caso04_Modelo PGC 2007 PYMES.xls
+    │   │       │           │       │       Caso05.xbrl
+    │   │       │           │       │       Caso05_Modelo Abreviado PGC 2007.xls
+    │   │       │           │       │       Caso06.xbrl
+    │   │       │           │       │       Caso06_Modelo Normal PGC 2007.xls
+    │   │       │           │       │       Caso07.xbrl
+    │   │       │           │       │       CASO07_Modelo PGC 2007 EIRL.xls
+    │   │       │           │       │
+    │   │       │           │       └───Memoria
+    │   │       │           │               caso01.xbrl
+    │   │       │           │               caso01_08Enero2013_InstanciaPGC2007_NormalMemoria_apartado9r.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado10.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado11.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado12.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado13.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado14.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado15.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado16.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado18.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado21.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado23.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado24.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado3.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado5.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado6.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado8.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado9r.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado19-1.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado19.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado27.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado7.xbrl
+    │   │       │           │               caso02.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado0.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado10.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado4.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado5.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado6.xbrl
+    │   │       │           │               caso03.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado10.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado4.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado5.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado6.xbrl
+    │   │       │           │               caso04.xbrl
+    │   │       │           │               caso05.xbrl
+    │   │       │           │
+    │   │       │           └───taxonomia
+    │   │       │               │   pgc07-abreviado-completo.xsd
+    │   │       │               │   pgc07-abreviado-memoria.xsd
+    │   │       │               │   pgc07-abreviado.xsd
+    │   │       │               │   pgc07-eirl-completo.xsd
+    │   │       │               │   pgc07-eirl.xsd
+    │   │       │               │   pgc07-mixto-completo.xsd
+    │   │       │               │   pgc07-mixto.xsd
+    │   │       │               │   pgc07-normal-completo.xsd
+    │   │       │               │   pgc07-normal-memoria.xsd
+    │   │       │               │   pgc07-normal.xsd
+    │   │       │               │   pgc07-pymes-completo.xsd
+    │   │       │               │   pgc07-pymes-memoria.xsd
+    │   │       │               │   pgc07-pymes.xsd
+    │   │       │               │
+    │   │       │               ├───auxiliares
+    │   │       │               │   │   pgc-07-ref-2024-01-01.xsd
+    │   │       │               │   │   pgc-07-types-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───dgi-code
+    │   │       │               │           dgi-cnae-09-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-dat-inf-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-eco-bas-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-est-gen-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-gen-ex-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-lc-es-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-lc-int-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-rel-2024-01-01-label-es-code.xml
+    │   │       │               │
+    │   │       │               ├───EstadosCuentasAnuales
+    │   │       │               │   ├───abreviado
+    │   │       │               │   │       pgc-07-a-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-a-2024-01-01-reference.xml
+    │   │       │               │   │       pgc-07-a-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-label.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───comun
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-c-bs-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-bs-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-f1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-c-f1-balance-2024-01-01-definition.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-roles-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───EstadoTotalCambiosPatrimonioNeto
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01.xsd
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───eirl
+    │   │       │               │   │       pgc-07-e-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-e-2024-01-01-reference.xml
+    │   │       │               │   │       pgc-07-e-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───normal
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───EstadoTotalCambiosPatrimonioNeto
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01.xsd
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01.xsd
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───pymes
+    │   │       │               │           pgc-07-p-2024-01-01-label-es.xml
+    │   │       │               │           pgc-07-p-2024-01-01-reference.xml
+    │   │       │               │           pgc-07-p-2024-01-01.xsd
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-label.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01.xsd
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               ├───Identificacion
+    │   │       │               │       pgc07ma-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07ma-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07ma-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-label-es-code.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-reference.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07me-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-label.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mn-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07mn-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-label-es-code.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-reference.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               ├───Memoria
+    │   │       │               │   ├───abreviado
+    │   │       │               │   │   │   pgc07ma-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-en.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado10
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado2
+    │   │       │               │   │   │       pgc07ma-apdo2-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo2-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado3
+    │   │       │               │   │   │       pgc07ma-apdo3-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo3-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado4
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado5
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado6
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado7
+    │   │       │               │   │   │       pgc07ma-apdo7-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo7-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado8
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───apartado9
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-label.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-presentation.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───comun
+    │   │       │               │   │   │   pgc07m-roles-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-bs-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-bs-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado23
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-CategoriasProfesionales
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-InstrumentosFinancieros
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-PartesVinculadas
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-PartesVinculadas-ap
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───dim-PeriodoMedioPago
+    │   │       │               │   │           pgc07d-perio-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───normal
+    │   │       │               │   │   │   pgc07mn-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-en.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado10
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado11
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado12
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado13
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado14
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado16
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado17
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado18
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado19
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado2
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado20
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado21
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado22
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado23
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado24
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado25
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado27
+    │   │       │               │   │   │       pgc07mn-apdo27-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo27-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado3
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado4
+    │   │       │               │   │   │       pgc07mn-apdo4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo4-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado5
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado6
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado7
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado8
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───apartado9
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-definition.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01.xsd
+    │   │       │               │   │       │
+    │   │       │               │   │       └───dim-InstrumentosFinancieros
+    │   │       │               │   │               pgc07d-clase-2024-01-01-definition.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-label-es-code.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-label-es.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-reference.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───pymes
+    │   │       │               │       │   pgc07mp-2024-01-01-label-es-code.xml
+    │   │       │               │       │   pgc07mp-2024-01-01-label-es.xml
+    │   │       │               │       │   pgc07mp-2024-01-01-reference.xml
+    │   │       │               │       │   pgc07mp-2024-01-01.xsd
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-en.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-es.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-presentation.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-reference.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado10
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado2
+    │   │       │               │       │       pgc07mp-apdo2-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo2-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado3
+    │   │       │               │       │       pgc07mp-apdo3-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo3-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado4
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01.xsd
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-label.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado5
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado6
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado7
+    │   │       │               │       │       pgc07mp-apdo7-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo7-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado8
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01.xsd
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       └───apartado9
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-definition.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-label-es-code.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-label-es.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-presentation.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-reference.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               └───NotaMedioAmbiente
+    │   │       │                   └───normal
+    │   │       │                           pgc07mn-apdo15-2024-01-01-label-es.xml
+    │   │       │                           pgc07mn-apdo15-2024-01-01-presentation.xml
+    │   │       │                           pgc07mn-apdo15-2024-01-01.xsd
+    │   │       │                           pgc07mn-apdo26-2024-01-01-label-es.xml
+    │   │       │                           pgc07mn-apdo26-2024-01-01-presentation.xml
+    │   │       │                           pgc07mn-apdo26-2024-01-01.xsd
     │   │       │
     │   │       ├───logs
-    │   │       │       log-20250704.txt
+    │   │       │       log-20250705.txt
+    │   │       │       log-20250706.txt
     │   │       │
     │   │       └───Models
     │   │               CreateAccountRequest.cs
@@ -916,6 +1645,7 @@ C:.
     │
     └───microfrontends
         ├───dashboard-app
+        │   │   .dockerignore
         │   │   .gitignore
         │   │   Dockerfile
         │   │   next-env.d.ts
@@ -936,6 +1666,7 @@ C:.
         │               api.ts
         │
         └───root-config
+            │   .dockerignore
             │   .gitignore
             │   Dockerfile
             │   mf-remotes.config.js

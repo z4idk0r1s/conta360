@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries;
 using Conta360.Presentation.Api.Models;

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EFCore.BulkExtensions; // Importante añadir esta referencia
+using EFCore.BulkExtensions;
 
 namespace Conta360.Infrastructure.Postgres.Repositories
 {

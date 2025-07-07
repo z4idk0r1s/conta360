@@ -7,12 +7,10 @@ using Serilog;
 using Conta360.Presentation.Api.Models;
 using Conta360.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Conta360.Application.Services; // Para la interfaz IPgcTaxonomyService
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+var dbProvider = builder.Configuration.GetValue<string>("Database:Provider") ?? "sqlite";
 
 // Logging profesional con Serilog
 builder.Host.UseSerilog((context, services, configuration) => configuration
@@ -35,6 +33,7 @@ var pgcSection = builder.Configuration.GetSection("Pgc");
 var extractDirectoryValue = pgcSection["ExtractDirectory"];
 var taxonomyZipUrlValue = pgcSection["TaxonomyZipUrl"];
 
+logger.LogInformation("Database Provider leído: {dbProvider}", dbProvider);
 logger.LogInformation("DIAGNÓSTICO CONFIGURACIÓN PGC:");
 logger.LogInformation("   Sección 'Pgc' existe: {PgcSectionExists}", pgcSection != null);
 if (pgcSection != null)
@@ -55,7 +54,7 @@ builder.Services.AddSwaggerGen(c =>
 // Registro de dependencias de la aplicación e infraestructura
 builder.Services
     .AddConta360Application(builder.Configuration)
-    .AddConta360Infrastructure(builder.Configuration, dbProvider: "Sqlite"); // o "Postgres"
+    .AddConta360Infrastructure(builder.Configuration, dbProvider);
 
 var app = builder.Build();
 

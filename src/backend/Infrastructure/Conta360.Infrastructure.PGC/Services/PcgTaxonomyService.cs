@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Conta360.Core.Interfaces;
 using Conta360.Application.Services; // Asegúrate de que este using sea correcto para PgcExtractorOptions y PgcTaxonomyBuilder
 using System.Threading;
+using System.Text.RegularExpressions; // Añadir para expresiones regulares
 
 namespace Conta360.Infrastructure.PGC.Services
 {
@@ -24,12 +25,12 @@ namespace Conta360.Infrastructure.PGC.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<PgcTaxonomyService> _logger;
         private readonly string _extractDirectory;
-        private readonly string _actualExtractedRootDirectory; // Esta será la base donde esperamos 'EstadosCuentasAnuales'
+        private readonly string _actualExtractedRootDirectory; // Esta será la base donde esperamos 'EstadosCuentasAnuales' y los XSD 'completo'
         private readonly PgcExtractorOptions _options;
+        private readonly string _taxonomyDateSuffix; // Nueva variable para almacenar el sufijo de fecha
 
         // Se añade EIRL si existe en tu ZIP y necesitas procesarlo.
-        // Si la taxonomía EIRL no está dentro de estas carpetas, se omitirá su procesamiento.
-        private readonly string[] _modalidades = { "normal", "abreviado", "pymes", "mixto", "eirl" }; // Añadido "mixto"
+        private readonly string[] _modalidades = { "normal", "abreviado", "pymes", "comun", "eirl"}; 
 
         public PgcTaxonomyService(
             IPgcTaxonomyDownloader downloader,
@@ -57,30 +58,43 @@ namespace Conta360.Infrastructure.PGC.Services
                 _logger.LogError("[PgcTaxonomyService] La configuración 'TaxonomyZipUrl' no puede ser nula o vacía.");
                 throw new ArgumentException("TaxonomyZipUrl no puede ser null o vacío en la configuración.", nameof(_options.TaxonomyZipUrl));
             }
-            // Aunque ZipFileName no se usa para derivar el nombre de la carpeta extraída,
-            // si tu downloader lo utiliza para el nombre del archivo local, es bueno validarlo.
-            // Si el downloader usa la URL para el nombre de archivo local, puedes relajar esta validación.
             if (string.IsNullOrWhiteSpace(_options.ZipFileName))
             {
-                _logger.LogWarning("[PgcTaxonomyService] La configuración 'ZipFileName' está vacía o nula. Asegúrate de que el downloader pueda manejar esto, o considera configurarla si el nombre del archivo local es crítico.");
+                _logger.LogWarning("[PgcTaxonomyService] La configuración 'ZipFileName' está vacía o nula. Esto puede afectar cómo el downloader nombra el archivo ZIP local. Si no es un problema para tu downloader, puedes ignorar esta advertencia.");
             }
 
             _extractDirectory = _options.ExtractDirectory;
 
             // --- Determinación Robusta del Directorio Raíz de Extracción ---
-            // Tomamos el nombre del archivo ZIP de la URL, que es lo que se espera que WinZip/7-Zip
-            // use para crear la carpeta principal al descomprimir.
             var uri = new Uri(_options.TaxonomyZipUrl);
-            var zipFileNameFromUrl = Path.GetFileName(uri.LocalPath); // Obtiene "taxonomiaPGC2007_v1.7.0_20240101_r1-EIRL.zip"
-            var extractedZipFolderName = Path.GetFileNameWithoutExtension(zipFileNameFromUrl); // Obtiene "taxonomiaPGC2007_v1.7.0_20240101_r1-EIRL"
+            var zipFileNameFromUrl = Path.GetFileName(uri.LocalPath); 
+            var extractedZipFolderName = Path.GetFileNameWithoutExtension(zipFileNameFromUrl); 
             
             // La ruta completa hasta el directorio "taxonomia" que contiene "EstadosCuentasAnuales"
+            // y los archivos XSD 'completo' (ej: pgc07-normal-completo.xsd).
             // Ejemplo: C:\ruta\de\extraccion\taxonomiaPGC2007_v1.7.0_20240101_r1-EIRL\taxonomia
             _actualExtractedRootDirectory = Path.Combine(_extractDirectory, extractedZipFolderName, "taxonomia");
 
+            // --- Extraer el sufijo de fecha de la carpeta del ZIP ---
+            // Buscamos un patrón YYYY-MM-DD en el nombre de la carpeta extraída.
+            // Esto es si los archivos internos tienen la fecha con guiones.
+            var match = Regex.Match(extractedZipFolderName, @"(\d{4}-\d{2}-\d{2})"); // CAMBIO AQUÍ: Buscar YYYY-MM-DD
+            if (match.Success)
+            {
+                _taxonomyDateSuffix = match.Groups[1].Value; // Será "2024-01-01"
+                _logger.LogInformation("[PgcTaxonomyService][DIAGNÓSTICO] Sufijo de fecha de taxonomía detectado: {TaxonomyDateSuffix}", _taxonomyDateSuffix);
+            }
+            else
+            {
+                // Si no se encuentra un patrón con guiones, se usa un valor por defecto.
+                // DEBE COINCIDIR CON EL FORMATO REAL DE LOS ARCHIVOS INTERNOS SI ESTOS SON "YYYY-MM-DD".
+                _taxonomyDateSuffix = "2024-01-01"; // VALOR POR DEFECTO MANTENIDO COMO YA ESTABA
+                _logger.LogWarning("[PgcTaxonomyService][DIAGNÓSTICO] No se pudo extraer el sufijo de fecha (YYYY-MM-DD) del nombre de la carpeta ZIP '{ZipFolderName}'. Se usará el valor por defecto: {DefaultSuffix}", extractedZipFolderName, _taxonomyDateSuffix);
+            }
+
             _logger.LogInformation("[PgcTaxonomyService][DIAGNÓSTICO] Directorio de extracción base (configurado): {ExtractDirectory}", _extractDirectory);
             _logger.LogInformation("[PgcTaxonomyService][DIAGNÓSTICO] Nombre de archivo ZIP derivado de URL (esperado para la carpeta): {extractedZipFolderName}", extractedZipFolderName);
-            _logger.LogInformation("[PgcTaxonomyService][DIAGNÓSTICO] Carpeta raíz descomprimida esperada (que contiene 'EstadosCuentasAnuales'): {ActualExtractedRootDirectory}", _actualExtractedRootDirectory);
+            _logger.LogInformation("[PgcTaxonomyService][DIAGNÓSTICO] Carpeta raíz descomprimida esperada (que contiene 'EstadosCuentasAnuales' y los XSD 'completo'): {ActualExtractedRootDirectory}", _actualExtractedRootDirectory);
         }
 
         public async Task<OperationResult<List<PgcAccount>>> RunAndGetAccountsAsync()
@@ -107,37 +121,34 @@ namespace Conta360.Infrastructure.PGC.Services
                 // --- Paso 2: Descarga y Extracción de la Taxonomía ---
                 _logger.LogInformation("[PgcTaxonomyService] Iniciando descarga y extracción de la taxonomía desde '{TaxonomyZipUrl}'.", _options.TaxonomyZipUrl);
                 
-                // Aquí, tu IPgcTaxonomyDownloader debería descargar el ZIP y extraerlo.
-                // Es CRÍTICO que el downloader al extraer el ZIP genere la carpeta 'taxonomiaPGC2007_v1.7.0_20240101_r1-EIRL'
-                // directamente dentro de _extractDirectory. Por ejemplo:
-                // Si _extractDirectory = "./Data/PGC"
-                // Y ZipFileName = "taxonomiaPGC.zip"
-                // El downloader debería guardar el ZIP como "./Data/PGC/taxonomiaPGC.zip"
-                // Y al descomprimirlo, crear "./Data/PGC/taxonomiaPGC2007_v1.7.0_20240101_r1-EIRL/..."
+                // Asegúrate de que el downloader se encarga de descomprimir el contenido
+                // del ZIP en la estructura de directorios que esperas.
                 await _downloader.DownloadAndExtractAsync(); 
                 _logger.LogInformation("[PgcTaxonomyService] Descarga y extracción completadas con éxito.");
 
                 // --- Verificar Estructura de Directorios Post-Extracción ---
+                // Esta validación ahora es crucial, ya que _actualExtractedRootDirectory es la base para todo lo demás.
                 if (!Directory.Exists(_actualExtractedRootDirectory))
                 {
-                    _logger.LogError("[PgcTaxonomyService] La carpeta raíz descomprimida esperada '{ActualExtractedRootDirectory}' (que debería contener 'EstadosCuentasAnuales') no se encontró después de la extracción. Esto indica un posible problema con el archivo ZIP o su estructura interna esperada.", _actualExtractedRootDirectory);
+                    _logger.LogError("[PgcTaxonomyService] La carpeta raíz descomprimida esperada '{ActualExtractedRootDirectory}' (que debería contener 'EstadosCuentasAnuales' y los XSD 'completo') no se encontró después de la extracción. Esto indica un posible problema con el archivo ZIP o su estructura interna esperada.", _actualExtractedRootDirectory);
                     return OperationResult.Failure<List<PgcAccount>>(new Error("ExtractionRootNotFound", $"La carpeta raíz descomprimida '{_actualExtractedRootDirectory}' no se encontró. Confirma que el ZIP se descomprime en una carpeta con el nombre esperado y que la subcarpeta 'taxonomia' existe dentro de ella."));
                 }
                 _logger.LogInformation("[PgcTaxonomyService] Carpeta raíz descomprimida verificada: {ActualExtractedRootDirectory}.", _actualExtractedRootDirectory);
 
                 var allPgcAccounts = new List<PgcAccount>();
+                var processedCodes = new HashSet<string>(); // Para evitar duplicados si los XSDs de entrada se solapan.
 
                 // --- Mapeo de modalidad a XSD completo de entrada ---
-                // Estos son los XSDs que importan todos los demás y que ParseCodesFromXsd debe compilar.
+                // Estos son los XSDs que importan todos los demás y que ParseCodesFromXsd debe compilar para obtener TODOS los conceptos.
+                // Estos archivos usan el prefijo 'pgc07' y NO LLEVAN SUFIJO DE FECHA. Están directamente en _actualExtractedRootDirectory.
                 var entryPointXsds = new Dictionary<string, string>
                 {
                     { "normal", Path.Combine(_actualExtractedRootDirectory, "pgc07-normal-completo.xsd") },
                     { "abreviado", Path.Combine(_actualExtractedRootDirectory, "pgc07-abreviado-completo.xsd") },
                     { "pymes", Path.Combine(_actualExtractedRootDirectory, "pgc07-pymes-completo.xsd") },
-                    { "mixto", Path.Combine(_actualExtractedRootDirectory, "pgc07-mixto-completo.xsd") }, // Añadido
+                    { "comun", Path.Combine(_actualExtractedRootDirectory, "pgc07-comun-completo.xsd") },
                     { "eirl", Path.Combine(_actualExtractedRootDirectory, "pgc07-eirl-completo.xsd") }
                 };
-
 
                 // --- Paso 3: Procesamiento de Cada Modalidad de Taxonomía ---
                 foreach (var modalidad in _modalidades)
@@ -145,13 +156,14 @@ namespace Conta360.Infrastructure.PGC.Services
                     // Obtener el XSD completo de entrada para esta modalidad
                     if (!entryPointXsds.TryGetValue(modalidad, out string? mainEntryPointXsdPath) || !File.Exists(mainEntryPointXsdPath))
                     {
-                        _logger.LogWarning("[PgcTaxonomyService] No se encontró o no existe el XSD de punto de entrada completo para la modalidad: '{Modalidad}'. Se omitirá esta modalidad.", modalidad);
+                        // Mensaje de advertencia ajustado para reflejar que el XSD de entrada no lleva sufijo de fecha.
+                        _logger.LogWarning("[PgcTaxonomyService] No se encontró o no existe el XSD de punto de entrada completo para la modalidad: '{Modalidad}' en la ruta esperada '{Path}'. Se omitirá esta modalidad.", modalidad, mainEntryPointXsdPath);
                         continue;
                     }
 
-                    // La ruta a las modalidades (para label y presentation) debe ser _actualExtractedRootDirectory + "\EstadosCuentasAnuales\" + modalidad
+                    // El directorio de la modalidad está dentro de "EstadosCuentasAnuales"
                     var modalidadDir = Path.Combine(_actualExtractedRootDirectory, "EstadosCuentasAnuales", modalidad);
-                    _logger.LogInformation("[PgcTaxonomyService] Iniciando procesamiento para modalidad: '{Modalidad}' en '{ModalidadDir}' usando XSD de entrada: '{EntryPointXsd}'.", modalidad, modalidadDir, mainEntryPointXsdPath);
+                    _logger.LogInformation("[PgcTaxonomyService] Iniciando procesamiento para modalidad: '{Modalidad}' en '{ModalidadDir}' usando XSD de entrada: '{EntryPointXsd}'.", modalidad, modalidadDir, Path.GetFileName(mainEntryPointXsdPath));
 
                     if (!Directory.Exists(modalidadDir))
                     {
@@ -159,65 +171,91 @@ namespace Conta360.Infrastructure.PGC.Services
                         continue;
                     }
 
-                    // Buscamos todos los archivos XSD específicos de cada estado dentro del directorio de la modalidad.
-                    // Estos son los que referencian los archivos de presentación correspondientes.
-                    var xsdFiles = Directory.GetFiles(modalidadDir, "*.xsd", SearchOption.TopDirectoryOnly);
-                    
-                    if (!xsdFiles.Any())
+                    // --- LÓGICA DE SELECCIÓN DE UN ÚNICO ARCHIVO DE ETIQUETAS (LABEL) ---
+                    // Los archivos de labels dentro de las carpetas de modalidad usan el prefijo 'pgc-07' y SÍ LLEVAN SUFIJO DE FECHA.
+                    string? primaryLabelPath = null;
+                    string generalLabelBaseName = $"pgc-07-{modalidad[0]}-{_taxonomyDateSuffix}"; 
+
+                    // 1. Prioridad: Buscar el label principal de la modalidad (sin sufijos de módulos, ej: -m4-flujefec)
+                    primaryLabelPath = Directory.GetFiles(modalidadDir, $"{generalLabelBaseName}-label-es.xml").FirstOrDefault();
+                    if (primaryLabelPath == null)
                     {
-                        _logger.LogWarning("[PgcTaxonomyService] No se encontraron archivos XSD en el directorio de modalidad '{Modalidad}': {ModalidadDir}. Se omitirá esta modalidad.", modalidad, modalidadDir);
+                        primaryLabelPath = Directory.GetFiles(modalidadDir, $"{generalLabelBaseName}-label-es-code.xml").FirstOrDefault();
+                    }
+
+                    // 2. Si no se encuentra el general, buscar cualquier otro label de la modalidad que siga el patrón 'pgc-07-'.
+                    // Esto es útil para casos como 'comun' o si el label principal tiene un sufijo.
+                    if (primaryLabelPath == null)
+                    {
+                        // Se amplía la búsqueda para cualquier archivo de label que contenga la fecha detectada
+                        primaryLabelPath = Directory.EnumerateFiles(modalidadDir, $"pgc-07-*-{_taxonomyDateSuffix}-label-es.xml", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                    }
+                    if (primaryLabelPath == null)
+                    {
+                        primaryLabelPath = Directory.EnumerateFiles(modalidadDir, $"pgc-07-*-{_taxonomyDateSuffix}-label-es-code.xml", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                    }
+
+                    if (primaryLabelPath == null)
+                    {
+                        _logger.LogWarning("[PgcTaxonomyService] No se pudo encontrar un archivo de etiquetas (label-es.xml o label-es-code.xml) principal o alternativo para la modalidad '{Modalidad}' con sufijo '{Suffix}' en {ModalidadDir}. Se omitirá el procesamiento de esta modalidad.", modalidad, _taxonomyDateSuffix, modalidadDir);
                         continue;
                     }
 
-                    // Se espera un solo archivo de labels general por modalidad, típicamente nombrado como pgc-07-{inicial}-2024-01-01-label-es.xml
-                    string generalLabelBaseName = $"pgc-07-{modalidad[0]}-2024-01-01";
-                    string? labelPath = Directory.GetFiles(modalidadDir, $"{generalLabelBaseName}-label-es.xml").FirstOrDefault();
+                    _logger.LogInformation("[PgcTaxonomyService] Se seleccionó el archivo de etiquetas: {LabelFileName} para la modalidad '{Modalidad}'.", Path.GetFileName(primaryLabelPath), modalidad);
 
-                    if (labelPath == null)
+                    // --- RECOLECTAR TODOS LOS ARCHIVOS DE PRESENTACIÓN PARA LA MODALIDAD ---
+                    // Los archivos de presentación dentro de las carpetas de modalidad también usan el prefijo 'pgc-07' y SÍ LLEVAN SUFIJO DE FECHA.
+                    // Aseguramos que también busquen por la fecha dinámica.
+                    var presentationPathsForModalidad = Directory.EnumerateFiles(modalidadDir, $"pgc-07-*-{_taxonomyDateSuffix}-presentation.xml", SearchOption.TopDirectoryOnly).ToList(); 
+
+                    // --- TRATAMIENTO ESPECÍFICO PARA ETCPS (si existe como subcarpeta dentro de la modalidad) ---
+                    // El ETCPS puede estar anidado en 'normal' y 'comun', y sus archivos usan el prefijo 'pgc07' y SÍ LLEVAN SUFIJO DE FECHA.
+                    if (modalidad == "normal" || modalidad == "comun") 
                     {
-                        _logger.LogWarning("[PgcTaxonomyService] Archivo de etiquetas general para la modalidad '{Modalidad}' en {ModalidadDir} no encontrado. Se omitirá el procesamiento de esta modalidad.", modalidad, modalidadDir);
-                        continue;
-                    }
-
-                    foreach (var xsd in xsdFiles)
-                    {
-                        var baseName = Path.GetFileNameWithoutExtension(xsd);
-                        string? presentationPath = null;
-
-                        // La lógica para el XSD principal de la modalidad (ej: pgc-07-n-2024-01-01)
-                        // Para estos XSD, no se espera un archivo de presentación específico, por lo que 'presentationPath' será null.
-                        if (baseName.Equals(generalLabelBaseName))
+                        var etcpnDir = Path.Combine(modalidadDir, "EstadoTotalCambiosPatrimonioNeto"); 
+                        if (Directory.Exists(etcpnDir))
                         {
-                            _logger.LogInformation("[PgcTaxonomyService] Manejando XSD principal de la modalidad: {XsdFileName}. No se espera archivo de presentación.", Path.GetFileName(xsd));
-                            // presentationPath se mantiene null.
-                        }
-                        else // Para los XSD de módulos (m1-balance, m2-pyg, m3-patnetA, m4-flujefec, etc.)
-                        {
-                            presentationPath = Directory.GetFiles(modalidadDir, $"{baseName}-presentation.xml").FirstOrDefault();
-                            if (presentationPath == null)
+                            // Prefijos específicos para archivos de ETCPS: pgc-07-n- o pgc-07-c-. También con sufijo de fecha.
+                            string etcpnPrefix = $"pgc-07-{modalidad[0]}-"; 
+                            var etcpnPresentation = Directory.GetFiles(etcpnDir, $"{etcpnPrefix}*-{_taxonomyDateSuffix}-presentation.xml").FirstOrDefault(); 
+                            
+                            if (etcpnPresentation != null)
                             {
-                                _logger.LogWarning("[PgcTaxonomyService] Archivo de presentación '{PresentationFileName}' no encontrado para XSD '{XsdFileName}' en {ModalidadDir}. Se omitirá el procesamiento de este XSD.", $"{baseName}-presentation.xml", Path.GetFileName(xsd), modalidadDir);
-                                continue;
+                                presentationPathsForModalidad.Add(etcpnPresentation);
+                                _logger.LogInformation("[PgcTaxonomyService] Se añadió el archivo de presentación ETCPS de la subcarpeta '{Modalidad}': {EtcpnPresentation}", modalidad, Path.GetFileName(etcpnPresentation));
+                            } else {
+                                _logger.LogWarning("[PgcTaxonomyService] No se encontró el archivo de presentación ETCPS ({EtcpnPrefix}*-{Suffix}-presentation.xml) en la subcarpeta esperada '{EtcpnDir}' para la modalidad '{Modalidad}'.", etcpnPrefix, _taxonomyDateSuffix, etcpnDir, modalidad);
                             }
+                            // No se añaden labels de ETCPS aquí, ya que el builder solo soporta uno.
+                            // Se asume que el label principal de la modalidad es suficiente para sus conceptos.
+                        } else {
+                            _logger.LogInformation("[PgcTaxonomyService] La subcarpeta ETCPS '{EtcpnDir}' no se encontró para la modalidad '{Modalidad}'.", etcpnDir, modalidad);
                         }
-
-                        _logger.LogInformation("[PgcTaxonomyService] Procesando taxonomía para modalidad '{Modalidad}' con XSD completo: {MainEntryPointXsdFileName}, XSD específico (para presentación): {XsdFileName}, Label: {LabelFileName}, Presentation: {PresentationFileName}.", 
-                            modalidad, 
-                            Path.GetFileName(mainEntryPointXsdPath), 
-                            Path.GetFileName(xsd), 
-                            Path.GetFileName(labelPath), 
-                            presentationPath != null ? Path.GetFileName(presentationPath) : "N/A (XSD principal)");
-
-                        // --- Construcción de Cuentas PGC ---
-                        // **IMPORTANTE**: Aquí pasamos el XSD "completo" para que el builder obtenga TODOS los conceptos.
-                        // El `xsd` (el específico del loop) se sigue pasando si el builder lo usa para algo más que extraer conceptos (ej. para la vista específica del balance/pyg).
-                        // Sin embargo, si `ParseCodesFromXsd` solo necesita el 'completo', podemos refinar esto aún más.
-                        // Según la implementación del builder que proponemos, 'ParseCodesFromXsd' solo usa el 'xsdPath' principal que le llega.
-                        // Entonces, en BuildAccountsFromXsdLabelPresentation, el primer parámetro debe ser el mainEntryPointXsdPath.
-                        var accountsForModalidad = await _builder.BuildAccountsFromXsdLabelPresentation(mainEntryPointXsdPath, labelPath, presentationPath);
-                        allPgcAccounts.AddRange(accountsForModalidad);
-                        _logger.LogInformation("[PgcTaxonomyService] Se construyeron {Count} cuentas para la modalidad '{Modalidad}' desde '{XsdFileName}'.", accountsForModalidad.Count, modalidad, Path.GetFileName(xsd));
                     }
+                    
+                    _logger.LogInformation("[PgcTaxonomyService] Se encontraron {Count} archivos de presentación para la modalidad '{Modalidad}'.", presentationPathsForModalidad.Count, modalidad);
+                    
+                    // --- Construcción de Cuentas PGC para la modalidad (una sola llamada al Builder) ---
+                    // Se pasa el XSD de punto de entrada completo para que el builder obtenga TODOS los conceptos.
+                    // Se pasa el único archivo de etiquetas general/principal para la modalidad.
+                    // Se pasa la lista completa de archivos de presentación para que el builder combine las jerarquías.
+                    var accountsForModalidad = await _builder.BuildAccountsFromXsdLabelPresentation(
+                        mainEntryPointXsdPath, 
+                        primaryLabelPath, 
+                        presentationPathsForModalidad
+                    );
+
+                    // Añadir solo las cuentas que no hemos procesado ya (por si hay solapamiento entre XSDs de entrada, aunque no debería ser el caso ideal)
+                    foreach (var account in accountsForModalidad)
+                    {
+                        if (processedCodes.Add(account.Code))
+                        {
+                            allPgcAccounts.Add(account);
+                        } else {
+                            _logger.LogDebug("[PgcTaxonomyService] Cuenta '{Code}' ya procesada. Se omitirá duplicado.", account.Code);
+                        }
+                    }
+                    _logger.LogInformation("[PgcTaxonomyService] Se procesaron {Count} cuentas (únicas) para la modalidad '{Modalidad}'. Total acumulado: {TotalCount}.", accountsForModalidad.Count, modalidad, allPgcAccounts.Count);
                 }
 
                 // --- Verificación Final de Datos Procesados ---
@@ -227,17 +265,11 @@ namespace Conta360.Infrastructure.PGC.Services
                     return OperationResult.Failure<List<PgcAccount>>(new Error("NoAccountsFound", "No se encontraron cuentas PGC para persistir. Asegúrate de que los archivos de la taxonomía son correctos y están presentes en la estructura esperada del ZIP."));
                 }
 
-                _logger.LogInformation("[PgcTaxonomyService] Se han construido un total de {Count} cuentas PGC. Iniciando persistencia masiva.", allPgcAccounts.Count);
+                _logger.LogInformation("[PgcTaxonomyService] Se han construido un total de {Count} cuentas PGC únicas. Iniciando persistencia masiva.", allPgcAccounts.Count);
 
                 // --- Paso 4: Persistencia Masiva de Cuentas PGC ---
                 await _accountRepository.BulkInsertOrUpdateAsync(allPgcAccounts);
                 
-                // --- Gestión de Transacciones (si IUnitOfWork lo permite) ---
-                // Si tu IUnitOfWork tiene un método para confirmar cambios y agrupar operaciones,
-                // este es el lugar ideal para llamarlo, asegurando que toda la persistencia sea atómica.
-                // Ejemplo: await _unitOfWork.CommitAsync();
-                // Nota: La implementación de IUnitOfWork determinará si es necesario o si BulkInsertOrUpdateAsync ya maneja transacciones internas.
-
                 _logger.LogInformation("[PgcTaxonomyService] Persistencia masiva de cuentas PGC completada con éxito. Proceso de taxonomía finalizado.");
                 return OperationResult.Success(allPgcAccounts);
             }

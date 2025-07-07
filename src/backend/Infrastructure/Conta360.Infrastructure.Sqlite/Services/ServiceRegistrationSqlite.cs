@@ -1,11 +1,12 @@
 /*using Conta360.Application.Interfaces;
 using Conta360.Infrastructure.Sqlite.Contexts;
-using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Conta360.Domain.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Net.Http;
 using Conta360.Infrastructure.Sqlite.Repositories;
+using Conta360.Domain.Interfaces;
 
 namespace Conta360.Infrastructure.Sqlite.Services
 {
@@ -20,6 +21,7 @@ namespace Conta360.Infrastructure.Sqlite.Services
             services.AddScoped<IApplicationDbContext, SqliteDbContext>();
             services.AddScoped<IPgcAccountRepository, AccountRepositorySqlite>();
             services.AddScoped<IUnitOfWork, UnitOfWorkSqlite>();
+
             return services;
         }
     }

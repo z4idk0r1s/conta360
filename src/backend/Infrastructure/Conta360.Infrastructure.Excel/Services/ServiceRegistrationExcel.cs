@@ -1,4 +1,4 @@
-using Conta360.Core.Common;
+/*using Conta360.Core.Common;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,9 +15,9 @@ namespace Conta360.Infrastructure.Excel.Services
         /// <summary>
         /// Registra servicios de infraestructura Excel (PGC).
         /// </summary>
-        public static IServiceCollection AddExcelInfrastructure(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddExcelInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<PgcExtractorOptions>(config.GetSection("Pgc"));
+            services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
             services.AddScoped<IExcelProcessor, ExcelProcessor>();
             return services;
         }
@@ -33,3 +33,4 @@ namespace Conta360.Infrastructure.Excel.Services
         }
     }
 }
+*/

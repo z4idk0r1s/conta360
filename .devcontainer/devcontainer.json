@@ -8,7 +8,7 @@
     }
   },
   "forwardPorts": [3000, 3001, 3004, 5000, 5001],
-  "postCreateCommand": "bash ./.devcontainer/startup.sh",
+  "postCreateCommand": "bash ./.devcontainer/star2.sh",
   "customizations": {
     "vscode": {
       "extensions": [

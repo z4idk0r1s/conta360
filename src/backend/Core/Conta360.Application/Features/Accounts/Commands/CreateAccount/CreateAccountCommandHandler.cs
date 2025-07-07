@@ -4,6 +4,7 @@ using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
 using Conta360.Application.Interfaces;
 using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Conta360.Application.Features.Accounts.Commands.CreateAccount
 {
