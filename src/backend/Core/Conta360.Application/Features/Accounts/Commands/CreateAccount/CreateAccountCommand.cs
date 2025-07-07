@@ -1,5 +1,6 @@
-using MediatR;
 using Conta360.Core.Common;
+using MediatR;
+using MediatR.Extensions.Microsoft.DependencyInjection;
 
 namespace Conta360.Application.Features.Accounts.Commands.CreateAccount
 {

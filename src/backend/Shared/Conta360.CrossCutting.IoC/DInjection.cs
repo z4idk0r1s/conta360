@@ -1,10 +1,16 @@
 using System.Reflection;
-using FluentValidation;
+using MediatR.Extensions.Microsoft.DependencyInjection;
 using MediatR;
+using AutoMapper;
+using AutoMapper.Extensions.Microsoft.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.EntityFrameworkCore.Sqlite;
+using FluentValidation;
+using FluentValidation.DependencyInjectionExtensions;
 
 // Usings del proyecto
 using Conta360.Application.Behaviours;

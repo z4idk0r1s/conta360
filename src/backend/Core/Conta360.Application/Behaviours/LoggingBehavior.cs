@@ -1,4 +1,5 @@
 using MediatR;
+using MediatR.Extensions.Microsoft.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Conta360.Application.Behaviours

@@ -23,9 +23,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" />
     <PackageReference Include="Microsoft.Extensions.Http" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="FluentValidation" />         
     <PackageReference Include="MediatR" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
   </ItemGroup>
 </Project>

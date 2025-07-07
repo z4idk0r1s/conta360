@@ -1,5 +1,7 @@
 using MediatR;
 using FluentValidation;
+using MediatR.Extensions.Microsoft.DependencyInjection;
+using FluentValidation.DependencyInjectionExtensions;
 using Conta360.Core.Common;
 
 namespace Conta360.Application.Behaviours

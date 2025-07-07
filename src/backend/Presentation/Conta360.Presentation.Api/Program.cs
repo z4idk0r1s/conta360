@@ -2,11 +2,13 @@ using Conta360.Application.Features.Accounts.Commands.CreateAccount;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries;
 using Conta360.CrossCutting.IoC;
 using MediatR;
+using MediatR.Extensions.Microsoft.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Conta360.Presentation.Api.Models;
 using Conta360.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var dbProvider = builder.Configuration.GetValue<string>("Database:Provider") ?? "sqlite";
