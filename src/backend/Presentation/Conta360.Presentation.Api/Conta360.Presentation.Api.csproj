@@ -21,5 +21,6 @@
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />   
     <PackageReference Include="MediatR" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
   </ItemGroup>
 </Project>
