@@ -1,16 +1,13 @@
 using System.Reflection;
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 // Usings del proyecto
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
-using Conta360.Core.Common;
 using Conta360.Core.Interfaces;
 using Conta360.Domain.Interfaces;
 
@@ -18,14 +15,10 @@ using Conta360.Domain.Interfaces;
 using Conta360.Infrastructure.Excel.Configuration;
 using Conta360.Infrastructure.Excel.Services.Implementation;
 using Conta360.Infrastructure.Excel.Services.Interfaces;
-
 using Conta360.Infrastructure.PGC.Processing;
-using Conta360.Infrastructure.PGC.Extraction;
 using Conta360.Infrastructure.PGC.Services;
-
 using Conta360.Infrastructure.Postgres.Contexts;
 using Conta360.Infrastructure.Postgres.Repositories;
-
 using Conta360.Infrastructure.Sqlite.Contexts;
 using Conta360.Infrastructure.Sqlite.Repositories;
 using Conta360.Infrastructure.Postgres;

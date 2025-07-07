@@ -5,9 +5,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Core", "src\backend\Core\Conta360.Core\Conta360.Core.csproj", "{4D8A9F1B-C3E7-4F6A-9B0E-5C1F0A2D3E4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Domain", "src\backend\Domain\Conta360.Domain\Conta360.Domain.csproj", "{1B2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Domain", "src\backend\Core\Conta360.Domain\Conta360.Domain.csproj", "{1B2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Application", "src\backend\Application\Conta360.Application\Conta360.Application.csproj", "{A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Application", "src\backend\Core\Conta360.Application\Conta360.Application.csproj", "{A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.Postgres", "src\backend\Infrastructure\Conta360.Infrastructure.Postgres\Conta360.Infrastructure.Postgres.csproj", "{F1E2D3C4-B5A6-9E8D-7C6B-5A4D3E2C1B0A}"
 EndProject
@@ -36,7 +36,7 @@ Global
 
 		{1B2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1B2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B2C3D4E-5F6A-7B8C-9D0E-1F2F3A4B5C6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B2C3D4E-5F6A-7B8C-9D0E-1F2F3A4B5C6D}.Release|Any CPU.Build.0 = Release|Any CPU
 
 		{A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
