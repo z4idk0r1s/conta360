@@ -1,10 +1,10 @@
 using System.Reflection;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 
 // Usings del proyecto
 using Conta360.Application.Behaviours;
@@ -14,17 +14,23 @@ using Conta360.Application.Services;
 using Conta360.Core.Common;
 using Conta360.Core.Interfaces;
 using Conta360.Domain.Interfaces;
-using Conta360.Infrastructure.Excel.Services;
-using Conta360.Infrastructure.Postgres;
+
+// Infraestructura - Contextos y repositorios
+using Conta360.Infrastructure.Excel.Configuration;
+using Conta360.Infrastructure.Excel.Services.Implementation;
+using Conta360.Infrastructure.Excel.Services.Interfaces;
+
+using Conta360.Infrastructure.PGC.Processing;
+using Conta360.Infrastructure.PGC.Extraction;
+using Conta360.Infrastructure.PGC.Services;
+
 using Conta360.Infrastructure.Postgres.Contexts;
 using Conta360.Infrastructure.Postgres.Repositories;
+
 using Conta360.Infrastructure.Sqlite.Contexts;
 using Conta360.Infrastructure.Sqlite.Repositories;
-using Conta360.Infrastructure.PGC.Services;
-using Conta360.Infrastructure.PGC.Processing;
-using Conta360.Infrastructure.Postgres.Services;
-using Conta360.Infrastructure.Sqlite.Services;
-
+using Conta360.Infrastructure.Postgres;
+using Conta360.Infrastructure.Excel.Services;
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -48,24 +54,41 @@ namespace Conta360.CrossCutting.IoC
 
         public static IServiceCollection AddConta360Infrastructure(this IServiceCollection services, IConfiguration configuration, string dbProvider)
         {
-            // Configuración global para PGC
+            // === Configuraciones ===
             services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
+            services.Configure<ExcelSettings>(configuration.GetSection("ExcelSettings"));
 
-            // Infraestructura Excel
-            services.AddExcelFiscalServices(configuration);
-            services.AddExcelInfrastructure(configuration);
+            // === Excel Services ===
+            services.AddScoped<IExcelProcessor, ExcelProcessor>();
+            services.AddScoped<IExcelFiscalProcessor, ExcelFiscalProcessor>();
 
-            // Infraestructura PGC (descarga, validación, parser, builder, service)
-            services.AddPGCInfrastructure(configuration);
+            // === PGC Services ===
+            services.AddHttpClient<IPgcTaxonomyDownloader, PgcTaxonomyDownloader>();
+            services.AddScoped<PgcTaxonomyValidator>();
+            services.AddScoped<PgcTaxonomyParser>();
+            services.AddScoped<PgcTaxonomyBuilder>();
+            services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>();
 
-            // Base de datos y Unit of Work
+            // === DB Provider Switch ===
             if (dbProvider?.Equals("postgres", StringComparison.OrdinalIgnoreCase) == true)
             {
-                services.AddPostgresInfrastructure(configuration);
+                services.AddDbContext<PostgresDbContext>(options =>
+                    options.UseNpgsql(configuration.GetConnectionString("PostgresConnection"),
+                        b => b.MigrationsAssembly(typeof(PostgresDbContext).Assembly.FullName)));
+
+                services.AddScoped<IApplicationDbContext, PostgresDbContext>();
+                services.AddScoped<IPgcAccountRepository, AccountRepositoryPostgres>();
+                services.AddScoped<IUnitOfWork, UnitOfWorkPostgres>();
             }
             else
             {
-                services.AddSqliteInfrastructure(configuration);
+                services.AddDbContext<SqliteDbContext>(options =>
+                    options.UseSqlite(configuration.GetConnectionString("SqliteConnection"),
+                        b => b.MigrationsAssembly(typeof(SqliteDbContext).Assembly.FullName)));
+
+                services.AddScoped<IApplicationDbContext, SqliteDbContext>();
+                services.AddScoped<IPgcAccountRepository, AccountRepositorySqlite>();
+                services.AddScoped<IUnitOfWork, UnitOfWorkSqlite>();
             }
 
             return services;
