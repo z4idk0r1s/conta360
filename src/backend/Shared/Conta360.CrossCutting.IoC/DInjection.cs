@@ -1,22 +1,16 @@
 using System.Reflection;
-using MediatR.Extensions.Microsoft.DependencyInjection;
-using MediatR;
 using AutoMapper;
-using AutoMapper.Extensions.Microsoft.DependencyInjection;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
-using Microsoft.EntityFrameworkCore.Sqlite;
-using FluentValidation;
-using FluentValidation.DependencyInjectionExtensions;
 
 // Usings del proyecto
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
-using Conta360.Application.Services;
 using Conta360.Core.Common;
 using Conta360.Core.Interfaces;
 using Conta360.Domain.Interfaces;

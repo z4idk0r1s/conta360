@@ -1,5 +1,5 @@
 using MediatR;
-using MediatR.Extensions.Microsoft.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 using Conta360.Core.Common;
 using Conta360.Application.DTOs;

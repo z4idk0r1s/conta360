@@ -3,8 +3,7 @@ using Conta360.Core.Common;
 using Conta360.Application.DTOs;
 using Conta360.Domain.Interfaces;
 using AutoMapper;
-using AutoMapper.Extensions.Microsoft.DependencyInjection;
-using MediatR.Extensions.Microsoft.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries
 {

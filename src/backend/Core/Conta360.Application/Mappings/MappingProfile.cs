@@ -2,6 +2,7 @@ using AutoMapper;
 using Conta360.Application.DTOs;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount;
 using Conta360.Domain.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Conta360.Application.Mappings
 {

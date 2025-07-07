@@ -1,11 +1,10 @@
 using MediatR;
-using MediatR.Extensions.Microsoft.DependencyInjection;
 using Conta360.Core.Common;
 using Conta360.Domain.Entities;
 using Conta360.Domain.Interfaces;
 using Conta360.Application.Interfaces;
 using AutoMapper;
-using AutoMapper.Extensions.Microsoft.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Conta360.Application.Features.Accounts.Commands.CreateAccount
 {

@@ -2,7 +2,6 @@ using Conta360.Application.Features.Accounts.Commands.CreateAccount;
 using Conta360.Application.Features.Accounts.Commands.CreateAccount.Queries;
 using Conta360.CrossCutting.IoC;
 using MediatR;
-using MediatR.Extensions.Microsoft.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Conta360.Presentation.Api.Models;

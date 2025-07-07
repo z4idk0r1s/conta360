@@ -10,9 +10,7 @@
   <ItemGroup>
     <PackageReference Include="MediatR" />
     <PackageReference Include="AutoMapper" />
-    <PackageReference Include="FluentValidation" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>

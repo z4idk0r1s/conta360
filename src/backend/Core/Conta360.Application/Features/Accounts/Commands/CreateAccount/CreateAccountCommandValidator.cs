@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Conta360.Application.Features.Accounts.Commands.CreateAccount
 {
