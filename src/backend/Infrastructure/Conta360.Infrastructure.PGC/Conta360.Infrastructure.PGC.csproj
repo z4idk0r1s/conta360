@@ -4,18 +4,19 @@
     <AssemblyName>Conta360.Infrastructure.PGC</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
     <ProjectReference Include="../../Core/Conta360.Core/Conta360.Core.csproj" />
     <ProjectReference Include="../../Core/Conta360.Domain/Conta360.Domain.csproj" />
+    <ProjectReference Include="../../Core/Conta360.Application/Conta360.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-    <PackageReference Include="Gepsio" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
     <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" />
   </ItemGroup>
 </Project>
