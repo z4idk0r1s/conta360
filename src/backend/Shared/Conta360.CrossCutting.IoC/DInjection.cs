@@ -3,15 +3,12 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-// Usings del proyecto
+using Microsoft.EntityFrameworkCore;
 using Conta360.Application.Behaviours;
 using Conta360.Application.Interfaces;
 using Conta360.Application.Mappings;
 using Conta360.Core.Interfaces;
 using Conta360.Domain.Interfaces;
-
-// Infraestructura - Contextos y repositorios
 using Conta360.Infrastructure.Excel.Configuration;
 using Conta360.Infrastructure.Excel.Services.Implementation;
 using Conta360.Infrastructure.Excel.Services.Interfaces;
@@ -24,7 +21,10 @@ using Conta360.Infrastructure.Sqlite.Repositories;
 using Conta360.Infrastructure.Postgres;
 using Conta360.Infrastructure.Excel.Services;
 using Conta360.Application.Services;
-using Microsoft.EntityFrameworkCore;
+using Conta360.Infrastructure.A3Cash.Configuration;
+using Conta360.Infrastructure.A3Cash.Interfaces;
+using Conta360.Infrastructure.A3Cash.Services;
+using Conta360.Infrastructure.Reporting.Services;
 
 namespace Conta360.CrossCutting.IoC
 {
@@ -51,6 +51,7 @@ namespace Conta360.CrossCutting.IoC
             // === Configuraciones ===
             services.Configure<PgcExtractorOptions>(configuration.GetSection("Pgc"));
             services.Configure<ExcelSettings>(configuration.GetSection("ExcelSettings"));
+            services.Configure<A3CashSettings>(configuration.GetSection("A3CashSettings"));
 
             // === Excel Services ===
             services.AddScoped<IExcelProcessor, ExcelProcessor>();
@@ -62,6 +63,15 @@ namespace Conta360.CrossCutting.IoC
             services.AddScoped<PgcTaxonomyParser>();
             services.AddScoped<PgcTaxonomyBuilder>();
             services.AddScoped<IPgcTaxonomyService, PgcTaxonomyService>();
+
+            // === A3Cash Services ===
+            services.AddScoped<A3FileFormatter>(); 
+            services.AddScoped<IA3FileGenerator, A3DailyAccountsProcessor>();
+
+            // === Reporting/Orchestration Services ===
+            // orquesta Excel y A3Cash
+            services.AddScoped<ExcelToA3IntegrationService>();
+
 
             // === DB Provider Switch ===
             if (dbProvider?.Equals("postgres", StringComparison.OrdinalIgnoreCase) == true)

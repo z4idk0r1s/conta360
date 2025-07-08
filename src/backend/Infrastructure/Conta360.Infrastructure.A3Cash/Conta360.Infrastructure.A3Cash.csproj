@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Conta360.Infrastructure.A3Cash</RootNamespace>
+    <AssemblyName>Conta360.Infrastructure.A3Cash</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" /> 
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+  </ItemGroup>
+</Project>
