@@ -19,7 +19,7 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
         private readonly ExcelSettings _settings;
         private readonly ILogger<ExcelFiscalProcessor> _logger;
 
-        // Constantes de columnas (evita números mágicos)
+        // Constantes de columnas excell
         private const int ColBaseImponible4 = 8;
         private const int ColCuotaIva4 = 9;
         private const int ColBaseImponible10 = 11;

@@ -8,6 +8,11 @@ using Conta360.Presentation.Api.Models;
 using Conta360.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+// orquest
+using Conta360.Infrastructure.Reporting.Services;
+using System.IO;
+using System.Collections.Generic;
+////////////////////////////////////////////////
 
 var builder = WebApplication.CreateBuilder(args);
 var dbProvider = builder.Configuration.GetValue<string>("Database:Provider") ?? "sqlite";
@@ -21,7 +26,6 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day));
 
 // --- INICIO: CÓDIGO DE DIAGNÓSTICO DE CONFIGURACIÓN PGC ---
-// Este código es temporal para depuración y debe eliminarse después de resolver el problema.
 builder.Services.AddLogging(loggingBuilder =>
 {
     loggingBuilder.AddConsole();
@@ -93,11 +97,10 @@ else
 
 
 // ✅ Pre-carga de taxonomía PGC con la nueva arquitectura
-// Este paso se ejecuta AHORA después de que las migraciones aseguren que la BD está lista.
 using (var scope = app.Services.CreateScope())
 {
     var pgcService = scope.ServiceProvider.GetRequiredService<IPgcTaxonomyService>();
-    var result = await pgcService.RunAndGetAccountsAsync(); 
+    var result = await pgcService.RunAndGetAccountsAsync();
 
     if (result.IsSuccess)
     {
@@ -106,9 +109,6 @@ using (var scope = app.Services.CreateScope())
     else
     {
         app.Logger.LogError("❌ ERROR: Fallo en la carga de la taxonomía PGC: {ErrorMessage}", result.Error?.Description ?? "Error desconocido");
-        // Dependiendo de la criticidad, podrías decidir terminar la aplicación o solo loguear.
-        // Por la criticidad del PGC, un error aquí podría ser fatal para la funcionalidad principal.
-        // throw new InvalidOperationException($"La aplicación no pudo inicializar la taxonomía PGC: {result.Error?.Message}");
     }
 }
 
@@ -148,5 +148,42 @@ app.MapGet("/api/accounts/{id}", async (Guid id, IMediator mediator) =>
 .ProducesProblem(StatusCodes.Status404NotFound);
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
+
+// --- Novedad: Endpoint para integrar Excel con A3 ---
+app.MapPost("/api/a3/generate-from-excel", async (GenerateA3Request request, ExcelToA3IntegrationService service, ILogger<Program> programLogger) =>
+{
+    programLogger.LogInformation("API: Solicitud recibida para generar fichero A3 desde Excel. Archivo: '{ExcelPath}'", request.ExcelFilePath);
+    try
+    {
+        string generatedFilePath = await service.GenerateA3FileFromExcelAsync(request.ExcelFilePath, request.A3OutputFilename);
+        return Results.Ok(new { Message = "Fichero A3 generado exitosamente.", FilePath = generatedFilePath });
+    }
+    catch (FileNotFoundException ex)
+    {
+        programLogger.LogError(ex, "API: Archivo Excel no encontrado: '{ExcelPath}'", request.ExcelFilePath);
+        return Results.NotFound(new { Message = $"El archivo Excel especificado no se encontró: {ex.Message}" });
+    }
+    catch (InvalidOperationException ex)
+    {
+        programLogger.LogError(ex, "API: Error de operación al generar el fichero A3: {ErrorMessage}", ex.Message);
+        return Results.BadRequest(new { Message = $"Error en la operación de generación del fichero A3: {ex.Message}" });
+    }
+    catch (Exception ex)
+    {
+        programLogger.LogError(ex, "API: Error inesperado al generar el fichero A3 desde Excel.");
+        return Results.Problem(
+            statusCode: StatusCodes.Status500InternalServerError,
+            title: "Error interno del servidor",
+            detail: "Ocurrió un error inesperado al generar el fichero A3.",
+            instance: request.ExcelFilePath,
+            extensions: new Dictionary<string, object?> { { "details", ex.Message } }
+        );
+    }
+})
+.WithName("GenerateA3FromExcel")
+.Produces<object>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status400BadRequest)
+.ProducesProblem(StatusCodes.Status404NotFound)
+.ProducesProblem(StatusCodes.Status500InternalServerError);
 
 app.Run();

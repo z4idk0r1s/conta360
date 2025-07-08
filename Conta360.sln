@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.PGC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.Reporting", "src\backend\Infrastructure\Conta360.Infrastructure.Reporting\Conta360.Infrastructure.Reporting.csproj", "{FEDCBA98-7654-3210-FEDC-BA9876543210}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.A3Cash", "src\backend\Infrastructure\Conta360.Infrastructure.A3Cash\Conta360.Infrastructure.A3Cash.csproj", "{7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.CrossCutting.IoC", "src\backend\Shared\Conta360.CrossCutting.IoC\Conta360.CrossCutting.IoC.csproj", "{87654321-FEDC-BA98-7654-3210FEDCBA98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Presentation.Api", "src\backend\Presentation\Conta360.Presentation.Api\Conta360.Presentation.Api.csproj", "{210FEDCB-A987-6543-210F-EDCBA9876543}"
@@ -68,6 +70,11 @@ Global
 		{FEDCBA98-7654-3210-FEDC-BA9876543210}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEDCBA98-7654-3210-FEDC-BA9876543210}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEDCBA98-7654-3210-FEDC-BA9876543210}.Release|Any CPU.Build.0 = Release|Any CPU
+
+        {7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}.Release|Any CPU.Build.0 = Release|Any CPU
 
 		{87654321-FEDC-BA98-7654-3210FEDCBA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{87654321-FEDC-BA98-7654-3210FEDCBA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
