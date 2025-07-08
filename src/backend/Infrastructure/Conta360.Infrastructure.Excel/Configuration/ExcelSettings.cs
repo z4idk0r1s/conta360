@@ -4,6 +4,6 @@ namespace Conta360.Infrastructure.Excel.Configuration
     {
         public string RutaExcel { get; set; } = string.Empty;
         public string HojaResumen { get; set; } = "Sheet1";
-        public int FilaInicioResumen { get; set; } = 11;
+        public int FilaInicioResumen { get; set; } = 24;
     }
 }
