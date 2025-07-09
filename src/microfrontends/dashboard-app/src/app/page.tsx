@@ -1,52 +1,23 @@
-// src/microfrontends/dashboard-app/src/app/page.tsx
-'use client'; // Necesario si usas Hooks de React en un componente de Next.js App Router
+// microfrontends/dashboard-app/src/app/page.tsx (CONTENIDO FINAL Y COMPLETO)
+'use client'; // ¡Es crucial mantener esto ya que Tailadmin usa componentes interactivos y Hooks de React!
 
-import { useState, useEffect } from 'react';
-// Si tu dashboard necesita su propia conexión a la API, puedes crearla aquí.
-// Ejemplo: import { fetchDashboardData } from '../lib/api';
+// Importa la página principal del dashboard de Tailadmin.
+// Esta ruta apunta a la ubicación donde copiaste la página principal del dashboard de Tailadmin.
+// Según la estructura que proporcionaste, está en 'src/app/(admin)/page.tsx'.
+import TailAdminDashboardContent from './(admin)/page';
 
-export default function Dashboard() {
-  const [data, setData] = useState<string>('Datos iniciales del Dashboard');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Puedes añadir lógica para cargar datos específicos del dashboard aquí
-  useEffect(() => {
-    // Ejemplo de carga de datos al montar el componente
-    // const loadData = async () => {
-    //   setLoading(true);
-    //   try {
-    //     const result = await fetchDashboardData(); // Si tienes una API específica para el dashboard
-    //     setData(JSON.stringify(result, null, 2));
-    //   } catch (err) {
-    //     setError('Error al cargar datos del dashboard.');
-    //     console.error(err);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // loadData();
-  }, []);
-
+/**
+ * Componente principal del microfrontend de Dashboard.
+ * Este componente actúa como el punto de entrada para el microfrontend
+ * y se encarga de renderizar la interfaz completa del dashboard de Tailadmin.
+ */
+export default function DashboardEntryPage() {
+  // Cuando este microfrontend se cargue a través de Module Federation,
+  // renderizará el componente de la página principal del dashboard de Tailadmin.
+  // El sistema de Next.js App Router, junto con los layouts de Tailadmin
+  // (como 'src/app/(admin)/layout.tsx'), se encargará de envolver este contenido
+  // con el sidebar, el header y otros elementos de la estructura del dashboard.
   return (
-    <div className="p-4 border border-blue-300 rounded-lg bg-blue-50">
-      <h3 className="text-xl font-semibold mb-2 text-blue-800">Contenido del Dashboard</h3>
-      <p className="text-blue-700">¡Este es el microfrontend de Dashboard cargado dinámicamente!</p>
-      <div className="mt-4 p-3 bg-blue-100 rounded-md text-sm">
-        {loading ? (
-          <p>Cargando datos del Dashboard...</p>
-        ) : error ? (
-          <p className="text-red-600">Error: {error}</p>
-        ) : (
-          <pre className="whitespace-pre-wrap">{data}</pre>
-        )}
-      </div>
-      <button
-        onClick={() => setData('¡Datos del Dashboard actualizados! ' + new Date().toLocaleTimeString())}
-        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-      >
-        Actualizar Dashboard Interno
-      </button>
-    </div>
+    <TailAdminDashboardContent />
   );
 }

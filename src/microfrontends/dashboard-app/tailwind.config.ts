@@ -2,9 +2,8 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './public/**/*.svg', // opcional si usas SVG como componentes react
   ],
   theme: {
     extend: {
@@ -14,6 +13,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),       // Para estilos de inputs
+    require('@tailwindcss/typography'),  // Por si usas prose
+    require('@tailwindcss/aspect-ratio'),// Para responsividad de videos/images
+  ],
+  darkMode: 'class',
 };
 export default config;
