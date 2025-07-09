@@ -30,10 +30,26 @@ const nextConfig = {
           // Las URLs se generan dinámicamente a través de mf-remotes.config.js.
           remotes: getRemotes(options),
           // Módulos compartidos para evitar duplicación de dependencias y asegurar singletons.
+          // ¡CRÍTICO!: Asegúrate de que estas versiones coincidan con las de tu dashboard-app.
           shared: {
-            react: { singleton: true, eager: true, requiredVersion: '^18.2.0' },
-            'react-dom': { singleton: true, eager: true, requiredVersion: '^18.2.0' },
-            next: { singleton: true, eager: true, requiredVersion: '^13.5.6' },
+            react: {
+              singleton: true,
+              eager: true,
+              // *** CAMBIO CRÍTICO: COINCIDIR CON LA VERSIÓN DE REACT DE DASHBOARD-APP (React 19) ***
+              requiredVersion: '^19.0.0'
+            },
+            'react-dom': {
+              singleton: true,
+              eager: true,
+              // *** CAMBIO CRÍTICO: COINCIDIR CON LA VERSIÓN DE REACT-DOM DE DASHBOARD-APP (React 19) ***
+              requiredVersion: '^19.0.0'
+            },
+            next: {
+              singleton: true,
+              eager: true,
+              // *** CAMBIO CRÍTICO: COINCIDIR CON LA VERSIÓN DE NEXT DE DASHBOARD-APP (Next 15) ***
+              requiredVersion: '15.2.3' // Usa la versión exacta si no quieres que el host actualice a 15.x.x
+            },
             axios: { singleton: true, eager: true, requiredVersion: '^1.6.8' }
           },
         })
