@@ -11,5 +11,6 @@
     <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" /> 
     <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="System.Text.Encoding.CodePages" />
   </ItemGroup>
 </Project>

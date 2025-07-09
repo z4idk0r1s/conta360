@@ -40,5 +40,6 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageVersion Include="EFCore.BulkExtensions.MIT" Version="8.19.0" />
+    <PackageVersion Include="System.Text.Encoding.CodePages" Version="8.0.0" /> 
   </ItemGroup>
 </Project>

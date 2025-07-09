@@ -8,6 +8,7 @@ using Conta360.Presentation.Api.Models;
 using Conta360.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 // orquest
 using Conta360.Infrastructure.Reporting.Services;
 using System.IO;
@@ -16,6 +17,9 @@ using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 var dbProvider = builder.Configuration.GetValue<string>("Database:Provider") ?? "sqlite";
+
+// AÑADE ESTA LÍNEA AQUÍ PARA REGISTRAR EL PROVEEDOR DE CODIFICACIONES
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 // Logging profesional con Serilog
 builder.Host.UseSerilog((context, services, configuration) => configuration

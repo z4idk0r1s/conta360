@@ -1,8 +1,8 @@
 using System.Text;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options; // ¡Nuevo using para IOptions!
+using Microsoft.Extensions.Options; 
 using Conta360.Infrastructure.A3Cash.Models;
-using Conta360.Infrastructure.A3Cash.Configuration; // ¡Nuevo using para A3CashSettings!
+using Conta360.Infrastructure.A3Cash.Configuration; 
 
 namespace Conta360.Infrastructure.A3Cash.Services
 {

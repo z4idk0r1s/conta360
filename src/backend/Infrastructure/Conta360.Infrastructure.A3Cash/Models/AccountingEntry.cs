@@ -51,17 +51,28 @@ namespace Conta360.Infrastructure.A3Cash.Models
             HasAnalyticalRecord = hasAnalyticalRecord;
         }
 
-        /// <summary>Formatea la cuenta a 12 caracteres, justificada a la izquierda (Pos 16-27).</summary>
-        public string GetFormattedAccount() => Account.PadRight(12);
+        /// <summary>Formatea la cuenta a 12 caracteres, truncando y justificando a la izquierda (Pos 16-27).</summary>
+        public string GetFormattedAccount() => FormatFixedLength(Account, 12);
 
         /// <summary>Formatea la descripción de la cuenta a 30 caracteres, truncando y justificando (Pos 28-57).</summary>
-        public string GetFormattedAccountDescription() => AccountDescription.Length > 30 ? AccountDescription[..30].PadRight(30) : AccountDescription.PadRight(30);
+        public string GetFormattedAccountDescription() => FormatFixedLength(AccountDescription, 30);
 
         /// <summary>Formatea la referencia del documento a 10 caracteres, truncando y justificando (Pos 59-68).</summary>
-        public string GetFormattedDocumentReference() => DocumentReference.Length > 10 ? DocumentReference[..10].PadRight(10) : DocumentReference.PadRight(10);
+        public string GetFormattedDocumentReference() => FormatFixedLength(DocumentReference, 10);
 
         /// <summary>Formatea la descripción del apunte a 30 caracteres, truncando y justificando (Pos 70-99).</summary>
-        public string GetFormattedEntryDescription() => EntryDescription.Length > 30 ? EntryDescription[..30].PadRight(30) : EntryDescription.PadRight(30);
+        public string GetFormattedEntryDescription() => FormatFixedLength(EntryDescription, 30);
+
+        /// <summary>
+        /// Formatea un string a una longitud fija: recorta si excede y rellena con espacios si es más corto.
+        /// </summary>
+        /// <param name="input">Cadena de entrada</param>
+        /// <param name="length">Longitud objetivo</param>
+        /// <returns>Cadena formateada con longitud exacta</returns>
+        private string FormatFixedLength(string input, int length)
+        {
+            return (input ?? string.Empty).PadRight(length).Substring(0, length);
+        }
 
         /// <summary>
         /// Formatea el importe a 14 caracteres: Signo (+) + 10 enteros con ceros

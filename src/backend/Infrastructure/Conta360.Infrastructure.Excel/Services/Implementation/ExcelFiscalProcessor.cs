@@ -20,13 +20,15 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
         private readonly ILogger<ExcelFiscalProcessor> _logger;
 
         // Constantes de columnas excell
-        private const int ColBaseImponible4 = 8;
-        private const int ColCuotaIva4 = 9;
-        private const int ColBaseImponible10 = 11;
-        private const int ColCuotaIva10 = 12;
-        private const int ColBaseImponible21 = 14;
-        private const int ColCuotaIva21 = 15;
-        private const int ColNombreTotal = 1;
+        private const int ColBaseImponible4 = 18;  // Columna R
+        private const int ColCuotaIva4 = 20;      // Columna T
+        private const int ColBaseImponible10 = 24; // Columna X
+        private const int ColCuotaIva10 = 26;     // Columna Z
+        private const int ColBaseImponible21 = 29; // Columna AC
+        private const int ColCuotaIva21 = 32;     // Columna AF
+        
+        // Columna para el texto "Total (Fecha)" en los detalles diarios
+        private const int ColNombreTotalDiario = 5; // Columna E
 
         public ExcelFiscalProcessor(
             IOptions<ExcelSettings> settings,
@@ -44,47 +46,63 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                 {
                     using var workbook = new XLWorkbook(_settings.RutaExcel);
                     var worksheet = workbook.Worksheet(_settings.HojaResumen)
-                                     ?? throw new InvalidOperationException($"No se encontró la hoja: {_settings.HojaResumen}");
+                                             ?? throw new InvalidOperationException($"No se encontró la hoja: {_settings.HojaResumen}");
 
-                    var (empresa, nombreComercial, fechaDesde, fechaHasta) = ExtraerDatosCabecera(worksheet);
+                    // =========================================================
+                    // PRIMERA LÓGICA: Extracción de datos de cabecera (Filas 9-16)
+                    // =========================================================
+                    var (empresa, nombreComercial, fechaDesde, fechaHasta, totalBaseMes, totalImpuestosMes, totalMes) = ExtraerDatosCabecera(worksheet);
 
+                    // =========================================================
+                    // SEGUNDA LÓGICA: Extracción de datos diarios (A partir de la fila ~23)
+                    // =========================================================
                     var detallesDiarios = new List<DetalleDiario>();
-                    int currentRow = _settings.FilaInicioResumen;
+                    
+                    int currentRow = _settings.FilaInicioResumen; 
                     int ultimaFila = worksheet.LastRowUsed()?.RowNumber() ?? 10000;
 
                     while (currentRow <= ultimaFila && !cancellationToken.IsCancellationRequested)
                     {
-                        var celdaTexto = worksheet.Cell(currentRow, ColNombreTotal).GetString().Trim();
+                        var celdaTextoDiario = worksheet.Cell(currentRow, ColNombreTotalDiario).GetString().Trim();
 
-                        // Total general
-                        if (string.Equals(celdaTexto, "Total", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var totales = ExtraerTotalesGenerales(worksheet.Row(currentRow));
-                            return new ResumenFiscalResponse
-                            {
-                                FechaInforme = DateTime.UtcNow,
-                                FechaDesde = fechaDesde,
-                                FechaHasta = fechaHasta,
-                                Usuario = Environment.UserName,
-                                Empresa = empresa,
-                                NombreComercial = nombreComercial,
-                                Totales = totales,
-                                DetallesPorDia = detallesDiarios.OrderBy(d => d.Fecha).ToList()
-                            };
-                        }
-
-                        // Totales diarios
-                        if (EsLineaTotalDiario(celdaTexto))
+                        if (EsLineaTotalDiario(celdaTextoDiario))
                         {
                             var detalle = ExtraerDetalleDiario(worksheet.Row(currentRow));
                             if (detalle != null)
                                 detallesDiarios.Add(detalle);
                         }
-
                         currentRow++;
                     }
 
-                    throw new InvalidOperationException("No se encontró la fila de totales generales en el Excel.");
+                    if (!detallesDiarios.Any())
+                    {
+                         _logger.LogWarning("No se obtuvieron datos diarios del resumen fiscal de Excel en '{Ruta}'.", _settings.RutaExcel);
+                         throw new InvalidOperationException($"No hay datos diarios para procesar desde el resumen fiscal del archivo '{_settings.RutaExcel}'.");
+                    }
+
+                    // =========================================================
+                    // CALCULO DE TOTALES GENERALES A PARTIR DE LOS DETALLES DIARIOS
+                    // =========================================================
+                    // Ahora ExtraerTotalesGenerales() recibirá la lista de detalles diarios
+                    // para calcular los totales.
+                    var totalesGenerales = ExtraerTotalesGenerales(detallesDiarios); 
+
+
+                    // =========================================================
+                    // CONSTRUCCIÓN DE LA RESPUESTA FINAL
+                    // =========================================================
+                    return new ResumenFiscalResponse
+                    {
+                        FechaInforme = DateTime.UtcNow,
+                        FechaDesde = fechaDesde,
+                        FechaHasta = fechaHasta,
+                        Usuario = Environment.UserName,
+                        Empresa = empresa,
+                        NombreComercial = nombreComercial,
+                        Totales = totalesGenerales, // Esto ahora contendrá los totales calculados
+                        DetallesPorDia = detallesDiarios.OrderBy(d => d.Fecha).ToList()
+                    };
+
                 }, cancellationToken);
             }
             catch (Exception ex)
@@ -94,19 +112,23 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
             }
         }
 
-        private static (string empresa, string nombreComercial, DateTime fechaDesde, DateTime fechaHasta) ExtraerDatosCabecera(IXLWorksheet worksheet)
+        private static (string empresa, string nombreComercial, DateTime fechaDesde, DateTime fechaHasta, decimal totalBaseMes, decimal totalImpuestosMes, decimal totalMes) ExtraerDatosCabecera(IXLWorksheet worksheet)
         {
             try
             {
-                var empresa = worksheet.Cell("B4").GetString().Trim();
-                var nombreComercial = worksheet.Cell("B5").GetString().Trim();
-                var fechaDesde = LeerFechaSegura(worksheet.Cell("G4"));
-                var fechaHasta = LeerFechaSegura(worksheet.Cell("G5"));
+                var empresa = worksheet.Cell("C12").GetString().Trim();
+                var nombreComercial = worksheet.Cell("C14").GetString().Trim();
+                var fechaDesde = LeerFechaSegura(worksheet.Cell("V12"));
+                var fechaHasta = LeerFechaSegura(worksheet.Cell("V14"));
+                
+                var totalBaseMes = ParseDecimalSeguro(worksheet.Cell("AE11"));
+                var totalImpuestosMes = ParseDecimalSeguro(worksheet.Cell("AE13"));
+                var totalMes = ParseDecimalSeguro(worksheet.Cell("AE15"));
 
                 if (string.IsNullOrWhiteSpace(empresa) || string.IsNullOrWhiteSpace(nombreComercial))
-                    throw new InvalidOperationException("Los datos de empresa o nombre comercial están vacíos.");
+                    throw new InvalidOperationException("Los datos de la cabecear son erróneos.");
 
-                return (empresa, nombreComercial, fechaDesde, fechaHasta);
+                return (empresa, nombreComercial, fechaDesde, fechaHasta, totalBaseMes, totalImpuestosMes, totalMes);
             }
             catch (Exception ex)
             {
@@ -117,7 +139,7 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
         private static DateTime LeerFechaSegura(IXLCell cell)
         {
             if (cell == null || cell.IsEmpty())
-                throw new InvalidOperationException("La celda de fecha está vacía.");
+                throw new InvalidOperationException($"La celda de fecha '{cell?.Address}' está vacía o no existe.");
 
             try
             {
@@ -136,11 +158,11 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                 if (DateTime.TryParse(valorTexto, out fecha))
                     return fecha;
 
-                throw new FormatException($"Formato de fecha no reconocido: '{valorTexto}'");
+                throw new FormatException($"Formato de fecha no reconocido: '{valorTexto}' en celda {cell.Address}");
             }
             catch (Exception ex)
             {
-                throw new FormatException($"Error interpretando la fecha en la celda: {cell.Address}", ex);
+                throw new FormatException($"Error interpretando la fecha en la celda: {cell.Address}. Valor: '{cell?.GetString()}'.", ex);
             }
         }
 
@@ -157,7 +179,7 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
         {
             try
             {
-                var texto = row.Cell(ColNombreTotal).GetString();
+                var texto = row.Cell(ColNombreTotalDiario).GetString();
                 var match = Regex.Match(texto, @"\(([^)]+)\)");
 
                 if (!match.Success)
@@ -183,22 +205,28 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
                     CuotaIva21 = ParseDecimalSeguro(row.Cell(ColCuotaIva21))
                 };
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error al extraer detalle diario en fila {row.RowNumber()}: {ex.Message}");
                 return null;
             }
         }
 
-        private static TotalesGenerales ExtraerTotalesGenerales(IXLRow row)
+        // Método modificado para CALCULAR los totales generales a partir de la lista de detalles diarios.
+        // Ya no lee de una fila específica del Excel.
+        private static TotalesGenerales ExtraerTotalesGenerales(List<DetalleDiario> detallesDiarios)
         {
+            // Suma todas las propiedades de BaseImponible y CuotaIva de cada detalle diario
             return new TotalesGenerales
             {
-                BaseImponible4 = ParseDecimalSeguro(row.Cell(ColBaseImponible4)),
-                CuotaIva4 = ParseDecimalSeguro(row.Cell(ColCuotaIva4)),
-                BaseImponible10 = ParseDecimalSeguro(row.Cell(ColBaseImponible10)),
-                CuotaIva10 = ParseDecimalSeguro(row.Cell(ColCuotaIva10)),
-                BaseImponible21 = ParseDecimalSeguro(row.Cell(ColBaseImponible21)),
-                CuotaIva21 = ParseDecimalSeguro(row.Cell(ColCuotaIva21))
+                BaseImponible4 = detallesDiarios.Sum(d => d.BaseImponible4),
+                CuotaIva4 = detallesDiarios.Sum(d => d.CuotaIva4),
+                BaseImponible10 = detallesDiarios.Sum(d => d.BaseImponible10),
+                CuotaIva10 = detallesDiarios.Sum(d => d.CuotaIva10),
+                BaseImponible21 = detallesDiarios.Sum(d => d.BaseImponible21),
+                CuotaIva21 = detallesDiarios.Sum(d => d.CuotaIva21)
+                // Las propiedades TotalIvaX, BaseImponibleTotal, CuotaIvaTotal, ImporteTotal
+                // se calculan automáticamente en el record TotalesGenerales si están definidas allí.
             };
         }
 
@@ -214,16 +242,17 @@ namespace Conta360.Infrastructure.Excel.Services.Implementation
 
                 var valor = cell.GetString()
                     .Replace("€", "")
-                    .Replace(".", "")
-                    .Replace(",", ".")
+                    .Replace(".", "") // Elimina el separador de miles
+                    .Replace(",", ".") // Reemplaza la coma decimal por punto
                     .Trim();
 
                 return decimal.TryParse(valor, NumberStyles.Any, CultureInfo.InvariantCulture, out var resultado)
                     ? resultado
                     : 0m;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error al parsear decimal de la celda {cell?.Address} con valor '{cell?.GetString()}': {ex.Message}");
                 return 0m;
             }
         }
