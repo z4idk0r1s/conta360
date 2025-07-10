@@ -5,7 +5,7 @@ const config: Config = {
   content: [
     './node_modules/flowbite/**/*.js',
     './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
     './layouts/**/*.{js,ts,jsx,tsx}',
     './public/**/*.svg',
   ],

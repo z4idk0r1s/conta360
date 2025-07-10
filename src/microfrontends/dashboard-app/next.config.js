@@ -28,18 +28,18 @@ const nextConfig = {
           filename: 'static/chunks/remoteEntry.js',
           exposes: {
             // **¡IMPORTANTE!** Estas rutas deben ser actualizadas
-            './DashboardModule': './components/Dashboard.tsx', 
-            './SignIn': './pages/auth/signin/index.tsx', 
-            './SignUp': './pages/auth/signup/index.tsx', 
-            './Calendar': './pages/calendar/index.tsx', 
-            './Chart': './pages/chart/index.tsx', 
-            './FormsElements': './pages/forms/form-elements/index.tsx', 
-            './FormsLayout': './pages/forms/form-layout/index.tsx', 
-            './Profile': './pages/profile/index.tsx', 
-            './Settings': './pages/settings/index.tsx', 
-            './Tables': './pages/tables/index.tsx', 
-            './Alerts': './pages/ui/alerts/index.tsx', 
-            './Buttons': './pages/ui/buttons/index.tsx', 
+            './DashboardComp': './components/Dashboard/E-commerce.tsx', 
+            /*'./pages/auth/signin/index.tsx': './pages/auth/signin/index.tsx', 
+            './pages/auth/signup/index.tsx': './pages/auth/signup/index.tsx', 
+            './pages/calendar/index.tsx': './pages/calendar/index.tsx', 
+            './pages/chart/index.tsx': './pages/chart/index.tsx', 
+            './pages/forms/form-elements/index.tsx': './pages/forms/form-elements/index.tsx', 
+            './pages/forms/form-layout/index.tsx': './pages/forms/form-layout/index.tsx', 
+            './pages/profile/index.tsx': './pages/profile/index.tsx', 
+            './pages/settings/index.tsx': './pages/settings/index.tsx', 
+            './pages/tables/index.tsx': './pages/tables/index.tsx', 
+            './pages/ui/alerts/index.tsx': './pages/ui/alerts/index.tsx', 
+            './pages/ui/buttons/index.tsx': './pages/ui/buttons/index.tsx', */
             // También puedes exponer componentes reutilizables si es necesario:
             // './layouts/DefaultLayout': './components/layouts/DefaultLayout.tsx', // Si existiera un layout principal compartible
           },

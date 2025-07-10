@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import { fetchBackendData } from '../src/lib/api';
 import { useState } from 'react';
 
-const DashboardApp = dynamic(() => import('dashboardApp/DashboardModule'), { ssr: false });
+const DashboardApp = dynamic(() => import('dashboardApp/DashboardComp'), { ssr: false });
 
 export default function Home() {
   const [backendData, setBackendData] = useState<string | null>(null);

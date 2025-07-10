@@ -1,3 +1,4 @@
+// index.tsx de pages
 import ECommerce from "@/components/Dashboard/E-commerce";
 import { Metadata } from "next";
 
