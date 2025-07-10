@@ -10,7 +10,7 @@ import '../pages/globals.css';
 // Inicializa la fuente Inter
 const inter = Inter({ subsets: ['latin'] });
 
-// Este componente _app.tsx es el "RootLayout" minimalista de tu aplicación host.
+// Este componente _app.tsx es el "RootLayout" de la aplicación host.
 // Contiene la estructura HTML, Body y Metadatos globales.
 // No debe contener Header, Footer, o lógica específica de página.
 function MyApp({ Component, pageProps }: AppProps) {
