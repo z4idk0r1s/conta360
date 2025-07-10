@@ -28,8 +28,7 @@ const nextConfig = {
           filename: 'static/chunks/remoteEntry.js',
           exposes: {
             // **¡IMPORTANTE!** Estas rutas deben ser actualizadas
-            // Tendremos que revisar y ajustar esto en el siguiente paso.
-            './DashboardModule': './pages/index.tsx', 
+            './DashboardModule': './components/Dashboard.tsx', 
             './SignIn': './pages/auth/signin/index.tsx', 
             './SignUp': './pages/auth/signup/index.tsx', 
             './Calendar': './pages/calendar/index.tsx', 

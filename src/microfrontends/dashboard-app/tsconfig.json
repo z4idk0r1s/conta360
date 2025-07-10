@@ -28,8 +28,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "out/types/**/*.ts",
-    "src/svg.d.ts"
+    "out/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
