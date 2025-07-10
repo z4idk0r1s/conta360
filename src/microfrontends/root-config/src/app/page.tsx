@@ -3,9 +3,9 @@ import { fetchBackendData } from '../lib/api';
 import { useState } from 'react';
 
 // Carga dinámica de micro-frontends (Module Federation)
-const DashboardApp = dynamic(() => import('dashboardApp/Dashboard'), { ssr: false });
-const AnalisisApp = dynamic(() => import('analisisApp/Analisis'), { ssr: false });
-const PGCApp = dynamic(() => import('pgcApp/PGC'), { ssr: false });
+const DashboardApp = dynamic(() => import('dashboardApp/DashboardModule'), { ssr: false });
+//const AnalisisApp = dynamic(() => import('analisisApp/Analisis'), { ssr: false });
+//const PGCApp = dynamic(() => import('pgcApp/PGC'), { ssr: false });
 
 export default function Home() {
   const [backendData, setBackendData] = useState<string | null>(null);
@@ -67,14 +67,6 @@ export default function Home() {
             <div className="p-6 bg-white rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4 text-gray-700">Dashboard</h2>
               <DashboardApp />
-            </div>
-            <div className="p-6 bg-white rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-700">Análisis</h2>
-              <AnalisisApp />
-            </div>
-            <div className="p-6 bg-white rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-700">Plan General Contable</h2>
-              <PGCApp />
             </div>
           </div>
 

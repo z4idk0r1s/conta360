@@ -17,11 +17,12 @@
 const REMOTE_PORTS = {
   // Ejemplo: Nombre lógico del MF: Puerto de desarrollo
   dashboardApp: 3001,
-  analisisApp: 3002,
-  pgcApp: 3003,
-  sharedComponents: 3004,
+
   // Para añadir un nuevo MF, simplemente añade una nueva entrada aquí:
   // nuevoMfApp: 3005,
+  // analisisApp: 3002,
+  // pgcApp: 3003,
+  // sharedComponents: 3004,
 };
 
 /**
