@@ -4,23 +4,21 @@ const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    appDir: true,
+    appDir: false,
   },
 
   webpack(config, options) {
-    // MODIFICACIÓN CLAVE 1: Configuración robusta para @svgr/webpack
-    // Esto asegura que los SVG se manejen correctamente como componentes React
-    // y se alineen con tu `src/svg.d.ts` para evitar errores de tipado.
+    // Configuración robusta para @svgr/webpack (mantenemos la que ya tenías)
     config.module.rules.push({
-      test: /\.svg$/i, // Añadido 'i' para case-insensitive
-      issuer: { and: [/\.(ts|tsx|js|jsx|md|mdx)$/] }, // Restringe la aplicación del cargador a archivos JS/TSX
+      test: /\.svg$/i,
+      issuer: { and: [/\.(ts|tsx|js|jsx|md|mdx)$/] },
       use: [
         {
           loader: '@svgr/webpack',
           options: {
-            svgo: false,      // Importante para no eliminar atributos que podrían ser necesarios
-            titleProp: true,  // Permite pasar la prop 'title' para accesibilidad
-            ref: true,        // Permite usar 'ref' en el componente SVG
+            svgo: false,
+            titleProp: true,
+            ref: true,
           },
         },
       ],
@@ -32,12 +30,22 @@ const nextConfig = {
           name: 'dashboardApp',
           filename: 'static/chunks/remoteEntry.js',
           exposes: {
-            './DashboardModule': './src/app/(admin)/page.tsx', // dashboard principal
-            './AdminLayout': './src/app/(admin)/layout.tsx',
-            './FullWidthPagesLayout': './src/app/(full-width-pages)/layout.tsx',
-            './SignIn': './src/app/(full-width-pages)/(auth)/signin/page.tsx',
-            './SignUp': './src/app/(full-width-pages)/(auth)/signup/page.tsx',
-            // Agrega cualquier otro módulo o página que tu 'root-config' necesite cargar directamente.
+            // **¡IMPORTANTE!** Estas rutas deben ser actualizadas
+            // Tendremos que revisar y ajustar esto en el siguiente paso.
+            './DashboardModule': './pages/index.tsx', 
+            './SignIn': './pages/auth/signin/index.tsx', 
+            './SignUp': './pages/auth/signup/index.tsx', 
+            './Calendar': './pages/calendar/index.tsx', 
+            './Chart': './pages/chart/index.tsx', 
+            './FormsElements': './pages/forms/form-elements/index.tsx', 
+            './FormsLayout': './pages/forms/form-layout/index.tsx', 
+            './Profile': './pages/profile/index.tsx', 
+            './Settings': './pages/settings/index.tsx', 
+            './Tables': './pages/tables/index.tsx', 
+            './Alerts': './pages/ui/alerts/index.tsx', 
+            './Buttons': './pages/ui/buttons/index.tsx', 
+            // También puedes exponer componentes reutilizables si es necesario:
+            // './layouts/DefaultLayout': './components/layouts/DefaultLayout.tsx', // Si existiera un layout principal compartible
           },
           shared: {
             react: { singleton: true, eager: true, requiredVersion: '^19.0.0' },

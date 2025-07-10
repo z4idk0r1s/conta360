@@ -71,7 +71,7 @@ echo "📦 Instalando dependencias npm..."
 for dir in "${MICROFRONTEND_DIRS[@]}"; do
   if [ -f "$dir/package.json" ]; then
     echo "📁 $dir"
-    (cd "$dir" && [ -f package-lock.json ] && npm ci || npm install)
+    (cd "$dir" && [ -f package.json ] && npm ci || npm install)
   else
     echo "⚠️ No encontrado: $dir/package.json. Omitiendo."
   fi
