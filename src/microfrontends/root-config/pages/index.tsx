@@ -2,10 +2,7 @@ import dynamic from 'next/dynamic';
 import { fetchBackendData } from '../lib/api';
 import { useState } from 'react';
 
-// Carga dinámica de micro-frontends (Module Federation)
 const DashboardApp = dynamic(() => import('dashboardApp/DashboardModule'), { ssr: false });
-//const AnalisisApp = dynamic(() => import('analisisApp/Analisis'), { ssr: false });
-//const PGCApp = dynamic(() => import('pgcApp/PGC'), { ssr: false });
 
 export default function Home() {
   const [backendData, setBackendData] = useState<string | null>(null);
@@ -41,7 +38,7 @@ export default function Home() {
       </header>
       <main className="container mx-auto py-8">
         <div className="p-4 bg-gray-50">
-          <h1 className="text-3xl font-bold mb-6 text-gray-800">Conta360 - Dashboard Principal</h1>
+          <h1 className="text-3xl font-bold mb-6 text-gray-800">Conta360 - Dashboard Principal - ROOT-CONFIG</h1>
 
           <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4 text-gray-700">Conexión con Backend C#</h2>

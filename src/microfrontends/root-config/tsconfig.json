@@ -25,7 +25,8 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "dashboardApp/*": ["./src/microfrontends/dashboard-app/*"]
     }
   },
   "include": [
