@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { fetchBackendData } from '../lib/api';
+import { fetchBackendData } from '../src/lib/api';
 import { useState } from 'react';
 
 const DashboardApp = dynamic(() => import('dashboardApp/DashboardModule'), { ssr: false });
