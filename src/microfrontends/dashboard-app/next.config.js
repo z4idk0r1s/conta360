@@ -3,9 +3,6 @@ const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    appDir: false,
-  },
 
   webpack(config, options) {
     // Configuración robusta para @svgr/webpack (mantenemos la que ya tenías)
