@@ -1690,8 +1690,7 @@ C:.
 
 
 
-microfronteds:::::
-
+microfronteds
 ├───dashboard-app
 │   │   .dockerignore
 │   │   .gitignore
