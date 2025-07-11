@@ -44,10 +44,10 @@ const nextConfig = {
             // './layouts/DefaultLayout': './components/layouts/DefaultLayout.tsx', // Si existiera un layout principal compartible
           },
           shared: {
-            react: { singleton: true, eager: true, requiredVersion: '^19.0.0' },
-            'react-dom': { singleton: true, eager: true, requiredVersion: '^19.0.0' },
-            next: { singleton: true, eager: true, requiredVersion: '^15.2.3' },
-            axios: { singleton: true, eager: true, requiredVersion: '^1.6.8' },
+            react: { singleton: true, eager: true, requiredVersion: false, import: false, },
+            'react-dom': { singleton: true, eager: true, requiredVersion: false, import: false, },
+            next: { singleton: true, eager: true, requiredVersion: false },
+            axios: { singleton: true, eager: true, requiredVersion: false },
           },
         })
       );

@@ -36,21 +36,21 @@ const nextConfig = {
               singleton: true,
               eager: true,
               // *** CAMBIO CRÍTICO: COINCIDIR CON LA VERSIÓN DE REACT DE DASHBOARD-APP (React 19) ***
-              requiredVersion: '^19.0.0'
+              requiredVersion: false
             },
             'react-dom': {
               singleton: true,
               eager: true,
               // *** CAMBIO CRÍTICO: COINCIDIR CON LA VERSIÓN DE REACT-DOM DE DASHBOARD-APP (React 19) ***
-              requiredVersion: '^19.0.0'
+              requiredVersion: false
             },
             next: {
               singleton: true,
               eager: true,
               // *** CAMBIO CRÍTICO: COINCIDIR CON LA VERSIÓN DE NEXT DE DASHBOARD-APP (Next 15) ***
-              requiredVersion: '15.2.3' // Usa la versión exacta si no quieres que el host actualice a 15.x.x
+              requiredVersion: false // Usa la versión exacta si no quieres que el host actualice a 15.x.x
             },
-            axios: { singleton: true, eager: true, requiredVersion: '^1.6.8' }
+            axios: { singleton: true, eager: true, requiredVersion: false }
           },
         })
       );
