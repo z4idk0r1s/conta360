@@ -155,8 +155,9 @@ wait_for_service() {
 }
 
 wait_for_service "Backend API" "http://localhost:5000/health" || { echo "❌ Falló el inicio del Backend API."; exit 1; }
-wait_for_service "Frontend Root Config" "http://localhost:3000" || { echo "❌ Falló el inicio del Frontend Root Config."; exit 1; }
 wait_for_service "Frontend Dashboard App" "http://localhost:3001" || { echo "❌ Falló el inicio del Frontend Dashboard App."; exit 1; }
+wait_for_service "Frontend Root Config" "http://localhost:3000" || { echo "❌ Falló el inicio del Frontend Root Config."; exit 1; }
+
 
 echo ""
 echo "✅ Todo listo. Puedes trabajar con Conta360."
