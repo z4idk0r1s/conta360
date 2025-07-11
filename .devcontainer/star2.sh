@@ -160,9 +160,8 @@ wait_for_service "Frontend Root Config" "http://localhost:3000" || { echo "❌ F
 
 
 echo ""
-echo "✅ Todo listo. Puedes trabajar con Conta360."
-echo "👉 Abre VSCode o tus editores preferidos. Inicia microfrontends restantes si es necesario."
-echo "Para ver logs:"
-echo " tail -f /tmp/backend_log.log"
-echo " tail -f /tmp/frontend_root_config_log.log"
-echo " tail -f /tmp/frontend_dashboard_app_log.log"
+echo "✅ Todos los PROCESOS FINALIZADOS - OK - Conta360."
+echo "👉 Para ver logs:"
+echo " tail o cat -f /tmp/backend_log.log"
+echo " tail o cat -f /tmp/frontend_root_config_log.log"
+echo " tail o cat -f /tmp/frontend_dashboard_app_log.log"
