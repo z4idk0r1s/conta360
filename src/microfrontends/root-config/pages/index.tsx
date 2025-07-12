@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import { fetchBackendData } from '../src/lib/api';
 import { useState } from 'react';
 
-const DashboardApp = dynamic(() => import('dashboardApp/DashboardComp'), { ssr: false });
+const DashboardComp = dynamic(() => import('dashboardApp/DashboardComp'), { ssr: false });
 
 export default function Home() {
   const [backendData, setBackendData] = useState<string | null>(null);
@@ -63,7 +63,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="p-6 bg-white rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4 text-gray-700">Dashboard</h2>
-              <DashboardApp />
+              <DashboardComp />
             </div>
           </div>
 

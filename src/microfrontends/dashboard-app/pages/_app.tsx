@@ -1,5 +1,3 @@
-import "./globals.css";
-import "./data-tables-css.css";
 import { useState, useEffect } from "react";
 import Loader from "@/components/common/Loader";
 
