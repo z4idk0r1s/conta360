@@ -1,4 +1,7 @@
 // root-config/pages/_app.tsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import type { AppProps } from 'next/app';
 import Head from 'next/head'; // Para gestionar <head>
 import { Inter } from 'next/font/google'; // Para la fuente Inter

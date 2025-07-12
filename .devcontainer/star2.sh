@@ -122,18 +122,17 @@ nohup dotnet run --project "$API_PROJECT" \
   > /tmp/backend_log.log 2>&1 &
 echo "✅ Backend API iniciado. Logs en /tmp/backend_log.log"
 
-echo "🚀 Iniciando Microfrontend Root Config..."
-cd src/microfrontends/root-config
-nohup npm run dev > /tmp/frontend_root_config_log.log 2>&1 &
-cd ../../..
-echo "✅ Microfrontend Root Config iniciado. Logs en /tmp/frontend_root_config_log.log"
-
-# Iniciar Microfrontend Dashboard App
 echo "🚀 Iniciando Microfrontend Dashboard App..."
 cd src/microfrontends/dashboard-app
 nohup npm run dev > /tmp/frontend_dashboard_app_log.log 2>&1 &
 cd ../../..
 echo "✅ Microfrontend Dashboard App iniciado. Logs en /tmp/frontend_dashboard_app_log.log"
+
+echo "🚀 Iniciando Microfrontend Root Config..."
+cd src/microfrontends/root-config
+nohup npm run dev > /tmp/frontend_root_config_log.log 2>&1 &
+cd ../../..
+echo "✅ Microfrontend Root Config iniciado. Logs en /tmp/frontend_root_config_log.log"
 
 
 # 9. Esperar disponibilidad

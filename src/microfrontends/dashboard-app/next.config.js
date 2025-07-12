@@ -52,40 +52,46 @@ const nextConfig = {
               singleton: true,
               eager: true,
               requiredVersion: '18.2.0', // **Versión exacta y fija** de tu package.json
-              import: true, // ¡CRÍTICO! Permite que el host provea React
+              import: false,
             },
             'react-dom': {
               singleton: true,
               eager: true,
               requiredVersion: '18.2.0', // **Versión exacta y fija**
-              import: true, // ¡CRÍTICO! Permite que el host provea React-DOM
+              import: false,
             },
             // Dependencia Next.js principal
             next: {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3', // **Versión exacta y fija**
+              import: false,
+              
             },
             // Submódulos críticos de Next.js (deben coincidir con los del host)
             'next/router': {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3',
+              import: false,
             },
             'next/link': {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3',
+              import: false,
             },
             'next/head': {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3',
+              import: false,
             },
             'next/image': {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3',
+              import: false,
             },
             // Otras dependencias compartidas
             axios: {
@@ -96,6 +102,7 @@ const nextConfig = {
             'tailwind-merge': {
               singleton: true,
               requiredVersion: '2.6.0', // **Versión exacta y fija**
+              import: false,
             },
             // Agrega aquí otras librerías grandes que uses y quieras compartir
             // para evitar duplicados en el bundle del microfrontend.
