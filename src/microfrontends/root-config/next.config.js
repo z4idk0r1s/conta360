@@ -9,10 +9,11 @@ const nextConfig = {
   distDir: 'out', // Directorio de salida para la build estática
 
   webpack(config, options) {
+    config.output.publicPath = 'auto';
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({
-          name: 'hostApp',
+          name: 'root-config',
           filename: 'static/chunks/remoteEntry.js', // Ruta del remoteEntry del host
           remotes: getRemotes(options), // Configuración de remotos del host
           shared: {

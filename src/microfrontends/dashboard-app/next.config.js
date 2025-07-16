@@ -5,7 +5,8 @@ const nextConfig = {
   reactStrictMode: true,
 
   webpack(config, options) {
-    // Configuración para @svgr/webpack (se mantiene como la tenías, asumiendo su correcto funcionamiento)
+    config.output.publicPath = 'auto';
+    // Configuración para @svgr/webpack 
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: { and: [/\.(ts|tsx|js|jsx|md|mdx)$/] },
@@ -25,10 +26,10 @@ const nextConfig = {
       config.plugins.push(
         new NextFederationPlugin({
           name: 'dashboardApp',
-          filename: 'static/chunks/remoteEntry.js', // Ruta del remoteEntry del microfrontend
+          filename: 'static/chunks/remoteEntry.js',
           exposes: {
             // Componente principal del dashboard (ejemplo de exposición)
-            './DashboardComp': './components/Dashboard/E-commerce.tsx',
+            './Dashboard': './components/Dashboard/E-commerce.tsx',
             // ¡ATENCIÓN!: Habilita estas exposiciones a medida que las necesites y las consumas dinámicamente.
             // Es buena práctica asignarles nombres más específicos para evitar colisiones globales
             // y para que la importación en el host sea más clara.
@@ -52,46 +53,41 @@ const nextConfig = {
               singleton: true,
               eager: true,
               requiredVersion: '18.2.0', // **Versión exacta y fija** de tu package.json
-              import: false,
+              import: 'react',
             },
             'react-dom': {
               singleton: true,
               eager: true,
               requiredVersion: '18.2.0', // **Versión exacta y fija**
-              import: false,
+              import: 'react-dom',
             },
             // Dependencia Next.js principal
             next: {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3', // **Versión exacta y fija**
-              import: false,
-              
+              import: 'next',              
             },
             // Submódulos críticos de Next.js (deben coincidir con los del host)
             'next/router': {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3',
-              import: false,
             },
             'next/link': {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3',
-              import: false,
             },
             'next/head': {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3',
-              import: false,
             },
             'next/image': {
               singleton: true,
               eager: true,
               requiredVersion: '15.2.3',
-              import: false,
             },
             // Otras dependencias compartidas
             axios: {
@@ -102,7 +98,7 @@ const nextConfig = {
             'tailwind-merge': {
               singleton: true,
               requiredVersion: '2.6.0', // **Versión exacta y fija**
-              import: false,
+              import: 'tailwind-merge'
             },
             // Agrega aquí otras librerías grandes que uses y quieras compartir
             // para evitar duplicados en el bundle del microfrontend.

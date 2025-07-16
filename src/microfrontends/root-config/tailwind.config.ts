@@ -7,7 +7,7 @@ const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx,css}', // Rutas para el root-config
     './node_modules/flowbite/**/*.js', // Flowbite para root-config
-    '../dashboard-app/pages/**/*.{js,ts,jsx,tsx,mdx,css}', // Rutas para el dashboard-app
+    '../dashboard-app/pages/**/*.{js,ts,jsx,tsx,mdx}', // Rutas para el dashboard-app
     '../dashboard-app/components/**/*.{js,ts,jsx,tsx,mdx}', // Rutas para el dashboard-app
     '../dashboard-app/node_modules/flowbite/**/*.js', // Flowbite para dashboard-app
   ],

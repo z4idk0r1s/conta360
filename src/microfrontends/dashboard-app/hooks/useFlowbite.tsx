@@ -8,4 +8,3 @@ const useFlowbite = () => {
 };
 
 export default useFlowbite;
-q

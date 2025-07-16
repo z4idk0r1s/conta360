@@ -43,7 +43,6 @@ else
   exit 1
 fi
 echo "✅ Compilación de proyectos .NET completada <<<<<<<<<<<<<<<<<"
-# --- FIN DE LA SECCIÓN MODIFICADA ---
 
 
 # 4. Aplicar migraciones de base de datos
@@ -77,7 +76,7 @@ for dir in "${MICROFRONTEND_DIRS[@]}"; do
   fi
 done
 
-# --- SECCIÓN MODIFICADA PARA EJECUTAR PRUEBAS EN LA SOLUCIÓN ---
+# --- PRUEBAS  ---
 # 6. Ejecutar pruebas
 echo "🧪 Ejecutando pruebas..."
 
@@ -99,7 +98,6 @@ for dir in "${MICROFRONTEND_DIRS[@]}"; do
     fi
   fi
 done
-# --- FIN DE LA SECCIÓN MODIFICADA ---
 
 # 7. Detener servicios previos
 pkill -f "dotnet run --project .*Conta360.Presentation.Api.csproj" 2>/dev/null \
@@ -156,6 +154,7 @@ wait_for_service() {
 wait_for_service "Backend API" "http://localhost:5000/health" || { echo "❌ Falló el inicio del Backend API."; exit 1; }
 wait_for_service "Frontend Dashboard App" "http://localhost:3001" || { echo "❌ Falló el inicio del Frontend Dashboard App."; exit 1; }
 wait_for_service "Frontend Root Config" "http://localhost:3000" || { echo "❌ Falló el inicio del Frontend Root Config."; exit 1; }
+
 
 echo ""
 echo "✅ Todos los PROCESOS FINALIZADOS - OK - Conta360."

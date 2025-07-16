@@ -1690,18 +1690,16 @@ C:.
 
 
 
-microfronteds
+
+conta360\src\microfrontends
 ├───dashboard-app
 │   │   .dockerignore
 │   │   .gitignore
 │   │   Dockerfile
 │   │   next-env.d.ts
 │   │   next.config.js
-│   │   package-lock.json
 │   │   package.json
-│   │   postcss.config.js
 │   │   tailadmin-nextjs.jpg
-│   │   tailwind.config.ts
 │   │   tsconfig.json
 │   │
 │   ├───components
@@ -1776,11 +1774,8 @@ microfronteds
 │   │       us-aea-en.js
 │   │
 │   ├───pages
-│   │   │   data-tables-css.css
 │   │   │   favicon.ico
-│   │   │   globals.css
 │   │   │   index.tsx
-│   │   │   satoshi.css
 │   │   │   _app.tsx
 │   │   │   _document.tsx
 │   │   │
@@ -1796,56 +1791,6 @@ microfronteds
 │   │   │
 │   │   ├───chart
 │   │   │       index.tsx
-│   │   │
-│   │   ├───fonts
-│   │   │       Satoshi-Black.eot
-│   │   │       Satoshi-Black.ttf
-│   │   │       Satoshi-Black.woff
-│   │   │       Satoshi-Black.woff2
-│   │   │       Satoshi-BlackItalic.eot
-│   │   │       Satoshi-BlackItalic.ttf
-│   │   │       Satoshi-BlackItalic.woff
-│   │   │       Satoshi-BlackItalic.woff2
-│   │   │       Satoshi-Bold.eot
-│   │   │       Satoshi-Bold.ttf
-│   │   │       Satoshi-Bold.woff
-│   │   │       Satoshi-Bold.woff2
-│   │   │       Satoshi-BoldItalic.eot
-│   │   │       Satoshi-BoldItalic.ttf
-│   │   │       Satoshi-BoldItalic.woff
-│   │   │       Satoshi-BoldItalic.woff2
-│   │   │       Satoshi-Italic.eot
-│   │   │       Satoshi-Italic.ttf
-│   │   │       Satoshi-Italic.woff
-│   │   │       Satoshi-Italic.woff2
-│   │   │       Satoshi-Light.eot
-│   │   │       Satoshi-Light.ttf
-│   │   │       Satoshi-Light.woff
-│   │   │       Satoshi-Light.woff2
-│   │   │       Satoshi-LightItalic.eot
-│   │   │       Satoshi-LightItalic.ttf
-│   │   │       Satoshi-LightItalic.woff
-│   │   │       Satoshi-LightItalic.woff2
-│   │   │       Satoshi-Medium.eot
-│   │   │       Satoshi-Medium.ttf
-│   │   │       Satoshi-Medium.woff
-│   │   │       Satoshi-Medium.woff2
-│   │   │       Satoshi-MediumItalic.eot
-│   │   │       Satoshi-MediumItalic.ttf
-│   │   │       Satoshi-MediumItalic.woff
-│   │   │       Satoshi-MediumItalic.woff2
-│   │   │       Satoshi-Regular.eot
-│   │   │       Satoshi-Regular.ttf
-│   │   │       Satoshi-Regular.woff
-│   │   │       Satoshi-Regular.woff2
-│   │   │       Satoshi-Variable.eot
-│   │   │       Satoshi-Variable.ttf
-│   │   │       Satoshi-Variable.woff
-│   │   │       Satoshi-Variable.woff2
-│   │   │       Satoshi-VariableItalic.eot
-│   │   │       Satoshi-VariableItalic.ttf
-│   │   │       Satoshi-VariableItalic.woff
-│   │   │       Satoshi-VariableItalic.woff2
 │   │   │
 │   │   ├───forms
 │   │   │   ├───form-elements
@@ -1958,17 +1903,68 @@ microfronteds
     │   mf-remotes.config.js
     │   next-env.d.ts
     │   next.config.js
-    │   package-lock.json
     │   package.json
     │   postcss.config.js
+    │   remote-declarations.d.ts
     │   tailwind.config.ts
     │   tsconfig.json
     │
     ├───pages
-    │       globals.css
-    │       index.tsx
-    │       _app.tsx
+    │   │   globals.css
+    │   │   index.tsx
+    │   │   _app.tsx
+    │   │
+    │   └───fonts
+    │           Satoshi-Black.eot
+    │           Satoshi-Black.ttf
+    │           Satoshi-Black.woff
+    │           Satoshi-Black.woff2
+    │           Satoshi-BlackItalic.eot
+    │           Satoshi-BlackItalic.ttf
+    │           Satoshi-BlackItalic.woff
+    │           Satoshi-BlackItalic.woff2
+    │           Satoshi-Bold.eot
+    │           Satoshi-Bold.ttf
+    │           Satoshi-Bold.woff
+    │           Satoshi-Bold.woff2
+    │           Satoshi-BoldItalic.eot
+    │           Satoshi-BoldItalic.ttf
+    │           Satoshi-BoldItalic.woff
+    │           Satoshi-BoldItalic.woff2
+    │           Satoshi-Italic.eot
+    │           Satoshi-Italic.ttf
+    │           Satoshi-Italic.woff
+    │           Satoshi-Italic.woff2
+    │           Satoshi-Light.eot
+    │           Satoshi-Light.ttf
+    │           Satoshi-Light.woff
+    │           Satoshi-Light.woff2
+    │           Satoshi-LightItalic.eot
+    │           Satoshi-LightItalic.ttf
+    │           Satoshi-LightItalic.woff
+    │           Satoshi-LightItalic.woff2
+    │           Satoshi-Medium.eot
+    │           Satoshi-Medium.ttf
+    │           Satoshi-Medium.woff
+    │           Satoshi-Medium.woff2
+    │           Satoshi-MediumItalic.eot
+    │           Satoshi-MediumItalic.ttf
+    │           Satoshi-MediumItalic.woff
+    │           Satoshi-MediumItalic.woff2
+    │           Satoshi-Regular.eot
+    │           Satoshi-Regular.ttf
+    │           Satoshi-Regular.woff
+    │           Satoshi-Regular.woff2
+    │           Satoshi-Variable.eot
+    │           Satoshi-Variable.ttf
+    │           Satoshi-Variable.woff
+    │           Satoshi-Variable.woff2
+    │           Satoshi-VariableItalic.eot
+    │           Satoshi-VariableItalic.ttf
+    │           Satoshi-VariableItalic.woff
+    │           Satoshi-VariableItalic.woff2
     │
     └───src
         └───lib
                 api.ts
+
