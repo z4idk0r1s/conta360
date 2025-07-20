@@ -1,4 +1,4 @@
-import rootConfig from '../../root-config/tailwind.config';
+import rootConfig from '../root-config/tailwind.config';
 
 export default {
   ...rootConfig,
