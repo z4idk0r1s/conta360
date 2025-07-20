@@ -1,40 +1,83 @@
 // src/microfrontends/root-config/next.config.js
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
-// Importa la configuración centralizada de remotes.
-const { getRemotes } = require('./mf-remotes.config');
+const { getRemotes } = require('./mf-remotes.config'); // Asegúrate de que esta ruta sea correcta
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Habilita el modo estricto de React para mejorar la detección de problemas.
   reactStrictMode: true,
-  // Configura Next.js para generar una build estática exportable (útil para Tauri o servidores estáticos).
-  output: 'export',
-  // Define el directorio de salida para la build estática.
-  distDir: 'out',
+  output: 'export', // Necesario para builds estáticas (Tauri)
+  distDir: 'out', // Directorio de salida para la build estática
 
-  /**
-   * Configuración de Webpack para inyectar el plugin de Module Federation.
-   * @param {import('webpack').Configuration} config - La configuración actual de Webpack.
-   * @param {object} options - Opciones proporcionadas por Next.js para la construcción.
-   * @returns {import('webpack').Configuration} La configuración de Webpack modificada.
-   */
   webpack(config, options) {
-    // Aplica el plugin solo en el cliente (no en el servidor de Next.js si existiera).
+    config.output.publicPath = 'auto';
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({
-          name: 'hostApp', // Nombre único del host (root-config) en la federación.
-          // Ruta donde el host expone su propio 'remoteEntry.js' (si otros MFs lo consumieran).
-          filename: 'static/chunks/remoteEntry.js',
-          // Define los microfrontends remotos que este host consumirá.
-          // Las URLs se generan dinámicamente a través de mf-remotes.config.js.
-          remotes: getRemotes(options),
-          // Módulos compartidos para evitar duplicación de dependencias y asegurar singletons.
+          name: 'root-config',
+          filename: 'static/chunks/remoteEntry.js', // Ruta del remoteEntry del host
+          remotes: getRemotes(options), // Configuración de remotos del host
           shared: {
-            react: { singleton: true, eager: true, requiredVersion: '^18.2.0' },
-            'react-dom': { singleton: true, eager: true, requiredVersion: '^18.2.0' },
-            next: { singleton: true, eager: true, requiredVersion: '^13.5.6' },
-            axios: { singleton: true, eager: true, requiredVersion: '^1.6.8' }
+            // Dependencias React
+            react: {
+              singleton: true, // Asegura una única instancia
+              eager: true,     // Carga la dependencia inmediatamente
+              requiredVersion: '18.2.0', // **Versión exacta y fija** de tu package.json              
+            },
+            'react-dom': {
+              singleton: true,
+              eager: true,
+              requiredVersion: '18.2.0', // **Versión exacta y fija**              
+            },
+            // Dependencia Next.js principal
+            next: {
+              singleton: true,
+              eager: true,
+              requiredVersion: '15.2.3', // **Versión exacta y fija**              
+            },
+            // Submódulos críticos de Next.js
+            'next/router': {
+              singleton: true,
+              eager: true, //  ya que el router es fundamental
+              requiredVersion: '15.2.3',              
+            },
+            'next/link': {
+              singleton: true,
+              eager: true, //  para funcionalidad de navegación
+              requiredVersion: '15.2.3',              
+            },
+            'next/head': {
+              singleton: true,
+              eager: true, //  para manejo de metadatos
+              requiredVersion: '15.2.3',              
+            },
+            'next/image': {
+              singleton: true,
+              eager: true,
+              requiredVersion: '15.2.3',              
+            },
+            // Otras dependencias compartidas
+            axios: {
+              singleton: true,
+              eager: true, //  si se usa al inicio de la aplicación
+              requiredVersion: '1.6.8', // **Versión exacta y fija**
+            },
+            // Si `tailwind-merge` se utiliza directamente en el root-config y también se quiere compartir:
+            'tailwind-merge': {
+              singleton: true,
+              requiredVersion: '2.6.0',              
+            },
+            // Agrega aquí cualquier otra dependencia importante que deba ser compartida y singleton
+            // Por ejemplo, si @fullcalendar/react o @tailwindcss/forms se usaran en ambos:
+            // '@fullcalendar/react': {
+            //   singleton: true,
+            //   requiredVersion: '6.1.15',
+            //    // Si el host la provee
+            // },
+            // '@tailwindcss/forms': {
+            //   singleton: true,
+            //   requiredVersion: '0.5.9',
+            //   
+            // },
           },
         })
       );

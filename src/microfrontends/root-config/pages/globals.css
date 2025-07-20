@@ -1,0 +1,629 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Contenido de satoshi.css integrado directamente para una centralización completa.
+ * Asegúrate de que los archivos de fuentes (woff2, woff, ttf) estén accesibles
+ * desde la ruta relativa './fonts/' 
+ */
+
+/**
+ * @license
+ *
+ * Font Family: Satoshi
+ * Designed by: Deni Anggara
+ * URL: https://www.fontshare.com/fonts/satoshi
+ * © 2023 Indian Type Foundry
+ *
+ * Font Styles:
+ * Satoshi Light
+ * Satoshi Light Italic
+ * Satoshi Regular
+ * Satoshi Italic
+ * Satoshi Medium
+ * Satoshi Medium Italic
+ * Satoshi Bold
+ * Satoshi Bold Italic
+ * Satoshi Black
+ * Satoshi Black Italic
+ *
+*/
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-Light.woff2') format('woff2'),
+         url('./fonts/Satoshi-Light.woff') format('woff'),
+         url('./fonts/Satoshi-Light.ttf') format('truetype');
+         font-weight: 300;
+         font-display: swap;
+         font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-LightItalic.woff2') format('woff2'),
+         url('./fonts/Satoshi-LightItalic.woff') format('woff'),
+         url('./fonts/Satoshi-LightItalic.ttf') format('truetype');
+         font-weight: 300;
+         font-display: swap;
+         font-style: italic;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-Regular.woff2') format('woff2'),
+         url('./fonts/Satoshi-Regular.woff') format('woff'),
+         url('./fonts/Satoshi-Regular.ttf') format('truetype');
+         font-weight: 400;
+         font-display: swap;
+         font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-Italic.woff2') format('woff2'),
+         url('./fonts/Satoshi-Italic.woff') format('woff'),
+         url('./fonts/Satoshi-Italic.ttf') format('truetype');
+         font-weight: 400;
+         font-display: swap;
+         font-style: italic;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-Medium.woff2') format('woff2'),
+         url('./fonts/Satoshi-Medium.woff') format('woff'),
+         url('./fonts/Satoshi-Medium.ttf') format('truetype');
+         font-weight: 500;
+         font-display: swap;
+         font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-MediumItalic.woff2') format('woff2'),
+         url('./fonts/Satoshi-MediumItalic.woff') format('woff'),
+         url('./fonts/Satoshi-MediumItalic.ttf') format('truetype');
+         font-weight: 500;
+         font-display: swap;
+         font-style: italic;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-Bold.woff2') format('woff2'),
+         url('./fonts/Satoshi-Bold.woff') format('woff'),
+         url('./fonts/Satoshi-Bold.ttf') format('truetype');
+         font-weight: 700;
+         font-display: swap;
+         font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-BoldItalic.woff2') format('woff2'),
+         url('./fonts/Satoshi-BoldItalic.woff') format('woff'),
+         url('./fonts/Satoshi-BoldItalic.ttf') format('truetype');
+         font-weight: 700;
+         font-display: swap;
+         font-style: italic;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-Black.woff2') format('woff2'),
+         url('./fonts/Satoshi-Black.woff') format('woff'),
+         url('./fonts/Satoshi-Black.ttf') format('truetype');
+         font-weight: 900;
+         font-display: swap;
+         font-style: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('./fonts/Satoshi-BlackItalic.woff2') format('woff2'),
+         url('./fonts/Satoshi-BlackItalic.woff') format('woff'),
+         url('./fonts/Satoshi-BlackItalic.ttf') format('truetype');
+         font-weight: 900;
+         font-display: swap;
+         font-style: italic;
+}
+
+@layer base {
+  body {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #64748b; /* text-body equivalent */
+    background-color: #f7f9fc; /* bg-whiten equivalent */
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@layer utilities {
+  .font-satoshi {
+    font-family: 'Satoshi', sans-serif;
+  }
+  
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .chat-height {
+    height: calc(100vh - 8.125rem);
+  }
+  
+  @screen lg {
+    .chat-height {
+      height: calc(100vh - 5.625rem);
+    }
+  }
+  
+  .inbox-height {
+    height: calc(100vh - 8.125rem);
+  }
+  
+  @screen lg {
+    .inbox-height {
+      height: calc(100vh - 5.625rem);
+    }
+  }
+}
+
+/* third-party libraries CSS */
+.tableCheckbox:checked ~ div span {
+  opacity: 1;
+}
+
+.tableCheckbox:checked ~ div {
+  background-color: #3c50e0;
+  border-color: #3c50e0;
+}
+
+.apexcharts-legend-text {
+  fill: #64748b !important;
+}
+
+.apexcharts-text {
+  fill: #64748b !important;
+}
+
+.apexcharts-xcrosshairs {
+  fill: #e2e8f0 !important;
+}
+
+.apexcharts-gridline {
+  stroke: #e2e8f0 !important;
+}
+
+.apexcharts-series.apexcharts-pie-series path {
+  stroke: transparent !important;
+}
+
+.apexcharts-legend-series {
+  display: inline-flex !important;
+  gap: 0.375rem !important;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light {
+  background-color: #24303f !important;
+  border: 1px solid #313d4a !important;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+  background-color: #1a222c !important;
+  border-bottom: 1px solid #313d4a !important;
+}
+
+.apexcharts-xaxistooltip, .apexcharts-yaxistooltip {
+  background-color: #1a222c !important;
+  border: 1px solid #1a222c !important;
+  color: #dee4ee !important;
+}
+
+.apexcharts-xaxistooltip-bottom:after {
+  border-bottom-color: #1a222c !important;
+}
+
+.apexcharts-xaxistooltip-bottom:before {
+  border-bottom-color: #1a222c !important;
+}
+
+.flatpickr-day.selected {
+  background-color: #3c50e0 !important;
+  border-color: #3c50e0 !important;
+}
+
+.flatpickr-day.selected:hover {
+  background-color: #3c50e0 !important;
+  border-color: #3c50e0 !important;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover svg,
+.flatpickr-months .flatpickr-next-month:hover svg {
+  fill: #3c50e0 !important;
+}
+
+.flatpickr-calendar.arrowTop:before {
+  border-bottom-color: #24303f !important;
+}
+
+.flatpickr-calendar.arrowTop:after {
+  border-bottom-color: #24303f !important;
+}
+
+.flatpickr-calendar {
+  background-color: #24303f !important;
+  color: #dee4ee !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+  padding: 1.5rem !important;
+}
+
+.flatpickr-day {
+  color: #dee4ee !important;
+}
+
+.flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
+  top: 1.75rem !important;
+  color: white !important;
+  fill: white !important;
+}
+
+.flatpickr-months .flatpickr-prev-month.flatpickr-prev-month, .flatpickr-months .flatpickr-next-month.flatpickr-prev-month {
+  left: 1.75rem !important;
+}
+
+.flatpickr-months .flatpickr-prev-month.flatpickr-next-month, .flatpickr-months .flatpickr-next-month.flatpickr-next-month {
+  right: 1.75rem !important;
+}
+
+span.flatpickr-weekday,
+.flatpickr-months .flatpickr-month {
+  color: white !important;
+  fill: white !important;
+}
+
+.flatpickr-day.inRange {
+  background-color: #1a222c !important;
+  border-color: #1a222c !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.flatpickr-day.selected, .flatpickr-day.startRange,
+.flatpickr-day.selected, .flatpickr-day.endRange {
+  color: white !important;
+}
+
+.map-btn .jvm-zoom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.25rem;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  color: #64748b;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.map-btn .jvm-zoom-btn:hover {
+  border-color: #3c50e0;
+  background-color: #3c50e0;
+  color: white;
+}
+
+.mapOne .jvm-zoom-btn {
+  left: auto;
+  top: auto;
+  bottom: 0;
+}
+
+.mapOne .jvm-zoom-btn.jvm-zoomin {
+  right: 2.5rem;
+}
+
+.mapOne .jvm-zoom-btn.jvm-zoomout {
+  right: 0;
+}
+
+.mapTwo .jvm-zoom-btn {
+  top: auto;
+  bottom: 0;
+}
+
+.mapTwo .jvm-zoom-btn.jvm-zoomin {
+  left: 0;
+}
+
+.mapTwo .jvm-zoom-btn.jvm-zoomout {
+  left: 2.5rem;
+}
+
+.taskCheckbox:checked ~ .box span {
+  opacity: 1;
+}
+
+.taskCheckbox:checked ~ p {
+  text-decoration: line-through;
+}
+
+.taskCheckbox:checked ~ .box {
+  background-color: #3c50e0;
+  border-color: #3c50e0;
+}
+
+.custom-input-date::-webkit-calendar-picker-indicator {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+}
+
+.custom-input-date-1::-webkit-calendar-picker-indicator {
+  background-image: url('http://localhost:3001/images/icon/icon-calendar.svg');
+}
+
+.custom-input-date-2::-webkit-calendar-picker-indicator {
+  background-image: url('http://localhost:3001/images/icon/icon-arrow-down.svg');  
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+.jvectormap-tip {
+  background-color: #F8FAFC !important;
+  font-family: Satoshi, sans-serif !important;
+}
+
+.map-btn .jvectormap-container .jvectormap-zoomin,
+.map-btn .jvectormap-container .jvectormap-zoomout {
+  bottom: 0;
+  top: auto;
+  right: 0;
+  left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.25rem;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  color: #64748b;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.map-btn .jvectormap-container .jvectormap-zoomin:hover,
+.map-btn .jvectormap-container .jvectormap-zoomout:hover {
+  border-color: #3c50e0;
+  background-color: #3c50e0;
+  color: white;
+}
+
+.map-btn .jvectormap-container .jvectormap-zoomin {
+  right: 45px;
+}
+
+/* Resto del CSS de datatable sin cambios */
+.datatable-wrapper.no-header .datatable-container {
+	border-top: 1px solid #d9d9d9;
+}
+
+.datatable-wrapper.no-footer .datatable-container {
+	border-bottom: 1px solid #d9d9d9;
+}
+
+.datatable-top,
+.datatable-bottom {
+	padding: 8px 10px;
+}
+
+.datatable-top > nav:first-child,
+.datatable-top > div:first-child,
+.datatable-bottom > nav:first-child,
+.datatable-bottom > div:first-child {
+	float: left;
+}
+
+.datatable-top > nav:last-child,
+.datatable-top > div:last-child,
+.datatable-bottom > nav:last-child,
+.datatable-bottom > div:last-child {
+	float: right;
+}
+
+.datatable-selector {
+	padding: 6px;
+}
+
+.datatable-input {
+	padding: 6px 12px;
+}
+
+.datatable-info {
+	margin: 7px 0;
+}
+
+/* PAGER */
+.datatable-pagination ul {
+	margin: 0;
+	padding-left: 0;
+}
+
+.datatable-pagination li {
+	list-style: none;
+	float: left;
+}
+
+.datatable-pagination li.datatable-hidden {
+    visibility: hidden;
+}
+
+.datatable-pagination a {
+	border: 1px solid transparent;
+	float: left;
+	margin-left: 2px;
+	padding: 6px 12px;
+	position: relative;
+	text-decoration: none;
+	color: #333;
+    cursor: pointer;
+}
+
+.datatable-pagination a:hover {
+	background-color: #d9d9d9;
+}
+
+.datatable-pagination .datatable-active a,
+.datatable-pagination .datatable-active a:focus,
+.datatable-pagination .datatable-active a:hover {
+	background-color: #d9d9d9;
+	cursor: default;
+}
+
+.datatable-pagination .datatable-ellipsis a,
+.datatable-pagination .datatable-disabled a,
+.datatable-pagination .datatable-disabled a:focus,
+.datatable-pagination .datatable-disabled a:hover {
+    pointer-events: none;
+    cursor: default;
+}
+
+.datatable-pagination .datatable-disabled a,
+.datatable-pagination .datatable-disabled a:focus,
+.datatable-pagination .datatable-disabled a:hover {
+	cursor: not-allowed;
+	opacity: 0.4;
+}
+
+.datatable-pagination .datatable-pagination a {
+	font-weight: bold;
+}
+
+/* TABLE */
+.datatable-table {
+	max-width: 100%;
+	width: 100%;
+	border-spacing: 0;
+	border-collapse: separate;
+}
+
+.datatable-table > tbody > tr > td,
+.datatable-table > tbody > tr > th,
+.datatable-table > tfoot > tr > td,
+.datatable-table > tfoot > tr > th,
+.datatable-table > thead > tr > td,
+.datatable-table > thead > tr > th {
+	vertical-align: top;
+	padding: 8px 10px;
+}
+
+.datatable-table > thead > tr > th {
+	vertical-align: bottom;
+	text-align: left;
+	border-bottom: 1px solid #d9d9d9;
+}
+
+.datatable-table > tfoot > tr > th {
+	vertical-align: bottom;
+	text-align: left;
+	border-top: 1px solid #d9d9d9;
+}
+
+.datatable-table th {
+	vertical-align: bottom;
+	text-align: left;
+}
+
+.datatable-table th a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.datatable-sorter, .datatable-filter {
+	display: inline-block;
+	height: 100%;
+	position: relative;
+	width: 100%;
+}
+
+.datatable-sorter::before,
+.datatable-sorter::after {
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	right: 4px;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	opacity: 0.2;
+}
+
+.datatable-sorter::before {
+	border-top: 4px solid #000;
+	bottom: 0;
+}
+
+.datatable-sorter::after {
+	border-bottom: 4px solid #000;
+	border-top: 4px solid transparent;
+	top: 0;
+}
+
+.datatable-ascending .datatable-sorter::after,
+.datatable-descending .datatable-sorter::before,
+.datatable-ascending .datatable-filter::after,
+.datatable-descending .datatable-filter::before {
+	opacity: 0.6;
+}
+
+.datatable-filter::before {
+    content: "";
+    position: absolute;
+    right: 4px;
+    opacity: 0.2;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+	border-radius: 50%;
+    border-top: 10px solid #000;
+    top: 25%;
+}
+
+.datatable-filter-active .datatable-filter::before {
+    opacity: 0.6;
+}
+
+.datatable-empty {
+	text-align: center;
+}
+
+.datatable-top::after, .datatable-bottom::after {
+	clear: both;
+	content: " ";
+	display: table;
+}
+
+table.datatable-table:focus tr.datatable-cursor > td:first-child {
+	border-left: 3px blue solid;
+}
+
+table.datatable-table:focus {
+	outline: solid 1px black;
+    outline-offset: -1px;
+}

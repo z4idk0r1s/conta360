@@ -43,7 +43,6 @@ else
   exit 1
 fi
 echo "✅ Compilación de proyectos .NET completada <<<<<<<<<<<<<<<<<"
-# --- FIN DE LA SECCIÓN MODIFICADA ---
 
 
 # 4. Aplicar migraciones de base de datos
@@ -71,13 +70,13 @@ echo "📦 Instalando dependencias npm..."
 for dir in "${MICROFRONTEND_DIRS[@]}"; do
   if [ -f "$dir/package.json" ]; then
     echo "📁 $dir"
-    (cd "$dir" && [ -f package-lock.json ] && npm ci || npm install)
+    (cd "$dir" && [ -f package.json ] && npm ci || npm install)
   else
     echo "⚠️ No encontrado: $dir/package.json. Omitiendo."
   fi
 done
 
-# --- SECCIÓN MODIFICADA PARA EJECUTAR PRUEBAS EN LA SOLUCIÓN ---
+# --- PRUEBAS  ---
 # 6. Ejecutar pruebas
 echo "🧪 Ejecutando pruebas..."
 
@@ -99,7 +98,6 @@ for dir in "${MICROFRONTEND_DIRS[@]}"; do
     fi
   fi
 done
-# --- FIN DE LA SECCIÓN MODIFICADA ---
 
 # 7. Detener servicios previos
 pkill -f "dotnet run --project .*Conta360.Presentation.Api.csproj" 2>/dev/null \
@@ -122,18 +120,17 @@ nohup dotnet run --project "$API_PROJECT" \
   > /tmp/backend_log.log 2>&1 &
 echo "✅ Backend API iniciado. Logs en /tmp/backend_log.log"
 
-echo "🚀 Iniciando Microfrontend Root Config..."
-cd src/microfrontends/root-config
-nohup npm run dev > /tmp/frontend_root_config_log.log 2>&1 &
-cd ../../..
-echo "✅ Microfrontend Root Config iniciado. Logs en /tmp/frontend_root_config_log.log"
-
-# Iniciar Microfrontend Dashboard App
 echo "🚀 Iniciando Microfrontend Dashboard App..."
 cd src/microfrontends/dashboard-app
 nohup npm run dev > /tmp/frontend_dashboard_app_log.log 2>&1 &
 cd ../../..
 echo "✅ Microfrontend Dashboard App iniciado. Logs en /tmp/frontend_dashboard_app_log.log"
+
+echo "🚀 Iniciando Microfrontend Root Config..."
+cd src/microfrontends/root-config
+nohup npm run dev > /tmp/frontend_root_config_log.log 2>&1 &
+cd ../../..
+echo "✅ Microfrontend Root Config iniciado. Logs en /tmp/frontend_root_config_log.log"
 
 
 # 9. Esperar disponibilidad
@@ -155,13 +152,13 @@ wait_for_service() {
 }
 
 wait_for_service "Backend API" "http://localhost:5000/health" || { echo "❌ Falló el inicio del Backend API."; exit 1; }
-wait_for_service "Frontend Root Config" "http://localhost:3000" || { echo "❌ Falló el inicio del Frontend Root Config."; exit 1; }
 wait_for_service "Frontend Dashboard App" "http://localhost:3001" || { echo "❌ Falló el inicio del Frontend Dashboard App."; exit 1; }
+wait_for_service "Frontend Root Config" "http://localhost:3000" || { echo "❌ Falló el inicio del Frontend Root Config."; exit 1; }
+
 
 echo ""
-echo "✅ Todo listo. Puedes trabajar con Conta360."
-echo "👉 Abre VSCode o tus editores preferidos. Inicia microfrontends restantes si es necesario."
-echo "Para ver logs:"
-echo " tail -f /tmp/backend_log.log"
-echo " tail -f /tmp/frontend_root_config_log.log"
-echo " tail -f /tmp/frontend_dashboard_app_log.log"
+echo "✅ Todos los PROCESOS FINALIZADOS - OK - Conta360."
+echo "👉 Para ver logs:"
+echo " tail -f o cat /tmp/backend_log.log"
+echo " tail -f o cat /tmp/frontend_root_config_log.log"
+echo " tail -f o cat /tmp/frontend_dashboard_app_log.log"
