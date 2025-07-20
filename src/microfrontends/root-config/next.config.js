@@ -5,9 +5,12 @@ const { getRemotes } = require('./mf-remotes.config'); // Asegúrate de que esta
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: false, // Asegurar que los errores de TS se detecten
+  },
   reactStrictMode: true,
-  output: 'export', // Necesario para builds estáticas (Tauri)
-  distDir: 'out', // Directorio de salida para la build estática
+  //output: 'export', // Necesario para builds estáticas (Tauri)
+  //distDir: 'out', // Directorio de salida para la build estática
 
   webpack(config, options) {
     console.log('[next.config] webpack isServer:', options.isServer);
@@ -19,7 +22,7 @@ const nextConfig = {
       config.plugins.push(
         new NextFederationPlugin({
           name: 'root-config',
-          filename: 'static/chunks/remoteEntry.js', // Ruta del remoteEntry del host
+          filename: '_next/static/chunks/remoteEntry.js', // Ruta del remoteEntry del host
           remotes: getRemotes(options), // Configuración de remotos del host
           shared: {
             // Dependencias React
