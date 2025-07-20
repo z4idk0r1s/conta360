@@ -1710,6 +1710,7 @@ conta360\src\microfrontends
         │   │   next-env.d.ts
         │   │   next.config.js
         │   │   package.json
+        │   │   postcss.config.js
         │   │   prettier.config.js
         │   │   tailadmin-nextjs.jpg
         │   │   tailwind.config.ts
@@ -1788,7 +1789,6 @@ conta360\src\microfrontends
         │   │
         │   ├───pages
         │   │   │   favicon.ico
-        │   │   │   globals.css
         │   │   │   index.tsx
         │   │   │   _app.tsx
         │   │   │   _document.tsx
@@ -1980,4 +1980,4 @@ conta360\src\microfrontends
             │
             └───src
                 └───lib
-                        api.ts
+                        api.ts 

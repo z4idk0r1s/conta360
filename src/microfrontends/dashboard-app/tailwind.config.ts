@@ -1,12 +1,9 @@
-import rootConfig from '../root-config/tailwind.config';
+import rootConfig from '../../root-config/tailwind.config';
 
-const dashboardConfig = {
+export default {
   ...rootConfig,
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './node_modules/flowbite/**/*.js',
+    './pages/**/*.{ts,tsx,js,jsx}',
+    './components/**/*.{ts,tsx,js,jsx}',
   ],
 };
-
-export default dashboardConfig;
