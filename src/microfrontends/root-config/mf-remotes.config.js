@@ -30,6 +30,8 @@ const getRemotes = (options) => {
     
     remotesConfig[mfName] = `${mfName}@${remoteEntryPath}`;
   }
+  console.log('[mf-remotes.config] remotesConfig:', remotesConfig);
+
   return remotesConfig;
 };
 

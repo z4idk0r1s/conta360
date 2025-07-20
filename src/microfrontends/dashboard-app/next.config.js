@@ -65,29 +65,29 @@ const nextConfig = {
             next: {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3', // **Versión exacta y fija**
+              requiredVersion: '14.1.4', // **Versión exacta y fija**
               import: 'next',              
             },
             // Submódulos críticos de Next.js (deben coincidir con los del host)
             'next/router': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',
+              requiredVersion: '14.1.4',
             },
             'next/link': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',
+              requiredVersion: '14.1.4',
             },
             'next/head': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',
+              requiredVersion: '14.1.4',
             },
             'next/image': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',
+              requiredVersion: '14.1.4',
             },
             // Otras dependencias compartidas
             axios: {

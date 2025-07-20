@@ -3,10 +3,18 @@ import dynamic from 'next/dynamic';
 import { fetchBackendData } from '../src/lib/api';
 import { useState } from 'react';
 
-const DashboardApp = dynamic(() => import('dashboardApp/Dashboard'), { 
-  ssr: false,
-  loading: () => <p>Cargando el Dashboard...</p>,
- });
+console.log('[root-config] Importing dashboardApp/Dashboard...');
+
+const DashboardApp = dynamic(
+  () => import('dashboardApp/Dashboard').catch(err => {
+    console.error('Error loading Dashboard:', err);
+    return () => <div>Error al cargar el Dashboard</div>;
+  }),
+  { 
+    ssr: false,
+    loading: () => <p>Cargando el Dashboard...</p>,
+  }
+);
 
 export default function Home() {
   const [backendData, setBackendData] = useState<string | null>(null);
