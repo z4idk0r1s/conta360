@@ -1688,6 +1688,15 @@ C:.
                         api.ts
 
 
+ EXTRA OPCIONAL (para producción):
+
+Cuando hagas next export en el host, asegúrate de copiar manualmente el remoteEntry.js del microfrontend a:
+
+/out/_next/static/chunks/dashboardApp-remoteEntry.js
+
+Este paso es obligatorio para apps Next.js exportadas como estáticas, como en Tauri.
+
+
 
 
 

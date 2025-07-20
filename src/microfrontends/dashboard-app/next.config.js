@@ -26,7 +26,7 @@ const nextConfig = {
       config.plugins.push(
         new NextFederationPlugin({
           name: 'dashboardApp',
-          filename: 'static/chunks/remoteEntry.js',
+          filename: '_next/static/chunks/remoteEntry.js',
           exposes: {
             // Componente principal del dashboard (ejemplo de exposición)
             './Dashboard': './components/Dashboard/E-commerce.tsx',
