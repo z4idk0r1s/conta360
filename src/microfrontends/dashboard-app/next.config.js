@@ -26,14 +26,14 @@ const nextConfig = {
       config.plugins.push(
         new NextFederationPlugin({
           name: 'dashboardApp',
-          filename: '_next/static/chunks/remoteEntry.js',
+          filename: 'static/chunks/remoteEntry.js',
           exposes: {
             // Componente principal del dashboard (ejemplo de exposición)
             './Dashboard': './components/Dashboard/E-commerce.tsx',
             // ¡ATENCIÓN!: Habilita estas exposiciones a medida que las necesites y las consumas dinámicamente.
             // Es buena práctica asignarles nombres más específicos para evitar colisiones globales
             // y para que la importación en el host sea más clara.
-            './AuthSignInPage': './pages/auth/signin/index.tsx',
+            /*'./AuthSignInPage': './pages/auth/signin/index.tsx',
             './AuthSignUpPage': './pages/auth/signup/index.tsx',
             './CalendarPage': './pages/calendar/index.tsx',
             './ChartPage': './pages/chart/index.tsx',
@@ -43,7 +43,7 @@ const nextConfig = {
             './SettingsPage': './pages/settings/index.tsx',
             './TablesPage': './pages/tables/index.tsx',
             './AlertsPage': './pages/ui/alerts/index.tsx',
-            './ButtonsPage': './pages/ui/buttons/index.tsx',
+            './ButtonsPage': './pages/ui/buttons/index.tsx',*/
             // Puedes añadir más componentes reutilizables o layouts específicos si es necesario exponerlos:
             // './CommonLoader': './components/common/Loader/index.tsx',
           },
@@ -65,29 +65,29 @@ const nextConfig = {
             next: {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3', // **Versión exacta y fija**
+              requiredVersion: '14.1.4', // **Versión exacta y fija**
               import: 'next',              
             },
             // Submódulos críticos de Next.js (deben coincidir con los del host)
             'next/router': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',
+              requiredVersion: '14.1.4',
             },
             'next/link': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',
+              requiredVersion: '14.1.4',
             },
             'next/head': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',
+              requiredVersion: '14.1.4',
             },
             'next/image': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',
+              requiredVersion: '14.1.4',
             },
             // Otras dependencias compartidas
             axios: {

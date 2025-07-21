@@ -1,16 +1,24 @@
 // src/microfrontends/root-config/next.config.js
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
+console.log('NextFederationPlugin:', NextFederationPlugin);
 const { getRemotes } = require('./mf-remotes.config'); // Asegúrate de que esta ruta sea correcta
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: false, // Asegurar que los errores de TS se detecten
+  },
   reactStrictMode: true,
-  output: 'export', // Necesario para builds estáticas (Tauri)
-  distDir: 'out', // Directorio de salida para la build estática
+  //output: 'export', // Necesario para builds estáticas (Tauri)
+  //distDir: 'out', // Directorio de salida para la build estática
 
   webpack(config, options) {
+    console.log('[next.config] webpack isServer:', options.isServer);
+
     config.output.publicPath = 'auto';
     if (!options.isServer) {
+      console.log('[next.config] Adding NextFederationPlugin with remotes:', getRemotes(options));
+
       config.plugins.push(
         new NextFederationPlugin({
           name: 'root-config',
@@ -32,28 +40,28 @@ const nextConfig = {
             next: {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3', // **Versión exacta y fija**              
+              requiredVersion: '14.1.4', // **Versión exacta y fija**              
             },
             // Submódulos críticos de Next.js
             'next/router': {
               singleton: true,
               eager: true, //  ya que el router es fundamental
-              requiredVersion: '15.2.3',              
+              requiredVersion: '14.1.4',              
             },
             'next/link': {
               singleton: true,
               eager: true, //  para funcionalidad de navegación
-              requiredVersion: '15.2.3',              
+              requiredVersion: '14.1.4',              
             },
             'next/head': {
               singleton: true,
               eager: true, //  para manejo de metadatos
-              requiredVersion: '15.2.3',              
+              requiredVersion: '14.1.4',              
             },
             'next/image': {
               singleton: true,
               eager: true,
-              requiredVersion: '15.2.3',              
+              requiredVersion: '14.1.4',              
             },
             // Otras dependencias compartidas
             axios: {
@@ -66,18 +74,6 @@ const nextConfig = {
               singleton: true,
               requiredVersion: '2.6.0',              
             },
-            // Agrega aquí cualquier otra dependencia importante que deba ser compartida y singleton
-            // Por ejemplo, si @fullcalendar/react o @tailwindcss/forms se usaran en ambos:
-            // '@fullcalendar/react': {
-            //   singleton: true,
-            //   requiredVersion: '6.1.15',
-            //    // Si el host la provee
-            // },
-            // '@tailwindcss/forms': {
-            //   singleton: true,
-            //   requiredVersion: '0.5.9',
-            //   
-            // },
           },
         })
       );
