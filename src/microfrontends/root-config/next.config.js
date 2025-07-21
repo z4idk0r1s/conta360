@@ -22,7 +22,7 @@ const nextConfig = {
       config.plugins.push(
         new NextFederationPlugin({
           name: 'root-config',
-          filename: '_next/static/chunks/remoteEntry.js', // Ruta del remoteEntry del host
+          filename: 'static/chunks/remoteEntry.js', // Ruta del remoteEntry del host
           remotes: getRemotes(options), // Configuración de remotos del host
           shared: {
             // Dependencias React
