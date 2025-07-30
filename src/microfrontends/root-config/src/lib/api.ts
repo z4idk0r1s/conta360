@@ -1,9 +1,17 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'; // Ajusta este puerto si tu backend C# usa uno diferente
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const SUBVENCIONES_API_BASE_URL = process.env.NEXT_PUBLIC_SUBVENCIONES_API_URL || 'http://localhost:5001';
 
-const api = axios.create({
+const mainApi = axios.create({
   baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+const subvencionesApi = axios.create({
+  baseURL: SUBVENCIONES_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -11,11 +19,20 @@ const api = axios.create({
 
 export const fetchBackendData = async () => {
   try {
-    // Llama al endpoint de salud, ya que backend expone y confirma su funcionamiento.
-    const response = await api.get('/health');
+    const response = await mainApi.get('/health');
     return response.data;
   } catch (error) {
     console.error('Error fetching data from backend:', error);
+    throw error;
+  }
+};
+
+export const fetchSubvencionesData = async () => {
+  try {
+    const response = await subvencionesApi.get('/health');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data from subvenciones backend:', error);
     throw error;
   }
 };

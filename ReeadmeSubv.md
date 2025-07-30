@@ -95,11 +95,12 @@ Global
 EndGlobal
 
 
-\conta360\src\SubvencionesApi>tree /F
+conta360\src\SubvencionesApi>tree /F
 Listado de rutas de carpetas
 El número de serie del volumen es 6EE0-B276
 C:.
 │   appsettings.json
+│   Dockerfile
 │   Program.cs
 │   SubvencionesApi.csproj
 │
