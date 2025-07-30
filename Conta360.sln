@@ -25,7 +25,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.CrossCutting.IoC",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Presentation.Api", "src\backend\Presentation\Conta360.Presentation.Api\Conta360.Presentation.Api.csproj", "{210FEDCB-A987-6543-210F-EDCBA9876543}"
 EndProject
-
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubvencionesApp.Core", "src\SubvencionesApp\SubvencionesApp.Core\SubvencionesApp.Core.csproj", "{5C0F9B1E-A3E7-4F6A-9B0E-5C1F0A2D3E4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubvencionesApp.Infrastructure", "src\SubvencionesApp\SubvencionesApp.Infrastructure\SubvencionesApp.Infrastructure.csproj", "{D1E2D3C4-B5A6-9E8D-7C6B-5A4D3E2C1B0A}"
