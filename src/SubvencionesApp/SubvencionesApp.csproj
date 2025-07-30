@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../SubvencionesApp.Core/SubvencionesApp.Core.csproj" />
-    <ProjectReference Include="../SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj" />
+    <ProjectReference Include="SubvencionesApp.Core/SubvencionesApp.Core.csproj" />
+    <ProjectReference Include="SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
