@@ -30,7 +30,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 // Registro de servicios y repositorios
-builder.Services.AddHttpClient<InfoSubvencionesApiClient>();
+builder.Services.AddHttpClient<InfoSubvencionesAppClient>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ISubvencionesService, SubvencionesService>();
 builder.Services.AddScoped<IAccionRepository, AccionRepository>();

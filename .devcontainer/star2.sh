@@ -19,8 +19,8 @@ trap 'echo "❌ Error inesperado en línea $LINENO. Saliendo."; exit 1' ERR
 SOLUTION_FILE="Conta360.sln"
 API_PROJECT="src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
 API_PROJECT_DIR="src/backend/Presentation/Conta360.Presentation.Api"
-SUBVENCIONES_API_PROJECT="src/SubvencionesApi/SubvencionesApi.csproj" # NUEVO
-SUBVENCIONES_API_PROJECT_DIR="src/SubvencionesApi" # NUEVO
+SUBVENCIONES_API_PROJECT="src/SubvencionesApp/SubvencionesApp.csproj" # NUEVO
+SUBVENCIONES_API_PROJECT_DIR="src/SubvencionesApp" # NUEVO
 
 # --- SECCIÓN MODIFICADA PARA USAR EL ARCHIVO .SLN ---
 # 1. Restaurar dependencias de la solución
@@ -120,9 +120,9 @@ done
 pkill -f "dotnet run --project .*Conta360.Presentation.Api.csproj" 2>/dev/null \
   && echo "🛑 Backend detenido" || echo "ℹ️ No había backend corriendo"
 
-# NUEVO: Detener servicio de SubvencionesApi si está corriendo
-pkill -f "dotnet run --project .*SubvencionesApi.csproj" 2>/dev/null \
-  && echo "🛑 SubvencionesApi detenido" || echo "ℹ️ No había SubvencionesApi activo"
+# NUEVO: Detener servicio de SubvencionesApp si está corriendo
+pkill -f "dotnet run --project .*SubvencionesApp.csproj" 2>/dev/null \
+  && echo "🛑 SubvencionesApp detenido" || echo "ℹ️ No había SubvencionesApp activo"
 
 
 pkill -f "npm run dev.*root-config" 2>/dev/null \

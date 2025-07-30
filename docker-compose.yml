@@ -80,11 +80,11 @@ services:
     networks:
       - conta360-network
 
-  # --- NUEVO: Servicio para el microservicio SubvencionesApi ---
+  # --- NUEVO: Servicio para el microservicio SubvencionesApp ---
   subvenciones-api:
     # Construye la imagen del microservicio.
     build:
-      context: ./src/SubvencionesApi
+      context: ./src/SubvencionesApp
       dockerfile: Dockerfile
       target: development # O usar 'final' para producción
     # Mapea un nuevo puerto del host para evitar conflictos. El puerto interno es 80.
@@ -92,7 +92,7 @@ services:
       - "5001:80"
     # Monta el código fuente para desarrollo y el volumen para la base de datos.
     volumes:
-      - ./src/SubvencionesApi:/app/SubvencionesApi
+      - ./src/SubvencionesApp:/app/SubvencionesApp
       - subvenciones-api-data:/app/data
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -101,7 +101,7 @@ services:
       - ConnectionStrings__SubvencionesDbConnection=Data Source=/app/data/subvenciones.db
     # Comando para ejecutar migraciones y la aplicación con hot reload.
     command: >
-      sh -c "dotnet ef database update --project SubvencionesApi.csproj && dotnet watch --project SubvencionesApi.csproj run --urls 'http://+:80'"
+      sh -c "dotnet ef database update --project SubvencionesApp.csproj && dotnet watch --project SubvencionesApp.csproj run --urls 'http://+:80'"
     # Chequeo de salud del nuevo microservicio.
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]

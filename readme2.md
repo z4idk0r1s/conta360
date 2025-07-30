@@ -1981,3 +1981,1601 @@ conta360\src\microfrontends
             └───src
                 └───lib
                         api.ts 
+
+
+
+
+COMPLETO:::
+
+C:.
+│   .dockerignore
+│   .gitignore
+│   Conta360.sln
+│   Directory.Build.props
+│   Directory.Build.targets
+│   Directory.Packages.props
+│   docker-cleanup.bat
+│   docker-compose.yml
+│   global.json
+│   LICENSE
+│   README.md
+│   README.Migraciones.md
+│   readme2.md
+│   ReeadmeSubv.md
+│
+├───.devcontainer
+│   │   .env
+│   │   devcontainer.json
+│   │   Dockerfile
+│   │   star2.sh
+│   │   startup.sh
+│   │   startup1.sh
+│   │
+│   └───.vscode
+│           settings.json
+│
+├───desktop-app
+│   └───Conta360.DesktopShell
+│       │   .gitignore
+│       │   package.json
+│       │   tauri.conf.json
+│       │
+│       ├───scripts
+│       │       copy-mf-assets.js
+│       │
+│       └───src-tauri
+│           │   Cargo.toml
+│           │
+│           └───src
+│                   main.rs
+│
+└───src
+    ├───backend
+    │   ├───Core
+    │   │   ├───Conta360.Application
+    │   │   │   │   Conta360.Application.csproj
+    │   │   │   │
+    │   │   │   ├───Behaviours
+    │   │   │   │       LoggingBehavior.cs
+    │   │   │   │       ValidationBehavior.cs
+    │   │   │   │
+    │   │   │   ├───bin
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   ├───DTOs
+    │   │   │   │       AccountDto.cs
+    │   │   │   │       PgcAccountDto.cs
+    │   │   │   │       PgcAccountTreeDto.cs
+    │   │   │   │
+    │   │   │   ├───Features
+    │   │   │   │   └───Accounts
+    │   │   │   │       └───Commands
+    │   │   │   │           └───CreateAccount
+    │   │   │   │               │   CreateAccountCommand.cs
+    │   │   │   │               │   CreateAccountCommandHandler.cs
+    │   │   │   │               │   CreateAccountCommandValidator.cs
+    │   │   │   │               │
+    │   │   │   │               └───Queries
+    │   │   │   │                       GetAccountByIdQuery.cs
+    │   │   │   │                       GetAccountByIdQueryHandler.cs
+    │   │   │   │                       GetAllPgcAccountsQuery.cs
+    │   │   │   │                       GetAllPgcAccountsQueryHandler.cs
+    │   │   │   │                       GetPgcAccountTreeQuery.cs
+    │   │   │   │                       GetPgcAccountTreeQueryHandler.cs
+    │   │   │   │
+    │   │   │   ├───Interfaces
+    │   │   │   │       IApplicationDbContext.cs
+    │   │   │   │       IExcelProcessor.cs
+    │   │   │   │       IFinancialReportingService.cs
+    │   │   │   │       IKpiCalculationService.cs
+    │   │   │   │       IPGCStructureService.cs
+    │   │   │   │       IPgcTaxonomyService.cs
+    │   │   │   │       IUnitOfWork.cs
+    │   │   │   │
+    │   │   │   ├───Mappings
+    │   │   │   │       MappingProfile.cs
+    │   │   │   │
+    │   │   │   ├───obj
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │   │   │           │   Conta360.Application.GeneratedMSBuildEditorConfig.editorconfig
+    │   │   │   │           │   Conta360.Application.GlobalUsings.g.cs
+    │   │   │   │           │
+    │   │   │   │           ├───ref
+    │   │   │   │           └───refint
+    │   │   │   └───Services
+    │   │   │           PgcAccountTreeBuilder.cs
+    │   │   │           PgcExtractorOptions.cs
+    │   │   │
+    │   │   ├───Conta360.Core
+    │   │   │   │   Conta360.Core.csproj
+    │   │   │   │
+    │   │   │   ├───bin
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   ├───Common
+    │   │   │   │       Error.cs
+    │   │   │   │       OperationResult.cs
+    │   │   │   │       PgcModelType.cs
+    │   │   │   │       ValidationResult.cs
+    │   │   │   │
+    │   │   │   ├───Interfaces
+    │   │   │   │       ICurrentUserService.cs
+    │   │   │   │       IDateTimeProvider.cs
+    │   │   │   │       IPgcTaxonomyDownloader.cs
+    │   │   │   │       IPgcTaxonomyValidator.cs
+    │   │   │   │       IValidator.cs
+    │   │   │   │
+    │   │   │   └───obj
+    │   │   │       └───Debug
+    │   │   │           └───net8.0
+    │   │   │               │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │   │               │   Conta360.Core.GeneratedMSBuildEditorConfig.editorconfig
+    │   │   │               │   Conta360.Core.GlobalUsings.g.cs
+    │   │   │               │
+    │   │   │               ├───ref
+    │   │   │               └───refint
+    │   │   └───Conta360.Domain
+    │   │       │   Conta360.Domain.csproj
+    │   │       │
+    │   │       ├───bin
+    │   │       │   └───Debug
+    │   │       │       └───net8.0
+    │   │       ├───Entities
+    │   │       │       Account.cs
+    │   │       │       BaseEntity.cs
+    │   │       │       PgcAccount.cs
+    │   │       │       Transact.cs
+    │   │       │
+    │   │       ├───Interfaces
+    │   │       │       IPgcAccountRepository.cs
+    │   │       │       IRepository.cs
+    │   │       │
+    │   │       ├───obj
+    │   │       │   └───Debug
+    │   │       │       └───net8.0
+    │   │       │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │       │           │   Conta360.Domain.GeneratedMSBuildEditorConfig.editorconfig
+    │   │       │           │   Conta360.Domain.GlobalUsings.g.cs
+    │   │       │           │
+    │   │       │           ├───ref
+    │   │       │           └───refint
+    │   │       └───ValueObjects
+    │   │               Address.cs
+    │   │
+    │   ├───Infrastructure
+    │   │   ├───Conta360.Infrastructure.A3Cash
+    │   │   │   │   Conta360.Infrastructure.A3Cash.csproj
+    │   │   │   │
+    │   │   │   ├───bin
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   ├───Configuration
+    │   │   │   │       A3CashSettings.cs
+    │   │   │   │
+    │   │   │   ├───Interfaces
+    │   │   │   │       IA3FileGenerator.cs
+    │   │   │   │
+    │   │   │   ├───Models
+    │   │   │   │       AccountingEntry.cs
+    │   │   │   │
+    │   │   │   ├───obj
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │   │   │           │   Conta360.Infrastructure.A3Cash.GeneratedMSBuildEditorConfig.editorconfig
+    │   │   │   │           │   Conta360.Infrastructure.A3Cash.GlobalUsings.g.cs
+    │   │   │   │           │
+    │   │   │   │           ├───ref
+    │   │   │   │           └───refint
+    │   │   │   └───Services
+    │   │   │           A3DailyAccountsProcessor.cs
+    │   │   │           A3FileFormatter.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.Excel
+    │   │   │   │   Conta360.Infrastructure.Excel.csproj
+    │   │   │   │
+    │   │   │   ├───bin
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   ├───Configuration
+    │   │   │   │       ExcelSettings.cs
+    │   │   │   │
+    │   │   │   ├───Models
+    │   │   │   │       DetalleDiario.cs
+    │   │   │   │       ResumenFiscalResponse.cs
+    │   │   │   │       TotalesGenerales.cs
+    │   │   │   │
+    │   │   │   ├───obj
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │   │   │           │   Conta360.Infrastructure.Excel.GeneratedMSBuildEditorConfig.editorconfig
+    │   │   │   │           │   Conta360.Infrastructure.Excel.GlobalUsings.g.cs
+    │   │   │   │           │
+    │   │   │   │           ├───ref
+    │   │   │   │           └───refint
+    │   │   │   └───Services
+    │   │   │       │   ExcelProcessor.cs
+    │   │   │       │   ServiceRegistrationExcel.cs
+    │   │   │       │
+    │   │   │       ├───Implementation
+    │   │   │       │       ExcelFiscalProcessor.cs
+    │   │   │       │
+    │   │   │       └───Interaces
+    │   │   │               IExcelFiscalProcessor.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.PGC
+    │   │   │   │   Conta360.Infrastructure.PGC.csproj
+    │   │   │   │
+    │   │   │   ├───bin
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   ├───Domain
+    │   │   │   │   │   XmlTaxonomySerializer.cs
+    │   │   │   │   │
+    │   │   │   │   └───Models
+    │   │   │   │           PGCEntity.cs
+    │   │   │   │
+    │   │   │   ├───Extraction
+    │   │   │   │       PGCDataExtractor.cs
+    │   │   │   │
+    │   │   │   ├───obj
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │   │   │           │   Conta360.Infrastructure.PGC.GeneratedMSBuildEditorConfig.editorconfig
+    │   │   │   │           │   Conta360.Infrastructure.PGC.GlobalUsings.g.cs
+    │   │   │   │           │
+    │   │   │   │           ├───ref
+    │   │   │   │           └───refint
+    │   │   │   ├───Processing
+    │   │   │   │       PgcTaxonomyBuilder.cs
+    │   │   │   │       PgcTaxonomyDownloader.cs
+    │   │   │   │       PgcTaxonomyParser.cs
+    │   │   │   │       PgcTaxonomyValidator.cs
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           PcgTaxonomyService.cs
+    │   │   │           ServiceRegistrationPcg.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.Postgres
+    │   │   │   │   Conta360.Infrastructure.Postgres.csproj
+    │   │   │   │
+    │   │   │   ├───bin
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   ├───Contexts
+    │   │   │   │       PostgresDbContext.cs
+    │   │   │   │
+    │   │   │   ├───obj
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │   │   │           │   Conta360.Infrastructure.Postgres.GeneratedMSBuildEditorConfig.editorconfig
+    │   │   │   │           │   Conta360.Infrastructure.Postgres.GlobalUsings.g.cs
+    │   │   │   │           │
+    │   │   │   │           ├───ref
+    │   │   │   │           └───refint
+    │   │   │   ├───Repositories
+    │   │   │   │       AccountRepositoryPostgres.cs
+    │   │   │   │       UnitOfWorkPostgres.cs
+    │   │   │   │
+    │   │   │   └───Services
+    │   │   │           ServiceRegistrationPostgres.cs
+    │   │   │
+    │   │   ├───Conta360.Infrastructure.Reporting
+    │   │   │   │   Conta360.Infrastructure.Reporting.csproj
+    │   │   │   │
+    │   │   │   ├───bin
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   ├───obj
+    │   │   │   │   └───Debug
+    │   │   │   │       └───net8.0
+    │   │   │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │   │   │           │   Conta360.Infrastructure.Reporting.GeneratedMSBuildEditorConfig.editorconfig
+    │   │   │   │           │   Conta360.Infrastructure.Reporting.GlobalUsings.g.cs
+    │   │   │   │           │
+    │   │   │   │           ├───ref
+    │   │   │   │           └───refint
+    │   │   │   └───Services
+    │   │   │           ExcelToA3IntegrationService.cs
+    │   │   │           KpiCalculationService.cs
+    │   │   │
+    │   │   └───Conta360.Infrastructure.Sqlite
+    │   │       │   Conta360.Infrastructure.Sqlite.csproj
+    │   │       │
+    │   │       ├───bin
+    │   │       │   └───Debug
+    │   │       │       └───net8.0
+    │   │       ├───Contexts
+    │   │       │       SqliteDbContext.cs
+    │   │       │
+    │   │       ├───obj
+    │   │       │   └───Debug
+    │   │       │       └───net8.0
+    │   │       │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │   │       │           │   Conta360.Infrastructure.Sqlite.GeneratedMSBuildEditorConfig.editorconfig
+    │   │       │           │   Conta360.Infrastructure.Sqlite.GlobalUsings.g.cs
+    │   │       │           │
+    │   │       │           ├───ref
+    │   │       │           └───refint
+    │   │       ├───Repositories
+    │   │       │       AccountRepositorySqlite.cs
+    │   │       │       UnitOfWorkSqlite.cs
+    │   │       │
+    │   │       └───Services
+    │   │               ServiceRegistrationSqlite.cs
+    │   │
+    │   ├───Presentation
+    │   │   │   Dockerfile
+    │   │   │
+    │   │   └───Conta360.Presentation.Api
+    │   │       │   .gitignore
+    │   │       │   appsettings.Development.json
+    │   │       │   appsettings.json
+    │   │       │   conta360.db
+    │   │       │   Conta360.Presentation.Api.csproj
+    │   │       │   Program.cs
+    │   │       │
+    │   │       ├───Controllers
+    │   │       │       AccountsController.cs
+    │   │       │       PgcAccountsController.cs
+    │   │       │
+    │   │       ├───Data
+    │   │       │   ├───A3
+    │   │       │   │   │   ResumenFiscal.xlsx
+    │   │       │   │   │
+    │   │       │   │   └───ficheros_a3
+    │   │       │   └───PGC
+    │   │       │       │   taxonomiaPGC2007.zip
+    │   │       │       │
+    │   │       │       ├───ficheros_a3
+    │   │       │       │       SUENLACE.DAT
+    │   │       │       │       SUENLACE_FGLD.DAT
+    │   │       │       │
+    │   │       │       └───taxonomiaPGC2007_v1.7.0_20240101_r1-EIRL
+    │   │       │           ├───documentacion
+    │   │       │           │   │   20240101_IdentificadorTaxonomiaPGC2007.doc
+    │   │       │           │   │   Control de Cambios entre versiones PGC2007 v1.6.1 y PGC2007 v1.7.0.xls
+    │   │       │           │   │   Descripcion-PGC2007.doc
+    │   │       │           │   │   Descripcion-PGC2007.pdf
+    │   │       │           │   │   DiccionarioDatos_PGC2007-XBRL_2024 v1.7.0.xls
+    │   │       │           │   │   Informe_Final_Revisi�n_PGC2007_v1.7.0.doc
+    │   │       │           │   │   Informe_Pruebas_PGC2007-2024-01-01.doc
+    │   │       │           │   │   Solicitud Revision PGC2007 v1.7.0.xls
+    │   │       │           │   │
+    │   │       │           │   ├───controlCambios
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.2 y PGC2007v1.4.3.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.3 y PGC2007v1.4.4.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.4.4 y PGC2007v1.5.0.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.5.0 y PGC2007v1.5.1.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGC2007v1.6.0 y PGC2007v1.6.1.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.1 a PGCv1.2.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.2 a PGCv1.3.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.3 a PGCv1.4.xls
+    │   │       │           │   │       Control de Cambios entre versiones PGCv1.4 a PGCv1.4-fe-erratas14mayo.xls
+    │   │       │           │   │
+    │   │       │           │   └───InformesEjemplo
+    │   │       │           │       ├───EstadosCuentasAnuales
+    │   │       │           │       │       Caso01-Modelo Normal PGC 2007.xls
+    │   │       │           │       │       Caso01a.xbrl
+    │   │       │           │       │       Caso01b.xbrl
+    │   │       │           │       │       Caso01c.xbrl
+    │   │       │           │       │       CASO02-Modelo Abreviado PGC 2007.xls
+    │   │       │           │       │       Caso02a.xbrl
+    │   │       │           │       │       Caso02b.xbrl
+    │   │       │           │       │       Caso03a.xbrl
+    │   │       │           │       │       Caso03b.xbrl
+    │   │       │           │       │       Caso03d.xbrl
+    │   │       │           │       │       Caso03e.xbrl
+    │   │       │           │       │       Caso03f.xbrl
+    │   │       │           │       │       Caso03f_erroresRedondeo.xbrl
+    │   │       │           │       │       CASO03_Modelo PGC 2007 PYMES.xls
+    │   │       │           │       │       Caso04_DescuadreActivoPasivo.xbrl
+    │   │       │           │       │       Caso04_Modelo PGC 2007 PYMES.xls
+    │   │       │           │       │       Caso05.xbrl
+    │   │       │           │       │       Caso05_Modelo Abreviado PGC 2007.xls
+    │   │       │           │       │       Caso06.xbrl
+    │   │       │           │       │       Caso06_Modelo Normal PGC 2007.xls
+    │   │       │           │       │       Caso07.xbrl
+    │   │       │           │       │       CASO07_Modelo PGC 2007 EIRL.xls
+    │   │       │           │       │
+    │   │       │           │       └───Memoria
+    │   │       │           │               caso01.xbrl
+    │   │       │           │               caso01_08Enero2013_InstanciaPGC2007_NormalMemoria_apartado9r.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado10.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado11.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado12.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado13.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado14.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado15.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado16.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado18.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado21.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado23.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado24.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado3.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado5.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado6.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado8.xbrl
+    │   │       │           │               caso01_19Jun2013_InstanciaPGC2007_NormalMemoria_apartado9r.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado19-1.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado19.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado27.xbrl
+    │   │       │           │               caso01_31Dic2013_InstanciaPGC2007_NormalMemoria_apartado7.xbrl
+    │   │       │           │               caso02.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado0.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado10.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado4.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado5.xbrl
+    │   │       │           │               caso02_19Jun2013_InstanciaPGC2007_AbreviadoMemoria_apartado6.xbrl
+    │   │       │           │               caso03.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado10.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado4.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado5.xbrl
+    │   │       │           │               caso03_19Jun2013_InstanciaPGC2007_pymesMemoria_apartado6.xbrl
+    │   │       │           │               caso04.xbrl
+    │   │       │           │               caso05.xbrl
+    │   │       │           │
+    │   │       │           └───taxonomia
+    │   │       │               │   pgc07-abreviado-completo.xsd
+    │   │       │               │   pgc07-abreviado-memoria.xsd
+    │   │       │               │   pgc07-abreviado.xsd
+    │   │       │               │   pgc07-eirl-completo.xsd
+    │   │       │               │   pgc07-eirl.xsd
+    │   │       │               │   pgc07-mixto-completo.xsd
+    │   │       │               │   pgc07-mixto.xsd
+    │   │       │               │   pgc07-normal-completo.xsd
+    │   │       │               │   pgc07-normal-memoria.xsd
+    │   │       │               │   pgc07-normal.xsd
+    │   │       │               │   pgc07-pymes-completo.xsd
+    │   │       │               │   pgc07-pymes-memoria.xsd
+    │   │       │               │   pgc07-pymes.xsd
+    │   │       │               │
+    │   │       │               ├───auxiliares
+    │   │       │               │   │   pgc-07-ref-2024-01-01.xsd
+    │   │       │               │   │   pgc-07-types-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───dgi-code
+    │   │       │               │           dgi-cnae-09-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-dat-inf-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-eco-bas-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-est-gen-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-gen-ex-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-lc-es-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-lc-int-2024-01-01-label-es-code.xml
+    │   │       │               │           dgi-rel-2024-01-01-label-es-code.xml
+    │   │       │               │
+    │   │       │               ├───EstadosCuentasAnuales
+    │   │       │               │   ├───abreviado
+    │   │       │               │   │       pgc-07-a-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-a-2024-01-01-reference.xml
+    │   │       │               │   │       pgc-07-a-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-label.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-a-m1-balance-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-a-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───comun
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-ap-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-bs-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-c-bs-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-bs-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-f1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-c-f1-balance-2024-01-01-definition.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-c-na-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-roles-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───EstadoTotalCambiosPatrimonioNeto
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07cbs-dpn-2024-01-01.xsd
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07cbs-dvs-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───eirl
+    │   │       │               │   │       pgc-07-e-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-e-2024-01-01-reference.xml
+    │   │       │               │   │       pgc-07-e-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-label-es.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-e-m1-balance-2024-01-01.xsd
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │       pgc-07-e-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───normal
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m1-balance-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m2-pyg-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-m3-patnetA-2024-01-01.xsd
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-calculation.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc-07-n-m4-flujefec-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───EstadoTotalCambiosPatrimonioNeto
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-d-pn-2024-01-01.xsd
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-d-vs-2024-01-01.xsd
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07n-etcpn-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───pymes
+    │   │       │               │           pgc-07-p-2024-01-01-label-es.xml
+    │   │       │               │           pgc-07-p-2024-01-01-reference.xml
+    │   │       │               │           pgc-07-p-2024-01-01.xsd
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-calculation.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-label.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01-presentation.xml
+    │   │       │               │           pgc-07-p-m1-balance-2024-01-01.xsd
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01-calculation.xml
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01-presentation.xml
+    │   │       │               │           pgc-07-p-m2-pyg-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               ├───Identificacion
+    │   │       │               │       pgc07ma-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07ma-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07ma-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-label-es-code.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01-reference.xml
+    │   │       │               │       pgc07mc-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07me-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-label.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07me-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mn-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07mn-apdo0-2024-01-01.xsd
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-calculation.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-label-es-code.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-label-es.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-presentation.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01-reference.xml
+    │   │       │               │       pgc07mp-apdo0-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               ├───Memoria
+    │   │       │               │   ├───abreviado
+    │   │       │               │   │   │   pgc07ma-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07ma-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-en.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07ma-rsm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado10
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo10-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado2
+    │   │       │               │   │   │       pgc07ma-apdo2-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo2-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado3
+    │   │       │               │   │   │       pgc07ma-apdo3-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo3-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado4
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo4-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-d-inm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado5
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo5-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado6
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo6-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado7
+    │   │       │               │   │   │       pgc07ma-apdo7-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo7-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado8
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-apdo8-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07ma-d-sf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───apartado9
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-label.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-presentation.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07ma-apdo9-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───comun
+    │   │       │               │   │   │   pgc07m-roles-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-ap-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-bs-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mc-bs-ap-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-bs-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mc-na-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado23
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-CategoriasProfesionales
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-cp-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-InstrumentosFinancieros
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-clase-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-plzven-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07d-reclsf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-PartesVinculadas
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───dim-PartesVinculadas-ap
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-label.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07m-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───dim-PeriodoMedioPago
+    │   │       │               │   │           pgc07d-perio-2024-01-01-definition.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01-label-es.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01-reference.xml
+    │   │       │               │   │           pgc07d-perio-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   ├───normal
+    │   │       │               │   │   │   pgc07mn-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mn-2024-01-01.xsd
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-en.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-label-es.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-presentation.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01-reference.xml
+    │   │       │               │   │   │   pgc07mn-rsm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado10
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo10-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado11
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo11-4-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-monex-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado12
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo12-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sf-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado13
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo13-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado14
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo14-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-prv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado16
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo16-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado17
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo17-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-tpbip-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado18
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo18-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado19
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-1-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo19-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado2
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo2-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado20
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo20-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-nc-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado21
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo21-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado22
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo22-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado23
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo23-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-pv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado24
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo24-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado25
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo25-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sact-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-sgeo-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado27
+    │   │       │               │   │   │       pgc07mn-apdo27-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo27-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado3
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01-calculation.xml
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo3-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado4
+    │   │       │               │   │   │       pgc07mn-apdo4-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo4-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado5
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo5-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-inm-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado6
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo6-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-inv-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado7
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo7-2024-01-01.xsd
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-definition.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-label-es-code.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-d-it-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   ├───apartado8
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-label-es.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-presentation.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01-reference.xml
+    │   │       │               │   │   │       pgc07mn-apdo8-2024-01-01.xsd
+    │   │       │               │   │   │
+    │   │       │               │   │   └───apartado9
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-definition.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9-3-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9r-2024-01-01.xsd
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-label-es-code.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-label-es.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-presentation.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01-reference.xml
+    │   │       │               │   │       │   pgc07mn-apdo9w-2024-01-01.xsd
+    │   │       │               │   │       │
+    │   │       │               │   │       └───dim-InstrumentosFinancieros
+    │   │       │               │   │               pgc07d-clase-2024-01-01-definition.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-label-es-code.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-label-es.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01-reference.xml
+    │   │       │               │   │               pgc07d-clase-2024-01-01.xsd
+    │   │       │               │   │
+    │   │       │               │   └───pymes
+    │   │       │               │       │   pgc07mp-2024-01-01-label-es-code.xml
+    │   │       │               │       │   pgc07mp-2024-01-01-label-es.xml
+    │   │       │               │       │   pgc07mp-2024-01-01-reference.xml
+    │   │       │               │       │   pgc07mp-2024-01-01.xsd
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-en.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-es-code.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-label-es.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-presentation.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01-reference.xml
+    │   │       │               │       │   pgc07mp-rsm-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado10
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo10-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado2
+    │   │       │               │       │       pgc07mp-apdo2-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo2-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado3
+    │   │       │               │       │       pgc07mp-apdo3-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo3-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado4
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo4-2024-01-01.xsd
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-label.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-d-inm-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado5
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-label-es-code.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo5-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado6
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-label-es-code.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo6-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado7
+    │   │       │               │       │       pgc07mp-apdo7-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo7-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       ├───apartado8
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-calculation.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-presentation.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-apdo8-2024-01-01.xsd
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-definition.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-label-es.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01-reference.xml
+    │   │       │               │       │       pgc07mp-d-sf-2024-01-01.xsd
+    │   │       │               │       │
+    │   │       │               │       └───apartado9
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-definition.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-label-es-code.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-label-es.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-presentation.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01-reference.xml
+    │   │       │               │               pgc07mp-apdo9-2024-01-01.xsd
+    │   │       │               │
+    │   │       │               └───NotaMedioAmbiente
+    │   │       │                   └───normal
+    │   │       │                           pgc07mn-apdo15-2024-01-01-label-es.xml
+    │   │       │                           pgc07mn-apdo15-2024-01-01-presentation.xml
+    │   │       │                           pgc07mn-apdo15-2024-01-01.xsd
+    │   │       │                           pgc07mn-apdo26-2024-01-01-label-es.xml
+    │   │       │                           pgc07mn-apdo26-2024-01-01-presentation.xml
+    │   │       │                           pgc07mn-apdo26-2024-01-01.xsd
+    │   │       │
+    │   │       ├───logs
+    │   │       │       log-20250708.txt
+    │   │       │       log-20250709.txt
+    │   │       │       log-20250710.txt
+    │   │       │       log-20250711.txt
+    │   │       │       log-20250712.txt
+    │   │       │
+    │   │       └───Models
+    │   │               CreateAccountRequest.cs
+    │   │               GenerateA3Request.cs
+    │   │
+    │   └───Shared
+    │       └───Conta360.CrossCutting.IoC
+    │           │   Conta360.CrossCutting.IoC.csproj
+    │           │   DInjection.cs
+    │           │
+    │           ├───bin
+    │           │   └───Debug
+    │           │       └───net8.0
+    │           └───obj
+    │               └───Debug
+    │                   └───net8.0
+    │                       │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    │                       │   Conta360.CrossCutting.IoC.GeneratedMSBuildEditorConfig.editorconfig
+    │                       │   Conta360.CrossCutting.IoC.GlobalUsings.g.cs
+    │                       │
+    │                       ├───ref
+    │                       └───refint
+    ├───microfrontends
+    │   ├───dashboard-app
+    │   │   │   .dockerignore
+    │   │   │   .gitignore
+    │   │   │   Dockerfile
+    │   │   │   jsvectormap.d.ts
+    │   │   │   next-env.d.ts
+    │   │   │   next.config.js
+    │   │   │   package-lock.json
+    │   │   │   package.json
+    │   │   │   postcss.config.js
+    │   │   │   prettier.config.js
+    │   │   │   tailadmin-nextjs.jpg
+    │   │   │   tailwind.config.ts
+    │   │   │   tsconfig.json
+    │   │   │
+    │   │   ├───components
+    │   │   │   │   CardDataStats.tsx
+    │   │   │   │   DarkModeSwitcher.tsx
+    │   │   │   │
+    │   │   │   ├───Breadcrumbs
+    │   │   │   │       Breadcrumb.tsx
+    │   │   │   │
+    │   │   │   ├───Calender
+    │   │   │   │       index.tsx
+    │   │   │   │
+    │   │   │   ├───Charts
+    │   │   │   │       ChartFour.tsx
+    │   │   │   │       ChartOne.tsx
+    │   │   │   │       ChartThree.tsx
+    │   │   │   │       ChartTwo.tsx
+    │   │   │   │
+    │   │   │   ├───Chat
+    │   │   │   │       ChatCard.tsx
+    │   │   │   │
+    │   │   │   ├───Checkboxes
+    │   │   │   │       CheckboxFive.tsx
+    │   │   │   │       CheckboxFour.tsx
+    │   │   │   │       CheckboxOne.tsx
+    │   │   │   │       CheckboxThree.tsx
+    │   │   │   │       CheckboxTwo.tsx
+    │   │   │   │
+    │   │   │   ├───common
+    │   │   │   │   └───Loader
+    │   │   │   │           index.tsx
+    │   │   │   │
+    │   │   │   ├───Dashboard
+    │   │   │   │       E-commerce.tsx
+    │   │   │   │
+    │   │   │   ├───Dropdowns
+    │   │   │   │       DropdownDefault.tsx
+    │   │   │   │
+    │   │   │   ├───Header
+    │   │   │   │       DarkModeSwitcher.tsx
+    │   │   │   │       DropdownMessage.tsx
+    │   │   │   │       DropdownNotification.tsx
+    │   │   │   │       DropdownUser.tsx
+    │   │   │   │       index.tsx
+    │   │   │   │
+    │   │   │   ├───Maps
+    │   │   │   │       MapOne.tsx
+    │   │   │   │
+    │   │   │   ├───Sidebar
+    │   │   │   │       index.tsx
+    │   │   │   │       SidebarLinkGroup.tsx
+    │   │   │   │
+    │   │   │   ├───Switchers
+    │   │   │   │       SwitcherFour.tsx
+    │   │   │   │       SwitcherOne.tsx
+    │   │   │   │       SwitcherThree.tsx
+    │   │   │   │       SwitcherTwo.tsx
+    │   │   │   │
+    │   │   │   └───Tables
+    │   │   │           TableFour.tsx
+    │   │   │           TableOne.tsx
+    │   │   │           TableThree.tsx
+    │   │   │           TableTwo.tsx
+    │   │   │
+    │   │   ├───hooks
+    │   │   │       useColorMode.tsx
+    │   │   │       useFlowbite.tsx
+    │   │   │       useLocalStorage.tsx
+    │   │   │
+    │   │   ├───js
+    │   │   │       drag.ts
+    │   │   │       us-aea-en.js
+    │   │   │
+    │   │   ├───pages
+    │   │   │   │   favicon.ico
+    │   │   │   │   index.tsx
+    │   │   │   │   _app.tsx
+    │   │   │   │   _document.tsx
+    │   │   │   │
+    │   │   │   ├───auth
+    │   │   │   │   ├───signin
+    │   │   │   │   │       index.tsx
+    │   │   │   │   │
+    │   │   │   │   └───signup
+    │   │   │   │           index.tsx
+    │   │   │   │
+    │   │   │   ├───calendar
+    │   │   │   │       index.tsx
+    │   │   │   │
+    │   │   │   ├───chart
+    │   │   │   │       index.tsx
+    │   │   │   │
+    │   │   │   ├───forms
+    │   │   │   │   ├───form-elements
+    │   │   │   │   │       index.tsx
+    │   │   │   │   │
+    │   │   │   │   └───form-layout
+    │   │   │   │           index.tsx
+    │   │   │   │
+    │   │   │   ├───profile
+    │   │   │   │       index.tsx
+    │   │   │   │
+    │   │   │   ├───settings
+    │   │   │   │       index.tsx
+    │   │   │   │
+    │   │   │   ├───tables
+    │   │   │   │       index.tsx
+    │   │   │   │
+    │   │   │   └───ui
+    │   │   │       ├───alerts
+    │   │   │       │       index.tsx
+    │   │   │       │
+    │   │   │       └───buttons
+    │   │   │               index.tsx
+    │   │   │
+    │   │   ├───public
+    │   │   │   │   next.svg
+    │   │   │   │   vercel.svg
+    │   │   │   │
+    │   │   │   └───images
+    │   │   │       │   favicon.ico
+    │   │   │       │
+    │   │   │       ├───brand
+    │   │   │       │       brand-01.svg
+    │   │   │       │       brand-02.svg
+    │   │   │       │       brand-03.svg
+    │   │   │       │       brand-04.svg
+    │   │   │       │       brand-05.svg
+    │   │   │       │
+    │   │   │       ├───cards
+    │   │   │       │       cards-01.png
+    │   │   │       │       cards-02.png
+    │   │   │       │       cards-03.png
+    │   │   │       │       cards-04.png
+    │   │   │       │       cards-05.png
+    │   │   │       │       cards-06.png
+    │   │   │       │
+    │   │   │       ├───country
+    │   │   │       │       country-01.svg
+    │   │   │       │       country-02.svg
+    │   │   │       │       country-03.svg
+    │   │   │       │       country-04.svg
+    │   │   │       │       country-05.svg
+    │   │   │       │       country-06.svg
+    │   │   │       │
+    │   │   │       ├───cover
+    │   │   │       │       cover-01.png
+    │   │   │       │
+    │   │   │       ├───icon
+    │   │   │       │       icon-arrow-down.svg
+    │   │   │       │       icon-calendar.svg
+    │   │   │       │       icon-copy-alt.svg
+    │   │   │       │       icon-moon.svg
+    │   │   │       │       icon-sun.svg
+    │   │   │       │
+    │   │   │       ├───logo
+    │   │   │       │       logo-dark.svg
+    │   │   │       │       logo-icon.svg
+    │   │   │       │       logo.svg
+    │   │   │       │
+    │   │   │       ├───product
+    │   │   │       │       product-01.png
+    │   │   │       │       product-02.png
+    │   │   │       │       product-03.png
+    │   │   │       │       product-04.png
+    │   │   │       │       product-thumb.png
+    │   │   │       │
+    │   │   │       ├───task
+    │   │   │       │       task-01.jpg
+    │   │   │       │
+    │   │   │       └───user
+    │   │   │               user-01.png
+    │   │   │               user-02.png
+    │   │   │               user-03.png
+    │   │   │               user-04.png
+    │   │   │               user-05.png
+    │   │   │               user-06.png
+    │   │   │               user-07.png
+    │   │   │               user-08.png
+    │   │   │               user-09.png
+    │   │   │               user-10.png
+    │   │   │               user-11.png
+    │   │   │               user-12.png
+    │   │   │               user-13.png
+    │   │   │
+    │   │   └───types
+    │   │           brand.ts
+    │   │           cards.ts
+    │   │           chat.ts
+    │   │           country.ts
+    │   │           faq.ts
+    │   │           faqItem.ts
+    │   │           Lead.ts
+    │   │           package.ts
+    │   │           product.ts
+    │   │
+    │   └───root-config
+    │       │   .dockerignore
+    │       │   .gitignore
+    │       │   Dockerfile
+    │       │   mf-remotes.config.js
+    │       │   next-env.d.ts
+    │       │   next.config.js
+    │       │   package.json
+    │       │   postcss.config.js
+    │       │   remote-declarations.d.ts
+    │       │   tailwind.config.ts
+    │       │   tsconfig.json
+    │       │
+    │       ├───pages
+    │       │   │   globals.css
+    │       │   │   index.tsx
+    │       │   │   _app.tsx
+    │       │   │
+    │       │   └───fonts
+    │       │           Satoshi-Black.eot
+    │       │           Satoshi-Black.ttf
+    │       │           Satoshi-Black.woff
+    │       │           Satoshi-Black.woff2
+    │       │           Satoshi-BlackItalic.eot
+    │       │           Satoshi-BlackItalic.ttf
+    │       │           Satoshi-BlackItalic.woff
+    │       │           Satoshi-BlackItalic.woff2
+    │       │           Satoshi-Bold.eot
+    │       │           Satoshi-Bold.ttf
+    │       │           Satoshi-Bold.woff
+    │       │           Satoshi-Bold.woff2
+    │       │           Satoshi-BoldItalic.eot
+    │       │           Satoshi-BoldItalic.ttf
+    │       │           Satoshi-BoldItalic.woff
+    │       │           Satoshi-BoldItalic.woff2
+    │       │           Satoshi-Italic.eot
+    │       │           Satoshi-Italic.ttf
+    │       │           Satoshi-Italic.woff
+    │       │           Satoshi-Italic.woff2
+    │       │           Satoshi-Light.eot
+    │       │           Satoshi-Light.ttf
+    │       │           Satoshi-Light.woff
+    │       │           Satoshi-Light.woff2
+    │       │           Satoshi-LightItalic.eot
+    │       │           Satoshi-LightItalic.ttf
+    │       │           Satoshi-LightItalic.woff
+    │       │           Satoshi-LightItalic.woff2
+    │       │           Satoshi-Medium.eot
+    │       │           Satoshi-Medium.ttf
+    │       │           Satoshi-Medium.woff
+    │       │           Satoshi-Medium.woff2
+    │       │           Satoshi-MediumItalic.eot
+    │       │           Satoshi-MediumItalic.ttf
+    │       │           Satoshi-MediumItalic.woff
+    │       │           Satoshi-MediumItalic.woff2
+    │       │           Satoshi-Regular.eot
+    │       │           Satoshi-Regular.ttf
+    │       │           Satoshi-Regular.woff
+    │       │           Satoshi-Regular.woff2
+    │       │           Satoshi-Variable.eot
+    │       │           Satoshi-Variable.ttf
+    │       │           Satoshi-Variable.woff
+    │       │           Satoshi-Variable.woff2
+    │       │           Satoshi-VariableItalic.eot
+    │       │           Satoshi-VariableItalic.ttf
+    │       │           Satoshi-VariableItalic.woff
+    │       │           Satoshi-VariableItalic.woff2
+    │       │
+    │       └───src
+    │           └───lib
+    │                   api.ts
+    │
+    └───SubvencionesApi
+        │   appsettings.json
+        │   Dockerfile
+        │   Program.cs
+        │   SubvencionesApi.csproj
+        │
+        ├───Controllers
+        │       SubvencionesController.cs
+        │
+        ├───SubvencionesApp.Core
+        │   │   SubvencionesApp.Core.csproj
+        │   │
+        │   ├───bin
+        │   │   └───Debug
+        │   │       └───net8.0
+        │   ├───Dtos
+        │   │       AccionDto.cs
+        │   │       AgrupacionDto.cs
+        │   │       AreaDto.cs
+        │   │       BeneficiarioDto.cs
+        │   │       ConcesionDto.cs
+        │   │       ConvocatoriaDto.cs
+        │   │       DatosEstadisticosDto.cs
+        │   │       EntidadDto.cs
+        │   │       EstadoDto.cs
+        │   │       FormaPagoDto.cs
+        │   │       LineaDto.cs
+        │   │       MunicipioDto.cs
+        │   │       OrganismoDto.cs
+        │   │       ProgramaDto.cs
+        │   │       ProvinciaDto.cs
+        │   │       SectorDto.cs
+        │   │       SituacionEntornoDto.cs
+        │   │       SubtipoSubvencionDto.cs
+        │   │       TipoBeneficiarioDto.cs
+        │   │       TipoConvocatoriaDto.cs
+        │   │       TipoOrganismoDto.cs
+        │   │       TipoSubvencionDto.cs
+        │   │       TramoDto.cs
+        │   │       UnidadAdministrativaDto.cs
+        │   │
+        │   ├───Entities
+        │   │       Accion.cs
+        │   │       Agrupacion.cs
+        │   │       Area.cs
+        │   │       Beneficiario.cs
+        │   │       Concesion.cs
+        │   │       Convocatoria.cs
+        │   │       DatosEstadisticos.cs
+        │   │       Entidad.cs
+        │   │       Estado.cs
+        │   │       FormaPago.cs
+        │   │       Linea.cs
+        │   │       Municipio.cs
+        │   │       Organismo.cs
+        │   │       Programa.cs
+        │   │       Provincia.cs
+        │   │       Sector.cs
+        │   │       SituacionEntorno.cs
+        │   │       SubtipoSubvencion.cs
+        │   │       TipoBeneficiario.cs
+        │   │       TipoConvocatoria.cs
+        │   │       TipoOrganismo.cs
+        │   │       TipoSubvencion.cs
+        │   │       Tramo.cs
+        │   │       UnidadAdministrativa.cs
+        │   │
+        │   ├───Interfaces
+        │   │       IAccionRepository.cs
+        │   │       IAgrupacionRepository.cs
+        │   │       IAreaRepository.cs
+        │   │       IBeneficiarioRepository.cs
+        │   │       IConcesionRepository.cs
+        │   │       IConvocatoriaRepository.cs
+        │   │       IDatosEstadisticosRepository.cs
+        │   │       IEntidadRepository.cs
+        │   │       IEstadoRepository.cs
+        │   │       IFormaPagoRepository.cs
+        │   │       IGenericRepository.cs
+        │   │       ILineaRepository.cs
+        │   │       IMunicipioRepository.cs
+        │   │       IOrganismoRepository.cs
+        │   │       IProgramaRepository.cs
+        │   │       IProvinciaRepository.cs
+        │   │       ISectorRepository.cs
+        │   │       ISituacionEntornoRepository.cs
+        │   │       ISubtipoSubvencionRepository.cs
+        │   │       ISubvencionesService.cs
+        │   │       ITipoBeneficiarioRepository.cs
+        │   │       ITipoConvocatoriaRepository.cs
+        │   │       ITipoOrganismoRepository.cs
+        │   │       ITipoSubvencionRepository.cs
+        │   │       ITramoRepository.cs
+        │   │       IUnidadAdministrativaRepository.cs
+        │   │       IUnitOfWork.cs
+        │   │
+        │   ├───obj
+        │   │   └───Debug
+        │   │       └───net8.0
+        │   │           │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+        │   │           │   SubvencionesApp.Core.GeneratedMSBuildEditorConfig.editorconfig
+        │   │           │   SubvencionesApp.Core.GlobalUsings.g.cs
+        │   │           │
+        │   │           ├───ref
+        │   │           └───refint
+        │   └───Services
+        │           AccionService.cs
+        │           AgrupacionService.cs
+        │           AreaService.cs
+        │           BeneficiarioService.cs
+        │           ConcesionService.cs
+        │           ConvocatoriaService.cs
+        │           DatosEstadisticosService.cs
+        │           EntidadService.cs
+        │           EstadoService.cs
+        │           FormaPagoService.cs
+        │           LineaService.cs
+        │           MunicipioService.cs
+        │           OrganismoService.cs
+        │           ProgramaService.cs
+        │           ProvinciaService.cs
+        │           SectorService.cs
+        │           SituacionEntornoService.cs
+        │           SubtipoSubvencionService.cs
+        │           SubvencionesService.cs
+        │           TipoBeneficiarioService.cs
+        │           TipoConvocatoriaService.cs
+        │           TipoOrganismoService.cs
+        │           TipoSubvencionService.cs
+        │           TramoService.cs
+        │           UnidadAdministrativaService.cs
+        │
+        └───SubvencionesApp.Infrastructure
+            │   SubvencionesApp.Infrastructure.csproj
+            │
+            ├───Api
+            │   │   InfoSubvencionesApiClient.cs
+            │   │
+            │   └───Models
+            │           AccionApiModel.cs
+            │           AgrupacionApiModel.cs
+            │           AreaApiModel.cs
+            │           BeneficiarioApiModel.cs
+            │           ConcesionApiModel.cs
+            │           ConvocatoriaApiModel.cs
+            │           DatosEstadisticosApiModel.cs
+            │           EntidadApiModel.cs
+            │           EstadoApiModel.cs
+            │           FormaPagoApiModel.cs
+            │           LineaApiModel.cs
+            │           MunicipioApiModel.cs
+            │           OrganismoApiModel.cs
+            │           ProgramaApiModel.cs
+            │           ProvinciaApiModel.cs
+            │           SectorApiModel.cs
+            │           SituacionEntornoApiModel.cs
+            │           SubtipoSubvencionApiModel.cs
+            │           TipoBeneficiarioApiModel.cs
+            │           TipoConvocatoriaApiModel.cs
+            │           TipoOrganismoApiModel.cs
+            │           TipoSubvencionApiModel.cs
+            │           TramoApiModel.cs
+            │           UnidadAdministrativaApiModel.cs
+            │
+            ├───bin
+            │   └───Debug
+            │       └───net8.0
+            ├───Database
+            │       AccionRepository.cs
+            │       AgrupacionRepository.cs
+            │       AppDbContext.cs
+            │       AreaRepository.cs
+            │       BeneficiarioRepository.cs
+            │       ConcesionRepository.cs
+            │       ConvocatoriaRepository.cs
+            │       DatosEstadisticosRepository.cs
+            │       EntidadRepository.cs
+            │       EstadoRepository.cs
+            │       FormaPagoRepository.cs
+            │       GenericRepository.cs
+            │       LineaRepository.cs
+            │       MunicipioRepository.cs
+            │       OrganismoRepository.cs
+            │       ProgramaRepository.cs
+            │       ProvinciaRepository.cs
+            │       SectorRepository.cs
+            │       SituacionEntornoRepository.cs
+            │       SubtipoSubvencionRepository.cs
+            │       TipoBeneficiarioRepository.cs
+            │       TipoConvocatoriaRepository.cs
+            │       TipoOrganismoRepository.cs
+            │       TipoSubvencionRepository.cs
+            │       TramoRepository.cs
+            │       UnidadAdministrativaRepository.cs
+            │       UnitOfWork.cs
+            │
+            └───obj
+                └───Debug
+                    └───net8.0
+                        │   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+                        │   SubvencionesApp.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+                        │   SubvencionesApp.Infrastructure.GlobalUsings.g.cs
+                        │
+                        ├───ref
+                        └───refint
