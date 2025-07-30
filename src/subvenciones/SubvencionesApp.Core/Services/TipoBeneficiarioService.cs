@@ -1,0 +1,24 @@
+using SubvencionesApp.Core.Dtos;
+using SubvencionesApp.Core.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SubvencionesApp.Core.Services
+{
+    public class TipoBeneficiarioService
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public TipoBeneficiarioService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<IEnumerable<TipoBeneficiarioDto>> GetAllAsync()
+        {
+            var tipos = await _unitOfWork.TiposBeneficiario.GetAllAsync();
+            return tipos.Select(t => new TipoBeneficiarioDto { Id = t.Id, Descripcion = t.Descripcion });
+        }
+    }
+}
