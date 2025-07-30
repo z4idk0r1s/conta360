@@ -1,15 +1,17 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using SubvencionesApp.Core.Interfaces;
 using SubvencionesApp.Core.Services;
 using SubvencionesApp.Infrastructure.Api;
 using SubvencionesApp.Infrastructure.Database;
 using SubvencionesApp.Infrastructure.Database.Repositories;
 using SubvencionesApp.Core.Entities;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
-var builder = Host.CreateApplicationBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
-// Leer la configuración del proveedor y la cadena de conexión
+// Configuración de la base de datos
 var provider = builder.Configuration.GetValue<string>("DatabaseProvider");
 var connectionString = builder.Configuration.GetConnectionString(provider + "Connection");
 
@@ -20,14 +22,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString,
             b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
     }
-    else // Valor por defecto si el proveedor no es PostgreSQL
+    else
     {
         options.UseSqlite(connectionString,
             b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
     }
 });
 
-// Registrar los servicios y repositorios
+// Registro de servicios y repositorios
 builder.Services.AddHttpClient<InfoSubvencionesApiClient>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ISubvencionesService, SubvencionesService>();
@@ -54,8 +56,13 @@ builder.Services.AddScoped<ITipoOrganismoRepository, TipoOrganismoRepository>();
 builder.Services.AddScoped<ITipoSubvencionRepository, TipoSubvencionRepository>();
 builder.Services.AddScoped<ITramoRepository, TramoRepository>();
 builder.Services.AddScoped<IUnidadAdministrativaRepository, UnidadAdministrativaRepository>();
-
+builder.Services.AddControllers();
 
 var app = builder.Build();
+
+// Configuración del pipeline
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run();
