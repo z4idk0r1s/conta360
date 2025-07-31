@@ -24,11 +24,15 @@ services:
       - NODE_ENV=development
       # CRÍTICO: La URL del backend debe apuntar al nombre del servicio Docker y su puerto INTERNO.
       - NEXT_PUBLIC_API_URL=http://validation-core:80
+      # NUEVO: URL del microservicio de subvenciones. Apunta a su nombre de servicio y puerto interno.
+      - NEXT_PUBLIC_SUBVENCIONES_API_URL=http://subvenciones-api:80
       # CRÍTICO: Nueva variable de entorno para indicar al MF que está en Docker Compose.
       - IS_DOCKER_COMPOSE=true # <--- ¡Este es el cambio CRÍTICO aquí!
     # Asegura que el backend esté saludable antes de iniciar este servicio.
     depends_on:
       validation-core:
+        condition: service_healthy
+      subvenciones-api: # NUEVO: Dependencia añadida para el microservicio
         condition: service_healthy
     # Define un chequeo de salud para verificar si el microfrontend está respondiendo.
     healthcheck:
@@ -63,9 +67,6 @@ services:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
       # Cadena de conexión para SQLite, apuntando al volumen montado para persistencia.
       - ConnectionStrings__SqliteConnection=Data Source=/app/data/conta360.db
-      # Opcional: Configuración para PostgreSQL si se utilizara en desarrollo (ejemplo comentado).
-      # - ConnectionStrings__PostgresConnection=Host=db;Port=5432;Database=conta360_dev;Username=user;Password=yourpassword
-      # - DatabaseProvider=Postgres # Si la inyección de dependencias lo necesita.
     # Comando ejecutado al iniciar el contenedor: aplica migraciones EF Core y luego inicia la API con hot reload.
     command: >
       sh -c "dotnet ef database update --project backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj && dotnet watch --project backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj run --urls 'http://+:80'"
@@ -76,6 +77,37 @@ services:
       timeout: 3s
       retries: 3
     # Asigna el servicio a la red definida por el usuario.
+    networks:
+      - conta360-network
+
+  # --- NUEVO: Servicio para el microservicio SubvencionesApp ---
+  subvenciones-api:
+    # Construye la imagen del microservicio.
+    build:
+      context: ./src/SubvencionesApp
+      dockerfile: Dockerfile
+      target: development # O usar 'final' para producción
+    # Mapea un nuevo puerto del host para evitar conflictos. El puerto interno es 80.
+    ports:
+      - "5001:80"
+    # Monta el código fuente para desarrollo y el volumen para la base de datos.
+    volumes:
+      - ./src/SubvencionesApp:/app/SubvencionesApp
+      - subvenciones-api-data:/app/data
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ConnectionStrings__SubvencionesDbConnection=Data Source=/app/data/subvenciones.db
+    # Comando para ejecutar migraciones y la aplicación con hot reload.
+    command: >
+      sh -c "dotnet ef database update --project SubvencionesApp.csproj && dotnet watch --project SubvencionesApp.csproj run --urls 'http://+:80'"
+    # Chequeo de salud del nuevo microservicio.
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
     networks:
       - conta360-network
 
@@ -103,13 +135,6 @@ services:
     networks:
       - conta360-network
 
-  # --- Repite este patrón para 'analisisApp', 'pgcApp', 'sharedComponents', etc. ---
-  # Asegúrate de que:
-  # - El nombre del servicio Docker (ej. `analisis-app`) coincida con el nombre en `REMOTE_PORTS` (ej. `analisisApp`).
-  # - El puerto expuesto (`ports`) coincida con el puerto definido en `REMOTE_PORTS`.
-  # - El `context` de `build` apunte al directorio correcto del microfrontend.
-  # - Exista un `Dockerfile` adecuado en el directorio de cada microfrontend.
-
 # Definición de redes de Docker.
 networks:
   conta360-network:
@@ -119,3 +144,5 @@ networks:
 volumes:
   validation-core-data:
     driver: local # El volumen se gestiona por Docker en el host.
+  subvenciones-api-data:
+    driver: local

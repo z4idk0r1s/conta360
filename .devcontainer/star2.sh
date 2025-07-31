@@ -16,9 +16,11 @@ echo "🛠️ Iniciando configuración del entorno Conta360..."
 trap 'echo "❌ Error inesperado en línea $LINENO. Saliendo."; exit 1' ERR
 
 # Rutas importantes
-SOLUTION_FILE="Conta360.sln" # <-- ¡Variable definida para el archivo de solución!
+SOLUTION_FILE="Conta360.sln"
 API_PROJECT="src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
 API_PROJECT_DIR="src/backend/Presentation/Conta360.Presentation.Api"
+SUBVENCIONES_API_PROJECT="src/SubvencionesApp/SubvencionesApp.csproj" # NUEVO
+SUBVENCIONES_API_PROJECT_DIR="src/SubvencionesApp" # NUEVO
 
 # --- SECCIÓN MODIFICADA PARA USAR EL ARCHIVO .SLN ---
 # 1. Restaurar dependencias de la solución
@@ -58,6 +60,21 @@ if [ -f "$API_PROJECT" ]; then
 else
   echo "⚠️ Proyecto API no encontrado en $API_PROJECT. Omitiendo migraciones."
 fi
+
+# NUEVO: Migraciones para el microservicio de Subvenciones
+echo "📋 Aplicando migraciones para el microservicio de Subvenciones..."
+if [ -f "$SUBVENCIONES_API_PROJECT" ]; then
+  (cd "$SUBVENCIONES_API_PROJECT_DIR" && dotnet ef database update)
+  if [ $? -eq 0 ]; then
+    echo "✅ Migraciones de Subvenciones aplicadas correctamente."
+  else
+    echo "❌ Fallo al aplicar las migraciones de Subvenciones. Revisa los logs."
+    exit 1
+  fi
+else
+  echo "⚠️ Proyecto API de Subvenciones no encontrado. Omitiendo migraciones."
+fi
+
 
 # 5. Instalar dependencias npm
 MICROFRONTEND_DIRS=(
@@ -103,6 +120,11 @@ done
 pkill -f "dotnet run --project .*Conta360.Presentation.Api.csproj" 2>/dev/null \
   && echo "🛑 Backend detenido" || echo "ℹ️ No había backend corriendo"
 
+# NUEVO: Detener servicio de SubvencionesApp si está corriendo
+pkill -f "dotnet run --project .*SubvencionesApp.csproj" 2>/dev/null \
+  && echo "🛑 SubvencionesApp detenido" || echo "ℹ️ No había SubvencionesApp activo"
+
+
 pkill -f "npm run dev.*root-config" 2>/dev/null \
   && echo "🛑 root-config detenido" || echo "ℹ️ No había root-config activo"
 
@@ -119,6 +141,13 @@ nohup dotnet run --project "$API_PROJECT" \
   --no-build --no-restore --urls "http://localhost:5000" \
   > /tmp/backend_log.log 2>&1 &
 echo "✅ Backend API iniciado. Logs en /tmp/backend_log.log"
+
+# NUEVO: Iniciar Microservicio de Subvenciones
+echo "🚀 Iniciando Microservicio de Subvenciones..."
+nohup dotnet run --project "$SUBVENCIONES_API_PROJECT" \
+  --no-build --no-restore --urls "http://localhost:5001" \
+  > /tmp/subvenciones_api_log.log 2>&1 &
+echo "✅ Microservicio de Subvenciones iniciado. Logs en /tmp/subvenciones_api_log.log"
 
 echo "🚀 Iniciando Microfrontend Dashboard App..."
 cd src/microfrontends/dashboard-app
@@ -152,6 +181,7 @@ wait_for_service() {
 }
 
 wait_for_service "Backend API" "http://localhost:5000/health" || { echo "❌ Falló el inicio del Backend API."; exit 1; }
+wait_for_service "Microservicio de Subvenciones" "http://localhost:5001/health" || { echo "❌ Falló el inicio del Microservicio de Subvenciones."; exit 1; } # NUEVO
 wait_for_service "Frontend Dashboard App" "http://localhost:3001" || { echo "❌ Falló el inicio del Frontend Dashboard App."; exit 1; }
 wait_for_service "Frontend Root Config" "http://localhost:3000" || { echo "❌ Falló el inicio del Frontend Root Config."; exit 1; }
 
@@ -160,5 +190,6 @@ echo ""
 echo "✅ Todos los PROCESOS FINALIZADOS - OK - Conta360."
 echo "👉 Para ver logs:"
 echo " tail -f o cat /tmp/backend_log.log"
+echo " tail -f o cat /tmp/subvenciones_api_log.log" # NUEVO
 echo " tail -f o cat /tmp/frontend_root_config_log.log"
 echo " tail -f o cat /tmp/frontend_dashboard_app_log.log"
