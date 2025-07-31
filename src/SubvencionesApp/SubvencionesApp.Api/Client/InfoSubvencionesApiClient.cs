@@ -1,10 +1,10 @@
-using SubvencionesApp.Infrastructure.Api.Models;
+using SubvencionesApp.Infrastructure.Repositories;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace SubvencionesApp.Infrastructure.Api
+namespace SubvencionesApp.Api.Client
 {
     public class InfoSubvencionesApiClient
     {

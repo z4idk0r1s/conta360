@@ -1,6 +1,6 @@
-using SubvencionesApp.Core.Entities;
+using SubvencionesApp.Domain.Entities;
 
-namespace SubvencionesApp.Core.Interfaces
+namespace SubvencionesApp.Domain.Interfaces
 {
     public interface IAccionRepository : IGenericRepository<Accion>
     {

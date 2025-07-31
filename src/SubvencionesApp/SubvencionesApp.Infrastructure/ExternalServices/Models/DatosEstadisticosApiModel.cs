@@ -1,4 +1,4 @@
-namespace SubvencionesApp.Infrastructure.Api.Models
+namespace SubvencionesApp.Infrastructure.ExternalServices.Models
 {
     public class DatosEstadisticosApiModel
     {

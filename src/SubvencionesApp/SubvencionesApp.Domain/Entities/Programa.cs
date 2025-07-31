@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SubvencionesApp.Core.Entities
+namespace SubvencionesApp.Domain.Entities
 {
     public class Programa
     {

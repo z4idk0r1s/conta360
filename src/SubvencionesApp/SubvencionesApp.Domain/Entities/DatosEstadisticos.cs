@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SubvencionesApp.Core.Entities
+namespace SubvencionesApp.Domain.Entities
 {
     public class DatosEstadisticos
     {

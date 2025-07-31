@@ -1,4 +1,4 @@
-using SubvencionesApp.Application.DTOs;
+using SubvencionesApp.Application.Dtos;
 using SubvencionesApp.Application.Interfaces;
 using SubvencionesApp.Infrastructure.ExternalServices.Models;
 using System.Text.Json;

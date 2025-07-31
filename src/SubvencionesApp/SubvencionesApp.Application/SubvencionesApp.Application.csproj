@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../SubvencionesApp.Core/SubvencionesApp.Core.csproj" />
     <ProjectReference Include="../SubvencionesApp.Domain/SubvencionesApp.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" />
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="FluentValidation" />
   </ItemGroup>

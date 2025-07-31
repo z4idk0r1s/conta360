@@ -6,10 +6,15 @@
     <AssemblyName>SubvencionesApp</AssemblyName>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+  </PropertyGroup>  
 
   <ItemGroup>
-    <ProjectReference Include="SubvencionesApp.Core/SubvencionesApp.Core.csproj" />
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="SubvencionesApp.Domain/SubvencionesApp.Domain.csproj" />
     <ProjectReference Include="SubvencionesApp.Application/SubvencionesApp.Application.csproj" />
     <ProjectReference Include="SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj" />

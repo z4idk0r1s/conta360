@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using SubvencionesApp.Core.Interfaces;
+using SubvencionesApp.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

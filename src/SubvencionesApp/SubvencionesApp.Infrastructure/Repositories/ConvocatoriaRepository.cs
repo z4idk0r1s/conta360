@@ -1,5 +1,5 @@
-using SubvencionesApp.Core.Entities;
-using SubvencionesApp.Core.Interfaces;
+using SubvencionesApp.Domain.Entities;
+using SubvencionesApp.Domain.Interfaces;
 using SubvencionesApp.Infrastructure.Database;
 
 namespace SubvencionesApp.Infrastructure.Repositories

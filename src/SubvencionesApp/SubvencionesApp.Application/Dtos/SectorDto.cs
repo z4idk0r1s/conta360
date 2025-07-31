@@ -1,4 +1,4 @@
-namespace SubvencionesApp.Core.Dtos
+namespace SubvencionesApp.Application.Dtos
 {
     public class SectorDto
     {

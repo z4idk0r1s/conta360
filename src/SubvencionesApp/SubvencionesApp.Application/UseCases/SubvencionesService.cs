@@ -1,13 +1,13 @@
-using SubvencionesApp.Core.Dtos;
-using SubvencionesApp.Core.Entities;
-using SubvencionesApp.Core.Interfaces;
+using SubvencionesApp.Domain.Dtos;
+using SubvencionesApp.Domain.Entities;
+using SubvencionesApp.Domain.Interfaces;
 using SubvencionesApp.Infrastructure.Api;
 using SubvencionesApp.Infrastructure.Api.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SubvencionesApp.Core.Services
+namespace SubvencionesApp.Domain.Services
 {
     public class SubvencionesService : ISubvencionesService
     {
