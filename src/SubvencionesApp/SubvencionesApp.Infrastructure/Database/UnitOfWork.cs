@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using SubvencionesApp.Domain.Repositories;
-using SubvencionesApp.Infrastructure.Database.Repositories;
+using SubvencionesApp.Domain.Interfaces;
+using SubvencionesApp.Infrastructure.Repositories;
 using System;
 using System.Threading.Tasks;
 
@@ -19,6 +19,7 @@ namespace SubvencionesApp.Infrastructure.Database
         private IBeneficiarioRepository? _beneficiarios;
         private IConcesionRepository? _concesiones;
         private IConvocatoriaRepository? _convocatorias;
+        private IDatosEstadisticosRepository? _datosEstadisticos;
         private IEntidadRepository? _entidades;
         private IEstadoRepository? _estados;
         private IFormaPagoRepository? _formasPago;
@@ -60,6 +61,9 @@ namespace SubvencionesApp.Infrastructure.Database
 
         public IConvocatoriaRepository Convocatorias => 
             _convocatorias ??= new ConvocatoriaRepository(_context);
+        
+        public IDatosEstadisticosRepository DatosEstadisticos => 
+            _datosEstadisticos ??= new DatosEstadisticosRepository(_context);
 
         public IEntidadRepository Entidades => 
             _entidades ??= new EntidadRepository(_context);
@@ -120,12 +124,10 @@ namespace SubvencionesApp.Infrastructure.Database
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                // Manejar conflictos de concurrencia
                 throw new InvalidOperationException("Error de concurrencia: Los datos fueron modificados por otro usuario.", ex);
             }
             catch (DbUpdateException ex)
             {
-                // Manejar errores de base de datos
                 throw new InvalidOperationException("Error al guardar los cambios en la base de datos.", ex);
             }
         }

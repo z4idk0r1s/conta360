@@ -5,12 +5,14 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../SubvencionesApp.Domain/SubvencionesApp.Domain.csproj" />
-    <ProjectReference Include="../SubvencionesApp.Core/SubvencionesApp.Core.csproj" />
+    <ProjectReference Include="../SubvencionesApp.Application/SubvencionesApp.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" />
   </ItemGroup>
 </Project>      

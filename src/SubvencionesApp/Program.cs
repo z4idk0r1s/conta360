@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using SubvencionesApp.Application.Interfaces;
 using SubvencionesApp.Application.Services;
-using SubvencionesApp.Domain.Repositories;
+using SubvencionesApp.Application.UseCases;
+using SubvencionesApp.Domain.Interfaces;
 using SubvencionesApp.Infrastructure.Database;
-using SubvencionesApp.Infrastructure.Database.Repositories;
+using SubvencionesApp.Infrastructure.Repositories;
 using SubvencionesApp.Infrastructure.ExternalServices;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Polly;
+using Polly.Extensions.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,12 +86,6 @@ static void ConfigureDatabase(WebApplicationBuilder builder)
             options.EnableDetailedErrors();
         }
     });
-
-    // Pool de conexiones para mejor rendimiento
-    builder.Services.AddDbContextPool<AppDbContext>(options =>
-    {
-        // La configuración se hereda del AddDbContext anterior
-    });
 }
 
 static void ConfigureApplicationServices(WebApplicationBuilder builder)
@@ -135,99 +132,76 @@ static void ConfigureInfrastructureServices(WebApplicationBuilder builder)
         client.BaseAddress = new Uri("https://www.infosubvenciones.es/bdnstrans/");
         client.Timeout = TimeSpan.FromSeconds(30);
         client.DefaultRequestHeaders.Add("User-Agent", "SubvencionesApp/1.0");
-    }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
+    })
+    .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
     {
         MaxConnectionsPerServer = 10
-    });
+    })
+    .AddPolicyHandler(GetRetryPolicy());
 
     // Unit of Work y repositorios
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     RegisterRepositories(builder);
 }
 
+static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+{
+    return HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .OrResult(msg => !msg.IsSuccessStatusCode)
+        .WaitAndRetryAsync(
+            3,
+            retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+            onRetry: (outcome, timespan, retryCount, context) =>
+            {
+                Console.WriteLine($"Retry {retryCount} after {timespan}ms");
+            });
+}
+
 static void ConfigureDomainServices(WebApplicationBuilder builder)
 {
-    // Aquí se registrarían servicios de dominio específicos
-    // Por ejemplo:
-    // builder.Services.AddScoped<ISubvencionDomainService, SubvencionDomainService>();
+    // Servicios de dominio si los hubiera
 }
 
 static void RegisterRepositories(WebApplicationBuilder builder)
 {
-    // Registro automático de repositorios usando reflexión para evitar repetición
-    var repositoryInterfaces = new[]
-    {
-        typeof(IAccionRepository),
-        typeof(IAgrupacionRepository),
-        typeof(IAreaRepository),
-        typeof(IBeneficiarioRepository),
-        typeof(IConcesionRepository),
-        typeof(IConvocatoriaRepository),
-        typeof(IEntidadRepository),
-        typeof(IEstadoRepository),
-        typeof(IFormaPagoRepository),
-        typeof(ILineaRepository),
-        typeof(IMunicipioRepository),
-        typeof(IOrganismoRepository),
-        typeof(IProgramaRepository),
-        typeof(IProvinciaRepository),
-        typeof(ISectorRepository),
-        typeof(ISituacionEntornoRepository),
-        typeof(ISubtipoSubvencionRepository),
-        typeof(ITipoBeneficiarioRepository),
-        typeof(ITipoConvocatoriaRepository),
-        typeof(ITipoOrganismoRepository),
-        typeof(ITipoSubvencionRepository),
-        typeof(ITramoRepository),
-        typeof(IUnidadAdministrativaRepository)
-    };
-
-    var repositoryImplementations = new[]
-    {
-        typeof(AccionRepository),
-        typeof(AgrupacionRepository),
-        typeof(AreaRepository),
-        typeof(BeneficiarioRepository),
-        typeof(ConcesionRepository),
-        typeof(ConvocatoriaRepository),
-        typeof(EntidadRepository),
-        typeof(EstadoRepository),
-        typeof(FormaPagoRepository),
-        typeof(LineaRepository),
-        typeof(MunicipioRepository),
-        typeof(OrganismoRepository),
-        typeof(ProgramaRepository),
-        typeof(ProvinciaRepository),
-        typeof(SectorRepository),
-        typeof(SituacionEntornoRepository),
-        typeof(SubtipoSubvencionRepository),
-        typeof(TipoBeneficiarioRepository),
-        typeof(TipoConvocatoriaRepository),
-        typeof(TipoOrganismoRepository),
-        typeof(TipoSubvencionRepository),
-        typeof(TramoRepository),
-        typeof(UnidadAdministrativaRepository)
-    };
-
-    for (int i = 0; i < repositoryInterfaces.Length; i++)
-    {
-        builder.Services.AddScoped(repositoryInterfaces[i], repositoryImplementations[i]);
-    }
+    // Registro de repositorios
+    builder.Services.AddScoped<IAccionRepository, AccionRepository>();
+    builder.Services.AddScoped<IAgrupacionRepository, AgrupacionRepository>();
+    builder.Services.AddScoped<IAreaRepository, AreaRepository>();
+    builder.Services.AddScoped<IBeneficiarioRepository, BeneficiarioRepository>();
+    builder.Services.AddScoped<IConcesionRepository, ConcesionRepository>();
+    builder.Services.AddScoped<IConvocatoriaRepository, ConvocatoriaRepository>();
+    builder.Services.AddScoped<IDatosEstadisticosRepository, DatosEstadisticosRepository>();
+    builder.Services.AddScoped<IEntidadRepository, EntidadRepository>();
+    builder.Services.AddScoped<IEstadoRepository, EstadoRepository>();
+    builder.Services.AddScoped<IFormaPagoRepository, FormaPagoRepository>();
+    builder.Services.AddScoped<ILineaRepository, LineaRepository>();
+    builder.Services.AddScoped<IMunicipioRepository, MunicipioRepository>();
+    builder.Services.AddScoped<IOrganismoRepository, OrganismoRepository>();
+    builder.Services.AddScoped<IProgramaRepository, ProgramaRepository>();
+    builder.Services.AddScoped<IProvinciaRepository, ProvinciaRepository>();
+    builder.Services.AddScoped<ISectorRepository, SectorRepository>();
+    builder.Services.AddScoped<ISituacionEntornoRepository, SituacionEntornoRepository>();
+    builder.Services.AddScoped<ISubtipoSubvencionRepository, SubtipoSubvencionRepository>();
+    builder.Services.AddScoped<ITipoBeneficiarioRepository, TipoBeneficiarioRepository>();
+    builder.Services.AddScoped<ITipoConvocatoriaRepository, TipoConvocatoriaRepository>();
+    builder.Services.AddScoped<ITipoOrganismoRepository, TipoOrganismoRepository>();
+    builder.Services.AddScoped<ITipoSubvencionRepository, TipoSubvencionRepository>();
+    builder.Services.AddScoped<ITramoRepository, TramoRepository>();
+    builder.Services.AddScoped<IUnidadAdministrativaRepository, UnidadAdministrativaRepository>();
 }
 
 static void ConfigureApiServices(WebApplicationBuilder builder)
 {
     builder.Services.AddControllers(options =>
     {
-        // Configuraciones adicionales para controladores
         options.SuppressAsyncSuffixInActionNames = false;
     }).ConfigureApiBehaviorOptions(options =>
     {
-        // Configuración de comportamiento de la API
         options.SuppressModelStateInvalidFilter = false;
     });
 
-    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c =>
     {
@@ -243,7 +217,6 @@ static void ConfigureApiServices(WebApplicationBuilder builder)
             }
         });
 
-        // Incluir comentarios XML si existen
         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         if (File.Exists(xmlPath))
@@ -252,7 +225,6 @@ static void ConfigureApiServices(WebApplicationBuilder builder)
         }
     });
 
-    // CORS si es necesario
     builder.Services.AddCors(options =>
     {
         options.AddDefaultPolicy(policy =>
@@ -263,30 +235,26 @@ static void ConfigureApiServices(WebApplicationBuilder builder)
         });
     });
 
-    // Compresión de respuestas
     builder.Services.AddResponseCompression(options =>
     {
         options.EnableForHttps = true;
     });
 
-    // Caché en memoria para mejores performances
     builder.Services.AddMemoryCache();
     
-    // Health checks
     builder.Services.AddHealthChecks()
         .AddDbContext<AppDbContext>();
 }
 
 static void ConfigurePipeline(WebApplication app)
 {
-    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Subvenciones API V1");
-            c.RoutePrefix = string.Empty; // Swagger en la raíz
+            c.RoutePrefix = string.Empty;
         });
         app.UseDeveloperExceptionPage();
     }
@@ -306,7 +274,6 @@ static void ConfigurePipeline(WebApplication app)
     app.MapControllers();
     app.MapHealthChecks("/health");
 
-    // Endpoint para información de la aplicación
     app.MapGet("/info", () => new
     {
         Application = "SubvencionesApp",
@@ -325,12 +292,10 @@ static async Task EnsureDatabaseCreated(WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
-            // En desarrollo, aplicar migraciones automáticamente
-            await context.Database.MigrateAsync();
+            await context.Database.EnsureCreatedAsync();
         }
         else
         {
-            // En producción, solo verificar que la DB existe
             await context.Database.EnsureCreatedAsync();
         }
     }

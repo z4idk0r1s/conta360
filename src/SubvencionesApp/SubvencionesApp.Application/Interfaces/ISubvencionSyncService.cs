@@ -7,7 +7,7 @@ namespace SubvencionesApp.Application.Interfaces
         Task SyncConvocatoriasAsync();
         Task SyncConcesionesAsync();
         Task SyncBeneficiariosAsync();
-        Task SyncAllMasterDataAsync();
         Task SyncAllDataAsync();
+        Task SyncMasterDataAsync();
     }
 }

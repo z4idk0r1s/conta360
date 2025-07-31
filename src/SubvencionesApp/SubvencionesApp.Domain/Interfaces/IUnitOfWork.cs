@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SubvencionesApp.Domain.Repositories
+namespace SubvencionesApp.Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -11,6 +11,7 @@ namespace SubvencionesApp.Domain.Repositories
         IBeneficiarioRepository Beneficiarios { get; }
         IConcesionRepository Concesiones { get; }
         IConvocatoriaRepository Convocatorias { get; }
+        IDatosEstadisticosRepository DatosEstadisticos { get; }
         IEntidadRepository Entidades { get; }
         IEstadoRepository Estados { get; }
         IFormaPagoRepository FormasPago { get; }
@@ -28,7 +29,7 @@ namespace SubvencionesApp.Domain.Repositories
         ITipoSubvencionRepository TiposSubvencion { get; }
         ITramoRepository Tramos { get; }
         IUnidadAdministrativaRepository UnidadesAdministrativas { get; }
-        
+       
         Task<int> CommitAsync();
         Task RollbackAsync();
         Task BeginTransactionAsync();

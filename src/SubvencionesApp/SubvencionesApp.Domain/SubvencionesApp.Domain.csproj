@@ -1,11 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <RootNamespace>SubvencionesApp.Domain</RootNamespace>
     <AssemblyName>SubvencionesApp.Domain</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-  </ItemGroup>
-
 </Project>
