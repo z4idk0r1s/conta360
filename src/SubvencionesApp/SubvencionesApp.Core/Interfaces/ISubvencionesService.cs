@@ -30,8 +30,5 @@ namespace SubvencionesApp.Core.Interfaces
         Task<IEnumerable<TipoSubvencionDto>> GetTiposSubvencionAsync();
         Task<IEnumerable<TramoDto>> GetTramosAsync();
         Task<IEnumerable<UnidadAdministrativaDto>> GetUnidadesAdministrativasAsync();
-
-        Task SyncConvocatoriasAsync();
-        Task SyncConcesionesAsync();
     }
 }
