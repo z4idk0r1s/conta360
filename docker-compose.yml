@@ -84,7 +84,8 @@ services:
   subvenciones-api:
     # Construye la imagen del microservicio.
     build:
-      context: ./src/SubvencionesApp
+      # CAMBIO: Se actualiza la ruta del contexto para que apunte al directorio del proyecto ejecutable.
+      context: ./src/SubvencionesApp/SubvencionesApp.Api
       dockerfile: Dockerfile
       target: development # O usar 'final' para producción
     # Mapea un nuevo puerto del host para evitar conflictos. El puerto interno es 80.
@@ -101,7 +102,8 @@ services:
       - ConnectionStrings__SubvencionesDbConnection=Data Source=/app/data/subvenciones.db
     # Comando para ejecutar migraciones y la aplicación con hot reload.
     command: >
-      sh -c "dotnet ef database update --project SubvencionesApp.csproj && dotnet watch --project SubvencionesApp.csproj run --urls 'http://+:80'"
+      # CAMBIO: Se actualiza el nombre del proyecto en los comandos de dotnet para que coincida con la nueva ruta.
+      sh -c "dotnet ef database update --project SubvencionesApp.Api.csproj && dotnet watch --project SubvencionesApp.Api.csproj run --urls 'http://+:80'"
     # Chequeo de salud del nuevo microservicio.
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
@@ -111,7 +113,6 @@ services:
     networks:
       - conta360-network
 
-  # --- Ejemplo de cómo añadir un nuevo Microfrontend Remoto (Dashboard) ---
   # Para añadir un nuevo MF, duplica este bloque y ajusta los valores.
   dashboard-app: # Nombre del servicio Docker. Debe coincidir con 'mfName' en mf-remotes.config.js
     build:
