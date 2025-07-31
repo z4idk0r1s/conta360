@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SubvencionesApp.Core.Interfaces
+namespace SubvencionesApp.Domain.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -28,7 +28,10 @@ namespace SubvencionesApp.Core.Interfaces
         ITipoSubvencionRepository TiposSubvencion { get; }
         ITramoRepository Tramos { get; }
         IUnidadAdministrativaRepository UnidadesAdministrativas { get; }
-
+        
         Task<int> CommitAsync();
+        Task RollbackAsync();
+        Task BeginTransactionAsync();
+        Task CommitTransactionAsync();
     }
 }
