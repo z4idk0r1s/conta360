@@ -3,7 +3,7 @@ using SubvencionesApp.Core.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SubvencionesApp.Infrastructure.Database
+namespace SubvencionesApp.Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System;
 
-namespace SubvencionesApp.Domain.Repositories
+namespace SubvencionesApp.Domain.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {

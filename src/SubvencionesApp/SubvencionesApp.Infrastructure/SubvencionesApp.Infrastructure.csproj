@@ -4,6 +4,7 @@
     <AssemblyName>SubvencionesApp.Infrastructure</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../SubvencionesApp.Domain/SubvencionesApp.Domain.csproj" />
     <ProjectReference Include="../SubvencionesApp.Core/SubvencionesApp.Core.csproj" />
   </ItemGroup>
   <ItemGroup>

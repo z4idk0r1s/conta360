@@ -2,7 +2,7 @@ using SubvencionesApp.Core.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SubvencionesApp.Core.Interfaces
+namespace SubvencionesApp.Infrastructure.Interfaces
 {
     public interface ISubvencionesService
     {
