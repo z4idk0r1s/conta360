@@ -10,9 +10,9 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" />
-    <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
-    <PackageReference Include="AspNetCore.HealthChecks.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
   </ItemGroup>
 
   <ItemGroup>
