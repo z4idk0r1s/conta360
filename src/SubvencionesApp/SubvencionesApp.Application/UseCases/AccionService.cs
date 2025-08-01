@@ -1,4 +1,4 @@
-using SubvencionesApp.Domain.Dtos;
+using SubvencionesApp.Application.Dtos;
 using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
 using System.Collections.Generic;

@@ -1,8 +1,7 @@
-using SubvencionesApp.Domain.Dtos;
+using SubvencionesApp.Application.Dtos;
 using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using SubvencionesApp.Infrastructure.Api;
-using SubvencionesApp.Infrastructure.Api.Models;
+using SubvencionesApp.Application.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
