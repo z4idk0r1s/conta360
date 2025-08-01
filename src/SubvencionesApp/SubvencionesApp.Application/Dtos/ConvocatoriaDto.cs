@@ -9,5 +9,10 @@ namespace SubvencionesApp.Application.Dtos
         public string? ReferenciaBDNS { get; set; }
         public int? Ejercicio { get; set; }
         public DateTime? FechaPublicacion { get; set; }
+        public int? TipoConvocatoriaId { get; set; }
+        public int? TipoSubvencionId { get; set; }
+        public int? OrganismoId { get; set; }
+        public int? SituacionEntornoId { get; set; }
+
     }
 }
