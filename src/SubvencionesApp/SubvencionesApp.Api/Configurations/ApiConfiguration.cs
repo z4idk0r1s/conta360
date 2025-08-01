@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using SubvencionesApp.Infrastructure.Database;
 using System.Reflection;
 
 namespace SubvencionesApp.Api.Configurations

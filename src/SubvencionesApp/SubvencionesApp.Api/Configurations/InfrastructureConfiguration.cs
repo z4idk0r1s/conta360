@@ -4,6 +4,7 @@ using SubvencionesApp.Infrastructure.Repositories;
 using SubvencionesApp.Infrastructure.ExternalServices;
 using Polly;
 using Polly.Extensions.Http;
+using SubvencionesApp.Application.Interfaces;
 
 namespace SubvencionesApp.Api.Configurations
 {
