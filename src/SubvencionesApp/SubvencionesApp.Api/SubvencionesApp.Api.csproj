@@ -12,6 +12,7 @@
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="AspNetCore.HealthChecks.EntityFrameworkCore" />
   </ItemGroup>
 
   <ItemGroup>
