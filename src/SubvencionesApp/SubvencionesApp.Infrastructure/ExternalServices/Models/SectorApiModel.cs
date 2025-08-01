@@ -5,7 +5,7 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
     public class SectorApiModel
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("descripcion")]
         public string? Descripcion { get; set; }

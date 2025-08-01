@@ -6,7 +6,6 @@ namespace SubvencionesApp.Domain.Entities
     public class Concesion
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long IdConcesion { get; set; }
 
         [MaxLength(255)]
@@ -22,10 +21,10 @@ namespace SubvencionesApp.Domain.Entities
         public DateTime? FechaConcesion { get; set; }
 
         // Relaciones
-        public int? BeneficiarioId { get; set; }
+        public Guid? BeneficiarioId { get; set; }
         public Beneficiario? Beneficiario { get; set; }
 
-        public int? ConvocatoriaId { get; set; }
+        public Guid? ConvocatoriaId { get; set; }
         public Convocatoria? Convocatoria { get; set; }
     }
 }

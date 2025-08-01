@@ -6,8 +6,7 @@ namespace SubvencionesApp.Domain.Entities
     public class Beneficiario
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int? Id { get; set; }
+        public Guid Id { get; set; }
 
         [MaxLength(255)]
         public string? Nombre { get; set; }

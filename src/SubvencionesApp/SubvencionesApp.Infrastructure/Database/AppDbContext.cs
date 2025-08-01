@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using SubvencionesApp.Domain.Entities;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace SubvencionesApp.Infrastructure.Database
 {
@@ -52,7 +56,7 @@ namespace SubvencionesApp.Infrastructure.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            
+
             // Configuraciones adicionales de rendimiento
             optionsBuilder.EnableServiceProviderCaching();
             optionsBuilder.EnableSensitiveDataLogging(false); // Solo en desarrollo
@@ -70,8 +74,7 @@ namespace SubvencionesApp.Infrastructure.Database
                 entity.Property(e => e.ReferenciaBDNS).HasMaxLength(50);
                 entity.Property(e => e.Ejercicio).IsRequired();
                 entity.Property(e => e.FechaPublicacion).IsRequired();
-                
-                // Configuración de precision para decimales si los hay
+
                 // entity.Property(e => e.Importe).HasPrecision(18, 2);
             });
 
@@ -86,10 +89,28 @@ namespace SubvencionesApp.Infrastructure.Database
                 entity.Property(e => e.FechaConcesion).IsRequired();
             });
 
-            // Configuración para Beneficiario
+            // Configuración para Beneficiario (añadiendo soporte para SQLite y PostgreSQL)
             modelBuilder.Entity<Beneficiario>(entity =>
             {
                 entity.HasKey(e => e.Id);
+
+                if (Database.IsNpgsql()) // PostgreSQL
+                {
+                    entity.Property(e => e.Id)
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v1()")
+                        .ValueGeneratedOnAdd();
+                }
+                else // SQLite
+                {
+                    entity.Property(e => e.Id)
+                        .HasConversion(
+                            v => v.ToString(),
+                            v => Guid.Parse(v))
+                        .HasColumnType("TEXT")
+                        .ValueGeneratedOnAdd();
+                }
+
                 entity.Property(e => e.Nombre).HasMaxLength(500).IsRequired();
                 entity.Property(e => e.Identificacion).HasMaxLength(50);
             });
@@ -111,6 +132,26 @@ namespace SubvencionesApp.Infrastructure.Database
                 {
                     entity.HasKey("Id");
                     entity.Property("Descripcion").HasMaxLength(500).IsRequired();
+
+                    if (entityType.GetProperty("Id")?.PropertyType == typeof(Guid))
+                    {
+                        if (Database.IsNpgsql())
+                        {
+                            entity.Property<Guid>("Id")
+                                .HasColumnType("uuid")
+                                .HasDefaultValueSql("uuid_generate_v1()")
+                                .ValueGeneratedOnAdd();
+                        }
+                        else
+                        {
+                            entity.Property<Guid>("Id")
+                                .HasConversion(
+                                    v => v.ToString(),
+                                    v => Guid.Parse(v))
+                                .HasColumnType("TEXT")
+                                .ValueGeneratedOnAdd();
+                        }
+                    }
                 });
             }
 
@@ -141,16 +182,16 @@ namespace SubvencionesApp.Infrastructure.Database
         private void ConfigureIndices(ModelBuilder modelBuilder)
         {
             // Índices para optimizar consultas frecuentes
-            
+
             // Convocatorias
             modelBuilder.Entity<Convocatoria>()
                 .HasIndex(e => e.Ejercicio)
                 .HasDatabaseName("IX_Convocatorias_Ejercicio");
-            
+
             modelBuilder.Entity<Convocatoria>()
                 .HasIndex(e => e.FechaPublicacion)
                 .HasDatabaseName("IX_Convocatorias_FechaPublicacion");
-            
+
             modelBuilder.Entity<Convocatoria>()
                 .HasIndex(e => e.ReferenciaBDNS)
                 .HasDatabaseName("IX_Convocatorias_ReferenciaBDNS");
@@ -159,15 +200,15 @@ namespace SubvencionesApp.Infrastructure.Database
             modelBuilder.Entity<Concesion>()
                 .HasIndex(e => e.Ejercicio)
                 .HasDatabaseName("IX_Concesiones_Ejercicio");
-            
+
             modelBuilder.Entity<Concesion>()
                 .HasIndex(e => e.FechaConcesion)
                 .HasDatabaseName("IX_Concesiones_FechaConcesion");
-            
+
             modelBuilder.Entity<Concesion>()
                 .HasIndex(e => e.BeneficiarioId)
                 .HasDatabaseName("IX_Concesiones_BeneficiarioId");
-            
+
             modelBuilder.Entity<Concesion>()
                 .HasIndex(e => e.ConvocatoriaId)
                 .HasDatabaseName("IX_Concesiones_ConvocatoriaId");
@@ -177,7 +218,7 @@ namespace SubvencionesApp.Infrastructure.Database
                 .HasIndex(e => e.Identificacion)
                 .IsUnique()
                 .HasDatabaseName("IX_Beneficiarios_Identificacion");
-            
+
             modelBuilder.Entity<Beneficiario>()
                 .HasIndex(e => e.Nombre)
                 .HasDatabaseName("IX_Beneficiarios_Nombre");
@@ -227,14 +268,36 @@ namespace SubvencionesApp.Infrastructure.Database
         // Método para configurar el comportamiento de eliminación suave si se requiere
         public override int SaveChanges()
         {
+            GenerateGuidsForNewEntities();
             UpdateTimestamps();
             return base.SaveChanges();
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            GenerateGuidsForNewEntities();
             UpdateTimestamps();
             return await base.SaveChangesAsync(cancellationToken);
+        }
+        
+        /// <summary>
+        /// Asegura que todas las nuevas entidades con una propiedad 'Id' de tipo Guid
+        /// tengan un valor generado si aún no tienen uno. Esto es vital para bases de datos como SQLite
+        /// donde la generación automática de GUIDs por parte de EF Core no siempre es fiable.
+        /// </summary>
+        private void GenerateGuidsForNewEntities()
+        {
+            var entriesWithGuid = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added && e.Entity.GetType().GetProperty("Id")?.PropertyType == typeof(Guid));
+
+            foreach (var entry in entriesWithGuid)
+            {
+                var idProperty = entry.Entity.GetType().GetProperty("Id");
+                if (idProperty?.GetValue(entry.Entity) is Guid currentGuid && currentGuid == Guid.Empty)
+                {
+                    idProperty.SetValue(entry.Entity, Guid.NewGuid());
+                }
+            }
         }
 
         private void UpdateTimestamps()
@@ -244,7 +307,6 @@ namespace SubvencionesApp.Infrastructure.Database
 
             foreach (var entry in entries)
             {
-                // Si las entidades tienen campos de auditoría, actualizarlos aquí
                 if (entry.Entity is IAuditableEntity auditableEntity)
                 {
                     if (entry.State == EntityState.Added)
