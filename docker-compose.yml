@@ -85,7 +85,7 @@ services:
     # Construye la imagen del microservicio.
     build:
       # CAMBIO: Se actualiza la ruta del contexto para que apunte al directorio del proyecto ejecutable.
-      context: ./src/SubvencionesApp/SubvencionesApp.Api
+      context: ./src/SubvencionesApp
       dockerfile: Dockerfile
       target: development # O usar 'final' para producción
     # Mapea un nuevo puerto del host para evitar conflictos. El puerto interno es 80.

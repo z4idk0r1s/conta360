@@ -15,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="SubvencionesApp.Domain/SubvencionesApp.Domain.csproj" />
-    <ProjectReference Include="SubvencionesApp.Application/SubvencionesApp.Application.csproj" />
-    <ProjectReference Include="SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj" />
+    <ProjectReference Include="../SubvencionesApp.Domain/SubvencionesApp.Domain.csproj" />
+    <ProjectReference Include="../SubvencionesApp.Application/SubvencionesApp.Application.csproj" />
+    <ProjectReference Include="../SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
