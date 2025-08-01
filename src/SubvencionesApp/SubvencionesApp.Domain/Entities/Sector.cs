@@ -6,7 +6,6 @@ namespace SubvencionesApp.Domain.Entities
     public class Sector
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
         [MaxLength(255)]

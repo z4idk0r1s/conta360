@@ -6,7 +6,6 @@ namespace SubvencionesApp.Domain.Entities
     public class Programa
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
         [MaxLength(255)]
