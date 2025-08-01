@@ -5,6 +5,8 @@ using SubvencionesApp.Application.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SubvencionesApp.Infrastructure.Interfaces;
+using SubvencionesApp.Api.Clients;
 
 namespace SubvencionesApp.Application.UseCases
 {

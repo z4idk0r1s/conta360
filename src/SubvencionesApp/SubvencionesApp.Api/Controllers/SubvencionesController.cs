@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SubvencionesApp.Application.Interfaces;
 using SubvencionesApp.Application.Services;
+using SubvencionesApp.Application.UseCases;
 using System.Threading.Tasks;
 
 namespace SubvencionesApp.Api.Controllers
