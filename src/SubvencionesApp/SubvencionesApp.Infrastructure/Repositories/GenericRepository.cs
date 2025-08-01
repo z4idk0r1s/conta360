@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using SubvencionesApp.Domain.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SubvencionesApp.Infrastructure.Repositories
@@ -26,6 +28,31 @@ namespace SubvencionesApp.Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
+        public virtual async Task<IEnumerable<T>> FindAsync(Expression<System.Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).ToListAsync();
+        }
+
+        public virtual async Task<T?> FirstOrDefaultAsync(Expression<System.Func<T, bool>> predicate)
+        {
+            return await _dbSet.FirstOrDefaultAsync(predicate);
+        }
+
+        public virtual async Task<bool> ExistsAsync(Expression<System.Func<T, bool>> predicate)
+        {
+            return await _dbSet.AnyAsync(predicate);
+        }
+
+        public virtual async Task<int> CountAsync()
+        {
+            return await _dbSet.CountAsync();
+        }
+
+        public virtual async Task<int> CountAsync(Expression<System.Func<T, bool>> predicate)
+        {
+            return await _dbSet.CountAsync(predicate);
+        }
+
         public virtual async Task AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
@@ -42,6 +69,15 @@ namespace SubvencionesApp.Infrastructure.Repositories
             _context.Entry(entity).State = EntityState.Modified;
         }
 
+        public virtual void UpdateRange(IEnumerable<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                _dbSet.Attach(entity);
+                _context.Entry(entity).State = EntityState.Modified;
+            }
+        }
+
         public virtual void Remove(T entity)
         {
             _dbSet.Remove(entity);
@@ -50,6 +86,16 @@ namespace SubvencionesApp.Infrastructure.Repositories
         public virtual void RemoveRange(IEnumerable<T> entities)
         {
             _dbSet.RemoveRange(entities);
+        }
+
+        public virtual async Task<IEnumerable<T>> GetPagedAsync(int page, int pageSize)
+        {
+            return await _dbSet.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        }
+
+        public virtual async Task<IEnumerable<T>> GetPagedAsync(int page, int pageSize, Expression<System.Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
     }
 }
