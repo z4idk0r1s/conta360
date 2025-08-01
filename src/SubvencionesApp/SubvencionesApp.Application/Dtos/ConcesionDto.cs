@@ -1,4 +1,4 @@
-namespace SubvencionesApp.Core.Dtos
+namespace SubvencionesApp.Application.Dtos
 {
     public class ConcesionDto
     {
@@ -8,5 +8,7 @@ namespace SubvencionesApp.Core.Dtos
         public decimal? Importe { get; set; }
         public int? Ejercicio { get; set; }
         public DateTime? FechaConcesion { get; set; }
+        public int? BeneficiarioId { get; set; }
+        public int? ConvocatoriaId { get; set; } 
     }
 }

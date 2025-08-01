@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace SubvencionesApp.Infrastructure.Api.Models
+namespace SubvencionesApp.Infrastructure.ExternalServices.Models
 {
     public class UnidadAdministrativaApiModel
     {

@@ -1,8 +1,10 @@
 using SubvencionesApp.Application.Interfaces;
 using SubvencionesApp.Domain.Entities;
-using SubvencionesApp.Domain.Repositories;
+using SubvencionesApp.Domain.Interfaces;
+using SubvencionesApp.Application.Dtos;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace SubvencionesApp.Application.Services
 {
@@ -75,6 +77,18 @@ namespace SubvencionesApp.Application.Services
             await SyncConvocatoriasAsync();
             await SyncConcesionesAsync();
             // Sincronizar otras entidades según necesidad
+        }
+
+        public Task SyncBeneficiariosAsync()
+        {
+            // Método aún no implementado
+            throw new NotImplementedException();
+        }
+
+        public Task SyncMasterDataAsync()
+        {
+            // Método aún no implementado
+            throw new NotImplementedException();
         }
     }
 }
