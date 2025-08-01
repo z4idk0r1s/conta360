@@ -1,6 +1,8 @@
 using SubvencionesApp.Application.Interfaces;
 using SubvencionesApp.Domain.Entities;
-using SubvencionesApp.Domain.Repositories;
+using SubvencionesApp.Domain.Interfaces;
+using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.Services;
 using System.Linq;
 using System.Threading.Tasks;
 
