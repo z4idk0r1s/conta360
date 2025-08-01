@@ -101,6 +101,8 @@ __pycache__/
 
 # Optional: ignore database files for SQLite
 *.db
+*.db-shm
+*.db-wal
 *.db3
 
 # Optional: ignore local backups
