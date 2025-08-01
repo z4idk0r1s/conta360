@@ -5,7 +5,7 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
     public class ProgramaApiModel
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("codigo")]
         public string? Codigo { get; set; }

@@ -6,7 +6,7 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
     public class ConvocatoriaApiModel
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("referenciaBDNS")]
         public string? ReferenciaBDNS { get; set; }
