@@ -17,8 +17,13 @@ namespace SubvencionesApp.Application.UseCases
 
         public async Task<IEnumerable<TipoBeneficiarioDto>> GetAllAsync()
         {
-            var tipos = await _unitOfWork.TiposBeneficiario.GetAllAsync();
-            return tipos.Select(t => new TipoBeneficiarioDto { Id = t.Id, Descripcion = t.Descripcion });
+            var tiposBeneficiario = await _unitOfWork.TiposBeneficiario.GetAllAsync();
+            return tiposBeneficiario.Select(tb => new TipoBeneficiarioDto
+            {
+                Id = tb.Id,
+                Nombre = tb.Nombre,
+                Descripcion = tb.Descripcion
+            });
         }
     }
 }
