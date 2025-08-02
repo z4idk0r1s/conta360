@@ -23,7 +23,6 @@ namespace SubvencionesApp.Application.UseCases
                 Id = s.Id,
                 Nombre = s.Nombre,
                 Motivo = s.Motivo,
-                Sancion = s.Sancion,
                 Estado = s.Estado
             });
         }
