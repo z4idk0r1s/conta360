@@ -9,7 +9,7 @@ using SubvencionesApp.Infrastructure.Interfaces;
 using SubvencionesApp.Api.Clients;
 using System;
 
-namespace SubvencionesApp.Application.UseCases
+namespace SubvencionesApp.Api.Clients
 {
     public class SubvencionesService : ISubvencionesService, ISubvencionSyncService
     {
