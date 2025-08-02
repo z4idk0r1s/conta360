@@ -7,7 +7,7 @@ using SubvencionesApp.Infrastructure.ExternalServices.Models;
 
 namespace SubvencionesApp.Api.Clients
 {
-    public class InfoSubvencionesApiClient
+/*    public class InfoSubvencionesApiClient
     {
         private readonly HttpClient _httpClient;
         private const string BaseUrl = "https://www.infosubvenciones.es/bdnstrans/";
@@ -425,4 +425,5 @@ namespace SubvencionesApp.Api.Clients
             return new List<UnidadAdministrativaApiModel>();
         }
     }
+    */
 }
