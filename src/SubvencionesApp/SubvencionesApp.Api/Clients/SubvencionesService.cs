@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SubvencionesApp.Infrastructure.Interfaces;
 using SubvencionesApp.Api.Clients;
+using System;
 
 namespace SubvencionesApp.Application.UseCases
 {
@@ -74,52 +75,56 @@ namespace SubvencionesApp.Application.UseCases
 
         public async Task SyncAllDataAsync()
         {
-            await SyncAccionesAsync();
-            await SyncAgrupacionesAsync();
-            await SyncAreasAsync();
-            await SyncBeneficiariosAsync();
-            await SyncConcesionesAsync();
-            await SyncConvocatoriasAsync();
-            await SyncEntidadesAsync();
-            await SyncEstadosAsync();
-            await SyncFormasPagoAsync();
-            await SyncLineasAsync();
-            await SyncMunicipiosAsync();
-            await SyncOrganismosAsync();
-            await SyncProgramasAsync();
-            await SyncProvinciasAsync();
-            await SyncSectoresAsync();
-            await SyncSituacionesEntornoAsync();
-            await SyncSubtiposSubvencionAsync();
-            await SyncTiposBeneficiarioAsync();
-            await SyncTiposConvocatoriaAsync();
-            await SyncTiposOrganismoAsync();
-            await SyncTiposSubvencionAsync();
-            await SyncTramosAsync();
-            await SyncUnidadesAdministrativasAsync();
-            await SyncAyudasAsync();
-            await SyncAyudasEstadosAsync();
-            await SyncConcesionesDetalleAsync();
-            await SyncConvocatoriasDetalleAsync();
-            await SyncFinalidadesAsync();
-            await SyncGrandesBeneficiariosAsync();
-            await SyncInstrumentosAsync();
-            await SyncMinimisAsync();
-            await SyncObjetivosAsync();
-            await SyncOrganosCodigoAdminAsync();
-            await SyncPartidosPoliticosAsync();
-            await SyncPlanesEstrategicosAsync();
-            await SyncPlanesEstrategicosDetalleAsync();
-            await SyncPlazosAsync();
-            await SyncRegionesAsync();
-            await SyncReglamentosAsync();
-            await SyncSancionesAsync();
-            await SyncSancionesDetalleAsync();
-            await SyncSectoresProductosAsync();
-            await SyncSuscripcionesAsync();
-            await SyncTercerosAsync();
+            var syncTasks = new List<Task>
+            {
+                SyncAccionesAsync(),
+                SyncAgrupacionesAsync(),
+                SyncAreasAsync(),
+                SyncBeneficiariosAsync(),
+                SyncConcesionesAsync(),
+                SyncConvocatoriasAsync(),
+                SyncEntidadesAsync(),
+                SyncEstadosAsync(),
+                SyncFormasPagoAsync(),
+                SyncLineasAsync(),
+                SyncMunicipiosAsync(),
+                SyncOrganismosAsync(),
+                SyncProgramasAsync(),
+                SyncProvinciasAsync(),
+                SyncSectoresAsync(),
+                SyncSituacionesEntornoAsync(),
+                SyncSubtiposSubvencionAsync(),
+                SyncTiposBeneficiarioAsync(),
+                SyncTiposConvocatoriaAsync(),
+                SyncTiposOrganismoAsync(),
+                SyncTiposSubvencionAsync(),
+                SyncTramosAsync(),
+                SyncUnidadesAdministrativasAsync(),
+                SyncAyudasAsync(),
+                SyncAyudasEstadosAsync(),
+                SyncConcesionesDetalleAsync(),
+                SyncConvocatoriasDetalleAsync(),
+                SyncFinalidadesAsync(),
+                SyncGrandesBeneficiariosAsync(),
+                SyncInstrumentosAsync(),
+                SyncMinimisAsync(),
+                SyncObjetivosAsync(),
+                SyncOrganosCodigoAdminAsync(),
+                SyncPartidosPoliticosAsync(),
+                SyncPlanesEstrategicosAsync(),
+                SyncPlanesEstrategicosDetalleAsync(),
+                SyncPlazosAsync(),
+                SyncRegionesAsync(),
+                SyncReglamentosAsync(),
+                SyncSancionesAsync(),
+                SyncSancionesDetalleAsync(),
+                SyncSectoresProductosAsync(),
+                SyncSuscripcionesAsync(),
+                SyncTercerosAsync()
+            };
+            await Task.WhenAll(syncTasks);
         }
-
+        
         // Métodos de obtención de datos (existentes)
 
         public async Task<IEnumerable<AccionDto>> GetAccionesAsync()
@@ -267,215 +272,263 @@ namespace SubvencionesApp.Application.UseCases
         }
 
         // Nuevos métodos de sincronización
+        
+        private async Task SyncGenericAsync<TEntity, TDto>(
+            Func<Task<IEnumerable<TDto>>> getApiData,
+            Func<Task<IEnumerable<TEntity>>> getDbData,
+            Func<TEntity, object> getDbId,
+            Func<TDto, TEntity> mapToEntity,
+            Func<IEnumerable<TEntity>, Task> addRange,
+            Func<Task> commit)
+        {
+            var apiData = await getApiData();
+            var dbData = await getDbData();
+            var dbIds = dbData.Select(getDbId).ToHashSet();
+
+            var nuevasEntidades = apiData
+                .Where(dto => !dbIds.Contains(GetIdFromDto(dto)))
+                .Select(mapToEntity);
+
+            await addRange(nuevasEntidades);
+            await commit();
+        }
+
+        private object GetIdFromDto(object dto)
+        {
+            var type = dto.GetType();
+            var idProperty = type.GetProperty("Id");
+            return idProperty?.GetValue(dto);
+        }
 
         public async Task SyncAccionesAsync()
         {
-            var apiData = await _apiClient.GetAccionesAsync();
-            var dbData = await _unitOfWork.Acciones.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Accion { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Acciones.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetAccionesAsync,
+                _unitOfWork.Acciones.GetAllAsync,
+                e => e.Id,
+                dto => new Accion { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Acciones.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncAgrupacionesAsync()
         {
-            var apiData = await _apiClient.GetAgrupacionesAsync();
-            var dbData = await _unitOfWork.Agrupaciones.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Agrupacion { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Agrupaciones.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetAgrupacionesAsync,
+                _unitOfWork.Agrupaciones.GetAllAsync,
+                e => e.Id,
+                dto => new Agrupacion { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Agrupaciones.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncAreasAsync()
         {
-            var apiData = await _apiClient.GetAreasAsync();
-            var dbData = await _unitOfWork.Areas.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Area { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Areas.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetAreasAsync,
+                _unitOfWork.Areas.GetAllAsync,
+                e => e.Id,
+                dto => new Area { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Areas.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncBeneficiariosAsync()
         {
-            var apiData = await _apiClient.GetBeneficiariosAsync();
-            var dbData = await _unitOfWork.Beneficiarios.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Beneficiario { Id = dto.Id, Nombre = dto.Nombre, Identificacion = dto.Identificacion });
-            await _unitOfWork.Beneficiarios.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetBeneficiariosAsync,
+                _unitOfWork.Beneficiarios.GetAllAsync,
+                e => e.Id,
+                dto => new Beneficiario { Id = dto.Id, Nombre = dto.Nombre, Identificacion = dto.Identificacion },
+                _unitOfWork.Beneficiarios.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncEntidadesAsync()
         {
-            var apiData = await _apiClient.GetEntidadesAsync();
-            var dbData = await _unitOfWork.Entidades.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Entidad { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Entidades.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetEntidadesAsync,
+                _unitOfWork.Entidades.GetAllAsync,
+                e => e.Id,
+                dto => new Entidad { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Entidades.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncEstadosAsync()
         {
-            var apiData = await _apiClient.GetEstadosAsync();
-            var dbData = await _unitOfWork.Estados.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Estado { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Estados.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetEstadosAsync,
+                _unitOfWork.Estados.GetAllAsync,
+                e => e.Id,
+                dto => new Estado { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Estados.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncFormasPagoAsync()
         {
-            var apiData = await _apiClient.GetFormasPagoAsync();
-            var dbData = await _unitOfWork.FormasPago.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new FormaPago { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.FormasPago.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetFormasPagoAsync,
+                _unitOfWork.FormasPago.GetAllAsync,
+                e => e.Id,
+                dto => new FormaPago { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.FormasPago.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncLineasAsync()
         {
-            var apiData = await _apiClient.GetLineasAsync();
-            var dbData = await _unitOfWork.Lineas.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Linea { Id = dto.Id, Codigo = dto.Codigo, Nombre = dto.Nombre });
-            await _unitOfWork.Lineas.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetLineasAsync,
+                _unitOfWork.Lineas.GetAllAsync,
+                e => e.Id,
+                dto => new Linea { Id = dto.Id, Codigo = dto.Codigo, Nombre = dto.Nombre },
+                _unitOfWork.Lineas.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncMunicipiosAsync()
         {
-            var apiData = await _apiClient.GetMunicipiosAsync();
-            var dbData = await _unitOfWork.Municipios.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Municipio { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Municipios.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetMunicipiosAsync,
+                _unitOfWork.Municipios.GetAllAsync,
+                e => e.Id,
+                dto => new Municipio { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Municipios.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncOrganismosAsync()
         {
-            var apiData = await _apiClient.GetOrganismosAsync();
-            var dbData = await _unitOfWork.Organismos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Organismo { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Organismos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetOrganismosAsync,
+                _unitOfWork.Organismos.GetAllAsync,
+                e => e.Id,
+                dto => new Organismo { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Organismos.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncProgramasAsync()
         {
-            var apiData = await _apiClient.GetProgramasAsync();
-            var dbData = await _unitOfWork.Programas.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Programa { Id = dto.Id, Codigo = dto.Codigo, Descripcion = dto.Descripcion });
-            await _unitOfWork.Programas.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetProgramasAsync,
+                _unitOfWork.Programas.GetAllAsync,
+                e => e.Id,
+                dto => new Programa { Id = dto.Id, Codigo = dto.Codigo, Descripcion = dto.Descripcion },
+                _unitOfWork.Programas.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncProvinciasAsync()
         {
-            var apiData = await _apiClient.GetProvinciasAsync();
-            var dbData = await _unitOfWork.Provincias.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Provincia { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Provincias.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetProvinciasAsync,
+                _unitOfWork.Provincias.GetAllAsync,
+                e => e.Id,
+                dto => new Provincia { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Provincias.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncSectoresAsync()
         {
-            var apiData = await _apiClient.GetSectoresAsync();
-            var dbData = await _unitOfWork.Sectores.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Sector { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Sectores.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetSectoresAsync,
+                _unitOfWork.Sectores.GetAllAsync,
+                e => e.Id,
+                dto => new Sector { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Sectores.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncSituacionesEntornoAsync()
         {
-            var apiData = await _apiClient.GetSituacionesEntornoAsync();
-            var dbData = await _unitOfWork.SituacionesEntorno.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new SituacionEntorno { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.SituacionesEntorno.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetSituacionesEntornoAsync,
+                _unitOfWork.SituacionesEntorno.GetAllAsync,
+                e => e.Id,
+                dto => new SituacionEntorno { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.SituacionesEntorno.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncSubtiposSubvencionAsync()
         {
-            var apiData = await _apiClient.GetSubtiposSubvencionAsync();
-            var dbData = await _unitOfWork.SubtiposSubvencion.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new SubtipoSubvencion { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.SubtiposSubvencion.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetSubtiposSubvencionAsync,
+                _unitOfWork.SubtiposSubvencion.GetAllAsync,
+                e => e.Id,
+                dto => new SubtipoSubvencion { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.SubtiposSubvencion.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncTiposBeneficiarioAsync()
         {
-            var apiData = await _apiClient.GetTiposBeneficiarioAsync();
-            var dbData = await _unitOfWork.TiposBeneficiario.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new TipoBeneficiario { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.TiposBeneficiario.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetTiposBeneficiarioAsync,
+                _unitOfWork.TiposBeneficiario.GetAllAsync,
+                e => e.Id,
+                dto => new TipoBeneficiario { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.TiposBeneficiario.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncTiposConvocatoriaAsync()
         {
-            var apiData = await _apiClient.GetTiposConvocatoriaAsync();
-            var dbData = await _unitOfWork.TiposConvocatoria.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new TipoConvocatoria { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.TiposConvocatoria.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetTiposConvocatoriaAsync,
+                _unitOfWork.TiposConvocatoria.GetAllAsync,
+                e => e.Id,
+                dto => new TipoConvocatoria { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.TiposConvocatoria.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncTiposOrganismoAsync()
         {
-            var apiData = await _apiClient.GetTiposOrganismoAsync();
-            var dbData = await _unitOfWork.TiposOrganismo.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new TipoOrganismo { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.TiposOrganismo.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetTiposOrganismoAsync,
+                _unitOfWork.TiposOrganismo.GetAllAsync,
+                e => e.Id,
+                dto => new TipoOrganismo { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.TiposOrganismo.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncTiposSubvencionAsync()
         {
-            var apiData = await _apiClient.GetTiposSubvencionAsync();
-            var dbData = await _unitOfWork.TiposSubvencion.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new TipoSubvencion { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.TiposSubvencion.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetTiposSubvencionAsync,
+                _unitOfWork.TiposSubvencion.GetAllAsync,
+                e => e.Id,
+                dto => new TipoSubvencion { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.TiposSubvencion.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncTramosAsync()
         {
-            var apiData = await _apiClient.GetTramosAsync();
-            var dbData = await _unitOfWork.Tramos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Tramo { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.Tramos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetTramosAsync,
+                _unitOfWork.Tramos.GetAllAsync,
+                e => e.Id,
+                dto => new Tramo { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.Tramos.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         public async Task SyncUnidadesAdministrativasAsync()
         {
-            var apiData = await _apiClient.GetUnidadesAdministrativasAsync();
-            var dbData = await _unitOfWork.UnidadesAdministrativas.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new UnidadAdministrativa { Id = dto.Id, Descripcion = dto.Descripcion });
-            await _unitOfWork.UnidadesAdministrativas.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
+            await SyncGenericAsync(
+                _apiClient.GetUnidadesAdministrativasAsync,
+                _unitOfWork.UnidadesAdministrativas.GetAllAsync,
+                e => e.Id,
+                dto => new UnidadAdministrativa { Id = dto.Id, Descripcion = dto.Descripcion },
+                _unitOfWork.UnidadesAdministrativas.AddRangeAsync,
+                _unitOfWork.CommitAsync);
         }
 
         // Nuevos métodos de obtención de datos
@@ -606,7 +659,6 @@ namespace SubvencionesApp.Application.UseCases
             return terceros.Select(t => new TerceroDto { Id = t.Id, Nombre = t.Nombre, Nif = t.Nif, Tipo = t.Tipo });
         }
 
-        // Nuevos métodos de sincronización para las entidades que faltaban en el original
         public async Task SyncAyudasAsync()
         {
             var apiData = await _apiClient.GetAyudasAsync();
@@ -624,196 +676,6 @@ namespace SubvencionesApp.Application.UseCases
             var dbIds = dbData.Select(e => e.Id).ToHashSet();
             var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new AyudaEstado { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion, Estado = dto.Estado });
             await _unitOfWork.AyudasEstados.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncConcesionesDetalleAsync()
-        {
-            var apiData = await _apiClient.GetConcesionesDetalleAsync();
-            var dbData = await _unitOfWork.ConcesionesDetalle.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new ConcesionDetalle { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion, Detalles = dto.Detalles, Importe = dto.Importe, FechaResolucion = dto.FechaResolucion });
-            await _unitOfWork.ConcesionesDetalle.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncConvocatoriasDetalleAsync()
-        {
-            var apiData = await _apiClient.GetConvocatoriasDetalleAsync();
-            var dbData = await _unitOfWork.ConvocatoriasDetalle.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new ConvocatoriaDetalle { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion, Detalles = dto.Detalles, Estado = dto.Estado, FechaInicio = dto.FechaInicio, FechaFin = dto.FechaFin, FechaPublicacion = dto.FechaPublicacion });
-            await _unitOfWork.ConvocatoriasDetalle.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncFinalidadesAsync()
-        {
-            var apiData = await _apiClient.GetFinalidadesAsync();
-            var dbData = await _unitOfWork.Finalidades.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Finalidad { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion });
-            await _unitOfWork.Finalidades.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncGrandesBeneficiariosAsync()
-        {
-            var apiData = await _apiClient.GetGrandesBeneficiariosAsync();
-            var dbData = await _unitOfWork.GrandesBeneficiarios.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new GrandeBeneficiario { Id = dto.Id, Nombre = dto.Nombre, Tipo = dto.Tipo, Importe = dto.Importe });
-            await _unitOfWork.GrandesBeneficiarios.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncInstrumentosAsync()
-        {
-            var apiData = await _apiClient.GetInstrumentosAsync();
-            var dbData = await _unitOfWork.Instrumentos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Instrumento { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion });
-            await _unitOfWork.Instrumentos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncMinimisAsync()
-        {
-            var apiData = await _apiClient.GetMinimisAsync();
-            var dbData = await _unitOfWork.Minimis.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Minimis { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion, Estado = dto.Estado, FechaInicio = dto.FechaInicio, FechaFin = dto.FechaFin });
-            await _unitOfWork.Minimis.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncObjetivosAsync()
-        {
-            var apiData = await _apiClient.GetObjetivosAsync();
-            var dbData = await _unitOfWork.Objetivos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Objetivo { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion });
-            await _unitOfWork.Objetivos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncOrganosCodigoAdminAsync()
-        {
-            var apiData = await _apiClient.GetOrganosCodigoAdminAsync();
-            var dbData = await _unitOfWork.OrganosCodigoAdmin.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new OrganosCodigoAdmin { Id = dto.Id, CodigoAdmin = dto.CodigoAdmin, Nombre = dto.Nombre });
-            await _unitOfWork.OrganosCodigoAdmin.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncPartidosPoliticosAsync()
-        {
-            var apiData = await _apiClient.GetPartidosPoliticosAsync();
-            var dbData = await _unitOfWork.PartidosPoliticos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new PartidoPolitico { Id = dto.Id, Nombre = dto.Nombre, Importe = dto.Importe, Fecha = dto.Fecha });
-            await _unitOfWork.PartidosPoliticos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncPlanesEstrategicosAsync()
-        {
-            var apiData = await _apiClient.GetPlanesEstrategicosAsync();
-            var dbData = await _unitOfWork.PlanesEstrategicos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new PlanEstrategico { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion, Estado = dto.Estado, FechaAprobacion = dto.FechaAprobacion });
-            await _unitOfWork.PlanesEstrategicos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncPlanesEstrategicosDetalleAsync()
-        {
-            var apiData = await _apiClient.GetPlanesEstrategicosDetalleAsync();
-            var dbData = await _unitOfWork.PlanesEstrategicosDetalle.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new PlanEstrategicoDetalle { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion, Estado = dto.Estado, FechaAprobacion = dto.FechaAprobacion });
-            await _unitOfWork.PlanesEstrategicosDetalle.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncPlazosAsync()
-        {
-            var apiData = await _apiClient.GetPlazosAsync();
-            var dbData = await _unitOfWork.Plazos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Plazo { Id = dto.Id, Nombre = dto.Nombre, FechaInicio = dto.FechaInicio, FechaFin = dto.FechaFin });
-            await _unitOfWork.Plazos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncRegionesAsync()
-        {
-            var apiData = await _apiClient.GetRegionesAsync();
-            var dbData = await _unitOfWork.Regiones.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Region { Id = dto.Id, Nombre = dto.Nombre });
-            await _unitOfWork.Regiones.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncReglamentosAsync()
-        {
-            var apiData = await _apiClient.GetReglamentosAsync();
-            var dbData = await _unitOfWork.Reglamentos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Reglamento { Id = dto.Id, Nombre = dto.Nombre, Tipo = dto.Tipo });
-            await _unitOfWork.Reglamentos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncSancionesAsync()
-        {
-            var apiData = await _apiClient.GetSancionesAsync();
-            var dbData = await _unitOfWork.Sanciones.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Sancion { Id = dto.Id, Nombre = dto.Nombre, Motivo = dto.Motivo, Sancion = dto.Sancion, Estado = dto.Estado });
-            await _unitOfWork.Sanciones.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncSancionesDetalleAsync()
-        {
-            var apiData = await _apiClient.GetSancionesDetalleAsync();
-            var dbData = await _unitOfWork.SancionesDetalle.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new SancionDetalle { Id = dto.Id, Nombre = dto.Nombre, Motivo = dto.Motivo, Sancion = dto.Sancion, Estado = dto.Estado, Detalles = dto.Detalles, FechaResolucion = dto.FechaResolucion });
-            await _unitOfWork.SancionesDetalle.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncSectoresProductosAsync()
-        {
-            var apiData = await _apiClient.GetSectoresProductosAsync();
-            var dbData = await _unitOfWork.SectoresProductos.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new SectorProducto { Id = dto.Id, Nombre = dto.Nombre, Descripcion = dto.Descripcion });
-            await _unitOfWork.SectoresProductos.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncSuscripcionesAsync()
-        {
-            var apiData = await _apiClient.GetSuscripcionesAsync();
-            var dbData = await _unitOfWork.Suscripciones.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Suscripcion { Id = dto.Id, Nombre = dto.Nombre, Email = dto.Email, FechaInicio = dto.FechaInicio, Activa = dto.Activa });
-            await _unitOfWork.Suscripciones.AddRangeAsync(nuevasEntidades);
-            await _unitOfWork.CommitAsync();
-        }
-
-        public async Task SyncTercerosAsync()
-        {
-            var apiData = await _apiClient.GetTercerosAsync();
-            var dbData = await _unitOfWork.Terceros.GetAllAsync();
-            var dbIds = dbData.Select(e => e.Id).ToHashSet();
-            var nuevasEntidades = apiData.Where(dto => !dbIds.Contains(dto.Id)).Select(dto => new Tercero { Id = dto.Id, Nombre = dto.Nombre, Nif = dto.Nif, Tipo = dto.Tipo });
-            await _unitOfWork.Terceros.AddRangeAsync(nuevasEntidades);
             await _unitOfWork.CommitAsync();
         }
     }
