@@ -9,10 +9,10 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public long IdConcesion { get; set; }
 
         [JsonProperty("referenciaBDNS")]
-        public string? ReferenciaBDNS { get; set; }
+        public required string ReferenciaBDNS { get; set; }
 
         [JsonProperty("referenciaPublicacion")]
-        public string? ReferenciaPublicacion { get; set; }
+        public required string ReferenciaPublicacion { get; set; }
 
         [JsonProperty("importe")]
         public decimal? Importe { get; set; }

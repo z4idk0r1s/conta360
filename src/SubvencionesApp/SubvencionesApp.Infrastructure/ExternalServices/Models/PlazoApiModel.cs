@@ -8,15 +8,15 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public int Id { get; set; }
 
         [JsonProperty("nombre")]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [JsonProperty("fechaInicio")]
-        public string FechaInicio { get; set; }
+        public required string FechaInicio { get; set; }
 
         [JsonProperty("fechaFin")]
-        public string FechaFin { get; set; }
+        public required string FechaFin { get; set; }
 
         [JsonProperty("convocatoriaId")]
-        public string ConvocatoriaId { get; set; }
+        public required string ConvocatoriaId { get; set; }
     }
 }

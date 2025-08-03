@@ -13,16 +13,16 @@ namespace SubvencionesApp.Domain.Entities
 
         [Required]
         [MaxLength(255)]
-        public required string Nombre { get; set; }
+        public string? Nombre { get; set; }
 
         [Required]
-        public required string Motivo { get; set; }
+        public string? Motivo { get; set; }
 
         [Required]
-        public required string SancionTexto { get; set; }
+        public string? SancionTexto { get; set; }
         
         [Required]
         [MaxLength(50)]
-        public required string Estado { get; set; }
+        public string? Estado { get; set; }
     }
 }

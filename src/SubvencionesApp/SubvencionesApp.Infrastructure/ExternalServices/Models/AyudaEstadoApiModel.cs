@@ -8,18 +8,18 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public int Id { get; set; }
 
         [JsonProperty("nombre")]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [JsonProperty("descripcion")]
-        public string Descripcion { get; set; }
+        public required string Descripcion { get; set; }
 
         [JsonProperty("instrumentoId")]
-        public string InstrumentoId { get; set; }
+        public required string InstrumentoId { get; set; }
 
         [JsonProperty("tipoBeneficiarioId")]
-        public string TipoBeneficiarioId { get; set; }
+        public required string TipoBeneficiarioId { get; set; }
 
         [JsonProperty("estado")]
-        public string Estado { get; set; }
+        public required string Estado { get; set; }
     }
 }

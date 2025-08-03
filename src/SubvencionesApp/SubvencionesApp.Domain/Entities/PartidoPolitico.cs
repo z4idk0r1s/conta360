@@ -14,7 +14,7 @@ namespace SubvencionesApp.Domain.Entities
 
         [Required]
         [MaxLength(255)]
-        public required string Nombre { get; set; }
+        public string? Nombre { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]

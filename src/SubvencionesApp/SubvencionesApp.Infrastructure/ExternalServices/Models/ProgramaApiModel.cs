@@ -8,9 +8,9 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public Guid Id { get; set; }
 
         [JsonProperty("codigo")]
-        public string? Codigo { get; set; }
+        public required string Codigo { get; set; }
 
         [JsonProperty("descripcion")]
-        public string? Descripcion { get; set; }
+        public required string Descripcion { get; set; }
     }
 }

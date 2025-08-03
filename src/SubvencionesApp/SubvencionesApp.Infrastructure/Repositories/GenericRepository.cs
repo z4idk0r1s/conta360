@@ -98,5 +98,10 @@ namespace SubvencionesApp.Infrastructure.Repositories
         {
             return await _dbSet.Where(predicate).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
+
+        public Task<T?> GetByExternalIdAsync(int externalId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

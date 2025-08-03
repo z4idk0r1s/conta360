@@ -8,9 +8,9 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public int Id { get; set; }
 
         [JsonProperty("nombre")]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [JsonProperty("url")]
-        public string Url { get; set; }
+        public required string Url { get; set; }
     }
 }

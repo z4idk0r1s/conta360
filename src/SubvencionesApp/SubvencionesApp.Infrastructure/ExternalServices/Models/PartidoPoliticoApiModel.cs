@@ -8,15 +8,15 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public int Id { get; set; }
 
         [JsonProperty("nombre")]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [JsonProperty("importe")]
         public decimal Importe { get; set; }
 
         [JsonProperty("fecha")]
-        public string Fecha { get; set; }
+        public required string Fecha { get; set; }
 
         [JsonProperty("organismoId")]
-        public string OrganismoId { get; set; }
+        public required string OrganismoId { get; set; }
     }
 }

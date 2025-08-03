@@ -13,11 +13,11 @@ namespace SubvencionesApp.Domain.Entities
         
         [Required]
         [MaxLength(255)]
-        public required string Nombre { get; set; }
+        public string? Nombre { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public required string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         public DateTime FechaInicio { get; set; }

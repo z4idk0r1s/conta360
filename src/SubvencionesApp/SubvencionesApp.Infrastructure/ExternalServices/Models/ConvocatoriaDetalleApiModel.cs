@@ -9,45 +9,45 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public int Id { get; set; }
 
         [JsonProperty("nombre")]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [JsonProperty("descripcion")]
-        public string Descripcion { get; set; }
+        public required string Descripcion { get; set; }
 
         [JsonProperty("detalles")]
-        public string Detalles { get; set; }
+        public required string Detalles { get; set; }
 
         [JsonProperty("estado")]
-        public string Estado { get; set; }
+        public required string Estado { get; set; }
 
         [JsonProperty("fechaInicio")]
-        public string FechaInicio { get; set; }
+        public required string FechaInicio { get; set; }
 
         [JsonProperty("fechaFin")]
-        public string FechaFin { get; set; }
+        public required string FechaFin { get; set; }
 
         [JsonProperty("fechaPublicacion")]
-        public string FechaPublicacion { get; set; }
+        public required string FechaPublicacion { get; set; }
 
         [JsonProperty("organismoId")]
-        public string OrganismoId { get; set; }
+        public required string OrganismoId { get; set; }
 
         [JsonProperty("regionId")]
-        public string RegionId { get; set; }
+        public required string RegionId { get; set; }
 
         [JsonProperty("tipoBeneficiarioId")]
-        public string TipoBeneficiarioId { get; set; }
+        public required string TipoBeneficiarioId { get; set; }
 
         [JsonProperty("instrumentoId")]
-        public string InstrumentoId { get; set; }
+        public required string InstrumentoId { get; set; }
 
         [JsonProperty("plazos")]
-        public List<PlazoApiModel> Plazos { get; set; }
+        public required List<PlazoApiModel> Plazos { get; set; }
 
         [JsonProperty("documentos")]
-        public object Documentos { get; set; }
+        public required object Documentos { get; set; }
 
         [JsonProperty("beneficiarios")]
-        public List<BeneficiarioApiModel> Beneficiarios { get; set; }
+        public required List<BeneficiarioApiModel> Beneficiarios { get; set; }
     }
 }

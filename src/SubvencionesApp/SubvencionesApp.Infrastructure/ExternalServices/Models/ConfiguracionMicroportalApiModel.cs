@@ -6,12 +6,12 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
     {
         // En este caso, no hay un 'Id' específico, por lo que las propiedades se mapean directamente
         [JsonProperty("vpd")]
-        public string Vpd { get; set; }
+        public required string Vpd { get; set; }
 
         [JsonProperty("nombrePortal")]
-        public string NombrePortal { get; set; }
+        public required string NombrePortal { get; set; }
 
         [JsonProperty("logo")]
-        public string Logo { get; set; }
+        public required string Logo { get; set; }
     }
 }

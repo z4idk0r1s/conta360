@@ -8,6 +8,6 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public Guid Id { get; set; }
 
         [JsonProperty("descripcion")]
-        public string? Descripcion { get; set; }
+        public required string Descripcion { get; set; }
     }
 }

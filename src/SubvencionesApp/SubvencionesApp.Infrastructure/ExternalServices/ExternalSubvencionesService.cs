@@ -416,7 +416,7 @@ namespace SubvencionesApp.Infrastructure.ExternalServices
         public async Task<List<SectorProductoDto>> GetSectoresProductoAsync() => _mapper.Map<List<SectorProductoDto>>(await GetFromApiAsync<SectorProductoApiModel>("sectoresProducto"));
         public async Task<List<ActividadDto>> GetActividadesNACEAsync() => _mapper.Map<List<ActividadDto>>(await GetFromApiAsync<ActividadApiModel>("actividadesNACE"));
         public async Task<List<ObjetivoDto>> GetObjetivosAsync() => _mapper.Map<List<ObjetivoDto>>(await GetFromApiAsync<ObjetivoApiModel>("objetivos"));
-        public async Task<List<OrganoDto>> GetOrganosAsync() => _mapper.Map<List<OrganoDto>>(await GetFromApiAsync<OrganoApiModel>("organos"));
+        public async Task<List<OrganismoDto>> GetOrganosAsync() => _mapper.Map<List<OrganismoDto>>(await GetFromApiAsync<OrganismoApiModel>("organos"));
 
         public async Task<OrganosCodigoAdminDto?> GetOrganosByCodigoAdminAsync(string codigoAdmin)
         {
@@ -459,6 +459,206 @@ namespace SubvencionesApp.Infrastructure.ExternalServices
             }));
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
+        }
+
+        public Task<List<ConvocatoriaDto>> GetConvocatoriasAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ConcesionDto>> GetConcesionesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<BeneficiarioDto>> GetBeneficiariosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AccionDto>> GetAccionesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AgrupacionDto>> GetAgrupacionesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AreaDto>> GetAreasAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EntidadDto>> GetEntidadesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<EstadoDto>> GetEstadosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<FormaPagoDto>> GetFormasPagoAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<LineaDto>> GetLineasAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<MunicipioDto>> GetMunicipiosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<OrganismoDto>> GetOrganismosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ProgramaDto>> GetProgramasAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ProvinciaDto>> GetProvinciasAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SectorDto>> GetSectoresAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SituacionEntornoDto>> GetSituacionesEntornoAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SubtipoSubvencionDto>> GetSubtiposSubvencionAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<TipoConvocatoriaDto>> GetTiposConvocatoriaAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<TipoOrganismoDto>> GetTiposOrganismoAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<TipoSubvencionDto>> GetTiposSubvencionAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<TramoDto>> GetTramosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<UnidadAdministrativaDto>> GetUnidadesAdministrativasAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<DatosEstadisticosDto>> GetDatosEstadisticosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AyudaDto>> GetAyudasAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AyudaEstadoDto>> GetAyudasEstadosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ConcesionDetalleDto>> GetConcesionesDetalleAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ConvocatoriaDetalleDto>> GetConvocatoriasDetalleAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<GrandeBeneficiarioDto>> GetGrandesBeneficiariosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<InstrumentoDto>> GetInstrumentosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<MinimisDto>> GetMinimisAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<OrganosCodigoAdminDto>> GetOrganosCodigoAdminAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<PartidoPoliticoDto>> GetPartidosPoliticosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<PlanEstrategicoDto>> GetPlanesEstrategicosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<PlanEstrategicoDetalleDto>> GetPlanesEstrategicosDetalleAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<PlazoDto>> GetPlazosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SancionDto>> GetSancionesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SancionDetalleDto>> GetSancionesDetalleAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SectorProductoDto>> GetSectoresProductosAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<SuscripcionDto>> GetSuscripcionesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<TerceroDto>> GetTercerosAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

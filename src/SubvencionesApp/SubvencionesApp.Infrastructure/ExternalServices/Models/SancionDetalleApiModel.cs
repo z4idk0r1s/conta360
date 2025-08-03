@@ -8,24 +8,24 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public int Id { get; set; }
 
         [JsonProperty("nombre")]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [JsonProperty("motivo")]
-        public string Motivo { get; set; }
+        public required string Motivo { get; set; }
 
         [JsonProperty("sancion")]
-        public string Sancion { get; set; }
+        public required string Sancion { get; set; }
 
         [JsonProperty("estado")]
-        public string Estado { get; set; }
+        public required string Estado { get; set; }
 
         [JsonProperty("detalles")]
-        public string Detalles { get; set; }
+        public required string Detalles { get; set; }
 
         [JsonProperty("fechaResolucion")]
-        public string FechaResolucion { get; set; }
+        public required string FechaResolucion { get; set; }
 
         [JsonProperty("organismoId")]
-        public string OrganismoId { get; set; }
+        public required string OrganismoId { get; set; }
     }
 }

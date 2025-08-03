@@ -8,13 +8,13 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         public int Id { get; set; }
 
         [JsonProperty("nombre")]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [JsonProperty("email")]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [JsonProperty("fechaInicio")]
-        public string FechaInicio { get; set; }
+        public required string FechaInicio { get; set; }
 
         [JsonProperty("activa")]
         public bool Activa { get; set; }
