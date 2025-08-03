@@ -6,8 +6,8 @@ namespace SubvencionesApp.Application.Dtos
     {
         public Guid Id { get; set; }
         public int ExternalId { get; set; }
-        public string Nombre { get; set; }
-        public string Nif { get; set; }
-        public string Tipo { get; set; }
+        public string? Nombre { get; set; }
+        public string? Nif { get; set; }
+        public string? Tipo { get; set; }
     }
 }
