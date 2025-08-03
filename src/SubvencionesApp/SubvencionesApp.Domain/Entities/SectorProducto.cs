@@ -7,14 +7,13 @@ namespace SubvencionesApp.Domain.Entities
     public class SectorProducto
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [Required]
-        public string Descripcion { get; set; }
+        public required string Descripcion { get; set; }
     }
 }

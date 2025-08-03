@@ -9,14 +9,14 @@ namespace SubvencionesApp.Domain.Entities
         [Key]
         [Required]
         [MaxLength(10)]
-        public string Vpd { get; set; }
+        public required string Vpd { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string NombrePortal { get; set; }
+        public required string NombrePortal { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Logo { get; set; }
+        public required string Logo { get; set; }
     }
 }

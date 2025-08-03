@@ -7,17 +7,16 @@ namespace SubvencionesApp.Domain.Entities
     public class AyudaEstado
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
         
         public int? ExternalId { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
         
         [Required]
-        public string Descripcion { get; set; }
+        public required string Descripcion { get; set; }
         
         [Required]
         public Guid InstrumentoId { get; set; }
@@ -27,6 +26,6 @@ namespace SubvencionesApp.Domain.Entities
         
         [Required]
         [MaxLength(50)]
-        public string Estado { get; set; }
+        public required string Estado { get; set; }
     }
 }

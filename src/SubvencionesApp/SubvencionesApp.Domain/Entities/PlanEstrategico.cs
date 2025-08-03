@@ -14,14 +14,14 @@ namespace SubvencionesApp.Domain.Entities
 
         [Required]
         [MaxLength(255)]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [Required]
-        public string Descripcion { get; set; }
+        public required string Descripcion { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string Estado { get; set; }
+        public required string Estado { get; set; }
 
         [Required]
         public DateTime FechaAprobacion { get; set; }

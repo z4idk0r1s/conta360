@@ -7,11 +7,10 @@ namespace SubvencionesApp.Domain.Entities
     public class Region
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
     }
 }

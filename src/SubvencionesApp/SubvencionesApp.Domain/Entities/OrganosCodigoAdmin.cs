@@ -12,10 +12,10 @@ namespace SubvencionesApp.Domain.Entities
 
         [Required]
         [MaxLength(50)]
-        public string CodigoAdmin { get; set; }
+        public required string CodigoAdmin { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
     }
 }

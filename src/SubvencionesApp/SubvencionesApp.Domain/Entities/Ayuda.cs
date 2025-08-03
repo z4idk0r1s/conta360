@@ -14,10 +14,10 @@ namespace SubvencionesApp.Domain.Entities
 
         [Required]
         [MaxLength(255)]
-        public string Nombre { get; set; }
+        public required string Nombre { get; set; }
 
         [Required]
-        public string Descripcion { get; set; }
+        public required string Descripcion { get; set; }
 
         [Required]
         public Guid OrganismoId { get; set; }
