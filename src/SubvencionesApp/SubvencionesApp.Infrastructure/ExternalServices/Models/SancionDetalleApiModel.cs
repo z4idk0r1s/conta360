@@ -13,9 +13,6 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
         [JsonProperty("motivo")]
         public required string Motivo { get; set; }
 
-        [JsonProperty("sancion")]
-        public required string Sancion { get; set; }
-
         [JsonProperty("estado")]
         public required string Estado { get; set; }
 

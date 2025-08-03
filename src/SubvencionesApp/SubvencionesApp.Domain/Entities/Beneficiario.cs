@@ -17,6 +17,10 @@ namespace SubvencionesApp.Domain.Entities
         [MaxLength(50)]
         public string? Tipo { get; set; }
 
+        [Required]
+        [MaxLength(50)]
+        public string? Identificacion { get; set; }
+
         public ICollection<Concesion> Concesiones { get; set; } = new List<Concesion>();
     }
 }
