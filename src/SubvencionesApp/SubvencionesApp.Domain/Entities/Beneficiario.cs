@@ -8,11 +8,13 @@ namespace SubvencionesApp.Domain.Entities
         [Key]
         public Guid Id { get; set; }
 
+        [Required]
         [MaxLength(255)]
-        public string? Nombre { get; set; }
+        public string Nombre { get; set; }
 
-        [MaxLength(255)]
-        public string? Identificacion { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Tipo { get; set; }
 
         public ICollection<Concesion> Concesiones { get; set; } = new List<Concesion>();
     }

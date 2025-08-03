@@ -1,11 +1,20 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SubvencionesApp.Domain.Entities
 {
     public class SectorProducto
     {
-        public string Id { get; set; }
+        [Key]
+        [Required]
+        public Guid Id { get; set; }
+
+        [Required]
+        [MaxLength(255)]
         public string Nombre { get; set; }
+
+        [Required]
         public string Descripcion { get; set; }
     }
 }
