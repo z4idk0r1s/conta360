@@ -9,6 +9,7 @@ namespace SubvencionesApp.Domain.Entities
         [Key]
         [Required]
         public Guid Id { get; set; }
+        public int? ExternalId { get; set; }
 
         public string? Descripcion { get; set; }
 

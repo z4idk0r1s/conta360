@@ -8,6 +8,7 @@ namespace SubvencionesApp.Domain.Entities
     {
         [Key]
         public Guid Id { get; set; }
+        public int? ExternalId { get; set; }
 
         [MaxLength(255)]
         public string? Descripcion { get; set; }
