@@ -7,10 +7,12 @@ namespace SubvencionesApp.Domain.Entities
     public class ConfiguracionMicroportal
     {
         [Key]
+        public Guid Id { get; set; }
+        public int? ExternalId { get; set; }
+        
         [Required]
         [MaxLength(10)]
         public string? Vpd { get; set; }
-        public int? ExternalId { get; set; }
 
         [Required]
         [MaxLength(255)]

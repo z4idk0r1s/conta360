@@ -7,7 +7,6 @@ namespace SubvencionesApp.Domain.Entities
     public class Instrumento
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
         public int? ExternalId { get; set; }
 

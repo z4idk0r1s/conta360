@@ -7,8 +7,8 @@ namespace SubvencionesApp.Domain.Entities
     public class OrganosCodigoAdmin
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
+        public int? ExternalId { get; set; }
 
         [Required]
         [MaxLength(50)]

@@ -6,8 +6,10 @@ namespace SubvencionesApp.Domain.Entities
     public class Concesion
     {
         [Key]
-        public long IdConcesion { get; set; }
+        public Guid Id { get; set; }
         public int? ExternalId { get; set; }
+
+        public long IdConcesion { get; set; }
 
         [MaxLength(255)]
         public string? ReferenciaBDNS { get; set; }

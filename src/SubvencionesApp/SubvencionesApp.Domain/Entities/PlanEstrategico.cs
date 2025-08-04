@@ -7,9 +7,7 @@ namespace SubvencionesApp.Domain.Entities
     public class PlanEstrategico
     {
         [Key]
-        [Required]
         public Guid Id { get; set; }
-        
         public int? ExternalId { get; set; }
 
         [Required]
