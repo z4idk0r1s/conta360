@@ -7,7 +7,7 @@ namespace SubvencionesApp.Domain.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<T?> GetByIdAsync(long id);
+        Task<T?> GetByIdAsync(Guid id);
         Task<T?> GetByExternalIdAsync(int externalId);
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);

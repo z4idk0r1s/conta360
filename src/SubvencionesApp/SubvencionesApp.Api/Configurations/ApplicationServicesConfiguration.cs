@@ -1,6 +1,8 @@
 using SubvencionesApp.Application.Interfaces;
 using SubvencionesApp.Application.Services;
 using SubvencionesApp.Application.UseCases;
+using SubvencionesApp.Infrastructure.ExternalServices; 
+using AutoMapper;
 
 namespace SubvencionesApp.Api.Configurations
 {
@@ -8,6 +10,9 @@ namespace SubvencionesApp.Api.Configurations
     {
         public static void ConfigureApplicationServices(WebApplicationBuilder builder)
         {
+            // AutoMapper
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+            
             // Servicios de aplicación principales
             builder.Services.AddScoped<ISubvencionSyncService, SubvencionSyncService>();
             builder.Services.AddScoped<ISubvencionQueryService, SubvencionQueryService>();
