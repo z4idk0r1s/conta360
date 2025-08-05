@@ -1,10 +1,10 @@
-using AutoMapper;
-using SubvencionesApp.Application.Interfaces;
+/*using SubvencionesApp.Application.Interfaces;
 using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
+using SubvencionesApp.Application.Dtos;
 using System.Linq;
 using System.Threading.Tasks;
-using SubvencionesApp.Application.Dtos;
+using System;
 
 namespace SubvencionesApp.Application.Services
 {
@@ -12,16 +12,13 @@ namespace SubvencionesApp.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IExternalSubvencionesService _externalService;
-        private readonly IMapper _mapper;
 
         public SubvencionSyncService(
             IUnitOfWork unitOfWork,
-            IExternalSubvencionesService externalService,
-            IMapper mapper)
+            IExternalSubvencionesService externalService)
         {
             _unitOfWork = unitOfWork;
             _externalService = externalService;
-            _mapper = mapper;
         }
 
         public async Task SyncConvocatoriasAsync()
@@ -32,7 +29,20 @@ namespace SubvencionesApp.Application.Services
 
             var nuevasConvocatorias = convocatoriasExternas
                 .Where(c => !convocatoriasDbIds.Contains(c.Id))
-                .Select(c => _mapper.Map<Convocatoria>(c));
+                .Select(c => new Convocatoria
+                {
+                    Id = c.Id,
+                    Objeto = c.Objeto,
+                    Extracto = c.Extracto,
+                    Enlace = c.Enlace,
+                    ReferenciaBDNS = c.ReferenciaBDNS,
+                    Ejercicio = c.Ejercicio,
+                    FechaPublicacion = c.FechaPublicacion,
+                    TipoConvocatoriaId = c.TipoConvocatoriaId,
+                    TipoSubvencionId = c.TipoSubvencionId,
+                    OrganismoId = c.OrganismoId,
+                    SituacionEntornoId = c.SituacionEntornoId
+                });
 
             await _unitOfWork.Convocatorias.AddRangeAsync(nuevasConvocatorias);
             await _unitOfWork.CommitAsync();
@@ -46,7 +56,17 @@ namespace SubvencionesApp.Application.Services
 
             var nuevasConcesiones = concesionesExternas
                 .Where(c => !concesionesDbIds.Contains(c.IdConcesion))
-                .Select(c => _mapper.Map<Concesion>(c));
+                .Select(c => new Concesion
+                {
+                    IdConcesion = c.IdConcesion,
+                    ReferenciaBDNS = c.ReferenciaBDNS,
+                    ReferenciaPublicacion = c.ReferenciaPublicacion,
+                    Importe = c.Importe,
+                    Ejercicio = c.Ejercicio,
+                    FechaConcesion = c.FechaConcesion,
+                    BeneficiarioId = c.BeneficiarioId,
+                    ConvocatoriaId = c.ConvocatoriaId
+                });
 
             await _unitOfWork.Concesiones.AddRangeAsync(nuevasConcesiones);
             await _unitOfWork.CommitAsync();
@@ -90,9 +110,37 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Beneficiario>(e));
+                .Select(e => new Beneficiario
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Nif = e.Nif,
+                    Tipo = e.Tipo,
+                    FechaAlta = e.FechaAlta,
+                    FechaBaja = e.FechaBaja
+                });
 
             await _unitOfWork.Beneficiarios.AddRangeAsync(nuevas);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task SyncMasterDataAsync()
+        {
+            var externas = await _externalService.GetMasterDataAsync();
+            var db = await _unitOfWork.MasterData.GetAllAsync();
+            var dbIds = db.Select(e => e.Id).ToHashSet();
+
+            var nuevas = externas
+                .Where(e => !dbIds.Contains(e.Id))
+                .Select(e => new MasterData
+                {
+                    Id = e.Id,
+                    Clave = e.Clave,
+                    Valor = e.Valor,
+                    Descripcion = e.Descripcion
+                });
+
+            await _unitOfWork.MasterData.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
         }
 
@@ -104,7 +152,16 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Ayuda>(e));
+                .Select(e => new Ayuda
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion,
+                    OrganismoId = e.OrganismoId,
+                    RegionId = e.RegionId,
+                    TipoBeneficiarioId = e.TipoBeneficiarioId,
+                    InstrumentoId = e.InstrumentoId
+                });
 
             await _unitOfWork.Ayudas.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -118,7 +175,15 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<AyudaEstado>(e));
+                .Select(e => new AyudaEstado
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion,
+                    InstrumentoId = e.InstrumentoId,
+                    TipoBeneficiarioId = e.TipoBeneficiarioId,
+                    Estado = e.Estado
+                });
 
             await _unitOfWork.AyudasEstados.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -132,7 +197,17 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<ConcesionDetalle>(e));
+                .Select(e => new ConcesionDetalle
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion,
+                    Detalles = e.Detalles,
+                    Importe = e.Importe,
+                    BeneficiarioId = e.BeneficiarioId,
+                    OrganismoId = e.OrganismoId,
+                    FechaResolucion = e.FechaResolucion
+                });
 
             await _unitOfWork.ConcesionesDetalle.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -146,7 +221,21 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<ConvocatoriaDetalle>(e));
+                .Select(e => new ConvocatoriaDetalle
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion,
+                    Detalles = e.Detalles,
+                    Estado = e.Estado,
+                    FechaInicio = e.FechaInicio,
+                    FechaFin = e.FechaFin,
+                    FechaPublicacion = e.FechaPublicacion,
+                    OrganismoId = e.OrganismoId,
+                    RegionId = e.RegionId,
+                    TipoBeneficiarioId = e.TipoBeneficiarioId,
+                    InstrumentoId = e.InstrumentoId
+                });
 
             await _unitOfWork.ConvocatoriasDetalle.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -160,7 +249,12 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Finalidad>(e));
+                .Select(e => new Finalidad
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion
+                });
 
             await _unitOfWork.Finalidades.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -174,9 +268,34 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<GrandeBeneficiario>(e));
+                .Select(e => new GrandeBeneficiario
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Tipo = e.Tipo,
+                    Importe = e.Importe
+                });
 
             await _unitOfWork.GrandesBeneficiarios.AddRangeAsync(nuevas);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task SyncInstrumentosAsync()
+        {
+            var externas = await _externalService.GetInstrumentosAsync();
+            var db = await _unitOfWork.Instrumentos.GetAllAsync();
+            var dbIds = db.Select(e => e.Id).ToHashSet();
+
+            var nuevas = externas
+                .Where(e => !dbIds.Contains(e.Id))
+                .Select(e => new Instrumento
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion
+                });
+
+            await _unitOfWork.Instrumentos.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
         }
 
@@ -188,7 +307,15 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Minimis>(e));
+                .Select(e => new Minimis
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion,
+                    Estado = e.Estado,
+                    FechaInicio = e.FechaInicio,
+                    FechaFin = e.FechaFin
+                });
 
             await _unitOfWork.Minimis.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -202,7 +329,12 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Objetivo>(e));
+                .Select(e => new Objetivo
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion
+                });
 
             await _unitOfWork.Objetivos.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -216,7 +348,12 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<OrganosCodigoAdmin>(e));
+                .Select(e => new OrganosCodigoAdmin
+                {
+                    Id = e.Id,
+                    CodigoAdmin = e.CodigoAdmin,
+                    Nombre = e.Nombre
+                });
 
             await _unitOfWork.OrganosCodigoAdmin.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -230,7 +367,14 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<PartidoPolitico>(e));
+                .Select(e => new PartidoPolitico
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Importe = e.Importe,
+                    Fecha = e.Fecha,
+                    OrganismoId = e.OrganismoId
+                });
 
             await _unitOfWork.PartidosPoliticos.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -244,7 +388,14 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<PlanEstrategico>(e));
+                .Select(e => new PlanEstrategico
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion,
+                    Estado = e.Estado,
+                    FechaAprobacion = e.FechaAprobacion
+                });
 
             await _unitOfWork.PlanesEstrategicos.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -258,7 +409,14 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<PlanEstrategicoDetalle>(e));
+                .Select(e => new PlanEstrategicoDetalle
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion,
+                    Estado = e.Estado,
+                    FechaAprobacion = e.FechaAprobacion
+                });
 
             await _unitOfWork.PlanesEstrategicosDetalle.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -272,7 +430,14 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Plazo>(e));
+                .Select(e => new Plazo
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    FechaInicio = e.FechaInicio,
+                    FechaFin = e.FechaFin,
+                    ConvocatoriaId = e.ConvocatoriaId
+                });
 
             await _unitOfWork.Plazos.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -286,7 +451,11 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Region>(e));
+                .Select(e => new Region
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre
+                });
 
             await _unitOfWork.Regiones.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -300,7 +469,12 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Reglamento>(e));
+                .Select(e => new Reglamento
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Tipo = e.Tipo
+                });
 
             await _unitOfWork.Reglamentos.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -314,7 +488,14 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Sancion>(e));
+                .Select(e => new Sancion
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Motivo = e.Motivo,
+                    Sancion = e.Sancion,
+                    Estado = e.Estado
+                });
 
             await _unitOfWork.Sanciones.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -328,7 +509,17 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<SancionDetalle>(e));
+                .Select(e => new SancionDetalle
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Motivo = e.Motivo,
+                    Sancion = e.Sancion,
+                    Estado = e.Estado,
+                    Detalles = e.Detalles,
+                    FechaResolucion = e.FechaResolucion,
+                    OrganismoId = e.OrganismoId
+                });
 
             await _unitOfWork.SancionesDetalle.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -342,7 +533,12 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<SectorProducto>(e));
+                .Select(e => new SectorProducto
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion
+                });
 
             await _unitOfWork.SectoresProductos.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -356,7 +552,14 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Suscripcion>(e));
+                .Select(e => new Suscripcion
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Email = e.Email,
+                    FechaInicio = e.FechaInicio,
+                    Activa = e.Activa
+                });
 
             await _unitOfWork.Suscripciones.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -370,7 +573,13 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<Tercero>(e));
+                .Select(e => new Tercero
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Nif = e.Nif,
+                    Tipo = e.Tipo
+                });
 
             await _unitOfWork.Terceros.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
@@ -384,20 +593,15 @@ namespace SubvencionesApp.Application.Services
 
             var nuevas = externas
                 .Where(e => !dbIds.Contains(e.Id))
-                .Select(e => _mapper.Map<TipoBeneficiario>(e));
+                .Select(e => new TipoBeneficiario
+                {
+                    Id = e.Id,
+                    Nombre = e.Nombre,
+                    Descripcion = e.Descripcion
+                });
 
             await _unitOfWork.TiposBeneficiario.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
         }
-
-        public Task SyncMasterDataAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SyncInstrumentosAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
-}
+}*/

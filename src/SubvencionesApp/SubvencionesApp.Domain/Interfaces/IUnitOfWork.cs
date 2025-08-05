@@ -50,7 +50,8 @@ namespace SubvencionesApp.Domain.Interfaces
         ITipoSubvencionRepository TiposSubvencion { get; }
         ITramoRepository Tramos { get; }
         IUnidadAdministrativaRepository UnidadesAdministrativas { get; }
-        
+        object MasterData { get; }
+
         Task<int> CommitAsync();
         Task RollbackAsync();
         Task BeginTransactionAsync();

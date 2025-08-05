@@ -4,6 +4,8 @@ namespace SubvencionesApp.Infrastructure.ExternalServices.Models
 {
     public class ConfiguracionMicroportalApiModel
     {
+        [JsonProperty("id")]
+        public Guid Id { get; set; }
         // En este caso, no hay un 'Id' específico, por lo que las propiedades se mapean directamente
         [JsonProperty("vpd")]
         public required string Vpd { get; set; }

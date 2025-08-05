@@ -52,5 +52,6 @@ namespace SubvencionesApp.Application.Interfaces
         Task<List<SectorProductoDto>> GetSectoresProductosAsync();
         Task<List<SuscripcionDto>> GetSuscripcionesAsync();
         Task<List<TerceroDto>> GetTercerosAsync();
+        Task<IEnumerable<object>> GetMasterDataAsync();
     }
 }
