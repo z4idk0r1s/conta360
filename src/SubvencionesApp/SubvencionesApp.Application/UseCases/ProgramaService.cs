@@ -1,24 +1,22 @@
+// ProgramaService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class ProgramaService
+    public class ProgramaService : BaseService<Programa, ProgramaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ProgramaService(IUnitOfWork unitOfWork)
+        public ProgramaService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ProgramaDto>> GetAllAsync()
+        protected override IGenericRepository<Programa> GetRepository()
         {
-            var programas = await _unitOfWork.Programas.GetAllAsync();
-            return programas.Select(p => new ProgramaDto { Id = p.Id, Codigo = p.Codigo, Descripcion = p.Descripcion });
+            return _unitOfWork.Programas;
         }
     }
 }

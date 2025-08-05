@@ -1,30 +1,22 @@
+// SancionService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class SancionService
+    public class SancionService : BaseService<Sancion, SancionDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public SancionService(IUnitOfWork unitOfWork)
+        public SancionService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<SancionDto>> GetAllAsync()
+        protected override IGenericRepository<Sancion> GetRepository()
         {
-            var sanciones = await _unitOfWork.Sanciones.GetAllAsync();
-            return sanciones.Select(s => new SancionDto
-            {
-                Id = s.Id,
-                Nombre = s.Nombre,
-                Motivo = s.Motivo,
-                Estado = s.Estado
-            });
+            return _unitOfWork.Sanciones;
         }
     }
 }

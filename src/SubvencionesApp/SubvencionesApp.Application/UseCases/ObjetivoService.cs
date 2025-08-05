@@ -1,29 +1,22 @@
+// ObjetivoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class ObjetivoService
+    public class ObjetivoService : BaseService<Objetivo, ObjetivoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ObjetivoService(IUnitOfWork unitOfWork)
+        public ObjetivoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ObjetivoDto>> GetAllAsync()
+        protected override IGenericRepository<Objetivo> GetRepository()
         {
-            var objetivos = await _unitOfWork.Objetivos.GetAllAsync();
-            return objetivos.Select(o => new ObjetivoDto
-            {
-                Id = o.Id,
-                Nombre = o.Nombre,
-                Descripcion = o.Descripcion
-            });
+            return _unitOfWork.Objetivos;
         }
     }
 }

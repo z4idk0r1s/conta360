@@ -170,40 +170,34 @@ namespace SubvencionesApp.Application.Services
             return await _beneficiarioService.GetAllAsync();
         }
 
-        public Task<ConvocatoriaDto?> GetConvocatoriaByIdAsync(long id)
+        public async Task<ConvocatoriaDto?> GetConvocatoriaByIdAsync(long id)
         {
-            // TODO: Implementa la lógica para obtener una convocatoria por ID
-            throw new NotImplementedException();
+            return await _convocatoriaService.GetByIdAsync(id);
         }
 
-        public Task<ConcesionDto?> GetConcesionByIdAsync(long id)
+        public async Task<ConcesionDto?> GetConcesionByIdAsync(long id)
         {
-            // TODO: Implementa la lógica para obtener una concesión por ID
-            throw new NotImplementedException();
+            return await _concesionService.GetByIdAsync(id);
         }
 
-        public Task<BeneficiarioDto?> GetBeneficiarioByIdAsync(long id)
+        public async Task<BeneficiarioDto?> GetBeneficiarioByIdAsync(long id)
         {
-            // TODO: Implementa la lógica para obtener un beneficiario por ID
-            throw new NotImplementedException();
+            return await _beneficiarioService.GetByIdAsync(id);
         }
 
-        public Task<IEnumerable<ConvocatoriaDto>> SearchConvocatoriasByTextAsync(string searchText)
+        public async Task<IEnumerable<ConvocatoriaDto>> SearchConvocatoriasByTextAsync(string searchText)
         {
-            // TODO: Implementa la lógica de búsqueda de convocatorias por texto
-            throw new NotImplementedException();
+            return await _convocatoriaService.SearchByTextAsync(searchText);
         }
 
-        public Task<IEnumerable<ConcesionDto>> GetConcesionesByEjercicioAsync(int ejercicio)
+        public async Task<IEnumerable<ConcesionDto>> GetConcesionesByEjercicioAsync(int ejercicio)
         {
-            // TODO: Implementa la lógica para obtener concesiones por ejercicio
-            throw new NotImplementedException();
+            return await _concesionService.GetByEjercicioAsync(ejercicio);
         }
 
-        public Task<DatosEstadisticosDto> GetEstadisticasGeneralesAsync()
+        public async Task<DatosEstadisticosDto> GetEstadisticasGeneralesAsync()
         {
-            // TODO: Implementa la lógica para obtener estadísticas generales
-            throw new NotImplementedException();
+            return await _datosEstadisticosService.GetEstadisticasGeneralesAsync();
         }
 
         // Implementaciones de los nuevos métodos

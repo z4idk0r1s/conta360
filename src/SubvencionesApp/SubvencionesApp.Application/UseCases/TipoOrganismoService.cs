@@ -1,24 +1,22 @@
+// TipoOrganismoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class TipoOrganismoService
+    public class TipoOrganismoService : BaseService<TipoOrganismo, TipoOrganismoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public TipoOrganismoService(IUnitOfWork unitOfWork)
+        public TipoOrganismoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<TipoOrganismoDto>> GetAllAsync()
+        protected override IGenericRepository<TipoOrganismo> GetRepository()
         {
-            var tipos = await _unitOfWork.TiposOrganismo.GetAllAsync();
-            return tipos.Select(t => new TipoOrganismoDto { Id = t.Id, Descripcion = t.Descripcion });
+            return _unitOfWork.TiposOrganismo;
         }
     }
 }

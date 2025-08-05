@@ -1,29 +1,22 @@
+// InstrumentoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class InstrumentoService
+    public class InstrumentoService : BaseService<Instrumento, InstrumentoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public InstrumentoService(IUnitOfWork unitOfWork)
+        public InstrumentoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<InstrumentoDto>> GetAllAsync()
+        protected override IGenericRepository<Instrumento> GetRepository()
         {
-            var instrumentos = await _unitOfWork.Instrumentos.GetAllAsync();
-            return instrumentos.Select(i => new InstrumentoDto
-            {
-                Id = i.Id,
-                Nombre = i.Nombre,
-                Descripcion = i.Descripcion
-            });
+            return _unitOfWork.Instrumentos;
         }
     }
 }

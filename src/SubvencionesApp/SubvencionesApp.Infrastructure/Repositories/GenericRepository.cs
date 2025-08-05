@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System;
 
 namespace SubvencionesApp.Infrastructure.Repositories
 {
@@ -19,9 +20,15 @@ namespace SubvencionesApp.Infrastructure.Repositories
             _dbSet = _context.Set<T>();
         }
 
-        public virtual async Task<T?> GetByIdAsync(long id)
+        public virtual async Task<T?> GetByIdAsync(Guid id)
         {
-            return await _dbSet.FindAsync(id);
+            // La entidad T tiene una propiedad de clave primaria llamada "Id" de tipo Guid.
+            var parameter = Expression.Parameter(typeof(T), "e");
+            var property = Expression.Property(parameter, "Id");
+            var constant = Expression.Constant(id);
+            var body = Expression.Equal(property, constant);
+            var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
+            return await _dbSet.FirstOrDefaultAsync(lambda);
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
@@ -99,9 +106,15 @@ namespace SubvencionesApp.Infrastructure.Repositories
             return await _dbSet.Where(predicate).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
-        public Task<T?> GetByExternalIdAsync(int externalId)
+        public virtual async Task<T?> GetByExternalIdAsync(int externalId)
         {
-            throw new NotImplementedException();
+            // La entidad tiene una propiedad 'ExternalId'
+            var parameter = Expression.Parameter(typeof(T), "e");
+            var property = Expression.Property(parameter, "ExternalId");
+            var constant = Expression.Constant(externalId);
+            var body = Expression.Equal(property, constant);
+            var lambda = Expression.Lambda<Func<T, bool>>(body, parameter);
+            return await _dbSet.FirstOrDefaultAsync(lambda);
         }
     }
 }

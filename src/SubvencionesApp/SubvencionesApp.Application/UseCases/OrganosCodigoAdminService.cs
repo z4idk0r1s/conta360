@@ -1,29 +1,22 @@
+// OrganosCodigoAdminService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class OrganosCodigoAdminService
+    public class OrganosCodigoAdminService : BaseService<OrganosCodigoAdmin, OrganosCodigoAdminDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public OrganosCodigoAdminService(IUnitOfWork unitOfWork)
+        public OrganosCodigoAdminService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<OrganosCodigoAdminDto>> GetAllAsync()
+        protected override IGenericRepository<OrganosCodigoAdmin> GetRepository()
         {
-            var organosCodigoAdmin = await _unitOfWork.OrganosCodigoAdmin.GetAllAsync();
-            return organosCodigoAdmin.Select(oca => new OrganosCodigoAdminDto
-            {
-                Id = oca.Id,
-                CodigoAdmin = oca.CodigoAdmin,
-                Nombre = oca.Nombre
-            });
+            return _unitOfWork.OrganosCodigoAdmin;
         }
     }
 }

@@ -1,32 +1,22 @@
+// MinimisService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class MinimisService
+    public class MinimisService : BaseService<Minimis, MinimisDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public MinimisService(IUnitOfWork unitOfWork)
+        public MinimisService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<MinimisDto>> GetAllAsync()
+        protected override IGenericRepository<Minimis> GetRepository()
         {
-            var minimis = await _unitOfWork.Minimis.GetAllAsync();
-            return minimis.Select(m => new MinimisDto
-            {
-                Id = m.Id,
-                Nombre = m.Nombre,
-                Descripcion = m.Descripcion,
-                Estado = m.Estado,
-                FechaInicio = m.FechaInicio,
-                FechaFin = m.FechaFin
-            });
+            return _unitOfWork.Minimis;
         }
     }
 }

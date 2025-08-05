@@ -1,29 +1,22 @@
+// FinalidadService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class FinalidadService
+    public class FinalidadService : BaseService<Finalidad, FinalidadDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public FinalidadService(IUnitOfWork unitOfWork)
+        public FinalidadService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<FinalidadDto>> GetAllAsync()
+        protected override IGenericRepository<Finalidad> GetRepository()
         {
-            var finalidades = await _unitOfWork.Finalidades.GetAllAsync();
-            return finalidades.Select(f => new FinalidadDto
-            {
-                Id = f.Id,
-                Nombre = f.Nombre,
-                Descripcion = f.Descripcion
-            });
+            return _unitOfWork.Finalidades;
         }
     }
 }

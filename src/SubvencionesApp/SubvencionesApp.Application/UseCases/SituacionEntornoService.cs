@@ -1,24 +1,22 @@
+// SituacionEntornoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class SituacionEntornoService
+    public class SituacionEntornoService : BaseService<SituacionEntorno, SituacionEntornoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public SituacionEntornoService(IUnitOfWork unitOfWork)
+        public SituacionEntornoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<SituacionEntornoDto>> GetAllAsync()
+        protected override IGenericRepository<SituacionEntorno> GetRepository()
         {
-            var situacionesEntorno = await _unitOfWork.SituacionesEntorno.GetAllAsync();
-            return situacionesEntorno.Select(s => new SituacionEntornoDto { Id = s.Id, Descripcion = s.Descripcion });
+            return _unitOfWork.SituacionesEntorno;
         }
     }
 }

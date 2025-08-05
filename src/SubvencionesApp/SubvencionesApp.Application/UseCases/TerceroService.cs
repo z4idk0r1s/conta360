@@ -1,30 +1,22 @@
+// TerceroService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class TerceroService
+    public class TerceroService : BaseService<Tercero, TerceroDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public TerceroService(IUnitOfWork unitOfWork)
+        public TerceroService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<TerceroDto>> GetAllAsync()
+        protected override IGenericRepository<Tercero> GetRepository()
         {
-            var terceros = await _unitOfWork.Terceros.GetAllAsync();
-            return terceros.Select(t => new TerceroDto
-            {
-                Id = t.Id,
-                Nombre = t.Nombre,
-                Nif = t.Nif,
-                Tipo = t.Tipo
-            });
+            return _unitOfWork.Terceros;
         }
     }
 }

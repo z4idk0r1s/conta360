@@ -1,31 +1,22 @@
+// PartidoPoliticoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class PartidoPoliticoService
+    public class PartidoPoliticoService : BaseService<PartidoPolitico, PartidoPoliticoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public PartidoPoliticoService(IUnitOfWork unitOfWork)
+        public PartidoPoliticoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<PartidoPoliticoDto>> GetAllAsync()
+        protected override IGenericRepository<PartidoPolitico> GetRepository()
         {
-            var partidosPoliticos = await _unitOfWork.PartidosPoliticos.GetAllAsync();
-            return partidosPoliticos.Select(pp => new PartidoPoliticoDto
-            {
-                Id = pp.Id,
-                Nombre = pp.Nombre,
-                Importe = pp.Importe,
-                Fecha = pp.Fecha,
-                OrganismoId = pp.OrganismoId
-            });
+            return _unitOfWork.PartidosPoliticos;
         }
     }
 }

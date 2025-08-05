@@ -1,34 +1,22 @@
+// ConcesionDetalleService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class ConcesionDetalleService
+    public class ConcesionDetalleService : BaseService<ConcesionDetalle, ConcesionDetalleDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ConcesionDetalleService(IUnitOfWork unitOfWork)
+        public ConcesionDetalleService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ConcesionDetalleDto>> GetAllAsync()
+        protected override IGenericRepository<ConcesionDetalle> GetRepository()
         {
-            var concesionesDetalle = await _unitOfWork.ConcesionesDetalle.GetAllAsync();
-            return concesionesDetalle.Select(cd => new ConcesionDetalleDto
-            {
-                Id = cd.Id,
-                Nombre = cd.Nombre,
-                Descripcion = cd.Descripcion,
-                Detalles = cd.Detalles,
-                Importe = cd.Importe,
-                BeneficiarioId = cd.BeneficiarioId,
-                OrganismoId = cd.OrganismoId,
-                FechaResolucion = cd.FechaResolucion
-            });
+            return _unitOfWork.ConcesionesDetalle;
         }
     }
 }

@@ -1,24 +1,22 @@
+// UnidadAdministrativaService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class UnidadAdministrativaService
+    public class UnidadAdministrativaService : BaseService<UnidadAdministrativa, UnidadAdministrativaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public UnidadAdministrativaService(IUnitOfWork unitOfWork)
+        public UnidadAdministrativaService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<UnidadAdministrativaDto>> GetAllAsync()
+        protected override IGenericRepository<UnidadAdministrativa> GetRepository()
         {
-            var unidades = await _unitOfWork.UnidadesAdministrativas.GetAllAsync();
-            return unidades.Select(u => new UnidadAdministrativaDto { Id = u.Id, Descripcion = u.Descripcion });
+            return _unitOfWork.UnidadesAdministrativas;
         }
     }
 }

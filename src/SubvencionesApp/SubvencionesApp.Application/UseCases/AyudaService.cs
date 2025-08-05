@@ -1,33 +1,22 @@
+// AyudaService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class AyudaService
+    public class AyudaService : BaseService<Ayuda, AyudaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public AyudaService(IUnitOfWork unitOfWork)
+        public AyudaService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<AyudaDto>> GetAllAsync()
+        protected override IGenericRepository<Ayuda> GetRepository()
         {
-            var ayudas = await _unitOfWork.Ayudas.GetAllAsync();
-            return ayudas.Select(a => new AyudaDto
-            {
-                Id = a.Id,
-                Nombre = a.Nombre,
-                Descripcion = a.Descripcion,
-                OrganismoId = a.OrganismoId,
-                RegionId = a.RegionId,
-                TipoBeneficiarioId = a.TipoBeneficiarioId,
-                InstrumentoId = a.InstrumentoId
-            });
+            return _unitOfWork.Ayudas;
         }
     }
 }

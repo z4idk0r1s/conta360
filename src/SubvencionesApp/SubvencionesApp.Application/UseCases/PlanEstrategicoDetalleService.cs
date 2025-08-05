@@ -1,31 +1,22 @@
+// PlanEstrategicoDetalleService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class PlanEstrategicoDetalleService
+    public class PlanEstrategicoDetalleService : BaseService<PlanEstrategicoDetalle, PlanEstrategicoDetalleDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public PlanEstrategicoDetalleService(IUnitOfWork unitOfWork)
+        public PlanEstrategicoDetalleService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<PlanEstrategicoDetalleDto>> GetAllAsync()
+        protected override IGenericRepository<PlanEstrategicoDetalle> GetRepository()
         {
-            var planesEstrategicosDetalle = await _unitOfWork.PlanesEstrategicosDetalle.GetAllAsync();
-            return planesEstrategicosDetalle.Select(ped => new PlanEstrategicoDetalleDto
-            {
-                Id = ped.Id,
-                Nombre = ped.Nombre,
-                Descripcion = ped.Descripcion,
-                Estado = ped.Estado,
-                FechaAprobacion = ped.FechaAprobacion
-            });
+            return _unitOfWork.PlanesEstrategicosDetalle;
         }
     }
 }

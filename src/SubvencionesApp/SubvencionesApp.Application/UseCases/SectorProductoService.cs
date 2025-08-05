@@ -1,29 +1,22 @@
+// SectorProductoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class SectorProductoService
+    public class SectorProductoService : BaseService<SectorProducto, SectorProductoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public SectorProductoService(IUnitOfWork unitOfWork)
+        public SectorProductoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<SectorProductoDto>> GetAllAsync()
+        protected override IGenericRepository<SectorProducto> GetRepository()
         {
-            var sectoresProductos = await _unitOfWork.SectoresProductos.GetAllAsync();
-            return sectoresProductos.Select(sp => new SectorProductoDto
-            {
-                Id = sp.Id,
-                Nombre = sp.Nombre,
-                Descripcion = sp.Descripcion
-            });
+            return _unitOfWork.SectoresProductos;
         }
     }
 }

@@ -1,24 +1,22 @@
+// LineaService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class LineaService
+    public class LineaService : BaseService<Linea, LineaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public LineaService(IUnitOfWork unitOfWork)
+        public LineaService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<LineaDto>> GetAllAsync()
+        protected override IGenericRepository<Linea> GetRepository()
         {
-            var lineas = await _unitOfWork.Lineas.GetAllAsync();
-            return lineas.Select(l => new LineaDto { Id = l.Id, Codigo = l.Codigo, Nombre = l.Nombre });
+            return _unitOfWork.Lineas;
         }
     }
 }

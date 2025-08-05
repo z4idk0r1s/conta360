@@ -661,9 +661,5 @@ namespace SubvencionesApp.Infrastructure.ExternalServices
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<object>> GetMasterDataAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

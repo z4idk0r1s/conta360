@@ -1,24 +1,22 @@
+// TramoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class TramoService
+    public class TramoService : BaseService<Tramo, TramoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public TramoService(IUnitOfWork unitOfWork)
+        public TramoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<TramoDto>> GetAllAsync()
+        protected override IGenericRepository<Tramo> GetRepository()
         {
-            var tramos = await _unitOfWork.Tramos.GetAllAsync();
-            return tramos.Select(t => new TramoDto { Id = t.Id, Descripcion = t.Descripcion });
+            return _unitOfWork.Tramos;
         }
     }
 }

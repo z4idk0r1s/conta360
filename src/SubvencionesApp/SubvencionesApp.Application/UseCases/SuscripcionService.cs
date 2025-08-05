@@ -1,31 +1,22 @@
+// SuscripcionService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class SuscripcionService
+    public class SuscripcionService : BaseService<Suscripcion, SuscripcionDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public SuscripcionService(IUnitOfWork unitOfWork)
+        public SuscripcionService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<SuscripcionDto>> GetAllAsync()
+        protected override IGenericRepository<Suscripcion> GetRepository()
         {
-            var suscripciones = await _unitOfWork.Suscripciones.GetAllAsync();
-            return suscripciones.Select(s => new SuscripcionDto
-            {
-                Id = s.Id,
-                Nombre = s.Nombre,
-                Email = s.Email,
-                FechaInicio = s.FechaInicio,
-                Activa = s.Activa
-            });
+            return _unitOfWork.Suscripciones;
         }
     }
 }

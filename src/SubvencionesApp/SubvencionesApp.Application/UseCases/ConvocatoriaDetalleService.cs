@@ -1,38 +1,22 @@
+// ConvocatoriaDetalleService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class ConvocatoriaDetalleService
+    public class ConvocatoriaDetalleService : BaseService<ConvocatoriaDetalle, ConvocatoriaDetalleDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ConvocatoriaDetalleService(IUnitOfWork unitOfWork)
+        public ConvocatoriaDetalleService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ConvocatoriaDetalleDto>> GetAllAsync()
+        protected override IGenericRepository<ConvocatoriaDetalle> GetRepository()
         {
-            var convocatoriasDetalle = await _unitOfWork.ConvocatoriasDetalle.GetAllAsync();
-            return convocatoriasDetalle.Select(cd => new ConvocatoriaDetalleDto
-            {
-                Id = cd.Id,
-                Nombre = cd.Nombre,
-                Descripcion = cd.Descripcion,
-                Detalles = cd.Detalles,
-                Estado = cd.Estado,
-                FechaInicio = cd.FechaInicio,
-                FechaFin = cd.FechaFin,
-                FechaPublicacion = cd.FechaPublicacion,
-                OrganismoId = cd.OrganismoId,
-                RegionId = cd.RegionId,
-                TipoBeneficiarioId = cd.TipoBeneficiarioId,
-                InstrumentoId = cd.InstrumentoId
-            });
+            return _unitOfWork.ConvocatoriasDetalle;
         }
     }
 }

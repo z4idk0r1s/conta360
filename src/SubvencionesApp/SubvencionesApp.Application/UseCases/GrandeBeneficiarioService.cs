@@ -1,30 +1,22 @@
+// GrandeBeneficiarioService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class GrandeBeneficiarioService
+    public class GrandeBeneficiarioService : BaseService<GrandeBeneficiario, GrandeBeneficiarioDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GrandeBeneficiarioService(IUnitOfWork unitOfWork)
+        public GrandeBeneficiarioService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<GrandeBeneficiarioDto>> GetAllAsync()
+        protected override IGenericRepository<GrandeBeneficiario> GetRepository()
         {
-            var grandesBeneficiarios = await _unitOfWork.GrandesBeneficiarios.GetAllAsync();
-            return grandesBeneficiarios.Select(gb => new GrandeBeneficiarioDto
-            {
-                Id = gb.Id,
-                Nombre = gb.Nombre,
-                Tipo = gb.Tipo,
-                Importe = gb.Importe
-            });
+            return _unitOfWork.GrandesBeneficiarios;
         }
     }
 }

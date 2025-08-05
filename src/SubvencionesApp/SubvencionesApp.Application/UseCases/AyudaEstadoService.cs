@@ -1,32 +1,22 @@
+// AyudaEstadoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class AyudaEstadoService
+    public class AyudaEstadoService : BaseService<AyudaEstado, AyudaEstadoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public AyudaEstadoService(IUnitOfWork unitOfWork)
+        public AyudaEstadoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<AyudaEstadoDto>> GetAllAsync()
+        protected override IGenericRepository<AyudaEstado> GetRepository()
         {
-            var ayudasEstados = await _unitOfWork.AyudasEstados.GetAllAsync();
-            return ayudasEstados.Select(ae => new AyudaEstadoDto
-            {
-                Id = ae.Id,
-                Nombre = ae.Nombre,
-                Descripcion = ae.Descripcion,
-                InstrumentoId = ae.InstrumentoId,
-                TipoBeneficiarioId = ae.TipoBeneficiarioId,
-                Estado = ae.Estado
-            });
+            return _unitOfWork.AyudasEstados;
         }
     }
 }

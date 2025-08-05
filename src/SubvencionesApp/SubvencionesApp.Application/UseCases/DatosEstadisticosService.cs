@@ -1,24 +1,22 @@
+// DatosEstadisticosService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class DatosEstadisticosService
+    public class DatosEstadisticosService : BaseService<DatosEstadisticos, DatosEstadisticosDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public DatosEstadisticosService(IUnitOfWork unitOfWork)
+        public DatosEstadisticosService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<DatosEstadisticosDto>> GetAllAsync()
+        protected override IGenericRepository<DatosEstadisticos> GetRepository()
         {
-            var datos = await _unitOfWork.DatosEstadisticos.GetAllAsync();
-            return datos.Select(d => new DatosEstadisticosDto { Id = d.Id, Descripcion = d.Descripcion, TotalConcesiones = d.TotalConcesiones, ImporteTotal = d.ImporteTotal });
+            return _unitOfWork.DatosEstadisticos;
         }
     }
 }

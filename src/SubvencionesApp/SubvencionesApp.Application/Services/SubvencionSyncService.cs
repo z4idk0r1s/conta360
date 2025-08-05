@@ -1,10 +1,10 @@
 using AutoMapper;
+using SubvencionesApp.Application.Dtos;
 using SubvencionesApp.Application.Interfaces;
 using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
-using SubvencionesApp.Application.Dtos;
 
 namespace SubvencionesApp.Application.Services
 {
@@ -23,32 +23,37 @@ namespace SubvencionesApp.Application.Services
             _externalService = externalService;
             _mapper = mapper;
         }
+        
+        public Task SyncInstrumentosAsync()
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task SyncConvocatoriasAsync()
         {
-            var convocatoriasExternas = await _externalService.GetConvocatoriasAsync();
-            var convocatoriasDb = await _unitOfWork.Convocatorias.GetAllAsync();
-            var convocatoriasDbIds = convocatoriasDb.Select(c => c.Id).ToHashSet();
+            var externas = await _externalService.GetConvocatoriasAsync();
+            var db = await _unitOfWork.Convocatorias.GetAllAsync();
+            var dbIds = db.Select(e => e.Id).ToHashSet();
 
-            var nuevasConvocatorias = convocatoriasExternas
-                .Where(c => !convocatoriasDbIds.Contains(c.Id))
-                .Select(c => _mapper.Map<Convocatoria>(c));
+            var nuevas = externas
+                .Where(e => !dbIds.Contains(e.Id))
+                .Select(e => _mapper.Map<Convocatoria>(e));
 
-            await _unitOfWork.Convocatorias.AddRangeAsync(nuevasConvocatorias);
+            await _unitOfWork.Convocatorias.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
         }
 
         public async Task SyncConcesionesAsync()
         {
-            var concesionesExternas = await _externalService.GetConcesionesAsync();
-            var concesionesDb = await _unitOfWork.Concesiones.GetAllAsync();
-            var concesionesDbIds = concesionesDb.Select(c => c.IdConcesion).ToHashSet();
+            var externas = await _externalService.GetConcesionesAsync();
+            var db = await _unitOfWork.Concesiones.GetAllAsync();
+            var dbIds = db.Select(e => e.IdConcesion).ToHashSet();
 
-            var nuevasConcesiones = concesionesExternas
-                .Where(c => !concesionesDbIds.Contains(c.IdConcesion))
-                .Select(c => _mapper.Map<Concesion>(c));
+            var nuevas = externas
+                .Where(e => !dbIds.Contains(e.IdConcesion))
+                .Select(e => _mapper.Map<Concesion>(e));
 
-            await _unitOfWork.Concesiones.AddRangeAsync(nuevasConcesiones);
+            await _unitOfWork.Concesiones.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
         }
 
@@ -79,7 +84,6 @@ namespace SubvencionesApp.Application.Services
             await SyncTercerosAsync();
             await SyncTiposBeneficiarioAsync();
             await SyncBeneficiariosAsync();
-            await SyncMasterDataAsync();
         }
 
         public async Task SyncBeneficiariosAsync()
@@ -388,16 +392,6 @@ namespace SubvencionesApp.Application.Services
 
             await _unitOfWork.TiposBeneficiario.AddRangeAsync(nuevas);
             await _unitOfWork.CommitAsync();
-        }
-
-        public Task SyncMasterDataAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SyncInstrumentosAsync()
-        {
-            throw new NotImplementedException();
         }
     }
 }

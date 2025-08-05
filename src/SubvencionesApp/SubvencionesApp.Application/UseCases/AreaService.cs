@@ -1,24 +1,22 @@
+// AreaService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class AreaService
+    public class AreaService : BaseService<Area, AreaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public AreaService(IUnitOfWork unitOfWork)
+        public AreaService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<AreaDto>> GetAllAsync()
+        protected override IGenericRepository<Area> GetRepository()
         {
-            var areas = await _unitOfWork.Areas.GetAllAsync();
-            return areas.Select(a => new AreaDto { Id = a.Id, Descripcion = a.Descripcion });
+            return _unitOfWork.Areas;
         }
     }
 }

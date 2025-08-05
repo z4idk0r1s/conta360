@@ -1,28 +1,22 @@
+// RegionService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class RegionService
+    public class RegionService : BaseService<Region, RegionDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public RegionService(IUnitOfWork unitOfWork)
+        public RegionService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<RegionDto>> GetAllAsync()
+        protected override IGenericRepository<Region> GetRepository()
         {
-            var regiones = await _unitOfWork.Regiones.GetAllAsync();
-            return regiones.Select(r => new RegionDto
-            {
-                Id = r.Id,
-                Nombre = r.Nombre
-            });
+            return _unitOfWork.Regiones;
         }
     }
 }

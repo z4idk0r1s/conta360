@@ -1,29 +1,22 @@
+// ReglamentoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class ReglamentoService
+    public class ReglamentoService : BaseService<Reglamento, ReglamentoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ReglamentoService(IUnitOfWork unitOfWork)
+        public ReglamentoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ReglamentoDto>> GetAllAsync()
+        protected override IGenericRepository<Reglamento> GetRepository()
         {
-            var reglamentos = await _unitOfWork.Reglamentos.GetAllAsync();
-            return reglamentos.Select(r => new ReglamentoDto
-            {
-                Id = r.Id,
-                Nombre = r.Nombre,
-                Tipo = r.Tipo
-            });
+            return _unitOfWork.Reglamentos;
         }
     }
 }
