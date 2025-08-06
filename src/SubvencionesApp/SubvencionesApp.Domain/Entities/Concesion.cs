@@ -24,9 +24,11 @@ namespace SubvencionesApp.Domain.Entities
         public DateTime? FechaConcesion { get; set; }
 
         // Relaciones
+        [ForeignKey("Beneficiario")]
         public Guid? BeneficiarioId { get; set; }
         public Beneficiario? Beneficiario { get; set; }
-
+        
+        [ForeignKey("Convocatoria")]
         public Guid? ConvocatoriaId { get; set; }
         public Convocatoria? Convocatoria { get; set; }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,11 +26,16 @@ namespace SubvencionesApp.Domain.Entities
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Importe { get; set; }
 
+        // Claves foráneas
         [Required]
+        [ForeignKey("Beneficiario")]
         public Guid BeneficiarioId { get; set; }
+        public Beneficiario? Beneficiario { get; set; }
 
         [Required]
+        [ForeignKey("Organismo")]
         public Guid OrganismoId { get; set; }
+        public Organismo? Organismo { get; set; }
 
         [Required]
         public DateTime FechaResolucion { get; set; }

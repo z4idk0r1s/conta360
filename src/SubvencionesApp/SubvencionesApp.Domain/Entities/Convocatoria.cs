@@ -28,15 +28,20 @@ namespace SubvencionesApp.Domain.Entities
         public DateTime? FechaPublicacion { get; set; }
 
         // Relaciones
+        // Claves foráneas
+        [ForeignKey("TipoConvocatoria")]
         public Guid? TipoConvocatoriaId { get; set; }
         public TipoConvocatoria? TipoConvocatoria { get; set; }
 
+        [ForeignKey("TipoSubvencion")]
         public Guid? TipoSubvencionId { get; set; }
         public TipoSubvencion? TipoSubvencion { get; set; }
 
+        [ForeignKey("Organismo")]
         public Guid? OrganismoId { get; set; }
         public Organismo? Organismo { get; set; }
 
+        [ForeignKey("SituacionEntorno")]
         public Guid? SituacionEntornoId { get; set; }
         public SituacionEntorno? SituacionEntorno { get; set; }
 

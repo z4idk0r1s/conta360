@@ -16,5 +16,10 @@ namespace SubvencionesApp.Domain.Entities
 
         [Required]
         public string? Descripcion { get; set; }
+        
+        // Propiedad de clave foránea y de navegación 
+        [ForeignKey("PlanEstrategicoDetalle")]
+        public Guid? PlanEstrategicoDetalleId { get; set; }
+        public PlanEstrategicoDetalle? PlanEstrategicoDetalle { get; set; }
     }
 }
