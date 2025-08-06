@@ -11,6 +11,10 @@ namespace SubvencionesApp.Domain.Entities
         public int? ExternalId { get; set; }
 
         [Required]
+        [MaxLength(500)]
+        public string? Descripcion { get; set; }
+
+        [Required]
         [MaxLength(255)]
         public string? Nombre { get; set; }
 
