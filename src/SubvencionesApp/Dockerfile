@@ -23,13 +23,27 @@ RUN dotnet restore "SubvencionesApp.Api/SubvencionesApp.Api.csproj"
 COPY . .
 WORKDIR "/src/SubvencionesApp.Api"
 
+# Copia el script de entrada y le da permisos de ejecución.
+# NOTA: Este script DEBE estar en la misma carpeta que este Dockerfile.
+COPY ./entrypointpostgre.sh .
+RUN chmod +x entrypointpostgre.sh
+
 # Publica la aplicación, optimizada para el entorno de producción.
 RUN dotnet publish "SubvencionesApp.Api.csproj" -c Release -o /app/publish
 
 # Etapa final: Crea la imagen de producción ligera
 FROM base AS final
 WORKDIR /app
+# Instalar cliente PostgreSQL
+RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /app/publish .
 
 # Define el punto de entrada para ejecutar la aplicación.
-ENTRYPOINT ["dotnet", "SubvencionesApp.Api.dll"]
+# script de espera.
+COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
+RUN chmod +x ./entrypointpostgre.sh
+ENTRYPOINT ["./entrypointpostgre.sh"]
+
+# El comando por defecto a ejecutar, que será llamado por el script.
+CMD ["dotnet", "SubvencionesApp.Api.dll"]

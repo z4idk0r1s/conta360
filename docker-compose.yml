@@ -80,7 +80,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin123
     ports:
-      - "8080:80"   # Acceso pgAdmin en http://localhost:8080
+      - "8080:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     depends_on:
@@ -102,12 +102,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-      - ConnectionStrings__POSTGRESQLConnection=Host=postgres-db;Port=5432;Database=conta360db;Username=conta360;Password=conta360123
+      - ConnectionStrings__POSTGRESQLConnection=Host=postgres-db;Port=5432;Database=SubvencionesDB_Dev;Username=conta360;Password=conta360123
     depends_on:
       postgres-db:
         condition: service_healthy
-    command: >
-      sh -c "dotnet ef database update --project SubvencionesApp.Api.csproj && dotnet watch --project SubvencionesApp.Api.csproj run --urls 'http://+:80'"
+    command: "dotnet SubvencionesApp.Api.dll"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
