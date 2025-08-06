@@ -112,7 +112,6 @@ namespace SubvencionesApp.Infrastructure.Database
                 entity.Property(e => e.FechaConcesion).IsRequired();
             });
 
-            // Configuración para Beneficiario (añadiendo soporte para SQLite y PostgreSQL)
             modelBuilder.Entity<Beneficiario>(entity =>
             {
                 entity.HasKey(e => e.Id);

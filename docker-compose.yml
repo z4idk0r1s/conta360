@@ -59,11 +59,12 @@ services:
     environment:
       POSTGRES_USER: conta360
       POSTGRES_PASSWORD: conta360123
-      POSTGRES_DB: conta360db
+      POSTGRES_DB: SubvencionesDB_Dev
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./init-uuid-ossp.sql:/docker-entrypoint-initdb.d/init-uuid-ossp.sql:ro 
     networks:
       - conta360-network
     healthcheck:
@@ -71,6 +72,21 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"   # Acceso pgAdmin en http://localhost:8080
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres-db
+    networks:
+      - conta360-network
 
   subvenciones-api:
     build:
@@ -86,8 +102,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-      # Ahora la cadena de conexión usa la instancia de PostgreSQL compartida
-      - ConnectionStrings__SubvencionesDbConnection=Host=postgres-db;Port=5432;Database=conta360db;Username=conta360;Password=conta360123
+      - ConnectionStrings__POSTGRESQLConnection=Host=postgres-db;Port=5432;Database=conta360db;Username=conta360;Password=conta360123
     depends_on:
       postgres-db:
         condition: service_healthy
@@ -132,4 +147,6 @@ volumes:
   subvenciones-api-data:
     driver: local
   postgres-data:
+    driver: local
+  pgadmin-data:
     driver: local

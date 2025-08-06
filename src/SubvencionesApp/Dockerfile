@@ -1,3 +1,4 @@
+# src/SubvencionesApp/Dockerfile
 # Etapa base para la imagen final de producción
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
