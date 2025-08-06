@@ -1,97 +1,84 @@
-# docker-compose.yml
-# Define y ejecuta aplicaciones Docker multi-contenedor.
-# Version 3.8 es compatible con características modernas de Docker Compose.
 version: '3.8'
 
 services:
-  # Servicio para el microfrontend principal (root-config).
   root-config:
-    # Construye la imagen Docker a partir del Dockerfile ubicado en el directorio del microfrontend.
     build:
       context: ./src/microfrontends/root-config
       dockerfile: Dockerfile
-      # target: development # Descomentar si el Dockerfile del frontend usa etapas (stages).
-    # Mapea el puerto 3000 del host al puerto 3000 del contenedor, permitiendo el acceso externo.
     ports:
       - "3000:3000"
-    # Monta el código fuente para hot reload y desarrollo interactivo.
-    # El volumen anonimo para node_modules previene conflictos con el node_modules del host.
     volumes:
       - ./src/microfrontends/root-config:/app
       - /app/node_modules
-    # Variables de entorno inyectadas en el contenedor para el microfrontend.
     environment:
       - NODE_ENV=development
-      # CRÍTICO: La URL del backend debe apuntar al nombre del servicio Docker y su puerto INTERNO.
       - NEXT_PUBLIC_API_URL=http://validation-core:80
-      # NUEVO: URL del microservicio de subvenciones. Apunta a su nombre de servicio y puerto interno.
       - NEXT_PUBLIC_SUBVENCIONES_API_URL=http://subvenciones-api:80
-      # CRÍTICO: Nueva variable de entorno para indicar al MF que está en Docker Compose.
-      - IS_DOCKER_COMPOSE=true # <--- ¡Este es el cambio CRÍTICO aquí!
-    # Asegura que el backend esté saludable antes de iniciar este servicio.
+      - IS_DOCKER_COMPOSE=true
     depends_on:
       validation-core:
         condition: service_healthy
-      subvenciones-api: # NUEVO: Dependencia añadida para el microservicio
+      subvenciones-api:
         condition: service_healthy
-    # Define un chequeo de salud para verificar si el microfrontend está respondiendo.
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"] # Verifica que el servidor Next.js está levantado.
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 30s
       timeout: 5s
       retries: 3
-    # Asigna el servicio a una red definida por el usuario para comunicación aislada.
     networks:
       - conta360-network
 
-  # Servicio para el backend .NET (API principal).
   validation-core:
-    # Construye la imagen Docker para el backend API.
     build:
       context: ./src/backend/Presentation/Conta360.Presentation.Api
       dockerfile: Dockerfile
-      target: development # Usa la etapa 'development' del Dockerfile para hot reload.
-    # Mapea el puerto 5000 del host al puerto 80 del contenedor, para acceso externo.
+      target: development
     ports:
       - "5000:80"
-    # Monta el código fuente completo del backend para habilitar el hot reload con dotnet watch.
-    # El volumen persistente 'validation-core-data' se usa para la base de datos SQLite.
     volumes:
       - ./src/backend:/app/backend
       - validation-core-data:/app/data
-    # Variables de entorno para el contenedor del backend.
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80 # La aplicación escucha internamente en el puerto 80.
-      # Habilita la detección de cambios de archivos para hot reload en volúmenes montados.
+      - ASPNETCORE_URLS=http://+:80
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-      # Cadena de conexión para SQLite, apuntando al volumen montado para persistencia.
       - ConnectionStrings__SqliteConnection=Data Source=/app/data/conta360.db
-    # Comando ejecutado al iniciar el contenedor: aplica migraciones EF Core y luego inicia la API con hot reload.
     command: >
       sh -c "dotnet ef database update --project backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj && dotnet watch --project backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj run --urls 'http://+:80'"
-    # Define un chequeo de salud para verificar si el backend está respondiendo a su endpoint /health.
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
       timeout: 3s
       retries: 3
-    # Asigna el servicio a la red definida por el usuario.
     networks:
       - conta360-network
 
-  # --- NUEVO: Servicio para el microservicio SubvencionesApp ---
+  postgres-db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: conta360
+      POSTGRES_PASSWORD: conta360123
+      POSTGRES_DB: conta360db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - conta360-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U conta360"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   subvenciones-api:
-    # Construye la imagen del microservicio.
     build:
-      # CAMBIO: Se actualiza la ruta del contexto para que apunte al directorio del proyecto ejecutable.
       context: ./src/SubvencionesApp
       dockerfile: Dockerfile
-      target: development # O usar 'final' para producción
-    # Mapea un nuevo puerto del host para evitar conflictos. El puerto interno es 80.
+      target: development
     ports:
       - "5001:80"
-    # Monta el código fuente para desarrollo y el volumen para la base de datos.
     volumes:
       - ./src/SubvencionesApp:/app/SubvencionesApp
       - subvenciones-api-data:/app/data
@@ -99,12 +86,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-      - ConnectionStrings__SubvencionesDbConnection=Data Source=/app/data/subvenciones.db
-    # Comando para ejecutar migraciones y la aplicación con hot reload.
+      # Ahora la cadena de conexión usa la instancia de PostgreSQL compartida
+      - ConnectionStrings__SubvencionesDbConnection=Host=postgres-db;Port=5432;Database=conta360db;Username=conta360;Password=conta360123
+    depends_on:
+      postgres-db:
+        condition: service_healthy
     command: >
-      # CAMBIO: Se actualiza el nombre del proyecto en los comandos de dotnet para que coincida con la nueva ruta.
       sh -c "dotnet ef database update --project SubvencionesApp.Api.csproj && dotnet watch --project SubvencionesApp.Api.csproj run --urls 'http://+:80'"
-    # Chequeo de salud del nuevo microservicio.
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
@@ -113,37 +101,35 @@ services:
     networks:
       - conta360-network
 
-  # Para añadir un nuevo MF, duplica este bloque y ajusta los valores.
-  dashboard-app: # Nombre del servicio Docker. Debe coincidir con 'mfName' en mf-remotes.config.js
+  dashboard-app:
     build:
-      context: ./src/microfrontends/dashboard-app # Ruta al contexto del build de este MF
-      dockerfile: Dockerfile # Dockerfile específico para el Dashboard
+      context: ./src/microfrontends/dashboard-app
+      dockerfile: Dockerfile
     ports:
-      - "3001:3001" # Mapea el puerto del host al puerto interno del contenedor. Coincide con REMOTE_PORTS.dashboardApp
+      - "3001:3001"
     volumes:
-      - ./src/microfrontends/dashboard-app:/app # Monta el código fuente para hot reload
-      - /app/node_modules # Evita conflictos con node_modules del host
+      - ./src/microfrontends/dashboard-app:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=development
-      # Este MF remoto también podría necesitar la URL del backend si lo consume directamente.
       - NEXT_PUBLIC_API_URL=http://validation-core:80
-      - IS_DOCKER_COMPOSE=true # Indicar que está en Docker Compose
+      - IS_DOCKER_COMPOSE=true
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001"] # Verifica que el MF está levantado
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
       interval: 30s
       timeout: 5s
       retries: 3
     networks:
       - conta360-network
 
-# Definición de redes de Docker.
 networks:
   conta360-network:
-    driver: bridge # Tipo de red por defecto, permite comunicación entre servicios por nombre.
+    driver: bridge
 
-# Definición de volúmenes persistentes.
 volumes:
   validation-core-data:
-    driver: local # El volumen se gestiona por Docker en el host.
+    driver: local
   subvenciones-api-data:
+    driver: local
+  postgres-data:
     driver: local
