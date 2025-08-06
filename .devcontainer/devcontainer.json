@@ -27,5 +27,6 @@
     "source=${localEnv:USERPROFILE}\\.nuget,target=/home/vscode/.nuget,type=bind"
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
-  "workspaceFolder": "/workspace"
+  "workspaceFolder": "/workspace",
+  "runArgs": ["--network=conta360-network"]
 }
