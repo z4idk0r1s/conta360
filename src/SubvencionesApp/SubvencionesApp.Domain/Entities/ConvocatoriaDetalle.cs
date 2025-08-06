@@ -46,10 +46,7 @@ namespace SubvencionesApp.Domain.Entities
         [Required]
         public Guid InstrumentoId { get; set; }
 
-        public ICollection<Plazo>? Plazos { get; set; }
-
         public string? Documentos { get; set; }
 
-        public ICollection<Beneficiario>? Beneficiarios { get; set; }
     }
 }

@@ -349,3 +349,74 @@ C:.
             TipoSubvencionRepository.cs
             TramoRepository.cs
             UnidadAdministrativaRepository.cs
+
+
+    Integridad de los datos: Las claves foráneas (OrganismoId, BeneficiarioId, etc.) aseguran que las relaciones entre tablas sean siempre válidas. Por ejemplo, no puedes tener una Convocatoria asociada a un OrganismoId que no exista en la tabla Organismo.
+
+    Reducción de la redundancia: La información se almacena en una sola ubicación (por ejemplo, los detalles del Beneficiario están en una tabla, y otras tablas solo guardan su Id), lo que ahorra espacio y evita inconsistencias.
+
+    Flexibilidad para consultas complejas: La estructura te permite combinar los datos de diferentes tablas (JOIN) para responder a preguntas muy detalladas.
+
+El principal "coste" de este diseño es que, para obtener toda la información de una sola Convocatoria o Concesion, necesitas realizar múltiples uniones (joins), lo que puede ser más lento que un esquema desnormalizado si no se usan índices adecuados. Sin embargo, tu AppDbContext ya define índices en campos importantes, lo que mitiga este problema.
+
+Tipos de Consultas que puedes hacer
+
+La clave para obtener toda la información es usar consultas con uniones (joins). Con las relaciones definidas, puedes navegar entre las entidades como si fueran una red de información interconectada. Puedes hacer consultas para:
+
+    Recuperar datos completos: Obtener una vista completa de una entidad, incluyendo los detalles de todas las entidades relacionadas.
+
+    Filtrar y buscar: Encontrar registros que cumplan con criterios específicos en diferentes tablas. Por ejemplo, buscar Convocatorias de un Organismo en particular.
+
+    Realizar análisis y agregaciones: Contar el número de concesiones, sumar importes, o calcular estadísticas por Ejercicio, Organismo, Beneficiario, etc.
+
+Consultas para Obtener Toda la Información Posible
+
+A continuación, te muestro ejemplos de consultas en un formato similar a LINQ, que es la forma en que Entity Framework Core trabaja con tu modelo. Estas consultas te permitirán verificar que puedes obtener toda la información de tu base de datos.
+
+1. Obtener una Concesión con todos sus detalles relacionados
+
+Esta consulta te permite obtener los datos de una Concesion y, de un solo golpe, recuperar los datos del Beneficiario y de la Convocatoria asociada, incluyendo los detalles de catálogo de esta última.
+C#
+
+var concesionCompleta = await _dbContext.Concesiones
+    .Where(c => c.IdConcesion == concesionId)
+    .Include(c => c.Beneficiario)
+    .Include(c => c.Convocatoria)
+        .ThenInclude(conv => conv.Organismo)
+    .Include(c => c.Convocatoria)
+        .ThenInclude(conv => conv.TipoConvocatoria)
+    .Include(c => c.Convocatoria)
+        .ThenInclude(conv => conv.SituacionEntorno)
+    .FirstOrDefaultAsync();
+
+2. Obtener todas las Convocatorias de un Organismo específico para un ejercicio determinado
+
+Esta consulta demuestra cómo filtrar por propiedades de entidades relacionadas, lo que es esencial para búsquedas de información.
+C#
+
+var convocatoriasFiltradas = await _dbContext.Convocatorias
+    .Where(c => c.Organismo.Descripcion == "Nombre del Organismo" && c.Ejercicio == 2025)
+    .Include(c => c.Organismo)
+    .Include(c => c.TipoConvocatoria)
+    .ToListAsync();
+
+3. Calcular el importe total de las concesiones para un Beneficiario
+
+Con esta consulta, puedes realizar agregaciones sobre colecciones para obtener datos estadísticos o de resumen.
+C#
+
+var importeTotalBeneficiario = await _dbContext.Concesiones
+    .Where(c => c.Beneficiario.Nombre == "Nombre del Beneficiario")
+    .SumAsync(c => c.Importe);
+
+4. Obtener todos los detalles de una Convocatoria completa, incluyendo sus Plazos
+
+Esta consulta te permite verificar la relación uno-a-muchos con los plazos de la convocatoria.
+C#
+
+var convocatoriaConPlazos = await _dbContext.Convocatorias
+    .Where(c => c.Id == convocatoriaId)
+    .Include(c => c.Plazos)
+    .FirstOrDefaultAsync();
+
+Estos ejemplos demuestran que tu esquema permite recuperar toda la información disponible al combinar las tablas de manera lógica. Si tienes la clave principal de una entidad, puedes "navegar" a través de las propiedades para obtener los datos de todas las entidades relacionadas.
