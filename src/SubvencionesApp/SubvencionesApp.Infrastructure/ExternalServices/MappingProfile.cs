@@ -55,7 +55,7 @@ namespace SubvencionesApp.Infrastructure.ExternalServices
             // La propiedad 'Id' de la API se mapea a 'ExternalId' en el DTO.
             CreateMap<ConvocatoriaApiModel, ConvocatoriaDto>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.Id));
             CreateMap<ConvocatoriaDetalleApiModel, ConvocatoriaDetalleDto>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.Id));
-             CreateMap<ConcesionApiModel, ConcesionDto>().ForMember(dest => dest.IdConcesion, opt => opt.MapFrom(src => src.IdConcesion));
+            CreateMap<ConcesionApiModel, ConcesionDto>().ForMember(dest => dest.IdConcesion, opt => opt.MapFrom(src => src.IdConcesion));
             CreateMap<ConcesionDetalleApiModel, ConcesionDetalleDto>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.Id));
             CreateMap<AyudaApiModel, AyudaDto>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.Id));
             CreateMap<AyudaEstadoApiModel, AyudaEstadoDto>().ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.Id));

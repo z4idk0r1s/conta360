@@ -16,5 +16,6 @@ namespace SubvencionesApp.Domain.Entities
 
         // Propiedad de navegación inversa
         public ICollection<Convocatoria> Convocatorias { get; set; } = new List<Convocatoria>();
+        public ICollection<ConcesionDetalle> ConcesionesDetalle { get; set; } = new List<ConcesionDetalle>();
     }
 }
