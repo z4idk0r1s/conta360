@@ -7,7 +7,7 @@
       "WORKSPACE_NAME": "${localWorkspaceFolderBasename}"
     }
   },
-  "forwardPorts": [3000, 3001, 3004, 5000, 5001],
+  "forwardPorts": [3000, 3001, 3004, 5000, 5001, 5432],
   "postCreateCommand": "bash ./.devcontainer/star2.sh",
   "customizations": {
     "vscode": {
