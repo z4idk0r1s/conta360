@@ -18,5 +18,13 @@ namespace SubvencionesApp.Application.UseCases
         {
             return _unitOfWork.Beneficiarios;
         }
+        internal async Task<BeneficiarioDto?> GetByIdAsync(Guid id)
+        {
+            // 1. Llama de forma asíncrona al método del repositorio.
+            var entity = await _unitOfWork.Beneficiarios.GetByIdAsync(id);
+
+            // 2. Mapea la entidad al DTO y retorna el resultado.
+            return _mapper.Map<BeneficiarioDto>(entity);
+        }
     }
 }

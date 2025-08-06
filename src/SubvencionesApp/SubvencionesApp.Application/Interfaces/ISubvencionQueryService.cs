@@ -9,12 +9,9 @@ namespace SubvencionesApp.Application.Interfaces
         Task<IEnumerable<ConvocatoriaDto>> GetConvocatoriasAsync();
         Task<IEnumerable<ConcesionDto>> GetConcesionesAsync();
         Task<IEnumerable<BeneficiarioDto>> GetBeneficiariosAsync();
-        Task<ConvocatoriaDto?> GetConvocatoriaByIdAsync(long id);
-        Task<ConcesionDto?> GetConcesionByIdAsync(long id);
-        Task<BeneficiarioDto?> GetBeneficiarioByIdAsync(long id);
-        Task<IEnumerable<ConvocatoriaDto>> SearchConvocatoriasByTextAsync(string searchText);
-        Task<IEnumerable<ConcesionDto>> GetConcesionesByEjercicioAsync(int ejercicio);
-        Task<DatosEstadisticosDto> GetEstadisticasGeneralesAsync();
+        Task<ConvocatoriaDto?> GetConvocatoriaByIdAsync(Guid id);
+        Task<ConcesionDto?> GetConcesionByIdAsync(Guid id);
+        Task<BeneficiarioDto?> GetBeneficiarioByIdAsync(Guid id);
         // 
         Task<IEnumerable<AyudaDto>> GetAyudasAsync();
         Task<IEnumerable<AyudaEstadoDto>> GetAyudasEstadosAsync();

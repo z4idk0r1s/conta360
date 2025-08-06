@@ -57,7 +57,6 @@ namespace SubvencionesApp.Application.Services
         private readonly TerceroService _terceroService;
         private readonly TipoBeneficiarioService _tipoBeneficiarioService;
 
-
         public SubvencionQueryService(
             AccionService accionService,
             AgrupacionService agrupacionService,
@@ -82,7 +81,6 @@ namespace SubvencionesApp.Application.Services
             TipoSubvencionService tipoSubvencionService,
             TramoService tramoService,
             UnidadAdministrativaService unidadAdministrativaService,
-            // Nuevas inyecciones
             AyudaService ayudaService,
             AyudaEstadoService ayudaEstadoService,
             ConcesionDetalleService concesionDetalleService,
@@ -129,8 +127,6 @@ namespace SubvencionesApp.Application.Services
             _tipoSubvencionService = tipoSubvencionService;
             _tramoService = tramoService;
             _unidadAdministrativaService = unidadAdministrativaService;
-
-            // Nuevos servicios
             _ayudaService = ayudaService;
             _ayudaEstadoService = ayudaEstadoService;
             _concesionDetalleService = concesionDetalleService;
@@ -170,37 +166,21 @@ namespace SubvencionesApp.Application.Services
             return await _beneficiarioService.GetAllAsync();
         }
 
-        public async Task<ConvocatoriaDto?> GetConvocatoriaByIdAsync(long id)
+        public async Task<ConvocatoriaDto?> GetConvocatoriaByIdAsync(Guid id)
         {
             return await _convocatoriaService.GetByIdAsync(id);
         }
 
-        public async Task<ConcesionDto?> GetConcesionByIdAsync(long id)
+        public async Task<ConcesionDto?> GetConcesionByIdAsync(Guid id)
         {
             return await _concesionService.GetByIdAsync(id);
         }
 
-        public async Task<BeneficiarioDto?> GetBeneficiarioByIdAsync(long id)
+        public async Task<BeneficiarioDto?> GetBeneficiarioByIdAsync(Guid id)
         {
             return await _beneficiarioService.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<ConvocatoriaDto>> SearchConvocatoriasByTextAsync(string searchText)
-        {
-            return await _convocatoriaService.SearchByTextAsync(searchText);
-        }
-
-        public async Task<IEnumerable<ConcesionDto>> GetConcesionesByEjercicioAsync(int ejercicio)
-        {
-            return await _concesionService.GetByEjercicioAsync(ejercicio);
-        }
-
-        public async Task<DatosEstadisticosDto> GetEstadisticasGeneralesAsync()
-        {
-            return await _datosEstadisticosService.GetEstadisticasGeneralesAsync();
-        }
-
-        // Implementaciones de los nuevos métodos
         public async Task<IEnumerable<AyudaDto>> GetAyudasAsync() => await _ayudaService.GetAllAsync();
         public async Task<IEnumerable<AyudaEstadoDto>> GetAyudasEstadosAsync() => await _ayudaEstadoService.GetAllAsync();
         public async Task<IEnumerable<ConcesionDetalleDto>> GetConcesionesDetalleAsync() => await _concesionDetalleService.GetAllAsync();
