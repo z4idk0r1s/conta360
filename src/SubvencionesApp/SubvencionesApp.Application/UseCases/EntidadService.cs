@@ -1,24 +1,22 @@
+// EntidadService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class EntidadService
+    public class EntidadService : BaseService<Entidad, EntidadDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public EntidadService(IUnitOfWork unitOfWork)
+        public EntidadService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<EntidadDto>> GetAllAsync()
+        protected override IGenericRepository<Entidad> GetRepository()
         {
-            var entidades = await _unitOfWork.Entidades.GetAllAsync();
-            return entidades.Select(e => new EntidadDto { Id = e.Id, Descripcion = e.Descripcion });
+            return _unitOfWork.Entidades;
         }
     }
 }

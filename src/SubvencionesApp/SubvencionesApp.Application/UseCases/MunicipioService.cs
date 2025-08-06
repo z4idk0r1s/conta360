@@ -1,24 +1,22 @@
+// MunicipioService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class MunicipioService
+    public class MunicipioService : BaseService<Municipio, MunicipioDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public MunicipioService(IUnitOfWork unitOfWork)
+        public MunicipioService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<MunicipioDto>> GetAllAsync()
+        protected override IGenericRepository<Municipio> GetRepository()
         {
-            var municipios = await _unitOfWork.Municipios.GetAllAsync();
-            return municipios.Select(m => new MunicipioDto { Id = m.Id, Descripcion = m.Descripcion });
+            return _unitOfWork.Municipios;
         }
     }
 }

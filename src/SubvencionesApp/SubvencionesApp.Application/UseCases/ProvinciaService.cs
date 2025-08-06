@@ -1,24 +1,22 @@
+// ProvinciaService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class ProvinciaService
+    public class ProvinciaService : BaseService<Provincia, ProvinciaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ProvinciaService(IUnitOfWork unitOfWork)
+        public ProvinciaService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ProvinciaDto>> GetAllAsync()
+        protected override IGenericRepository<Provincia> GetRepository()
         {
-            var provincias = await _unitOfWork.Provincias.GetAllAsync();
-            return provincias.Select(p => new ProvinciaDto { Id = p.Id, Descripcion = p.Descripcion });
+            return _unitOfWork.Provincias;
         }
     }
 }

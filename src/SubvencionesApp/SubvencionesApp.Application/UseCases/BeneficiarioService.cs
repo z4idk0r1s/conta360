@@ -1,24 +1,30 @@
+// BeneficiarioService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class BeneficiarioService
+    public class BeneficiarioService : BaseService<Beneficiario, BeneficiarioDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public BeneficiarioService(IUnitOfWork unitOfWork)
+        public BeneficiarioService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<BeneficiarioDto>> GetAllAsync()
+        protected override IGenericRepository<Beneficiario> GetRepository()
         {
-            var beneficiarios = await _unitOfWork.Beneficiarios.GetAllAsync();
-            return beneficiarios.Select(b => new BeneficiarioDto { Id = b.Id, Nombre = b.Nombre, Identificacion = b.Identificacion });
+            return _unitOfWork.Beneficiarios;
+        }
+        internal async Task<BeneficiarioDto?> GetByIdAsync(Guid id)
+        {
+            // 1. Llama de forma asíncrona al método del repositorio.
+            var entity = await _unitOfWork.Beneficiarios.GetByIdAsync(id);
+
+            // 2. Mapea la entidad al DTO y retorna el resultado.
+            return _mapper.Map<BeneficiarioDto>(entity);
         }
     }
 }

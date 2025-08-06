@@ -1,24 +1,22 @@
+// TipoSubvencionService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class TipoSubvencionService
+    public class TipoSubvencionService : BaseService<TipoSubvencion, TipoSubvencionDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public TipoSubvencionService(IUnitOfWork unitOfWork)
+        public TipoSubvencionService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<TipoSubvencionDto>> GetAllAsync()
+        protected override IGenericRepository<TipoSubvencion> GetRepository()
         {
-            var tipos = await _unitOfWork.TiposSubvencion.GetAllAsync();
-            return tipos.Select(t => new TipoSubvencionDto { Id = t.Id, Descripcion = t.Descripcion });
+            return _unitOfWork.TiposSubvencion;
         }
     }
 }

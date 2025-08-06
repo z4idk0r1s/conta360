@@ -1,24 +1,22 @@
+// EstadoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class EstadoService
+    public class EstadoService : BaseService<Estado, EstadoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public EstadoService(IUnitOfWork unitOfWork)
+        public EstadoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<EstadoDto>> GetAllAsync()
+        protected override IGenericRepository<Estado> GetRepository()
         {
-            var estados = await _unitOfWork.Estados.GetAllAsync();
-            return estados.Select(e => new EstadoDto { Id = e.Id, Descripcion = e.Descripcion });
+            return _unitOfWork.Estados;
         }
     }
 }

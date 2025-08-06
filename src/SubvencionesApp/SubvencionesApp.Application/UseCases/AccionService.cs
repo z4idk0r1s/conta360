@@ -1,25 +1,22 @@
+// AccionService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
 using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class AccionService
+    public class AccionService : BaseService<Accion, AccionDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public AccionService(IUnitOfWork unitOfWork)
+        public AccionService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<AccionDto>> GetAllAsync()
+        protected override IGenericRepository<Accion> GetRepository()
         {
-            var acciones = await _unitOfWork.Acciones.GetAllAsync();
-            return acciones.Select(a => new AccionDto { Id = a.Id, Descripcion = a.Descripcion });
+            return _unitOfWork.Acciones;
         }
     }
 }

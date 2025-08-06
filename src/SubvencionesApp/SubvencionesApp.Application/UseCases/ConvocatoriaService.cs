@@ -1,24 +1,31 @@
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
+using AutoMapper;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class ConvocatoriaService
+    public class ConvocatoriaService : BaseService<Convocatoria, ConvocatoriaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ConvocatoriaService(IUnitOfWork unitOfWork)
+        public ConvocatoriaService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ConvocatoriaDto>> GetAllAsync()
+        protected override IGenericRepository<Convocatoria> GetRepository()
         {
-            var convocatorias = await _unitOfWork.Convocatorias.GetAllAsync();
-            return convocatorias.Select(c => new ConvocatoriaDto { Id = c.Id, Objeto = c.Objeto, Extracto = c.Extracto, Enlace = c.Enlace, ReferenciaBDNS = c.ReferenciaBDNS, Ejercicio = c.Ejercicio, FechaPublicacion = c.FechaPublicacion });
+            return _unitOfWork.Convocatorias;
+        }
+
+        public async Task<ConvocatoriaDto?> GetByIdAsync(Guid id)
+        {
+            var entity = await _unitOfWork.Convocatorias.GetByIdAsync(id);
+            return _mapper.Map<ConvocatoriaDto>(entity);
         }
     }
 }

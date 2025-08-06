@@ -1,24 +1,22 @@
+// FormaPagoService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class FormaPagoService
+    public class FormaPagoService : BaseService<FormaPago, FormaPagoDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public FormaPagoService(IUnitOfWork unitOfWork)
+        public FormaPagoService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<FormaPagoDto>> GetAllAsync()
+        protected override IGenericRepository<FormaPago> GetRepository()
         {
-            var formasPago = await _unitOfWork.FormasPago.GetAllAsync();
-            return formasPago.Select(f => new FormaPagoDto { Id = f.Id, Descripcion = f.Descripcion });
+            return _unitOfWork.FormasPago;
         }
     }
 }

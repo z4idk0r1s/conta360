@@ -18,21 +18,44 @@ namespace SubvencionesApp.Infrastructure.Database
         public DbSet<Accion> Acciones { get; set; } = null!;
         public DbSet<Agrupacion> Agrupaciones { get; set; } = null!;
         public DbSet<Area> Areas { get; set; } = null!;
+        public DbSet<Ayuda> Ayudas { get; set; } = null!;
+        public DbSet<AyudaEstado> AyudasEstados { get; set; } = null!;
         public DbSet<Beneficiario> Beneficiarios { get; set; } = null!;
         public DbSet<Concesion> Concesiones { get; set; } = null!;
+        public DbSet<ConcesionDetalle> ConcesionesDetalle { get; set; } = null!;
+        public DbSet<ConfiguracionMicroportal> ConfiguracionesMicroportal { get; set; } = null!;
         public DbSet<Convocatoria> Convocatorias { get; set; } = null!;
+        public DbSet<ConvocatoriaDetalle> ConvocatoriasDetalle { get; set; } = null!;
         public DbSet<DatosEstadisticos> DatosEstadisticos { get; set; } = null!;
+        public DbSet<EnlaceMicroVentana> EnlacesMicroVentana { get; set; } = null!;
         public DbSet<Entidad> Entidades { get; set; } = null!;
         public DbSet<Estado> Estados { get; set; } = null!;
+        public DbSet<Finalidad> Finalidades { get; set; } = null!;
         public DbSet<FormaPago> FormasPago { get; set; } = null!;
+        public DbSet<GrandeBeneficiario> GrandesBeneficiarios { get; set; } = null!;
+        public DbSet<Instrumento> Instrumentos { get; set; } = null!;
         public DbSet<Linea> Lineas { get; set; } = null!;
+        public DbSet<Minimis> Minimis { get; set; } = null!;
         public DbSet<Municipio> Municipios { get; set; } = null!;
+        public DbSet<Objetivo> Objetivos { get; set; } = null!;
         public DbSet<Organismo> Organismos { get; set; } = null!;
+        public DbSet<OrganosCodigoAdmin> OrganosCodigoAdmin { get; set; } = null!;
+        public DbSet<PartidoPolitico> PartidosPoliticos { get; set; } = null!;
+        public DbSet<PlanEstrategico> PlanesEstrategicos { get; set; } = null!;
+        public DbSet<PlanEstrategicoDetalle> PlanesEstrategicosDetalle { get; set; } = null!;
+        public DbSet<Plazo> Plazos { get; set; } = null!;
         public DbSet<Programa> Programas { get; set; } = null!;
         public DbSet<Provincia> Provincias { get; set; } = null!;
+        public DbSet<Region> Regiones { get; set; } = null!;
+        public DbSet<Reglamento> Reglamentos { get; set; } = null!;
+        public DbSet<Sancion> Sanciones { get; set; } = null!;
+        public DbSet<SancionDetalle> SancionesDetalle { get; set; } = null!;
         public DbSet<Sector> Sectores { get; set; } = null!;
+        public DbSet<SectorProducto> SectoresProductos { get; set; } = null!;
         public DbSet<SituacionEntorno> SituacionesEntorno { get; set; } = null!;
         public DbSet<SubtipoSubvencion> SubtiposSubvencion { get; set; } = null!;
+        public DbSet<Suscripcion> Suscripciones { get; set; } = null!;
+        public DbSet<Tercero> Terceros { get; set; } = null!;
         public DbSet<TipoBeneficiario> TiposBeneficiario { get; set; } = null!;
         public DbSet<TipoConvocatoria> TiposConvocatoria { get; set; } = null!;
         public DbSet<TipoOrganismo> TiposOrganismo { get; set; } = null!;
@@ -123,7 +146,8 @@ namespace SubvencionesApp.Infrastructure.Database
                 typeof(Provincia), typeof(Sector), typeof(SituacionEntorno),
                 typeof(SubtipoSubvencion), typeof(TipoBeneficiario), typeof(TipoConvocatoria),
                 typeof(TipoOrganismo), typeof(TipoSubvencion), typeof(Tramo),
-                typeof(UnidadAdministrativa)
+                typeof(UnidadAdministrativa), typeof(Finalidad), typeof(Instrumento),
+                typeof(Region), typeof(Reglamento), typeof(SectorProducto), typeof(Actividad)
             };
 
             foreach (var entityType in catalogEntities)
@@ -156,6 +180,105 @@ namespace SubvencionesApp.Infrastructure.Database
             }
 
             // Configuraciones específicas para entidades con campos adicionales
+            modelBuilder.Entity<Linea>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Codigo).HasMaxLength(50);
+                entity.Property(e => e.Nombre).HasMaxLength(500).IsRequired();
+            });
+            
+            // Nuevas configuraciones para las entidades de la API Oficial
+            modelBuilder.Entity<Ayuda>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+
+            modelBuilder.Entity<AyudaEstado>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+
+            modelBuilder.Entity<ConvocatoriaDetalle>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+
+            modelBuilder.Entity<ConcesionDetalle>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+
+            modelBuilder.Entity<Minimis>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+            
+            modelBuilder.Entity<GrandeBeneficiario>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+            
+            modelBuilder.Entity<PartidoPolitico>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+            
+            modelBuilder.Entity<PlanEstrategico>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+            
+            modelBuilder.Entity<PlanEstrategicoDetalle>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+
+            modelBuilder.Entity<Plazo>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+
+            modelBuilder.Entity<Sancion>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+            
+            modelBuilder.Entity<SancionDetalle>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+            
+            modelBuilder.Entity<Tercero>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalId).IsRequired();
+                entity.HasIndex(e => e.ExternalId).IsUnique();
+            });
+
             modelBuilder.Entity<Linea>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -222,6 +345,82 @@ namespace SubvencionesApp.Infrastructure.Database
             modelBuilder.Entity<Beneficiario>()
                 .HasIndex(e => e.Nombre)
                 .HasDatabaseName("IX_Beneficiarios_Nombre");
+
+            // Nuevos índices para las entidades de la API Oficial
+            modelBuilder.Entity<Ayuda>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_Ayudas_ExternalId");
+
+            modelBuilder.Entity<AyudaEstado>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_AyudasEstados_ExternalId");
+
+            modelBuilder.Entity<ConvocatoriaDetalle>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_ConvocatoriasDetalle_ExternalId");
+
+            modelBuilder.Entity<ConcesionDetalle>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_ConcesionesDetalle_ExternalId");
+
+            modelBuilder.Entity<Minimis>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_Minimis_ExternalId");
+            
+            modelBuilder.Entity<GrandeBeneficiario>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_GrandesBeneficiarios_ExternalId");
+            
+            modelBuilder.Entity<PartidoPolitico>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_PartidosPoliticos_ExternalId");
+            
+            modelBuilder.Entity<PlanEstrategico>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_PlanesEstrategicos_ExternalId");
+            
+            modelBuilder.Entity<PlanEstrategicoDetalle>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_PlanesEstrategicosDetalle_ExternalId");
+
+            modelBuilder.Entity<Plazo>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_Plazos_ExternalId");
+
+            modelBuilder.Entity<Sancion>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_Sanciones_ExternalId");
+            
+            modelBuilder.Entity<SancionDetalle>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_SancionesDetalle_ExternalId");
+            
+            modelBuilder.Entity<Tercero>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_Terceros_ExternalId");
+
+            modelBuilder.Entity<EnlaceMicroVentana>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_EnlacesMicroVentana_ExternalId");
+            
+            modelBuilder.Entity<Suscripcion>()
+                .HasIndex(e => e.ExternalId)
+                .IsUnique()
+                .HasDatabaseName("IX_Suscripciones_ExternalId");
         }
 
         private void ConfigureRelaciones(ModelBuilder modelBuilder)

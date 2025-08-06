@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +9,7 @@ namespace SubvencionesApp.Domain.Entities
     {
         [Key]
         public Guid Id { get; set; }
+        public int? ExternalId { get; set; }
 
         [MaxLength(255)]
         public string? Objeto { get; set; }
@@ -25,16 +28,16 @@ namespace SubvencionesApp.Domain.Entities
         public DateTime? FechaPublicacion { get; set; }
 
         // Relaciones
-        public int? TipoConvocatoriaId { get; set; }
+        public Guid? TipoConvocatoriaId { get; set; }
         public TipoConvocatoria? TipoConvocatoria { get; set; }
 
-        public int? TipoSubvencionId { get; set; }
+        public Guid? TipoSubvencionId { get; set; }
         public TipoSubvencion? TipoSubvencion { get; set; }
 
-        public int? OrganismoId { get; set; }
+        public Guid? OrganismoId { get; set; }
         public Organismo? Organismo { get; set; }
 
-        public int? SituacionEntornoId { get; set; }
+        public Guid? SituacionEntornoId { get; set; }
         public SituacionEntorno? SituacionEntorno { get; set; }
 
         public ICollection<Concesion> Concesiones { get; set; } = new List<Concesion>();

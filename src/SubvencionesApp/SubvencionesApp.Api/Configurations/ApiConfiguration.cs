@@ -56,7 +56,7 @@ namespace SubvencionesApp.Api.Configurations
 
             builder.Services.AddMemoryCache();
             
-            //Cambio aquí: uso AddDbContextCheck en lugar de AddDbContext
+            //AddDbContextCheck en lugar de AddDbContext
             builder.Services.AddHealthChecks()
                 .AddDbContextCheck<AppDbContext>();
         }

@@ -1,142 +1,76 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
-MinimumVisualStudioVersion = 10.0.40219.1
-
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Core", "src\backend\Core\Conta360.Core\Conta360.Core.csproj", "{4D8A9F1B-C3E7-4F6A-9B0E-5C1F0A2D3E4F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Domain", "src\backend\Core\Conta360.Domain\Conta360.Domain.csproj", "{1B2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Application", "src\backend\Core\Conta360.Application\Conta360.Application.csproj", "{A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.Postgres", "src\backend\Infrastructure\Conta360.Infrastructure.Postgres\Conta360.Infrastructure.Postgres.csproj", "{F1E2D3C4-B5A6-9E8D-7C6B-5A4D3E2C1B0A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.Sqlite", "src\backend\Infrastructure\Conta360.Infrastructure.Sqlite\Conta360.Infrastructure.Sqlite.csproj", "{12345678-90AB-CDEF-1234-567890ABCDEF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.Excel", "src\backend\Infrastructure\Conta360.Infrastructure.Excel\Conta360.Infrastructure.Excel.csproj", "{ABCDEF01-2345-6789-ABCD-EF0123456789}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.PGC", "src\backend\Infrastructure\Conta360.Infrastructure.PGC\Conta360.Infrastructure.PGC.csproj", "{09876543-210F-EDCB-A987-6543210FEDCB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.Reporting", "src\backend\Infrastructure\Conta360.Infrastructure.Reporting\Conta360.Infrastructure.Reporting.csproj", "{FEDCBA98-7654-3210-FEDC-BA9876543210}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Infrastructure.A3Cash", "src\backend\Infrastructure\Conta360.Infrastructure.A3Cash\Conta360.Infrastructure.A3Cash.csproj", "{7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.CrossCutting.IoC", "src\backend\Shared\Conta360.CrossCutting.IoC\Conta360.CrossCutting.IoC.csproj", "{87654321-FEDC-BA98-7654-3210FEDCBA98}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conta360.Presentation.Api", "src\backend\Presentation\Conta360.Presentation.Api\Conta360.Presentation.Api.csproj", "{210FEDCB-A987-6543-210F-EDCBA9876543}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4D8A9F1B-C3E7-4F6A-9B0E-5C1F0A2D3E4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D8A9F1B-C3E7-4F6A-9B0E-5C1F0A2D3E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D8A9F1B-C3E7-4F6A-9B0E-5C1F0A2D3E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D8A9F1B-C3E7-4F6A-9B0E-5C1F0A2D3E4F}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{1B2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B2C3D4E-5F6A-7B8C-9D0E-1F2F3A4B5C6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B2C3D4E-5F6A-7B8C-9D0E-1F2F3A4B5C6D}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{F1E2D3C4-B5A6-9E8D-7C6B-5A4D3E2C1B0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1E2D3C4-B5A6-9E8D-7C6B-5A4D3E2C1B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1E2D3C4-B5A6-9E8D-7C6B-5A4D3E2C1B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1E2D3C4-B5A6-9E8D-7C6B-5A4D3E2C1B0A}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{12345678-90AB-CDEF-1234-567890ABCDEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12345678-90AB-CDEF-1234-567890ABCDEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12345678-90AB-CDEF-1234-567890ABCDEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12345678-90AB-CDEF-1234-567890ABCDEF}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{ABCDEF01-2345-6789-ABCD-EF0123456789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABCDEF01-2345-6789-ABCD-EF0123456789}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABCDEF01-2345-6789-ABCD-EF0123456789}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABCDEF01-2345-6789-ABCD-EF0123456789}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{09876543-210F-EDCB-A987-6543210FEDCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09876543-210F-EDCB-A987-6543210FEDCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09876543-210F-EDCB-A987-6543210FEDCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09876543-210F-EDCB-A987-6543210FEDCB}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{FEDCBA98-7654-3210-FEDC-BA9876543210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FEDCBA98-7654-3210-FEDC-BA9876543210}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FEDCBA98-7654-3210-FEDC-BA9876543210}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FEDCBA98-7654-3210-FEDC-BA9876543210}.Release|Any CPU.Build.0 = Release|Any CPU
-
-        {7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E3A9C8D-B1F2-4E5C-A6B7-9D0E1F2A3B4C}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{87654321-FEDC-BA98-7654-3210FEDCBA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87654321-FEDC-BA98-7654-3210FEDCBA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87654321-FEDC-BA98-7654-3210FEDCBA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87654321-FEDC-BA98-7654-3210FEDCBA98}.Release|Any CPU.Build.0 = Release|Any CPU
-
-		{210FEDCB-A987-6543-210F-EDCBA9876543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{210FEDCB-A987-6543-210F-EDCBA9876543}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{210FEDCB-A987-6543-210F-EDCBA9876543}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{210FEDCB-A987-6543-210F-EDCBA9876543}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {YOUR-SOLUTION-GUID-HERE}
-	EndGlobalSection
-EndGlobal
-
-
-
-
---------------
-
-
 conta360\src\SubvencionesApp>tree /F
 Listado de rutas de carpetas
 El número de serie del volumen es 6EE0-B276
 C:.
-│   appsettings.Development.json
-│   appsettings.json
 │   Dockerfile
-│   Program.cs
-│   SubvencionesApp.csproj
 │
 ├───SubvencionesApp.Api
-│   ├───Client
+│   │   appsettings.Development.json
+│   │   appsettings.json
+│   │   Program.cs
+│   │   SubvencionesApp.Api.csproj
+│   │
+│   ├───Clients
 │   │       InfoSubvencionesApiClient.cs
+│   │       SubvencionesService.cs
+│   │
+│   ├───Configurations
+│   │       ApiConfiguration.cs
+│   │       ApplicationServicesConfiguration.cs
+│   │       DatabaseConfiguration.cs
+│   │       DomainConfiguration.cs
+│   │       InfrastructureConfiguration.cs
+│   │       PipelineConfiguration.cs
 │   │
 │   └───Controllers
 │           SubvencionesController.cs
 │
 ├───SubvencionesApp.Application
+│   │   SubvencionesApp.Application.csproj
+│   │
 │   ├───Dtos
 │   │       AccionDto.cs
+│   │       ActividadDto.cs
 │   │       AgrupacionDto.cs
 │   │       AreaDto.cs
+│   │       AyudaDto.cs
+│   │       AyudaEstadoDto.cs
 │   │       BeneficiarioDto.cs
+│   │       ConcesionDetalleDto.cs
 │   │       ConcesionDto.cs
+│   │       ConfiguracionMicroportalDto.cs
+│   │       ConvocatoriaDetalleDto.cs
 │   │       ConvocatoriaDto.cs
 │   │       DatosEstadisticosDto.cs
+│   │       EnlaceMicroVentanaDto.cs
 │   │       EntidadDto.cs
 │   │       EstadoDto.cs
+│   │       FinalidadDto.cs
 │   │       FormaPagoDto.cs
+│   │       GrandeBeneficiarioDto.cs
+│   │       InstrumentoDto.cs
 │   │       LineaDto.cs
+│   │       MinimisDto.cs
 │   │       MunicipioDto.cs
+│   │       ObjetivoDto.cs
 │   │       OrganismoDto.cs
+│   │       OrganosCodigoAdminDto.cs
+│   │       PartidoPoliticoDto.cs
+│   │       PlanEstrategicoDetalleDto.cs
+│   │       PlanEstrategicoDto.cs
+│   │       PlazoDto.cs
 │   │       ProgramaDto.cs
 │   │       ProvinciaDto.cs
+│   │       RegionDto.cs
+│   │       ReglamentoDto.cs
+│   │       SancionDetalleDto.cs
+│   │       SancionDto.cs
 │   │       SectorDto.cs
+│   │       SectorProductoDto.cs
 │   │       SituacionEntornoDto.cs
 │   │       SubtipoSubvencionDto.cs
+│   │       SuscripcionDto.cs
+│   │       TerceroDto.cs
 │   │       TipoBeneficiarioDto.cs
 │   │       TipoConvocatoriaDto.cs
 │   │       TipoOrganismoDto.cs
@@ -146,34 +80,108 @@ C:.
 │   │
 │   ├───Interfaces
 │   │       IExternalSubvencionesService.cs
+│   │       ISubvencionesService.cs
 │   │       ISubvencionQueryService.cs
 │   │       ISubvencionSyncService.cs
 │   │
-│   └───Services
-│           SubvencionSyncService.cs
+│   ├───Services
+│   │       SubvencionQueryService.cs
+│   │       SubvencionSyncService.cs
+│   │       SubvencionSyncServiceOld.cs
+│   │
+│   └───UseCases
+│           AccionService.cs
+│           AgrupacionService.cs
+│           AreaService.cs
+│           AyudaEstadoService.cs
+│           AyudaService.cs
+│           BeneficiarioService.cs
+│           ConcesionDetalleService.cs
+│           ConcesionService.cs
+│           ConvocatoriaDetalleService.cs
+│           ConvocatoriaService.cs
+│           DatosEstadisticosService.cs
+│           EntidadService.cs
+│           EstadoService.cs
+│           FinalidadService.cs
+│           FormaPagoService.cs
+│           GrandeBeneficiarioService.cs
+│           InstrumentoService.cs
+│           LineaService.cs
+│           MinimisService.cs
+│           MunicipioService.cs
+│           ObjetivoService.cs
+│           OrganismoService.cs
+│           OrganosCodigoAdminService.cs
+│           PartidoPoliticoService.cs
+│           PlanEstrategicoDetalleService.cs
+│           PlanEstrategicoService.cs
+│           PlazoService.cs
+│           ProgramaService.cs
+│           ProvinciaService.cs
+│           RegionService.cs
+│           ReglamentoService.cs
+│           SancionDetalleService.cs
+│           SancionService.cs
+│           SectorProductoService.cs
+│           SectorService.cs
+│           SituacionEntornoService.cs
+│           SubtipoSubvencionService.cs
+│           SuscripcionService.cs
+│           TerceroService.cs
+│           TipoBeneficiarioService.cs
+│           TipoConvocatoriaService.cs
+│           TipoOrganismoService.cs
+│           TipoSubvencionService.cs
+│           TramoService.cs
+│           UnidadAdministrativaService.cs
 │
-├───SubvencionesApp.Core
-│   │   SubvencionesApp.Core.csproj
+├───SubvencionesApp.Domain
+│   │   SubvencionesApp.Domain.csproj
 │   │
 │   ├───Entities
 │   │       Accion.cs
+│   │       Actividad.cs
 │   │       Agrupacion.cs
 │   │       Area.cs
+│   │       Ayuda.cs
+│   │       AyudaEstado.cs
 │   │       Beneficiario.cs
 │   │       Concesion.cs
+│   │       ConcesionDetalle.cs
+│   │       ConfiguracionMicroportal.cs
 │   │       Convocatoria.cs
+│   │       ConvocatoriaDetalle.cs
 │   │       DatosEstadisticos.cs
+│   │       EnlaceMicroVentana.cs
 │   │       Entidad.cs
 │   │       Estado.cs
+│   │       Finalidad.cs
 │   │       FormaPago.cs
+│   │       GrandeBeneficiario.cs
+│   │       Instrumento.cs
 │   │       Linea.cs
+│   │       Minimis.cs
 │   │       Municipio.cs
+│   │       Objetivo.cs
 │   │       Organismo.cs
+│   │       OrganosCodigoAdmin.cs
+│   │       PartidoPolitico.cs
+│   │       PlanEstrategico.cs
+│   │       PlanEstrategicoDetalle.cs
+│   │       Plazo.cs
 │   │       Programa.cs
 │   │       Provincia.cs
+│   │       Region.cs
+│   │       Reglamento.cs
+│   │       Sancion.cs
+│   │       SancionDetalle.cs
 │   │       Sector.cs
+│   │       SectorProducto.cs
 │   │       SituacionEntorno.cs
 │   │       SubtipoSubvencion.cs
+│   │       Suscripcion.cs
+│   │       Tercero.cs
 │   │       TipoBeneficiario.cs
 │   │       TipoConvocatoria.cs
 │   │       TipoOrganismo.cs
@@ -183,62 +191,53 @@ C:.
 │   │
 │   └───Interfaces
 │           IAccionRepository.cs
+│           IActividadRepository.cs
 │           IAgrupacionRepository.cs
 │           IAreaRepository.cs
+│           IAyudaEstadoRepository.cs
+│           IAyudaRepository.cs
 │           IBeneficiarioRepository.cs
+│           IConcesionDetalleRepository.cs
 │           IConcesionRepository.cs
+│           IConvocatoriaDetalleRepository.cs
 │           IConvocatoriaRepository.cs
 │           IDatosEstadisticosRepository.cs
 │           IEntidadRepository.cs
 │           IEstadoRepository.cs
+│           IFinalidadRepository.cs
 │           IFormaPagoRepository.cs
+│           IGenericRepository.cs
+│           IGrandeBeneficiarioRepository.cs
+│           IInstrumentoRepository.cs
 │           ILineaRepository.cs
+│           IMinimisRepository.cs
 │           IMunicipioRepository.cs
+│           IObjetivoRepository.cs
 │           IOrganismoRepository.cs
+│           IOrganosCodigoAdminRepository.cs
+│           IPartidoPoliticoRepository.cs
+│           IPlanEstrategicoDetalleRepository.cs
+│           IPlanEstrategicoRepository.cs
+│           IPlazoRepository.cs
 │           IProgramaRepository.cs
 │           IProvinciaRepository.cs
+│           IRegionRepository.cs
+│           IReglamentoRepository.cs
+│           ISancionDetalleRepository.cs
+│           ISancionRepository.cs
+│           ISectorProductoRepository.cs
 │           ISectorRepository.cs
 │           ISituacionEntornoRepository.cs
 │           ISubtipoSubvencionRepository.cs
-│           ISubvencionesService.cs
+│           ISuscripcionRepository.cs
+│           ITerceroRepository.cs
 │           ITipoBeneficiarioRepository.cs
 │           ITipoConvocatoriaRepository.cs
 │           ITipoOrganismoRepository.cs
 │           ITipoSubvencionRepository.cs
 │           ITramoRepository.cs
 │           IUnidadAdministrativaRepository.cs
-│
-├───SubvencionesApp.Domain
-│   ├───Repositories
-│   │       IGenericRepository.cs
-│   │       IUnitOfWork.cs
-│   │
-│   └───Services
-│           AccionService.cs
-│           AgrupacionService.cs
-│           AreaService.cs
-│           BeneficiarioService.cs
-│           ConcesionService.cs
-│           ConvocatoriaService.cs
-│           DatosEstadisticosService.cs
-│           EntidadService.cs
-│           EstadoService.cs
-│           FormaPagoService.cs
-│           LineaService.cs
-│           MunicipioService.cs
-│           OrganismoService.cs
-│           ProgramaService.cs
-│           ProvinciaService.cs
-│           SectorService.cs
-│           SituacionEntornoService.cs
-│           SubtipoSubvencionService.cs
-│           SubvencionesService.cs
-│           TipoBeneficiarioService.cs
-│           TipoConvocatoriaService.cs
-│           TipoOrganismoService.cs
-│           TipoSubvencionService.cs
-│           TramoService.cs
-│           UnidadAdministrativaService.cs
+│           IUnitOfWork.cs
 │
 └───SubvencionesApp.Infrastructure
     │   SubvencionesApp.Infrastructure.csproj
@@ -249,26 +248,52 @@ C:.
     │
     ├───ExternalServices
     │   │   ExternalSubvencionesService.cs
+    │   │   MappingHelpers.cs
+    │   │   MappingProfile.cs
     │   │
     │   └───Models
     │           AccionApiModel.cs
+    │           ActividadApiModel.cs
     │           AgrupacionApiModel.cs
     │           AreaApiModel.cs
+    │           AyudaApiModel.cs
+    │           AyudaEstadoApiModel.cs
     │           BeneficiarioApiModel.cs
     │           ConcesionApiModel.cs
+    │           ConcesionDetalleApiModel.cs
+    │           ConfiguracionMicroportalApiModel.cs
     │           ConvocatoriaApiModel.cs
+    │           ConvocatoriaDetalleApiModel.cs
     │           DatosEstadisticosApiModel.cs
+    │           EnlaceMicroVentanaApiModel.cs
     │           EntidadApiModel.cs
     │           EstadoApiModel.cs
+    │           FinalidadApiModel.cs
     │           FormaPagoApiModel.cs
+    │           GrandeBeneficiarioApiModel.cs
+    │           InstrumentoApiModel.cs
     │           LineaApiModel.cs
+    │           MinimisApiModel.cs
     │           MunicipioApiModel.cs
+    │           ObjetivoApiModel.cs
     │           OrganismoApiModel.cs
+    │           OrganosCodigoAdminApiModel.cs
+    │           PartidoPoliticoApiModel.cs
+    │           PlanEstrategicoApiModel.cs
+    │           PlanEstrategicoDetalleApiModel.cs
+    │           PlazoApiModel.cs
     │           ProgramaApiModel.cs
     │           ProvinciaApiModel.cs
+    │           RegionApiModel.cs
+    │           ReglamentoApiModel.cs
+    │           SancionApiModel.cs
+    │           SancionDetalleApiModel.cs
     │           SectorApiModel.cs
+    │           SectorProductoApiModel.cs
     │           SituacionEntornoApiModel.cs
     │           SubtipoSubvencionApiModel.cs
+    │           SuscripcionApiModel.cs
+    │           TerceroApiModel.cs
     │           TipoBeneficiarioApiModel.cs
     │           TipoConvocatoriaApiModel.cs
     │           TipoOrganismoApiModel.cs
@@ -278,24 +303,46 @@ C:.
     │
     └───Repositories
             AccionRepository.cs
+            ActividadRepository.cs
             AgrupacionRepository.cs
             AreaRepository.cs
+            AyudaEstadoRepository.cs
+            AyudaRepository.cs
             BeneficiarioRepository.cs
+            ConcesionDetalleRepository.cs
             ConcesionRepository.cs
+            ConvocatoriaDetalleRepository.cs
             ConvocatoriaRepository.cs
             DatosEstadisticosRepository.cs
             EntidadRepository.cs
             EstadoRepository.cs
+            FinalidadRepository.cs
             FormaPagoRepository.cs
             GenericRepository.cs
+            GrandeBeneficiarioRepository.cs
+            InstrumentoRepository.cs
             LineaRepository.cs
+            MinimisRepository.cs
             MunicipioRepository.cs
+            ObjetivoRepository.cs
             OrganismoRepository.cs
+            OrganosCodigoAdminRepository.cs
+            PartidoPoliticoRepository.cs
+            PlanEstrategicoDetalleRepository.cs
+            PlanEstrategicoRepository.cs
+            PlazoRepository.cs
             ProgramaRepository.cs
             ProvinciaRepository.cs
+            RegionRepository.cs
+            ReglamentoRepository.cs
+            SancionDetalleRepository.cs
+            SancionRepository.cs
+            SectorProductoRepository.cs
             SectorRepository.cs
             SituacionEntornoRepository.cs
             SubtipoSubvencionRepository.cs
+            SuscripcionRepository.cs
+            TerceroRepository.cs
             TipoBeneficiarioRepository.cs
             TipoConvocatoriaRepository.cs
             TipoOrganismoRepository.cs

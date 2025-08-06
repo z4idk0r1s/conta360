@@ -30,5 +30,27 @@ namespace SubvencionesApp.Application.Interfaces
         Task<List<TramoDto>> GetTramosAsync();
         Task<List<UnidadAdministrativaDto>> GetUnidadesAdministrativasAsync();
         Task<List<DatosEstadisticosDto>> GetDatosEstadisticosAsync();
+
+        Task<List<AyudaDto>> GetAyudasAsync();
+        Task<List<AyudaEstadoDto>> GetAyudasEstadosAsync();
+        Task<List<ConcesionDetalleDto>> GetConcesionesDetalleAsync();
+        Task<List<ConvocatoriaDetalleDto>> GetConvocatoriasDetalleAsync();
+        Task<List<FinalidadDto>> GetFinalidadesAsync();
+        Task<List<GrandeBeneficiarioDto>> GetGrandesBeneficiariosAsync();
+        Task<List<InstrumentoDto>> GetInstrumentosAsync();
+        Task<List<MinimisDto>> GetMinimisAsync();
+        Task<List<ObjetivoDto>> GetObjetivosAsync();
+        Task<List<OrganosCodigoAdminDto>> GetOrganosCodigoAdminAsync();
+        Task<List<PartidoPoliticoDto>> GetPartidosPoliticosAsync();
+        Task<List<PlanEstrategicoDto>> GetPlanesEstrategicosAsync();
+        Task<List<PlanEstrategicoDetalleDto>> GetPlanesEstrategicosDetalleAsync();
+        Task<List<PlazoDto>> GetPlazosAsync();
+        Task<List<RegionDto>> GetRegionesAsync();
+        Task<List<ReglamentoDto>> GetReglamentosAsync();
+        Task<List<SancionDto>> GetSancionesAsync();
+        Task<List<SancionDetalleDto>> GetSancionesDetalleAsync();
+        Task<List<SectorProductoDto>> GetSectoresProductosAsync();
+        Task<List<SuscripcionDto>> GetSuscripcionesAsync();
+        Task<List<TerceroDto>> GetTercerosAsync();
     }
 }

@@ -1,24 +1,31 @@
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
+using AutoMapper;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class ConcesionService
+    public class ConcesionService : BaseService<Concesion, ConcesionDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public ConcesionService(IUnitOfWork unitOfWork)
+        public ConcesionService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ConcesionDto>> GetAllAsync()
+        protected override IGenericRepository<Concesion> GetRepository()
         {
-            var concesiones = await _unitOfWork.Concesiones.GetAllAsync();
-            return concesiones.Select(c => new ConcesionDto { IdConcesion = c.IdConcesion, ReferenciaBDNS = c.ReferenciaBDNS, ReferenciaPublicacion = c.ReferenciaPublicacion, Importe = c.Importe, Ejercicio = c.Ejercicio, FechaConcesion = c.FechaConcesion });
+            return _unitOfWork.Concesiones;
         }
+
+        public async Task<ConcesionDto?> GetByIdAsync(Guid id)
+        {
+            var entity = await _unitOfWork.Concesiones.GetByIdAsync(id);
+            return _mapper.Map<ConcesionDto>(entity);
+        }   
     }
 }

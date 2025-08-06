@@ -1,24 +1,22 @@
+// TipoConvocatoriaService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class TipoConvocatoriaService
+    public class TipoConvocatoriaService : BaseService<TipoConvocatoria, TipoConvocatoriaDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public TipoConvocatoriaService(IUnitOfWork unitOfWork)
+        public TipoConvocatoriaService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<TipoConvocatoriaDto>> GetAllAsync()
+        protected override IGenericRepository<TipoConvocatoria> GetRepository()
         {
-            var tipos = await _unitOfWork.TiposConvocatoria.GetAllAsync();
-            return tipos.Select(t => new TipoConvocatoriaDto { Id = t.Id, Descripcion = t.Descripcion });
+            return _unitOfWork.TiposConvocatoria;
         }
     }
 }

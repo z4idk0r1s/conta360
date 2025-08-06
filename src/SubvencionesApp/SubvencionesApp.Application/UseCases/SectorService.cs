@@ -1,24 +1,22 @@
+// SectorService.cs
 using SubvencionesApp.Application.Dtos;
+using SubvencionesApp.Application.UseCases.Commons;
+using SubvencionesApp.Domain.Entities;
 using SubvencionesApp.Domain.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SubvencionesApp.Application.UseCases
 {
-    public class SectorService
+    public class SectorService : BaseService<Sector, SectorDto>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public SectorService(IUnitOfWork unitOfWork)
+        public SectorService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<SectorDto>> GetAllAsync()
+        protected override IGenericRepository<Sector> GetRepository()
         {
-            var sectores = await _unitOfWork.Sectores.GetAllAsync();
-            return sectores.Select(s => new SectorDto { Id = s.Id, Descripcion = s.Descripcion });
+            return _unitOfWork.Sectores;
         }
     }
 }
