@@ -102,7 +102,13 @@ services:
     build:
       context: ./src/SubvencionesApp
       dockerfile: Dockerfile
-      target: development
+      args:
+        POSTGRES_HOST_SUBVENCIONES: ${POSTGRES_HOST_SUBVENCIONES}
+        POSTGRES_PORT_SUBVENCIONES: ${POSTGRES_PORT_SUBVENCIONES}
+        POSTGRES_DB_SUBVENCIONES: ${POSTGRES_DB_SUBVENCIONES}
+        POSTGRES_USER_SUBVENCIONES: ${POSTGRES_USER_SUBVENCIONES}
+        POSTGRES_PASSWORD_SUBVENCIONES: ${POSTGRES_PASSWORD_SUBVENCIONES}
+
     ports:
       - "5001:80"
     volumes:
@@ -120,6 +126,8 @@ services:
       retries: 3
     networks:
       - conta360-network
+    env_file:
+      - .devcontainer/.env
 
   dashboard-app:
     build:
