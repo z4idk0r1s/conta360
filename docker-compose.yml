@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  devcontainer-service:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        WORKSPACE_NAME: conta360
+    volumes:
+      - .:/workspaces/conta360
+    networks:
+      - conta360-network
+    env_file:
+      - .devcontainer/.env
+    command: sleep infinity  
+    user: vscode
+
   root-config:
     build:
       context: ./src/microfrontends/root-config
@@ -43,8 +58,6 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - DOTNET_USE_POLLING_FILE_WATCHER=1
       - ConnectionStrings__SqliteConnection=Data Source=/app/data/conta360.db
-    command: >
-      sh -c "dotnet ef database update --project backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj && dotnet watch --project backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj run --urls 'http://+:80'"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
@@ -56,10 +69,8 @@ services:
   postgres-db:
     image: postgres:15-alpine
     restart: unless-stopped
-    environment:
-      POSTGRES_USER: conta360
-      POSTGRES_PASSWORD: conta360123
-      POSTGRES_DB: SubvencionesDB_Dev
+    env_file:
+      - ./.devcontainer/.env
     ports:
       - "5432:5432"
     volumes:
@@ -76,9 +87,8 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
+    env_file:
+      - ./.devcontainer/.env
     ports:
       - "8080:80"
     volumes:
@@ -99,14 +109,10 @@ services:
       - ./src/SubvencionesApp:/app/SubvencionesApp
       - subvenciones-api-data:/app/data
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - DOTNET_USE_POLLING_FILE_WATCHER=1
-      - ConnectionStrings__POSTGRESQLConnection=Host=postgres-db;Port=5432;Database=SubvencionesDB_Dev;Username=conta360;Password=conta360123
+      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
     depends_on:
       postgres-db:
         condition: service_healthy
-    command: "dotnet SubvencionesApp.Api.dll"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s

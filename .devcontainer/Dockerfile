@@ -1,3 +1,4 @@
+# .devcontainer/Dockerfile
 ARG VARIANT="8.0"
 FROM mcr.microsoft.com/devcontainers/dotnet:${VARIANT}
 
@@ -37,6 +38,8 @@ EXPOSE 3001
 EXPOSE 3004
 EXPOSE 5000
 EXPOSE 5001
+EXPOSE 5432
+EXPOSE 8080
 
 # No ejecutar nada, entorno de desarrollo puro
 CMD ["sleep", "infinity"]

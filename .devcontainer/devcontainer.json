@@ -1,14 +1,10 @@
 {
   "name": "conta360",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": "..",
-    "args": {
-      "WORKSPACE_NAME": "${localWorkspaceFolderBasename}"
-    }
-  },
-  "forwardPorts": [3000, 3001, 3004, 5000, 5001, 5432],
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "devcontainer-service",
+  "workspaceFolder": "/workspaces/conta360",
   "postCreateCommand": "bash ./.devcontainer/star2.sh",
+  "forwardPorts": [3000, 3001, 3004, 5000, 5001, 5432, 8080],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -25,8 +21,5 @@
   "remoteUser": "vscode",
   "mounts": [
     "source=${localEnv:USERPROFILE}\\.nuget,target=/home/vscode/.nuget,type=bind"
-  ],
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
-  "workspaceFolder": "/workspace",
-  "runArgs": ["--network=conta360-network"]
+  ]
 }

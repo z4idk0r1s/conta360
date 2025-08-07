@@ -1,7 +1,9 @@
 # src/backend/Presentation/Conta360.Presentation.Api/Dockerfile
 # Dockerfile para la construcción de la imagen de la API de Conta360.
 
-# --- Etapa base para la imagen de producción/ejecución final (base stage) ---
+################################################################################
+#                              ETAPA BASE (IMAGEN DE PRODUCCIÓN)               #
+################################################################################
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 # Expone el puerto 80, que es el puerto interno donde la aplicación escuchará en el contenedor.
@@ -9,7 +11,9 @@ EXPOSE 80
 # Configura las URLs en las que la aplicación ASP.NET Core escuchará.
 ENV ASPNETCORE_URLS=http://+:80
 
-# --- Etapa de construcción general para la imagen de Release (build stage) ---
+################################################################################
+#                         ETAPA DE CONSTRUCCIÓN (BUILD STAGE)                 #
+################################################################################
 # Utiliza la imagen del SDK de .NET para compilar y publicar la aplicación.
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 # Establece el directorio de trabajo dentro del contenedor. El contexto de build se copia aquí.
@@ -43,7 +47,9 @@ RUN dotnet build "Conta360.Presentation.Api.csproj" -c Release -o /app/build
 # Publica la aplicación para crear los binarios de despliegue.
 RUN dotnet publish "Conta360.Presentation.Api.csproj" -c Release -o /app/publish
 
-# --- Etapa final para la imagen de producción (final stage) ---
+################################################################################
+#                         ETAPA FINAL (IMAGEN DE PRODUCCIÓN)                   #
+################################################################################
 # Utiliza la imagen base de ASP.NET, que es más ligera para la ejecución.
 FROM base AS final
 WORKDIR /app
@@ -53,9 +59,16 @@ COPY --from=build /app/publish .
 HEALTHCHECK --interval=30s --timeout=3s \
     CMD curl -f http://localhost/health || exit 1
 # Define el punto de entrada para ejecutar la aplicación .NET.
-ENTRYPOINT ["dotnet", "Conta360.Presentation.Api.dll"]
+# Copiar el script entrypoint
+COPY src/backend/Presentation/Conta360.Presentation.Api/entrypointsqlite.sh /app/entrypointsqlite.sh
+RUN chmod +x /app/entrypointsqlite.sh
 
-# --- Etapa de desarrollo para hot reload (development target) ---
+# Sobrescribir ENTRYPOINT para usar el script que aplica migraciones
+ENTRYPOINT ["/app/entrypointsqlite.sh"]
+
+################################################################################
+#                    ETAPA DE DESARROLLO PARA HOT RELOAD                      #
+################################################################################
 # Utiliza la imagen del SDK de .NET para permitir el desarrollo con hot reload.
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS development
 # El WORKDIR en esta etapa será la raíz donde se montará el volumen del código fuente del host.

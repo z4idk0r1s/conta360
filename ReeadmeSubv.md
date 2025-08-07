@@ -3,6 +3,7 @@ Listado de rutas de carpetas
 El número de serie del volumen es 6EE0-B276
 C:.
 │   Dockerfile
+│   entrypointpostgre.sh
 │
 ├───SubvencionesApp.Api
 │   │   appsettings.Development.json
@@ -11,8 +12,7 @@ C:.
 │   │   SubvencionesApp.Api.csproj
 │   │
 │   ├───Clients
-│   │       InfoSubvencionesApiClient.cs
-│   │       SubvencionesService.cs
+│   │       SubvencionesClient.cs
 │   │
 │   ├───Configurations
 │   │       ApiConfiguration.cs
@@ -90,51 +90,54 @@ C:.
 │   │       SubvencionSyncServiceOld.cs
 │   │
 │   └───UseCases
-│           AccionService.cs
-│           AgrupacionService.cs
-│           AreaService.cs
-│           AyudaEstadoService.cs
-│           AyudaService.cs
-│           BeneficiarioService.cs
-│           ConcesionDetalleService.cs
-│           ConcesionService.cs
-│           ConvocatoriaDetalleService.cs
-│           ConvocatoriaService.cs
-│           DatosEstadisticosService.cs
-│           EntidadService.cs
-│           EstadoService.cs
-│           FinalidadService.cs
-│           FormaPagoService.cs
-│           GrandeBeneficiarioService.cs
-│           InstrumentoService.cs
-│           LineaService.cs
-│           MinimisService.cs
-│           MunicipioService.cs
-│           ObjetivoService.cs
-│           OrganismoService.cs
-│           OrganosCodigoAdminService.cs
-│           PartidoPoliticoService.cs
-│           PlanEstrategicoDetalleService.cs
-│           PlanEstrategicoService.cs
-│           PlazoService.cs
-│           ProgramaService.cs
-│           ProvinciaService.cs
-│           RegionService.cs
-│           ReglamentoService.cs
-│           SancionDetalleService.cs
-│           SancionService.cs
-│           SectorProductoService.cs
-│           SectorService.cs
-│           SituacionEntornoService.cs
-│           SubtipoSubvencionService.cs
-│           SuscripcionService.cs
-│           TerceroService.cs
-│           TipoBeneficiarioService.cs
-│           TipoConvocatoriaService.cs
-│           TipoOrganismoService.cs
-│           TipoSubvencionService.cs
-│           TramoService.cs
-│           UnidadAdministrativaService.cs
+│       │   AccionService.cs
+│       │   AgrupacionService.cs
+│       │   AreaService.cs
+│       │   AyudaEstadoService.cs
+│       │   AyudaService.cs
+│       │   BeneficiarioService.cs
+│       │   ConcesionDetalleService.cs
+│       │   ConcesionService.cs
+│       │   ConvocatoriaDetalleService.cs
+│       │   ConvocatoriaService.cs
+│       │   DatosEstadisticosService.cs
+│       │   EntidadService.cs
+│       │   EstadoService.cs
+│       │   FinalidadService.cs
+│       │   FormaPagoService.cs
+│       │   GrandeBeneficiarioService.cs
+│       │   InstrumentoService.cs
+│       │   LineaService.cs
+│       │   MinimisService.cs
+│       │   MunicipioService.cs
+│       │   ObjetivoService.cs
+│       │   OrganismoService.cs
+│       │   OrganosCodigoAdminService.cs
+│       │   PartidoPoliticoService.cs
+│       │   PlanEstrategicoDetalleService.cs
+│       │   PlanEstrategicoService.cs
+│       │   PlazoService.cs
+│       │   ProgramaService.cs
+│       │   ProvinciaService.cs
+│       │   RegionService.cs
+│       │   ReglamentoService.cs
+│       │   SancionDetalleService.cs
+│       │   SancionService.cs
+│       │   SectorProductoService.cs
+│       │   SectorService.cs
+│       │   SituacionEntornoService.cs
+│       │   SubtipoSubvencionService.cs
+│       │   SuscripcionService.cs
+│       │   TerceroService.cs
+│       │   TipoBeneficiarioService.cs
+│       │   TipoConvocatoriaService.cs
+│       │   TipoOrganismoService.cs
+│       │   TipoSubvencionService.cs
+│       │   TramoService.cs
+│       │   UnidadAdministrativaService.cs
+│       │
+│       └───Commons
+│               BaseService.cs
 │
 ├───SubvencionesApp.Domain
 │   │   SubvencionesApp.Domain.csproj

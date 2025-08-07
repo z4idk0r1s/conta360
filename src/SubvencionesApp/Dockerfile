@@ -1,11 +1,16 @@
 # src/SubvencionesApp/Dockerfile
-# Etapa base para la imagen final de producción
+
+################################################################################
+#                              ETAPA BASE (IMAGEN DE PRODUCCIÓN)               #
+################################################################################
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 ENV ASPNETCORE_URLS=http://+:80
 
-# Etapa de construcción
+################################################################################
+#                         ETAPA DE CONSTRUCCIÓN (BUILD STAGE)                 #
+################################################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
@@ -23,19 +28,23 @@ RUN dotnet restore "SubvencionesApp.Api/SubvencionesApp.Api.csproj"
 COPY . .
 WORKDIR "/src/SubvencionesApp.Api"
 
-# Copia el script de entrada y le da permisos de ejecución.
-# NOTA: Este script DEBE estar en la misma carpeta que este Dockerfile.
-COPY ./entrypointpostgre.sh .
-RUN chmod +x entrypointpostgre.sh
-
 # Publica la aplicación, optimizada para el entorno de producción.
 RUN dotnet publish "SubvencionesApp.Api.csproj" -c Release -o /app/publish
 
-# Etapa final: Crea la imagen de producción ligera
+################################################################################
+#                         ETAPA FINAL (IMAGEN DE PRODUCCIÓN)                   #
+################################################################################
 FROM base AS final
 WORKDIR /app
-# Instalar cliente PostgreSQL
-RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
+# Instalar cliente PostgreSQL y herramientas de red necesarias para el script de entrada.
+RUN apt-get update && \
+    apt-get install -y postgresql-client netcat-openbsd dnsutils && \
+    rm -rf /var/lib/apt/lists/*
+
+# Instalar dotnet-ef globalmente para usar en entrypointpostgre.sh
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
 
 COPY --from=build /app/publish .
 
@@ -43,6 +52,9 @@ COPY --from=build /app/publish .
 # script de espera.
 COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
 RUN chmod +x ./entrypointpostgre.sh
+
+# Establecer el usuario final como vscode
+USER vscode
 ENTRYPOINT ["./entrypointpostgre.sh"]
 
 # El comando por defecto a ejecutar, que será llamado por el script.
