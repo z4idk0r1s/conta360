@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/devcontainers/dotnet:${VARIANT}
 
 # Configuración de entorno
 ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_URLS=http://+:80
 
 # === Instalar Node.js 20.11.1 en el HOME del usuario vscode ===
 USER vscode
