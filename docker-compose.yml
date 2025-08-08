@@ -85,7 +85,7 @@ services:
     networks:
       - conta360-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U conta360"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER_SUBVENCIONES:-conta360}"]
       interval: 10s
       timeout: 5s
       retries: 5

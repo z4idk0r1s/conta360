@@ -1,3 +1,15 @@
+Verificaciones de Salud
+Una vez levantado, verificar:
+
+Root Config: http://localhost:3000
+Dashboard App: http://localhost:3001
+Presentation API: http://localhost:5000/health
+Subvenciones API: http://localhost:5001/health
+PgAdmin: http://localhost:8080
+
+
+
+
 conta360\src\SubvencionesApp>tree /F
 Listado de rutas de carpetas
 El número de serie del volumen es 6EE0-B276
