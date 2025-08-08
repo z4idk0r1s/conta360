@@ -62,14 +62,14 @@ COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
 # Copia el directorio de herramientas de dotnet que contiene dotnet-ef
 COPY --from=build /root/.dotnet /root/.dotnet
 
-# Asegurar que el PATH incluya las herramientas de EF Core
-ENV PATH="/root/.dotnet/tools:${PATH}"
-
 RUN chmod +x ./entrypointpostgre.sh
 
 # Establecer el usuario final como vscode
 RUN useradd -ms /bin/bash vscode
 USER vscode
+
+# Asegurar que el PATH incluya las herramientas de EF Core
+ENV PATH="/root/.dotnet/tools:${PATH}"
 
 ENTRYPOINT ["./entrypointpostgre.sh"]
 CMD ["dotnet", "SubvencionesApp.Api.dll"]
