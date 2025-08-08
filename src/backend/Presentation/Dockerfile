@@ -17,6 +17,9 @@ ENV ASPNETCORE_URLS=http://+:80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+# Copia los archivos de configuración centralizados y la solución
+COPY ["Directory.Packages.props", "."]
+
 # Copia solo los archivos .csproj para aprovechar la cache de Docker
 COPY ["backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj", "backend/Presentation/Conta360.Presentation.Api/"]
 COPY ["backend/Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj", "backend/Shared/Conta360.CrossCutting.IoC/"]

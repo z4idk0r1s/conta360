@@ -14,6 +14,9 @@ ENV ASPNETCORE_URLS=http://+:80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+# Copia los archivos de configuración centralizados y la solución
+COPY ["Directory.Packages.props", "."]
+
 # Copia los archivos .csproj para optimizar la caché de Docker.
 # Esto asegura que la restauración de dependencias solo se ejecute si los archivos de proyecto han cambiado.
 COPY ["SubvencionesApp.Api/SubvencionesApp.Api.csproj", "SubvencionesApp.Api/"]
