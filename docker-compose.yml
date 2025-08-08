@@ -45,13 +45,13 @@ services:
 
   presentation-api:
     build:
-      context: ./src
-      dockerfile: ./backend/Presentation/Dockerfile
+      context: .
+      dockerfile: ./src/backend/Presentation/Dockerfile
       target: development
     ports:
       - "5000:80"
     volumes:
-      - ./src/backend:/app/backend
+      - ./src/backend:/src/backend
       - presentation-api-data:/app/data
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -106,8 +106,8 @@ services:
 
   subvenciones-api:
     build:
-      context: ./src/SubvencionesApp
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./src/SubvencionesApp/Dockerfile
       args:
         POSTGRES_HOST_SUBVENCIONES: ${POSTGRES_HOST_SUBVENCIONES}
         POSTGRES_PORT_SUBVENCIONES: ${POSTGRES_PORT_SUBVENCIONES}
@@ -117,7 +117,7 @@ services:
     ports:
       - "5001:80"
     volumes:
-      - ./src/SubvencionesApp:/app/SubvencionesApp
+      - ./src/SubvencionesApp:/src/SubvencionesApp
       - subvenciones-api-data:/app/data
     environment:
       - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
