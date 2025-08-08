@@ -1,4 +1,4 @@
-# src/backend/Presentation/Conta360.Presentation.Api/Dockerfile
+# src\backend\Presentation\Dockerfile
 # Dockerfile para la construcción de la imagen de la API de Conta360.
 
 ################################################################################
