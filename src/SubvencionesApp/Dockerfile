@@ -12,42 +12,39 @@ ENV ASPNETCORE_URLS=http://+:80
 # ETAPA DE CONSTRUCCIÓN (BUILD STAGE)
 ################################################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
+WORKDIR /src/SubvencionesApp
 
-# Copia los archivos de configuración centralizados y la solución
+# Copia los archivos de configuración centralizados desde la raíz del proyecto.
+# Las rutas son relativas al contexto de compilación (la raíz de tu proyecto).
 COPY ["./Directory.Packages.props", "."]
 COPY ["./Directory.Build.props", "."]
 COPY ["./Directory.Build.targets", "."]
 COPY ["./global.json", "."]
-# Es una buena práctica copiar el archivo de la solución
-# COPY ["./Conta360.sln", "."]
+COPY ["./Conta360.sln", "."]
 
-# Copia los archivos .csproj para optimizar la caché de Docker.
-# Las rutas de origen ahora son correctas respecto al contexto de compilación.
-COPY ["./src/SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj", "src/SubvencionesApp/SubvencionesApp.Api/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Application/SubvencionesApp.Application.csproj", "src/SubvencionesApp/SubvencionesApp.Application/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Domain/SubvencionesApp.Domain.csproj", "src/SubvencionesApp/SubvencionesApp.Domain/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", "src/SubvencionesApp/SubvencionesApp.Infrastructure/"]
+# Copia los archivos de proyecto (.csproj) para optimizar la caché de Docker.
+COPY ["./src/SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj", "./SubvencionesApp.Api/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Application/SubvencionesApp.Application.csproj", "./SubvencionesApp.Application/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Domain/SubvencionesApp.Domain.csproj", "./SubvencionesApp.Domain/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", "./SubvencionesApp.Infrastructure/"]
 
 # Restaura las dependencias de NuGet.
-RUN dotnet restore "src/SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj"
+# La ruta es ahora relativa a la carpeta raíz del proyecto.
+RUN dotnet restore "./SubvencionesApp.Api/SubvencionesApp.Api.csproj"
 
 # Copia el resto del código de la solución.
-COPY . .
-WORKDIR "/src/SubvencionesApp/SubvencionesApp.Api"
+COPY ["./src/SubvencionesApp", "."]
 
 # Publica la aplicación, optimizada para el entorno de producción.
+# Primero, se cambia al directorio del proyecto para que el comando 'publish' funcione.
+WORKDIR "./SubvencionesApp.Api"
 RUN dotnet publish "SubvencionesApp.Api.csproj" -c Release -o /app/publish
-
-# Copiar el script de entrada para usarlo en la etapa final
-COPY ["./src/SubvencionesApp/entrypointpostgre.sh", "/app/entrypointpostgre.sh"]
-RUN chmod +x /app/entrypointpostgre.sh
 
 ################################################################################
 # ETAPA FINAL (IMAGEN DE PRODUCCIÓN)
 ################################################################################
-# Usamos la imagen del SDK para que 'dotnet-ef' funcione.
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS final
+# Usamos la imagen de ASP.NET para que la imagen final sea más ligera y segura.
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
 # Instalar cliente PostgreSQL y herramientas de red.
@@ -55,18 +52,14 @@ RUN apt-get update && \
     apt-get install -y postgresql-client netcat-openbsd dnsutils && \
     rm -rf /var/lib/apt/lists/*
 
-# Instalar dotnet-ef globalmente.
-RUN dotnet tool install --global dotnet-ef
-ENV PATH="$PATH:/root/.dotnet/tools"
-
+# Copia los archivos publicados y el script de entrada desde la etapa 'build'.
 COPY --from=build /app/publish .
+COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
 
-# Define el punto de entrada para ejecutar la aplicación.
-# Se corrige la ruta de origen para copiar desde la etapa de 'build'.
-COPY --from=build /app/entrypointpostgre.sh .
 RUN chmod +x ./entrypointpostgre.sh
 
 # Establecer el usuario final como vscode
+RUN useradd -ms /bin/bash vscode
 USER vscode
 
 ENTRYPOINT ["./entrypointpostgre.sh"]
