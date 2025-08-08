@@ -14,11 +14,10 @@ ENV ASPNETCORE_URLS=http://+:80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src/SubvencionesApp
 
-# Instala las herramientas de Entity Framework Core en la etapa de construcción
-RUN dotnet tool install --global dotnet-ef
+# INSTALACIÓN CORREGIDA: Instala las herramientas de Entity Framework Core en un directorio público y accesible.
+RUN dotnet tool install dotnet-ef --tool-path /usr/local/bin
 
 # Copia los archivos de configuración centralizados desde la raíz del proyecto.
-# Las rutas son relativas al contexto de compilación (la raíz de tu proyecto).
 COPY ["./Directory.Packages.props", "."]
 COPY ["./Directory.Build.props", "."]
 COPY ["./Directory.Build.targets", "."]
@@ -32,15 +31,13 @@ COPY ["./src/SubvencionesApp/SubvencionesApp.Domain/SubvencionesApp.Domain.cspro
 COPY ["./src/SubvencionesApp/SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", "./SubvencionesApp.Infrastructure/"]
 
 # Restaura las dependencias de NuGet.
-# La ruta es ahora relativa a la carpeta raíz del proyecto.
 RUN dotnet restore "./SubvencionesApp.Api/SubvencionesApp.Api.csproj"
 
 # Copia el resto del código de la solución.
 COPY ["./src/SubvencionesApp", "."]
 
 # Publica la aplicación, optimizada para el entorno de producción.
-# Primero, se cambia al directorio del proyecto para que el comando 'publish' funcione.
-WORKDIR "./SubvencionesApp.Api"
+WORKDIR /src/SubvencionesApp/SubvencionesApp.Api
 RUN dotnet publish "SubvencionesApp.Api.csproj" -c Release -o /app/publish
 
 ################################################################################
@@ -55,21 +52,20 @@ RUN apt-get update && \
     apt-get install -y postgresql-client netcat-openbsd dnsutils && \
     rm -rf /var/lib/apt/lists/*
 
-# Copia los archivos publicados y el script de entrada desde la etapa 'build'.
+# Copia los archivos publicados desde la etapa 'build'.
 COPY --from=build /app/publish .
-COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
 
-# Copia el directorio de herramientas de dotnet que contiene dotnet-ef
-COPY --from=build /root/.dotnet /root/.dotnet
+# Esto es necesario para el servicio de migraciones, que usa la misma imagen.
+COPY --from=build /usr/local/bin/dotnet-ef /usr/local/bin/
 
-RUN chmod +x ./entrypointpostgre.sh
+# ELIMINA la copia del entrypointpostgre.sh y la línea ENTRYPOINT.
+# COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
+# RUN chmod +x ./entrypointpostgre.sh
 
 # Establecer el usuario final como vscode
 RUN useradd -ms /bin/bash vscode
 USER vscode
 
-# Asegurar que el PATH incluya las herramientas de EF Core
-ENV PATH="/root/.dotnet/tools:${PATH}"
-
-ENTRYPOINT ["./entrypointpostgre.sh"]
+# El comando de arranque directo de la aplicación.
+# Este es el nuevo punto de entrada de la aplicación.
 CMD ["dotnet", "SubvencionesApp.Api.dll"]
