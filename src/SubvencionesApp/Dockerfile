@@ -14,6 +14,9 @@ ENV ASPNETCORE_URLS=http://+:80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src/SubvencionesApp
 
+# Instala las herramientas de Entity Framework Core en la etapa de construcción
+RUN dotnet tool install --global dotnet-ef
+
 # Copia los archivos de configuración centralizados desde la raíz del proyecto.
 # Las rutas son relativas al contexto de compilación (la raíz de tu proyecto).
 COPY ["./Directory.Packages.props", "."]
@@ -55,6 +58,12 @@ RUN apt-get update && \
 # Copia los archivos publicados y el script de entrada desde la etapa 'build'.
 COPY --from=build /app/publish .
 COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
+
+# Copia el directorio de herramientas de dotnet que contiene dotnet-ef
+COPY --from=build /root/.dotnet /root/.dotnet
+
+# Asegurar que el PATH incluya las herramientas de EF Core
+ENV PATH="/root/.dotnet/tools:${PATH}"
 
 RUN chmod +x ./entrypointpostgre.sh
 
