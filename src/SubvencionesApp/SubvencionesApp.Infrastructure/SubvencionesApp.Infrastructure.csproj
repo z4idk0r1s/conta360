@@ -3,6 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>SubvencionesApp.Infrastructure</RootNamespace>
     <AssemblyName>SubvencionesApp.Infrastructure</AssemblyName>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../SubvencionesApp.Domain/SubvencionesApp.Domain.csproj" />

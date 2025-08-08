@@ -2,6 +2,7 @@
   <PropertyGroup>
     <RootNamespace>Conta360.Application</RootNamespace>
     <AssemblyName>Conta360.Application</AssemblyName>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Conta360.Domain/Conta360.Domain.csproj" />

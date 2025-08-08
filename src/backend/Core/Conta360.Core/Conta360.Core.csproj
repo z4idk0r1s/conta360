@@ -3,6 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Conta360.Core</RootNamespace>
     <AssemblyName>Conta360.Core</AssemblyName>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json" />
