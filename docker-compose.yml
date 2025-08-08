@@ -68,9 +68,15 @@ services:
 
   postgres-db:
     image: postgres:15-alpine
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST_SUBVENCIONES}
+      POSTGRES_DB: ${POSTGRES_DB_SUBVENCIONES}
+      POSTGRES_USER: ${POSTGRES_USER_SUBVENCIONES}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_SUBVENCIONES}
+      POSTGRES_PORT: ${POSTGRES_PORT_SUBVENCIONES}
     restart: unless-stopped
     env_file:
-      - ./.devcontainer/.env
+      - .devcontainer/.env
     ports:
       - "5432:5432"
     volumes:
@@ -88,7 +94,7 @@ services:
     image: dpage/pgadmin4
     restart: unless-stopped
     env_file:
-      - ./.devcontainer/.env
+      - .devcontainer/.env
     ports:
       - "8080:80"
     volumes:

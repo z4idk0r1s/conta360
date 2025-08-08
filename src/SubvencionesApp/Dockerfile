@@ -32,30 +32,32 @@ WORKDIR "/src/SubvencionesApp.Api"
 RUN dotnet publish "SubvencionesApp.Api.csproj" -c Release -o /app/publish
 
 ################################################################################
-#                         ETAPA FINAL (IMAGEN DE PRODUCCIÓN)                   #
+#                   ETAPA FINAL (IMAGEN DE PRODUCCIÓN)                         #
 ################################################################################
-FROM base AS final
+# CAMBIO: Usamos la imagen del SDK para que 'dotnet-ef' funcione.
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS final
 WORKDIR /app
 
-# Instalar cliente PostgreSQL y herramientas de red necesarias para el script de entrada.
+# Instalar cliente PostgreSQL y herramientas de red.
 RUN apt-get update && \
     apt-get install -y postgresql-client netcat-openbsd dnsutils && \
     rm -rf /var/lib/apt/lists/*
 
-# Instalar dotnet-ef globalmente para usar en entrypointpostgre.sh
+# Instalar dotnet-ef globalmente.
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 COPY --from=build /app/publish .
 
 # Define el punto de entrada para ejecutar la aplicación.
-# script de espera.
 COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
 RUN chmod +x ./entrypointpostgre.sh
 
 # Establecer el usuario final como vscode
+# NOTA: Asegúrate de que el usuario 'vscode' exista en la imagen,
+# y de que el PATH esté configurado correctamente para ese usuario,
+# si no, 'dotnet-ef' podría no encontrarse.
 USER vscode
-ENTRYPOINT ["./entrypointpostgre.sh"]
 
-# El comando por defecto a ejecutar, que será llamado por el script.
+ENTRYPOINT ["./entrypointpostgre.sh"]
 CMD ["dotnet", "SubvencionesApp.Api.dll"]
