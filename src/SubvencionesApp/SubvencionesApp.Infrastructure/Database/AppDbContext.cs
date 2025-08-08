@@ -112,7 +112,6 @@ namespace SubvencionesApp.Infrastructure.Database
                 entity.Property(e => e.FechaConcesion).IsRequired();
             });
 
-            // Configuración para Beneficiario (añadiendo soporte para SQLite y PostgreSQL)
             modelBuilder.Entity<Beneficiario>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -427,42 +426,56 @@ namespace SubvencionesApp.Infrastructure.Database
         {
             // Relaciones para Convocatoria
             modelBuilder.Entity<Convocatoria>()
-                .HasOne<TipoConvocatoria>()
-                .WithMany()
+                .HasOne(e => e.TipoConvocatoria)
+                .WithMany(tc => tc.Convocatorias)
                 .HasForeignKey(e => e.TipoConvocatoriaId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Convocatoria>()
-                .HasOne<TipoSubvencion>()
-                .WithMany()
+                .HasOne(e => e.TipoSubvencion)
+                .WithMany(ts => ts.Convocatorias)
                 .HasForeignKey(e => e.TipoSubvencionId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Convocatoria>()
-                .HasOne<Organismo>()
-                .WithMany()
+                .HasOne(e => e.Organismo)
+                .WithMany(o => o.Convocatorias)
                 .HasForeignKey(e => e.OrganismoId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Convocatoria>()
-                .HasOne<SituacionEntorno>()
-                .WithMany()
+                .HasOne(e => e.SituacionEntorno)
+                .WithMany(se => se.Convocatorias)
                 .HasForeignKey(e => e.SituacionEntornoId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             // Relaciones para Concesion
             modelBuilder.Entity<Concesion>()
-                .HasOne<Beneficiario>()
-                .WithMany()
+                .HasOne(e => e.Beneficiario)
+                .WithMany(b => b.Concesiones)
                 .HasForeignKey(e => e.BeneficiarioId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Concesion>()
-                .HasOne<Convocatoria>()
-                .WithMany()
+                .HasOne(e => e.Convocatoria)
+                .WithMany(c => c.Concesiones)
                 .HasForeignKey(e => e.ConvocatoriaId)
                 .OnDelete(DeleteBehavior.SetNull);
+            
+            // Relaciones para ConcesionDetalle (corregidas)
+            modelBuilder.Entity<ConcesionDetalle>()
+                .HasOne(e => e.Beneficiario)
+                .WithMany(b => b.ConcesionesDetalle)
+                .HasForeignKey(e => e.BeneficiarioId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ConcesionDetalle>()
+                .HasOne(e => e.Organismo)
+                .WithMany(o => o.ConcesionesDetalle)
+                .HasForeignKey(e => e.OrganismoId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
+
 
         // Método para configurar el comportamiento de eliminación suave si se requiere
         public override int SaveChanges()

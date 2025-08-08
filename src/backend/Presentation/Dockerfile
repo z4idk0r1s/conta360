@@ -1,90 +1,104 @@
-# src/backend/Presentation/Conta360.Presentation.Api/Dockerfile
+# src/backend/Presentation/Dockerfile
 # Dockerfile para la construcción de la imagen de la API de Conta360.
 
-# --- Etapa base para la imagen de producción/ejecución final (base stage) ---
+################################################################################
+#                                ETAPA BASE (IMAGEN DE PRODUCCIÓN)             #
+################################################################################
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-# Expone el puerto 80, que es el puerto interno donde la aplicación escuchará en el contenedor.
 EXPOSE 80
+
 # Configura las URLs en las que la aplicación ASP.NET Core escuchará.
 ENV ASPNETCORE_URLS=http://+:80
 
-# --- Etapa de construcción general para la imagen de Release (build stage) ---
-# Utiliza la imagen del SDK de .NET para compilar y publicar la aplicación.
+################################################################################
+#                            ETAPA DE CONSTRUCCIÓN (BUILD STAGE)               #
+################################################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-# Establece el directorio de trabajo dentro del contenedor. El contexto de build se copia aquí.
+# Se establece el directorio de trabajo para todas las operaciones de construcción.
 WORKDIR /src
 
-# Copia solo los archivos .csproj de los proyectos dependientes primero.
-# Esto optimiza el caché de Docker: esta capa solo se invalida si cambian los .csproj.
-# Las rutas son relativas al CONTEXTO DE BUILD (que es ./src/backend/Presentation/Conta360.Presentation.Api).
-# Los destinos son rutas relativas al WORKDIR /src dentro del contenedor.
-COPY ["backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj", "backend/Presentation/Conta360.Presentation.Api/"]
-# Copia de proyectos compartidos y de infraestructura (ajustar rutas según tu estructura real si es necesario).
-COPY ["backend/Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj", "backend/Shared/Conta360.CrossCutting.IoC/"]
-COPY ["backend/Core/Conta360.Application/Conta360.Application.csproj", "backend/Core/Conta360.Application/"]
-COPY ["backend/Core/Conta360.Domain/Conta360.Domain.csproj", "backend/Core/Conta360.Domain/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj", "backend/Infrastructure/Conta360.Infrastructure.Sqlite/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj", "backend/Infrastructure/Conta360.Infrastructure.Postgres/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj", "backend/Infrastructure/Conta360.Infrastructure.Excel/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.PGC/Conta360.Infrastructure.PGC.csproj", "backend/Infrastructure/Conta360.Infrastructure.PGC/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.Reporting/Conta360.Infrastructure.Reporting.csproj", "backend/Infrastructure/Conta360.Infrastructure.Reporting/"]
-# Si hay más proyectos .csproj que tu API necesite para restaurar, añádelos aquí.
+# Copia los archivos de configuración centralizados de la raíz del proyecto
+COPY ["./Directory.Packages.props", "."]
+COPY ["./Directory.Build.props", "."]
+COPY ["./Directory.Build.targets", "."]
+COPY ["./global.json", "."]
+# Si tienes un archivo de solución, es una buena práctica copiarlo aquí.
+# COPY ["./Conta360.sln", "."]
 
-# Restaura las dependencias de NuGet.
-RUN dotnet restore "backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
+# Copia solo los archivos .csproj para aprovechar la cache de Docker
+# Se corrige la ruta de destino para que sea relativa al WORKDIR '/src'.
+COPY ["./src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj", "src/backend/Presentation/Conta360.Presentation.Api/"]
+COPY ["./src/backend/Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj", "src/backend/Shared/Conta360.CrossCutting.IoC/"]
+COPY ["./src/backend/Core/Conta360.Application/Conta360.Application.csproj", "src/backend/Core/Conta360.Application/"]
+COPY ["./src/backend/Core/Conta360.Domain/Conta360.Domain.csproj", "src/backend/Core/Conta360.Domain/"]
+COPY ["./src/backend/Core/Conta360.Core/Conta360.Core.csproj", "src/backend/Core/Conta360.Core/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Sqlite/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Postgres/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Excel/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.PGC/Conta360.Infrastructure.PGC.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.PGC/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Reporting/Conta360.Infrastructure.Reporting.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Reporting/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.A3Cash/Conta360.Infrastructure.A3Cash.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.A3Cash/"]
 
-# Copia el resto del código fuente de la aplicación.
+
+# Restaura dependencias
+# La ruta es coherente con el WORKDIR '/src'.
+RUN dotnet restore "src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
+
+# Copia el resto del código
 COPY . .
-# Establece el directorio de trabajo para la publicación del proyecto de la API.
-WORKDIR "/src/backend/Presentation/Conta360.Presentation.Api" 
-# Compila la aplicación en modo Release.
+
+# Copia el script de migraciones para usarlo en la etapa final
+# La ruta de origen es relativa al contexto de compilación.
+COPY ["./src/backend/Presentation/entrypointsqlite.sh", "/app/entrypointsqlite.sh"]
+RUN chmod +x /app/entrypointsqlite.sh
+
+# Compila en modo Release
+# El WORKDIR se ajusta a la carpeta del proyecto a compilar.
+WORKDIR "src/backend/Presentation/Conta360.Presentation.Api"
 RUN dotnet build "Conta360.Presentation.Api.csproj" -c Release -o /app/build
-# Publica la aplicación para crear los binarios de despliegue.
+
+# Publica la aplicación
 RUN dotnet publish "Conta360.Presentation.Api.csproj" -c Release -o /app/publish
 
-# --- Etapa final para la imagen de producción (final stage) ---
-# Utiliza la imagen base de ASP.NET, que es más ligera para la ejecución.
+################################################################################
+#                              ETAPA FINAL (IMAGEN DE PRODUCCIÓN)              #
+################################################################################
 FROM base AS final
 WORKDIR /app
-# Copia los archivos publicados desde la etapa 'build' a la etapa final.
+
+# Copia los archivos publicados desde la etapa de compilación.
 COPY --from=build /app/publish .
-# Configura un healthcheck para verificar la disponibilidad y salud de la aplicación.
+
+# Healthcheck
 HEALTHCHECK --interval=30s --timeout=3s \
     CMD curl -f http://localhost/health || exit 1
-# Define el punto de entrada para ejecutar la aplicación .NET.
-ENTRYPOINT ["dotnet", "Conta360.Presentation.Api.dll"]
 
-# --- Etapa de desarrollo para hot reload (development target) ---
-# Utiliza la imagen del SDK de .NET para permitir el desarrollo con hot reload.
+# Copia el script desde la etapa 'build' y da permisos.
+# La ruta de origen es el destino de la etapa 'build'.
+COPY --from=build /app/entrypointsqlite.sh /app/entrypointsqlite.sh
+RUN chmod +x /app/entrypointsqlite.sh
+
+# Ejecuta con el script de entrada.
+ENTRYPOINT ["/app/entrypointsqlite.sh"]
+
+################################################################################
+#                             ETAPA DE DESARROLLO PARA HOT RELOAD              #
+################################################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS development
-# El WORKDIR en esta etapa será la raíz donde se montará el volumen del código fuente del host.
-WORKDIR /app
+# Usa WORKDIR /src para alinearse con los volúmenes de docker-compose.
+WORKDIR /src
 
-# Copia solo los archivos .csproj para restaurar dependencias y construir proyectos inicialmente.
-# Esto asegura que las referencias entre proyectos sean resueltas para 'dotnet watch'.
-COPY ["backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj", "backend/Presentation/Conta360.Presentation.Api/"]
-COPY ["backend/Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj", "backend/Shared/Conta360.CrossCutting.IoC/"]
-COPY ["backend/Core/Conta360.Application/Conta360.Application.csproj", "backend/Core/Conta360.Application/"]
-COPY ["backend/Core/Conta360.Domain/Conta360.Domain.csproj", "backend/Core/Conta360.Domain/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj", "backend/Infrastructure/Conta360.Infrastructure.Sqlite/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj", "backend/Infrastructure/Conta360.Infrastructure.Postgres/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj", "backend/Infrastructure/Conta360.Infrastructure.Excel/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.PGC/Conta360.Infrastructure.PGC.csproj", "backend/Infrastructure/Conta360.Infrastructure.PGC/"]
-COPY ["backend/Infrastructure/Conta360.Infrastructure.Reporting/Conta360.Infrastructure.Reporting.csproj", "backend/Infrastructure/Conta360.Infrastructure.Reporting/"]
+# Instala herramientas globales necesarias en desarrollo
+RUN dotnet tool install --global dotnet-ef
 
-# Restaura las dependencias de NuGet para el contexto de desarrollo.
-RUN dotnet restore "backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
+# Variables de entorno de desarrollo
+ENV ASPNETCORE_URLS=http://+:80 \
+    ASPNETCORE_ENVIRONMENT=Development \
+    DOTNET_USE_POLLING_FILE_WATCHER=1 \
+    PATH="$PATH:/root/.dotnet/tools"
 
-# Expone el puerto 80, que es el puerto interno donde la aplicación escuchará.
 EXPOSE 80
 
-# Variables de entorno específicas para el entorno de desarrollo.
-ENV ASPNETCORE_URLS=http://+:80
-ENV ASPNETCORE_ENVIRONMENT=Development
-# Habilita el 'file watcher' basado en polling, vital para que 'dotnet watch'
-# detecte cambios en volúmenes montados desde el host (especialmente en WSL/macOS).
-ENV DOTNET_USE_POLLING_FILE_WATCHER=1 
-
-# No se define un ENTRYPOINT o CMD aquí, ya que 'docker-compose.yml' se encarga
-# de ejecutar 'dotnet watch' para habilitar el hot reload y migraciones.
+# ⚠️ No copiamos código aquí: docker-compose monta el volumen
+# El código se usará directamente desde el host para hot reload

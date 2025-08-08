@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>SubvencionesApp.Domain</RootNamespace>
     <AssemblyName>SubvencionesApp.Domain</AssemblyName>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 </Project>

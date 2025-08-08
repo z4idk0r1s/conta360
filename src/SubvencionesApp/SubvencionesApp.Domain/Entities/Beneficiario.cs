@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,7 +22,10 @@ namespace SubvencionesApp.Domain.Entities
         [Required]
         [MaxLength(50)]
         public string? Identificacion { get; set; }
-
+        // Propiedad de navegación inversa para la relación con Concesion
         public ICollection<Concesion> Concesiones { get; set; } = new List<Concesion>();
+
+        // Propiedad de navegación inversa para la relación con ConcesionDetalle
+        public ICollection<ConcesionDetalle> ConcesionesDetalle { get; set; } = new List<ConcesionDetalle>();
     }
 }

@@ -8,7 +8,7 @@ namespace SubvencionesApp.Domain.Entities
     {
         [Key]
         public Guid Id { get; set; }
-        
+
         public int? ExternalId { get; set; }
 
         [Required]
@@ -21,7 +21,10 @@ namespace SubvencionesApp.Domain.Entities
         [Required]
         public DateTime FechaFin { get; set; }
 
+        // Propiedad de clave foránea y de navegación
         [Required]
+        [ForeignKey("Convocatoria")]
         public Guid ConvocatoriaId { get; set; }
+        public Convocatoria? Convocatoria { get; set; }
     }
 }
