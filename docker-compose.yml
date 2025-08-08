@@ -45,8 +45,8 @@ services:
 
   validation-core:
     build:
-      context: ./src/backend/Presentation/Conta360.Presentation.Api
-      dockerfile: Dockerfile
+      context: ./src
+      dockerfile: ./backend/Presentation/Dockerfile
       target: development
     ports:
       - "5000:80"
@@ -108,7 +108,6 @@ services:
         POSTGRES_DB_SUBVENCIONES: ${POSTGRES_DB_SUBVENCIONES}
         POSTGRES_USER_SUBVENCIONES: ${POSTGRES_USER_SUBVENCIONES}
         POSTGRES_PASSWORD_SUBVENCIONES: ${POSTGRES_PASSWORD_SUBVENCIONES}
-
     ports:
       - "5001:80"
     volumes:

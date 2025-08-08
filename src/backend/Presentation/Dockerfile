@@ -28,6 +28,7 @@ COPY ["backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.
 COPY ["backend/Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj", "backend/Shared/Conta360.CrossCutting.IoC/"]
 COPY ["backend/Core/Conta360.Application/Conta360.Application.csproj", "backend/Core/Conta360.Application/"]
 COPY ["backend/Core/Conta360.Domain/Conta360.Domain.csproj", "backend/Core/Conta360.Domain/"]
+COPY ["backend/Core/Conta360.Core/Conta360.Core.csproj", "backend/Core/Conta360.Core/"]
 COPY ["backend/Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj", "backend/Infrastructure/Conta360.Infrastructure.Sqlite/"]
 COPY ["backend/Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj", "backend/Infrastructure/Conta360.Infrastructure.Postgres/"]
 COPY ["backend/Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj", "backend/Infrastructure/Conta360.Infrastructure.Excel/"]
@@ -60,7 +61,7 @@ HEALTHCHECK --interval=30s --timeout=3s \
     CMD curl -f http://localhost/health || exit 1
 # Define el punto de entrada para ejecutar la aplicación .NET.
 # Copiar el script entrypoint
-COPY src/backend/Presentation/Conta360.Presentation.Api/entrypointsqlite.sh /app/entrypointsqlite.sh
+COPY src/backend/Presentation/entrypointsqlite.sh /app/entrypointsqlite.sh
 RUN chmod +x /app/entrypointsqlite.sh
 
 # Sobrescribir ENTRYPOINT para usar el script que aplica migraciones
@@ -80,6 +81,7 @@ COPY ["backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.
 COPY ["backend/Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj", "backend/Shared/Conta360.CrossCutting.IoC/"]
 COPY ["backend/Core/Conta360.Application/Conta360.Application.csproj", "backend/Core/Conta360.Application/"]
 COPY ["backend/Core/Conta360.Domain/Conta360.Domain.csproj", "backend/Core/Conta360.Domain/"]
+COPY ["backend/Core/Conta360.Core/Conta360.Core.csproj", "backend/Core/Conta360.Core/"]
 COPY ["backend/Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj", "backend/Infrastructure/Conta360.Infrastructure.Sqlite/"]
 COPY ["backend/Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj", "backend/Infrastructure/Conta360.Infrastructure.Postgres/"]
 COPY ["backend/Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj", "backend/Infrastructure/Conta360.Infrastructure.Excel/"]
