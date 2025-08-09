@@ -119,7 +119,7 @@ services:
       - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
     depends_on:
       subvenciones-migrations:
-        condition: service_completed_successfully # La API espera a que las migraciones terminen
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
@@ -130,13 +130,12 @@ services:
     env_file:
       - .devcontainer/.env
 
-  # SERVICIO DEDICADO A LAS MIGRACIONES
   subvenciones-migrations:
-    image: subvenciones-api-image # Usa la misma imagen que tu API
+    image: subvenciones-api-image
     depends_on:
       postgres-db:
-        condition: service_healthy # Espera a que la base de datos esté lista
-    command: ["dotnet", "ef", "database", "update"] # El comando para aplicar las migraciones
+        condition: service_healthy
+    command: ["dotnet", "ef", "database", "update"]
     networks:
       - conta360-network
     env_file:
