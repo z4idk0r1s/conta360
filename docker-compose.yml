@@ -143,7 +143,9 @@ services:
       - conta360-network
     env_file:
       - .devcontainer/.env
-    restart: "no" # Se detiene una vez que termina
+    environment: 
+      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
+    restart: "no"
 
   dashboard-app:
     build:
