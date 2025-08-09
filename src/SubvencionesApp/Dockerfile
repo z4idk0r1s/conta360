@@ -12,7 +12,7 @@ ENV ASPNETCORE_URLS=http://+:80
 # ETAPA DE CONSTRUCCIÓN (BUILD STAGE)
 ################################################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src/SubvencionesApp
+WORKDIR /src
 
 # INSTALACIÓN CORREGIDA: Instala las herramientas de Entity Framework Core en un directorio público y accesible.
 RUN dotnet tool install dotnet-ef --tool-path /usr/local/bin
@@ -22,16 +22,15 @@ COPY ["./Directory.Packages.props", "."]
 COPY ["./Directory.Build.props", "."]
 COPY ["./Directory.Build.targets", "."]
 COPY ["./global.json", "."]
-COPY ["./Conta360.sln", "."]
 
 # Copia los archivos de proyecto (.csproj) para optimizar la caché de Docker.
-COPY ["./src/SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj", "./SubvencionesApp.Api/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Application/SubvencionesApp.Application.csproj", "./SubvencionesApp.Application/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Domain/SubvencionesApp.Domain.csproj", "./SubvencionesApp.Domain/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", "./SubvencionesApp.Infrastructure/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj", "SubvencionesApp/SubvencionesApp.Api/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Application/SubvencionesApp.Application.csproj", "SubvencionesApp/SubvencionesApp.Application/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Domain/SubvencionesApp.Domain.csproj", "SubvencionesApp/SubvencionesApp.Domain/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", "SubvencionesApp/SubvencionesApp.Infrastructure/"]
 
 # Restaura las dependencias de NuGet.
-RUN dotnet restore "./SubvencionesApp.Api/SubvencionesApp.Api.csproj"
+RUN dotnet restore "SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj"
 
 # Copia el resto del código de la solución.
 COPY ["./src/SubvencionesApp", "."]
@@ -41,18 +40,21 @@ WORKDIR /src/SubvencionesApp/SubvencionesApp.Api
 RUN dotnet publish "SubvencionesApp.Api.csproj" -c Release -o /app/publish
 
 ################################################################################
-# ETAPA DE DESARROLLO (DEVELOPMENT STAGE) <-- AÑADIDO
+# ETAPA DE DESARROLLO (DEVELOPMENT STAGE) 
 ################################################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS development
 WORKDIR /src
-COPY ["./src/SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj", "./SubvencionesApp/SubvencionesApp.Api/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Application/SubvencionesApp.Application.csproj", "./SubvencionesApp/SubvencionesApp.Application/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Domain/SubvencionesApp.Domain.csproj", "./SubvencionesApp/SubvencionesApp.Domain/"]
-COPY ["./src/SubvencionesApp/SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", "./SubvencionesApp/SubvencionesApp.Infrastructure/"]
-COPY ["./src/SubvencionesApp/Directory.Packages.props", "./SubvencionesApp/"]
-COPY ["./src/SubvencionesApp/Directory.Build.props", "./SubvencionesApp/"]
-COPY ["./src/SubvencionesApp/Directory.Build.targets", "./SubvencionesApp/"]
-RUN dotnet restore "./SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj"
+
+COPY ["./Directory.Packages.props", "."]
+COPY ["./Directory.Build.props", "."]
+COPY ["./Directory.Build.targets", "."]
+COPY ["./global.json", "."]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj", "SubvencionesApp/SubvencionesApp.Api/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Application/SubvencionesApp.Application.csproj", "SubvencionesApp/SubvencionesApp.Application/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Domain/SubvencionesApp.Domain.csproj", "SubvencionesApp/SubvencionesApp.Domain/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", "SubvencionesApp/SubvencionesApp.Infrastructure/"]
+
+RUN dotnet restore "SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj"
 COPY ./src/SubvencionesApp ./SubvencionesApp
 WORKDIR /src/SubvencionesApp/SubvencionesApp.Api
 ENTRYPOINT ["dotnet", "watch", "--no-hot-reload", "run", "--project", "SubvencionesApp.Api.csproj"]

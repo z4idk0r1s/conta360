@@ -25,22 +25,21 @@ COPY ["./Directory.Build.targets", "."]
 COPY ["./global.json", "."]
 
 # Copia solo los archivos .csproj para aprovechar la cache de Docker
-# Se corrige la ruta de destino para que sea relativa al WORKDIR '/src'.
-COPY ["./src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj", "src/backend/Presentation/Conta360.Presentation.Api/"]
-COPY ["./src/backend/Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj", "src/backend/Shared/Conta360.CrossCutting.IoC/"]
-COPY ["./src/backend/Core/Conta360.Application/Conta360.Application.csproj", "src/backend/Core/Conta360.Application/"]
-COPY ["./src/backend/Core/Conta360.Domain/Conta360.Domain.csproj", "src/backend/Core/Conta360.Domain/"]
-COPY ["./src/backend/Core/Conta360.Core/Conta360.Core.csproj", "src/backend/Core/Conta360.Core/"]
-COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Sqlite/"]
-COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Postgres/"]
-COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Excel/"]
-COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.PGC/Conta360.Infrastructure.PGC.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.PGC/"]
-COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Reporting/Conta360.Infrastructure.Reporting.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Reporting/"]
-COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.A3Cash/Conta360.Infrastructure.A3Cash.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.A3Cash/"]
+COPY ["./src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj", "backend/Presentation/Conta360.Presentation.Api/"]
+COPY ["./src/backend/Shared/Conta360.CrossCutting.IoC/Conta360.CrossCutting.IoC.csproj", "backend/Shared/Conta360.CrossCutting.IoC/"]
+COPY ["./src/backend/Core/Conta360.Application/Conta360.Application.csproj", "backend/Core/Conta360.Application/"]
+COPY ["./src/backend/Core/Conta360.Domain/Conta360.Domain.csproj", "backend/Core/Conta360.Domain/"]
+COPY ["./src/backend/Core/Conta360.Core/Conta360.Core.csproj", "backend/Core/Conta360.Core/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Sqlite/Conta360.Infrastructure.Sqlite.csproj", "backend/Infrastructure/Conta360.Infrastructure.Sqlite/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Postgres/Conta360.Infrastructure.Postgres.csproj", "backend/Infrastructure/Conta360.Infrastructure.Postgres/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Excel/Conta360.Infrastructure.Excel.csproj", "backend/Infrastructure/Conta360.Infrastructure.Excel/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.PGC/Conta360.Infrastructure.PGC.csproj", "backend/Infrastructure/Conta360.Infrastructure.PGC/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Reporting/Conta360.Infrastructure.Reporting.csproj", "backend/Infrastructure/Conta360.Infrastructure.Reporting/"]
+COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.A3Cash/Conta360.Infrastructure.A3Cash.csproj", "backend/Infrastructure/Conta360.Infrastructure.A3Cash/"]
 
 # Restaura dependencias
 # La ruta es coherente con el WORKDIR '/src'.
-RUN dotnet restore "src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
+RUN dotnet restore "backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
 
 # Copia el resto del código
 COPY . .
@@ -48,11 +47,11 @@ COPY . .
 # Copia el script de migraciones para usarlo en la etapa final
 # La ruta de origen es relativa al contexto de compilación.
 # **CORRECCIÓN:** Esta línea estaba duplicada y mal ubicada en tu borrador. La copia se debe hacer aquí.
-COPY ["./src/backend/Presentation/entrypointsqlite.sh", "src/backend/Presentation/entrypointsqlite.sh"]
+COPY ["./src/backend/Presentation/entrypointsqlite.sh", "backend/Presentation/entrypointsqlite.sh"]
 
 # Compila en modo Release
 # El WORKDIR se ajusta a la carpeta del proyecto a compilar.
-WORKDIR "src/backend/Presentation/Conta360.Presentation.Api"
+WORKDIR src/backend/Presentation/Conta360.Presentation.Api
 RUN dotnet build "Conta360.Presentation.Api.csproj" -c Release -o /app/build
 
 # Publica la aplicación
