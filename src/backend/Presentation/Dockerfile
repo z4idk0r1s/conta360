@@ -23,8 +23,6 @@ COPY ["./Directory.Packages.props", "."]
 COPY ["./Directory.Build.props", "."]
 COPY ["./Directory.Build.targets", "."]
 COPY ["./global.json", "."]
-# Si tienes un archivo de solución, es una buena práctica copiarlo aquí.
-# COPY ["./Conta360.sln", "."]
 
 # Copia solo los archivos .csproj para aprovechar la cache de Docker
 # Se corrige la ruta de destino para que sea relativa al WORKDIR '/src'.
@@ -40,7 +38,6 @@ COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.PGC/Conta360.Infrast
 COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.Reporting/Conta360.Infrastructure.Reporting.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.Reporting/"]
 COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.A3Cash/Conta360.Infrastructure.A3Cash.csproj", "src/backend/Infrastructure/Conta360.Infrastructure.A3Cash/"]
 
-
 # Restaura dependencias
 # La ruta es coherente con el WORKDIR '/src'.
 RUN dotnet restore "src/backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
@@ -50,8 +47,8 @@ COPY . .
 
 # Copia el script de migraciones para usarlo en la etapa final
 # La ruta de origen es relativa al contexto de compilación.
-COPY ["./src/backend/Presentation/entrypointsqlite.sh", "/app/entrypointsqlite.sh"]
-RUN chmod +x /app/entrypointsqlite.sh
+# **CORRECCIÓN:** Esta línea estaba duplicada y mal ubicada en tu borrador. La copia se debe hacer aquí.
+COPY ["./src/backend/Presentation/entrypointsqlite.sh", "src/backend/Presentation/entrypointsqlite.sh"]
 
 # Compila en modo Release
 # El WORKDIR se ajusta a la carpeta del proyecto a compilar.
@@ -75,15 +72,18 @@ HEALTHCHECK --interval=30s --timeout=3s \
     CMD curl -f http://localhost/health || exit 1
 
 # Copia el script desde la etapa 'build' y da permisos.
-# La ruta de origen es el destino de la etapa 'build'.
-COPY --from=build /app/entrypointsqlite.sh /app/entrypointsqlite.sh
+# **CORRECCIÓN:** Se especifica la ruta completa dentro de la etapa 'build' para garantizar que se encuentre.
+COPY --from=build /src/backend/Presentation/entrypointsqlite.sh /app/entrypointsqlite.sh
 RUN chmod +x /app/entrypointsqlite.sh
+
+# **CORRECCIÓN:** Instala las herramientas de EF Core de forma global en la etapa de construcción y luego cópialas aquí.
+COPY --from=build /root/.dotnet/tools/dotnet-ef /usr/local/bin/
 
 # Ejecuta con el script de entrada.
 ENTRYPOINT ["/app/entrypointsqlite.sh"]
 
 ################################################################################
-#                             ETAPA DE DESARROLLO PARA HOT RELOAD              #
+#                              ETAPA DE DESARROLLO PARA HOT RELOAD             #
 ################################################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS development
 # Usa WORKDIR /src para alinearse con los volúmenes de docker-compose.

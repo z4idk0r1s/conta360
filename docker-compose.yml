@@ -45,16 +45,15 @@ services:
     build:
       context: .
       dockerfile: ./src/backend/Presentation/Dockerfile
-      target: development
+      target: final
+    image: conta360-presentation-api:latest
     ports:
       - "5000:80"
     volumes:
-      - ./src/backend:/src/backend
       - presentation-api-data:/app/data
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
-      - DOTNET_USE_POLLING_FILE_WATCHER=1
       - ConnectionStrings__SqliteConnection=Data Source=/app/data/conta360.db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]

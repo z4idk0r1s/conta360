@@ -41,6 +41,24 @@ WORKDIR /src/SubvencionesApp/SubvencionesApp.Api
 RUN dotnet publish "SubvencionesApp.Api.csproj" -c Release -o /app/publish
 
 ################################################################################
+# ETAPA DE DESARROLLO (DEVELOPMENT STAGE) <-- AÑADIDO
+################################################################################
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS development
+WORKDIR /src
+COPY ["./src/SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj", "./SubvencionesApp/SubvencionesApp.Api/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Application/SubvencionesApp.Application.csproj", "./SubvencionesApp/SubvencionesApp.Application/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Domain/SubvencionesApp.Domain.csproj", "./SubvencionesApp/SubvencionesApp.Domain/"]
+COPY ["./src/SubvencionesApp/SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", "./SubvencionesApp/SubvencionesApp.Infrastructure/"]
+COPY ["./src/SubvencionesApp/Directory.Packages.props", "./SubvencionesApp/"]
+COPY ["./src/SubvencionesApp/Directory.Build.props", "./SubvencionesApp/"]
+COPY ["./src/SubvencionesApp/Directory.Build.targets", "./SubvencionesApp/"]
+RUN dotnet restore "./SubvencionesApp/SubvencionesApp.Api/SubvencionesApp.Api.csproj"
+COPY ./src/SubvencionesApp ./SubvencionesApp
+WORKDIR /src/SubvencionesApp/SubvencionesApp.Api
+ENTRYPOINT ["dotnet", "watch", "--no-hot-reload", "run", "--project", "SubvencionesApp.Api.csproj"]
+
+
+################################################################################
 # ETAPA FINAL (IMAGEN DE PRODUCCIÓN)
 ################################################################################
 # Usamos la imagen de ASP.NET para que la imagen final sea más ligera y segura.
@@ -57,10 +75,6 @@ COPY --from=build /app/publish .
 
 # Esto es necesario para el servicio de migraciones, que usa la misma imagen.
 COPY --from=build /usr/local/bin/dotnet-ef /usr/local/bin/
-
-# ELIMINA la copia del entrypointpostgre.sh y la línea ENTRYPOINT.
-# COPY --from=build /src/SubvencionesApp/entrypointpostgre.sh .
-# RUN chmod +x ./entrypointpostgre.sh
 
 # Establecer el usuario final como vscode
 RUN useradd -ms /bin/bash vscode
