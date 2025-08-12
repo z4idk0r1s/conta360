@@ -1,41 +1,47 @@
-# src/microfrontends/root-config/Dockerfile
-# Dockerfile para construir la imagen del microfrontend 'root-config'.
-
-# --- Etapa de construcción (builder stage) ---
-# Utiliza una imagen base de Node.js ligera para la construcción.
+# builder
 FROM node:20-alpine AS builder
-# Establece el directorio de trabajo dentro del contenedor.
-WORKDIR /app
-# Copia los archivos de manifiesto de dependencias para aprovechar el cache de Docker.
-# Esto asegura que 'npm install' solo se ejecute si cambian estas dependencias.
-COPY package.json .
-COPY package-lock.json .
-# Instala las dependencias del proyecto. '--frozen-lockfile' asegura versiones exactas.
-RUN npm install --frozen-lockfile
-# Copia el resto del código fuente al directorio de trabajo.
-COPY . .
 
-# La instrucción `RUN npm run build` está comentada intencionalmente para desarrollo.
-# Si se quisiera una build para producción que se sirva estáticamente (ej. para Tauri)
-# y no mediante 'npm run dev', se descomentaría esta línea.
-# RUN npm run build
+# El contexto de construcción es ./src/microfrontends
+# Copiamos todo el contenido al directorio /app del contenedor.
+COPY . /app
 
-# La variable de entorno `ENV NEXT_PUBLIC_API_URL` se gestiona en docker-compose.yml
-# para que sea dinámica según el entorno. No se define aquí para evitar hardcoding.
-# ENV NEXT_PUBLIC_API_URL=http://validation-core:80
+# Nos movemos a la carpeta de Tailwind.
+WORKDIR /app/tailwind-config
+COPY ./tailwind-config/package.json ./
 
-# --- Etapa de ejecución (runner stage) ---
-# Utiliza una imagen base de Node.js ligera para la ejecución final.
+# Ahora nos movemos a la carpeta de root-config.
+WORKDIR /app/root-config
+COPY ./root-config/package.json ./
+
+# Nos movemos a la carpeta de Tailwind.
+WORKDIR /app/tailwind-config
+RUN npm install
+
+# Ahora nos movemos a la carpeta de root-config.
+WORKDIR /app/root-config
+RUN npm install
+
+# Compilar la aplicación de Next.js.
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_SUBVENCIONES_API_URL
+ENV NEXT_PUBLIC_SUBVENCIONES_API_URL=$NEXT_PUBLIC_SUBVENCIONES_API_URL
+RUN npm run build
+
+# Opcional: Elimina dependencias de desarrollo para reducir el tamaño de la imagen final
+RUN npm prune --production
+
+# runner
 FROM node:20-alpine AS runner
-# Establece el directorio de trabajo.
-WORKDIR /app
-# Copia los artefactos de la etapa 'builder' a la etapa 'runner'.
-COPY --from=builder /app .
+WORKDIR /app/root-config
+ENV NODE_ENV=production
 
-# Comando por defecto para ejecutar al iniciar el contenedor.
-# En desarrollo, se usa 'npm run dev' para habilitar el hot reload del servidor Next.js.
-CMD ["npm", "run", "dev"]
+# Copia solo los artefactos necesarios.
+COPY --from=builder /app/root-config/.next ./.next
+COPY --from=builder /app/root-config/public ./public
+COPY --from=builder /app/root-config/package.json ./package.json
+COPY --from=builder /app/root-config/node_modules ./node_modules
+COPY --from=builder /app/tailwind-config /app/tailwind-config
 
-# Para entornos de producción donde se sirve una build estática (generada por 'npm run build'),
-# se usaría 'npm run start' si hay un servidor Next.js, o un servidor web estático.
-# CMD ["npm", "run", "start"]
+EXPOSE 3000
+CMD ["npm", "run", "start"]

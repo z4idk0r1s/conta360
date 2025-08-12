@@ -1,3 +1,4 @@
+# docker-compose.yml (producción)
 services:
   devcontainer-service:
     build:
@@ -10,29 +11,33 @@ services:
     networks:
       - conta360-network
     env_file:
-      - .devcontainer/.env
+      - .env
     command: sleep infinity
     user: vscode
 
   root-config:
     build:
-      context: ./src/microfrontends/root-config
-      dockerfile: Dockerfile
+      context: ./src/microfrontends
+      dockerfile: ./root-config/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_SUBVENCIONES_API_URL: ${NEXT_PUBLIC_SUBVENCIONES_API_URL}
     ports:
       - "3000:3000"
     volumes:
       - ./src/microfrontends/root-config:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://presentation-api:80
-      - NEXT_PUBLIC_SUBVENCIONES_API_URL=http://subvenciones-api:80
+      - NODE_ENV=production
       - IS_DOCKER_COMPOSE=true
     depends_on:
+      dashboard-app:
+        condition: service_healthy
       presentation-api:
         condition: service_healthy
       subvenciones-api:
         condition: service_healthy
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 30s
@@ -40,16 +45,45 @@ services:
       retries: 3
     networks:
       - conta360-network
+    env_file:
+      - .env
+  
+  dashboard-app:
+    build:
+      context: ./src/microfrontends
+      dockerfile: ./dashboard-app/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./src/microfrontends/dashboard-app:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+      - IS_DOCKER_COMPOSE=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - conta360-network
+    env_file:
+      - .env
 
   presentation-api:
     build:
       context: .
       dockerfile: ./src/backend/Presentation/Dockerfile
       target: final
+      args:
+        ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
     image: conta360-presentation-api:latest
     ports:
       - "5000:80"
     volumes:
+      - ./src/backend:/src/backend
       - presentation-api-data:/app/data
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
@@ -62,6 +96,8 @@ services:
       retries: 3
     networks:
       - conta360-network
+    env_file:
+      - .env
 
   postgres-db:
     image: postgres:15-alpine
@@ -73,7 +109,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT_SUBVENCIONES}
     restart: unless-stopped
     env_file:
-      - .devcontainer/.env
+      - .env
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./init-uuid-ossp.sql:/docker-entrypoint-initdb.d/init-uuid-ossp.sql:ro
@@ -103,12 +139,7 @@ services:
     build:
       context: .
       dockerfile: ./src/SubvencionesApp/Dockerfile
-      args:
-        POSTGRES_HOST_SUBVENCIONES: ${POSTGRES_HOST_SUBVENCIONES}
-        POSTGRES_PORT_SUBVENCIONES: ${POSTGRES_PORT_SUBVENCIONES}
-        POSTGRES_DB_SUBVENCIONES: ${POSTGRES_DB_SUBVENCIONES}
-        POSTGRES_USER_SUBVENCIONES: ${POSTGRES_USER_SUBVENCIONES}
-        POSTGRES_PASSWORD_SUBVENCIONES: ${POSTGRES_PASSWORD_SUBVENCIONES}
+      target: final
     image: subvenciones-api-image
     ports:
       - "5001:80"
@@ -118,8 +149,8 @@ services:
     environment:
       - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
     depends_on:
-      subvenciones-migrations:
-        condition: service_completed_successfully
+      postgres-db:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
@@ -128,42 +159,7 @@ services:
     networks:
       - conta360-network
     env_file:
-      - .devcontainer/.env
-
-  subvenciones-migrations:
-    image: subvenciones-api-image
-    depends_on:
-      postgres-db:
-        condition: service_healthy
-    command: ["dotnet", "ef", "database", "update"]
-    networks:
-      - conta360-network
-    env_file:
-      - .devcontainer/.env
-    environment: 
-      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
-    restart: "no"
-
-  dashboard-app:
-    build:
-      context: ./src/microfrontends/dashboard-app
-      dockerfile: Dockerfile
-    ports:
-      - "3001:3001"
-    volumes:
-      - ./src/microfrontends/dashboard-app:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://presentation-api:80
-      - IS_DOCKER_COMPOSE=true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-    networks:
-      - conta360-network
+      - .env
 
 networks:
   conta360-network:

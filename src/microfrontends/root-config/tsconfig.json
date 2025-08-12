@@ -24,7 +24,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "dashboardApp/*": ["../dashboard-app/src/*"]       
+      "dashboardApp/*": ["../dashboard-app/src/*"],
+      "@cont360/tailwind-config": ["./tailwind-config/tailwind.config.ts"]       
     }
   },
   "include": [
