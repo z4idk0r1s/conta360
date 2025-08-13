@@ -1,5 +1,5 @@
 # .devcontainer/Dockerfile
-ARG VARIANT="8.0"
+ARG VARIANT="8.0.413"
 FROM mcr.microsoft.com/devcontainers/dotnet:${VARIANT}
 
 # Configuración de entorno
