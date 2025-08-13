@@ -17,8 +17,8 @@ services:
 
   root-config:
     build:
-      context: ./src/microfrontends
-      dockerfile: ./root-config/Dockerfile
+      context: ./src/microfrontends/root-config
+      dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
         NEXT_PUBLIC_SUBVENCIONES_API_URL: ${NEXT_PUBLIC_SUBVENCIONES_API_URL}
@@ -50,8 +50,8 @@ services:
   
   dashboard-app:
     build:
-      context: ./src/microfrontends
-      dockerfile: ./dashboard-app/Dockerfile
+      context: ./src/microfrontends/dashboard-app
+      dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     ports:

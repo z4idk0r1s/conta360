@@ -21,8 +21,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "root-config/*": ["../root-config/*"],
-      "@cont360/tailwind-config": ["../tailwind-config/tailwind.config.ts"]
+      "root-config/*": ["../root-config/*"]
     }
   },
   "include": [
