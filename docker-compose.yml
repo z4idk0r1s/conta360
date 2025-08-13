@@ -1,4 +1,21 @@
 # docker-compose.yml (producción)
+# --------------------------------------------------------------------------------------
+# WARNING: ENVIRONMENT SWITCH
+# --------------------------------------------------------------------------------------
+#
+# This file is currently configured for the DEVELOPMENT environment.#
+# To switch to PRODUCTION, you need to manually change the 'target' build argument
+# in the relevant services.#
+# Example:
+#
+#   subvenciones-api:
+#     build:
+#       target: development  <-- CHANGE TO 'production'
+#
+# Also, be sure to use the correct environment variable file (.env) for each environment.
+#
+# --------------------------------------------------------------------------------------
+
 services:
   devcontainer-service:
     build:
@@ -28,7 +45,7 @@ services:
       - ./src/microfrontends/root-config:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV}
       - IS_DOCKER_COMPOSE=true
     depends_on:
       dashboard-app:
@@ -37,7 +54,6 @@ services:
         condition: service_healthy
       subvenciones-api:
         condition: service_healthy
-
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 30s
@@ -60,10 +76,10 @@ services:
       - ./src/microfrontends/dashboard-app:/app
       - /app/node_modules
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV}
       - IS_DOCKER_COMPOSE=true
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -76,7 +92,7 @@ services:
     build:
       context: .
       dockerfile: ./src/backend/Presentation/Dockerfile
-      target: final
+      target: development
       args:
         ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
     image: conta360-presentation-api:latest
@@ -86,11 +102,11 @@ services:
       - ./src/backend:/src/backend
       - presentation-api-data:/app/data
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
       - ConnectionStrings__SqliteConnection=Data Source=/app/data/conta360.db
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      test: ["CMD", "dotnet", "--info"]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -110,13 +126,15 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    ports:
+      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./init-uuid-ossp.sql:/docker-entrypoint-initdb.d/init-uuid-ossp.sql:ro
     networks:
       - conta360-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER_SUBVENCIONES:-conta360}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER_SUBVENCIONES} -d ${POSTGRES_DB_SUBVENCIONES}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -139,8 +157,6 @@ services:
     build:
       context: .
       dockerfile: ./src/SubvencionesApp/Dockerfile
-      target: final
-    image: subvenciones-api-image
     ports:
       - "5001:80"
     volumes:
@@ -151,8 +167,10 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
+      subvenciones-migrations:
+        condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      test: ["CMD", "dotnet", "--info"]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -160,6 +178,22 @@ services:
       - conta360-network
     env_file:
       - .env
+
+  subvenciones-migrations:
+    build:
+      context: .
+      dockerfile: ./src/SubvencionesApp/Dockerfile.Migrations
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES}
+    networks:
+      - conta360-network
+    env_file:
+      - .env
+    restart: "no"
 
 networks:
   conta360-network:
