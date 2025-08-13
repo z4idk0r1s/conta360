@@ -6,7 +6,7 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import {AppProps} from "next/app";
 
-import 'root-config/pages/globals.css';
+import 'root-config/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
