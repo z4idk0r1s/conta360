@@ -3,7 +3,8 @@ import rootConfig from '../root-config/tailwind.config';
 export default {
   ...rootConfig,
   content: [
-    './pages/**/*.{ts,tsx,js,jsx}',
-    './components/**/*.{ts,tsx,js,jsx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/flowbite/**/*.js',
   ],
 };

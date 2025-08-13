@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-const defaultTheme = require("tailwindcss/defaultTheme"); // Necesario para extender screens
+import defaultTheme from "tailwindcss/defaultTheme"; // Necesario para extender screens
 
 const config: Config = {
   // Asegúrate de que este 'content' escanea TODOS los archivos donde usas clases de Tailwind.

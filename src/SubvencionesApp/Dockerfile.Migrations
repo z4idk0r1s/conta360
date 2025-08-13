@@ -1,0 +1,31 @@
+# src/SubvencionesApp/Dockerfile.Migrations
+
+################################################################################
+# ETAPA DE MIGRACIONES
+################################################################################
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS migrations
+# Usamos el mismo WORKDIR que la etapa de construcción de tu Dockerfile de la API
+WORKDIR /src
+
+# Instala la herramienta dotnet-ef de la misma manera que en el Dockerfile de la API
+RUN dotnet tool install dotnet-ef --tool-path /usr/local/bin
+
+# Copia los archivos de configuración de la solución
+COPY ["./Directory.Packages.props", "."]
+COPY ["./Directory.Build.props", "."]
+COPY ["./Directory.Build.targets", "."]
+COPY ["./global.json", "."]
+
+# Copia todos los proyectos de la solución.
+# La ruta de destino está alineada con el Dockerfile de la API.
+COPY ["./src/SubvencionesApp", "SubvencionesApp/"]
+
+# Restaura las dependencias del proyecto API, alineado con el Dockerfile de la API.
+WORKDIR /src/SubvencionesApp/SubvencionesApp.Api
+RUN dotnet restore
+
+# Comando de entrada para ejecutar las migraciones
+# Las rutas de los proyectos deben ser relativas a este WORKDIR.
+ENTRYPOINT ["dotnet", "ef", "database", "update", \
+    "--project", "../SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", \
+    "--startup-project", "SubvencionesApp.Api.csproj"]

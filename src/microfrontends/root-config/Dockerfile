@@ -9,9 +9,9 @@ WORKDIR /app
 # Copia los archivos de manifiesto de dependencias para aprovechar el cache de Docker.
 # Esto asegura que 'npm install' solo se ejecute si cambian estas dependencias.
 COPY package.json .
-COPY package-lock.json .
+
 # Instala las dependencias del proyecto. '--frozen-lockfile' asegura versiones exactas.
-RUN npm install --frozen-lockfile
+RUN npm install
 # Copia el resto del código fuente al directorio de trabajo.
 COPY . .
 
