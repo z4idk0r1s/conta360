@@ -18,8 +18,5 @@
       }
     }
   },
-  "remoteUser": "vscode",
-  "mounts": [
-    "source=${localEnv:USERPROFILE}\\.nuget,target=/home/vscode/.nuget,type=bind"
-  ]
+  "remoteUser": "vscode"
 }

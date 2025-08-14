@@ -24,7 +24,7 @@ services:
       args:
         WORKSPACE_NAME: conta360
     volumes:
-      - .:/workspaces/conta360
+      - .:/workspaces/conta360:cached
     networks:
       - conta360-network
     env_file:
