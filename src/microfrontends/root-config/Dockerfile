@@ -10,7 +10,7 @@ WORKDIR /app
 # Esto asegura que 'npm install' solo se ejecute si cambian estas dependencias.
 COPY package.json .
 
-# Instala las dependencias del proyecto. '--frozen-lockfile' asegura versiones exactas.
+# Instala las dependencias del proyecto.
 RUN npm install
 # Copia el resto del código fuente al directorio de trabajo.
 COPY . .

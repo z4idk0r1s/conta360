@@ -24,7 +24,7 @@ services:
       args:
         WORKSPACE_NAME: conta360
     volumes:
-      - .:/workspaces/conta360:cached
+      - .:/workspaces/conta360
     networks:
       - conta360-network
     env_file:
@@ -138,16 +138,16 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     restart: unless-stopped
-    env_file:
-      - .devcontainer/.env
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     depends_on:
       - postgres-db
     networks:
       - conta360-network
+    env_file:
+      - .env
 
   subvenciones-api:
     build:

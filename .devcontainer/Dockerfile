@@ -43,6 +43,8 @@ RUN DOTNET_VERSION=8.0.413 && \
     chmod +x /usr/share/dotnet/dotnet && \
     # Configurar DOTNET_ROOT para evitar conflictos
     echo 'export DOTNET_ROOT=/usr/share/dotnet' >> /etc/environment && \
+    # RESTAURAR PERMISOS DEL USUARIO VSCODE
+    chown -R vscode:vscode /home/vscode && \
     # Limpieza completa
     cd / && rm -rf $TEMP_DIR && \
     echo "✅ .NET SDK ${DOTNET_VERSION} instalado como ÚNICA VERSIÓN"
@@ -103,6 +105,7 @@ EXPOSE 5000
 EXPOSE 5001
 EXPOSE 5432
 EXPOSE 8080
+EXPOSE 8081
 
 # No ejecutar nada, entorno de desarrollo puro
 CMD ["sleep", "infinity"]
