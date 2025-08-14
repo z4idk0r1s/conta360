@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e # Salir si un comando falla
 
+# --- Asegurar permisos del espacio de trabajo antes de cualquier operación ---
+echo "✅ Asegurando permisos del espacio de trabajo para el usuario vscode..."
+sudo chown -R vscode:vscode /workspaces
+echo "✅ Permisos del espacio de trabajo configurados correctamente."
+
 echo "🔍 Verificando prerrequisitos..."
 
 # Verificación de herramientas necesarias
@@ -51,7 +56,7 @@ echo "📦 Instalando dependencias npm..."
 for dir in "${MICROFRONTEND_DIRS[@]}"; do
   if [ -f "$dir/package.json" ]; then
     echo "📁 $dir"
-    (cd "$dir" && npm ci)
+    (cd "$dir" && npm install)
   else
     echo "⚠️ No encontrado: $dir/package.json. Omitiendo."
   fi
