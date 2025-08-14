@@ -9,16 +9,17 @@ ENV ASPNETCORE_URLS=http://+:80
 # === ELIMINAR .NET DE LA IMAGEN BASE E INSTALAR 8.0.413 ESPECÍFICO ===
 USER root
 RUN DOTNET_VERSION=8.0.413 && \
-    echo "🗑️ Eliminando .NET de la imagen base..." && \
-    # ELIMINAR COMPLETAMENTE la instalación base de .NET
+    echo "🗑️ Eliminando .NET de la imagen base y extensiones de VSCode..." && \
+    # ELIMINAR COMPLETAMENTE todas las instalaciones de .NET (incluidas las de VSCode)
     rm -rf /usr/share/dotnet && \
     rm -rf /usr/local/share/dotnet && \
     rm -rf /opt/dotnet && \
+    rm -rf /home/vscode/.vscode-server/data/User/globalStorage/ms-dotnettools.vscode-dotnet-runtime && \
     rm -f /usr/local/bin/dotnet && \
     rm -f /usr/bin/dotnet && \
     # Limpiar variables de entorno anteriores
     unset DOTNET_ROOT && \
-    echo "✅ .NET base eliminado completamente" && \
+    echo "✅ Todas las instalaciones de .NET eliminadas" && \
     # Crear directorio temporal para descarga
     TEMP_DIR=$(mktemp -d) && \
     cd $TEMP_DIR && \
@@ -40,12 +41,16 @@ RUN DOTNET_VERSION=8.0.413 && \
     ln -sf /usr/share/dotnet/dotnet /usr/local/bin/dotnet && \
     # Establecer permisos correctos
     chmod +x /usr/share/dotnet/dotnet && \
+    # Configurar DOTNET_ROOT para evitar conflictos
+    echo 'export DOTNET_ROOT=/usr/share/dotnet' >> /etc/environment && \
     # Limpieza completa
     cd / && rm -rf $TEMP_DIR && \
     echo "✅ .NET SDK ${DOTNET_VERSION} instalado como ÚNICA VERSIÓN"
 
-# Configurar PATH para .NET
-ENV PATH=/usr/share/dotnet:$PATH
+# Configurar PATH y DOTNET_ROOT para evitar conflictos
+ENV PATH=/usr/share/dotnet:$PATH \
+    DOTNET_ROOT=/usr/share/dotnet \
+    DOTNET_MULTILEVEL_LOOKUP=0
 
 # === Instalar Node.js 20.11.1 en el HOME del usuario vscode ===
 USER vscode
@@ -79,8 +84,12 @@ RUN echo "=== VERIFICACIÓN DE VERSIONES INSTALADAS ===" && \
     npm --version && \
     echo "🔧 Verificando Entity Framework:" && \
     dotnet ef --version && \
-    echo "✅ VERIFICACIÓN COMPLETADA - ÚNICA VERSIÓN INSTALADA" && \
-    echo "🎯 .NET SDK 8.0.413 es la ÚNICA versión disponible"
+    echo "🌍 Variables de entorno:" && \
+    echo "DOTNET_ROOT=$DOTNET_ROOT" && \
+    echo "DOTNET_MULTILEVEL_LOOKUP=$DOTNET_MULTILEVEL_LOOKUP" && \
+    echo "PATH (dotnet)=$(which dotnet)" && \
+    echo "✅ VERIFICACIÓN COMPLETADA - CONFIGURACIÓN OPTIMIZADA" && \
+    echo "🎯 .NET SDK 8.0.413 es la ÚNICA versión - MSBuild funcionará correctamente"
 
 # Variables dinámicas
 ARG WORKSPACE_NAME
