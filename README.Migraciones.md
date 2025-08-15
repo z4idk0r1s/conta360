@@ -81,3 +81,45 @@ Esto hará que las migraciones se ejecuten en tiempo de arranque, incluso si el 
 ---
 
 > Si necesitas soporte para migraciones en PostgreSQL, actualiza la cadena de conexión y el parámetro `dbProvider` en `Program.cs` y `docker-compose.yml`.
+
+  subvenciones-api:
+    build:
+      context: .
+      dockerfile: ./src/SubvencionesApp/Dockerfile
+    ports:
+      - "5001:80"
+    volumes:
+      - ./src/SubvencionesApp:/src/SubvencionesApp
+      - subvenciones-api-data:/app/data
+    environment:
+      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      subvenciones-migrations:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "dotnet", "--info"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    networks:
+      - conta360-network
+    env_file:
+      - .env
+
+  subvenciones-migrations:
+    build:
+      context: .
+      dockerfile: ./src/SubvencionesApp/Dockerfile.Migrations
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES}
+    networks:
+      - conta360-network
+    env_file:
+      - .env
+    restart: "no"
