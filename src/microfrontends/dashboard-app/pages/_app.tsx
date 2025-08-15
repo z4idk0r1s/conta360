@@ -1,12 +1,15 @@
-//src\microfrontends\dashboard-app\pages\_app.tsx
+// src/microfrontends/dashboard-app/pages/_app.tsx
 import { useState, useEffect } from "react";
 import Loader from "@/components/common/Loader";
-
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-import {AppProps} from "next/app";
+import type { AppProps } from "next/app";
+import dynamic from "next/dynamic";
 
-import 'root-config/globals.css';
+// Import dinámico del componente de estilos globales del HOST
+const GlobalStyles = dynamic(() => import("root-config/GlobalStyles"), {
+  ssr: false,
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -17,38 +20,43 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="flex h-screen overflow-hidden">
-          {/* <!-- ===== Sidebar Start ===== --> */}
-          <Sidebar
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-          />
-          {/* <!-- ===== Sidebar End ===== --> */}
+    <>
+      {/* Cargar estilos globales del host */}
+      <GlobalStyles />
 
-          {/* <!-- ===== Content Area Start ===== --> */}
-          <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-            {/* <!-- ===== Header Start ===== --> */}
-            <Header
+      <div className="dark:bg-boxdark-2 dark:text-bodydark">
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="flex h-screen overflow-hidden">
+            {/* <!-- ===== Sidebar Start ===== --> */}
+            <Sidebar
               sidebarOpen={sidebarOpen}
               setSidebarOpen={setSidebarOpen}
             />
-            {/* <!-- ===== Header End ===== --> */}
+            {/* <!-- ===== Sidebar End ===== --> */}
 
-            {/* <!-- ===== Main Content Start ===== --> */}
-            <main>
-              <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                <Component {...pageProps} />
-              </div>
-            </main>
-            {/* <!-- ===== Main Content End ===== --> */}
+            {/* <!-- ===== Content Area Start ===== --> */}
+            <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+              {/* <!-- ===== Header Start ===== --> */}
+              <Header
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+              />
+              {/* <!-- ===== Header End ===== --> */}
+
+              {/* <!-- ===== Main Content Start ===== --> */}
+              <main>
+                <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                  <Component {...pageProps} />
+                </div>
+              </main>
+              {/* <!-- ===== Main Content End ===== --> */}
+            </div>
+            {/* <!-- ===== Content Area End ===== --> */}
           </div>
-          {/* <!-- ===== Content Area End ===== --> */}
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }

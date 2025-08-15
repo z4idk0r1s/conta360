@@ -25,7 +25,7 @@ const nextConfig = {
           filename: 'static/chunks/remoteEntry.js', // Ruta del remoteEntry del host
           remotes: getRemotes(options), // Configuración de remotos del host
           exposes: {
-            './globals.css': './pages/globals.css',
+            './GlobalStyles': './src/shared/GlobalStyles.tsx',
           },
           shared: {
             // Dependencias React
