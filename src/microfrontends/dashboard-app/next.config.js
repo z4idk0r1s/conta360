@@ -27,6 +27,10 @@ const nextConfig = {
         new NextFederationPlugin({
           name: 'dashboardApp',
           filename: 'static/chunks/remoteEntry.js',
+          remotes: {
+            // Nombre del host: 'nombre_del_host@URL_del_remoteEntry'
+            'root-config': 'root-config@http://root-config:3000/_next/static/chunks/remoteEntry.js',
+          },
           exposes: {
             // Componente principal del dashboard (ejemplo de exposición)
             './Dashboard': './components/Dashboard/E-commerce.tsx',
