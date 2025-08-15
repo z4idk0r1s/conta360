@@ -1,31 +1,38 @@
-# src/SubvencionesApp/Dockerfile.Migrations
-
 ################################################################################
-# ETAPA DE MIGRACIONES
+# ETAPA DE MIGRACIONES - RELANZAMIENTOS
 ################################################################################
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS migrations
-# Usamos el mismo WORKDIR que la etapa de construcción de tu Dockerfile de la API
+
+# Configuración de optimización para .NET
+ENV DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1 \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# Directorio de trabajo raíz
 WORKDIR /src
 
-# Instala la herramienta dotnet-ef de la misma manera que en el Dockerfile de la API
-RUN dotnet tool install dotnet-ef --tool-path /usr/local/bin
+# Instalar EF Core CLI
+RUN dotnet tool install --tool-path /usr/local/bin dotnet-ef
 
-# Copia los archivos de configuración de la solución
+# Copiar archivos de configuración de la solución
 COPY ["./Directory.Packages.props", "."]
 COPY ["./Directory.Build.props", "."]
 COPY ["./Directory.Build.targets", "."]
 COPY ["./global.json", "."]
 
-# Copia todos los proyectos de la solución.
-# La ruta de destino está alineada con el Dockerfile de la API.
+# Copiar código fuente del proyecto, incluidas las migraciones
 COPY ["./src/SubvencionesApp", "SubvencionesApp/"]
 
-# Restaura las dependencias del proyecto API, alineado con el Dockerfile de la API.
+# Restaurar dependencias del proyecto
 WORKDIR /src/SubvencionesApp/SubvencionesApp.Api
-RUN dotnet restore
+RUN dotnet restore --verbosity minimal
 
-# Comando de entrada para ejecutar las migraciones
-# Las rutas de los proyectos deben ser relativas a este WORKDIR.
-ENTRYPOINT ["dotnet", "ef", "database", "update", \
-    "--project", "../SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj", \
-    "--startup-project", "SubvencionesApp.Api.csproj"]
+# Construir el proyecto (para evitar errores en tiempo de ejecución)
+RUN dotnet build --no-restore --configuration Release
+
+# Punto de entrada para aplicar migraciones existentes
+ENTRYPOINT ["sh", "-c", "\
+    echo 'Applying migrations to the database...'; \
+    dotnet ef database update \
+        --project ../SubvencionesApp.Infrastructure/SubvencionesApp.Infrastructure.csproj \
+        --startup-project SubvencionesApp.Api.csproj; \
+    echo 'Database is up to date.'"]

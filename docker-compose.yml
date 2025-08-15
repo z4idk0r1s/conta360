@@ -163,8 +163,6 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
-      subvenciones-migrations:
-        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "dotnet", "--info"]
       interval: 30s
@@ -174,22 +172,6 @@ services:
       - conta360-network
     env_file:
       - .env
-
-  subvenciones-migrations:
-    build:
-      context: .
-      dockerfile: ./src/SubvencionesApp/Dockerfile.Migrations
-    depends_on:
-      postgres-db:
-        condition: service_healthy
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES}
-    networks:
-      - conta360-network
-    env_file:
-      - .env
-    restart: "no"
 
 networks:
   conta360-network:
