@@ -26,8 +26,7 @@ services:
     volumes:
       - .:/workspaces/conta360
     networks:
-      frontend-net:
-      backend-net:
+      - conta360-network
     env_file:
       - .env
     command: sleep infinity
@@ -41,7 +40,7 @@ services:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
         NEXT_PUBLIC_SUBVENCIONES_API_URL: ${NEXT_PUBLIC_SUBVENCIONES_API_URL}
     ports:
-      - "127.0.0.1:3000:3000"
+      - "3000:3000"
     volumes:
       - ./src/microfrontends/root-config:/app
       - /app/node_modules
@@ -57,11 +56,10 @@ services:
       timeout: 5s
       retries: 3
     networks:
-      frontend-net:
-        ipv4_address: 172.20.0.3
+      - conta360-network
     env_file:
       - .env
-
+  
   dashboard-app:
     build:
       context: ./src/microfrontends/dashboard-app
@@ -69,7 +67,7 @@ services:
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     ports:
-      - "127.0.0.1:3001:3001"
+      - "3001:3001"
     volumes:
       - ./src/microfrontends/dashboard-app:/app
       - /app/node_modules
@@ -82,8 +80,7 @@ services:
       timeout: 5s
       retries: 3
     networks:
-      frontend-net:
-        ipv4_address: 172.20.0.4
+      - conta360-network
     env_file:
       - .env
 
@@ -96,7 +93,7 @@ services:
         ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
     image: conta360-presentation-api:latest
     ports:
-      - "127.0.0.1:5000:80"
+      - "5000:80"
     volumes:
       - ./src/backend:/src/backend
       - presentation-api-data:/app/data
@@ -110,30 +107,28 @@ services:
       timeout: 3s
       retries: 3
     networks:
-      backend-net:
-        ipv4_address: 172.21.0.3
-      db-net:
-        ipv4_address: 172.22.0.2
+      - conta360-network
     env_file:
       - .env
 
   postgres-db:
     image: postgres:15-alpine
     environment:
+      POSTGRES_HOST: ${POSTGRES_HOST_SUBVENCIONES}
       POSTGRES_DB: ${POSTGRES_DB_SUBVENCIONES}
       POSTGRES_USER: ${POSTGRES_USER_SUBVENCIONES}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_SUBVENCIONES}
+      POSTGRES_PORT: ${POSTGRES_PORT_SUBVENCIONES}
     restart: unless-stopped
     env_file:
       - .env
     ports:
-      - "127.0.0.1:5432:5432"
+      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./init-uuid-ossp.sql:/docker-entrypoint-initdb.d/init-uuid-ossp.sql:ro
     networks:
-      db-net:
-        ipv4_address: 172.22.0.3
+      - conta360-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER_SUBVENCIONES} -d ${POSTGRES_DB_SUBVENCIONES}"]
       interval: 10s
@@ -144,27 +139,13 @@ services:
     image: dpage/pgadmin4
     restart: unless-stopped
     ports:
-      - "127.0.0.1:8081:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-      PGADMIN_LISTEN_PORT: 80
-      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "True"
-      PGADMIN_CONFIG_LOGIN_BANNER: "Authorized Access Only"
+      - "8081:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-    healthcheck:
-      test: ["CMD", "wget", "-O", "-", "http://localhost:80/misc/ping"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
     depends_on:
-      postgres-db:
-        condition: service_healthy
+      - postgres-db
     networks:
-      frontend-net:
-        ipv4_address: 172.20.0.5
-      db-net:
+      - conta360-network
     env_file:
       - .env
 
@@ -173,12 +154,12 @@ services:
       context: .
       dockerfile: ./src/SubvencionesApp/Dockerfile
     ports:
-      - "127.0.0.1:5001:80"
+      - "5001:80"
     volumes:
       - ./src/SubvencionesApp:/src/SubvencionesApp
       - subvenciones-api-data:/app/data
     environment:
-      - ConnectionStrings__POSTGRESQLConnection=Host=postgres-db;Port=5432;Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
+      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES};Pooling=true;MinPoolSize=0;MaxPoolSize=100;CommandTimeout=60
     depends_on:
       postgres-db:
         condition: service_healthy
@@ -190,10 +171,7 @@ services:
       timeout: 3s
       retries: 3
     networks:
-      backend-net:
-        ipv4_address: 172.21.0.4
-      db-net:
-        ipv4_address: 172.22.0.0.5
+      - conta360-network
     env_file:
       - .env
 
@@ -206,38 +184,16 @@ services:
         condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ConnectionStrings__POSTGRESQLConnection=Host=postgres-db;Port=5432;Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES}
+      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES}
     networks:
-      db-net:
-        ipv4_address: 172.22.0.6
+      - conta360-network
     env_file:
       - .env
     restart: "no"
 
 networks:
-  frontend-net:
+  conta360-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/24
-          gateway: 172.20.0.1
-    internal: false
-
-  backend-net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.21.0.0/24
-          gateway: 172.21.0.1
-    internal: true
-
-  db-net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.22.0.0/24
-          gateway: 172.22.0.1
-    internal: true
 
 volumes:
   presentation-api-data:
