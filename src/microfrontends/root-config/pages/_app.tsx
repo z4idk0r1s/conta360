@@ -7,8 +7,7 @@ import Head from 'next/head'; // Para gestionar <head>
 import { Inter } from 'next/font/google'; // Para la fuente Inter
 
 // Importación de los estilos globales.
-// La ruta es relativa desde 'root-config/pages/_app.tsx' hasta 'root-config/pages/globals.css'.
-import '../pages/globals.css';
+import './globals.css';
 
 // Inicializa la fuente Inter
 const inter = Inter({ subsets: ['latin'] });

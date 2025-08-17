@@ -1,6 +1,6 @@
 // src/microfrontends/root-config/remote-declarations.d.ts
 declare module 'dashboardApp/Dashboard' {
-  import { ComponentType } from 'react'; // Importar ComponentType para mayor claridad
+  import { ComponentType } from 'react';
   const Dashboard: ComponentType;
   export default Dashboard;
 }
