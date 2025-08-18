@@ -4,12 +4,6 @@ import Loader from "@/components/common/Loader";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import type { AppProps } from "next/app";
-import dynamic from "next/dynamic";
-
-// Import dinámico del componente de estilos globales del HOST
-const GlobalStyles = dynamic(() => import("root-config/GlobalStyles"), {
-  ssr: false,
-});
 
 export default function App({ Component, pageProps }: AppProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -21,9 +15,6 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      {/* Cargar estilos globales del host */}
-      <GlobalStyles />
-
       <div className="dark:bg-boxdark-2 dark:text-bodydark">
         {loading ? (
           <Loader />

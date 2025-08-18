@@ -23,8 +23,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "dashboardApp/*": ["../dashboard-app/src/*"]       
+      "@/*": ["./src/*"]
     }
   },
   "include": [

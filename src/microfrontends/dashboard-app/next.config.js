@@ -1,4 +1,5 @@
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
+const { getHost } = require('./host.config'); // Asegúrate de que esta ruta sea correcta
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -27,16 +28,10 @@ const nextConfig = {
         new NextFederationPlugin({
           name: 'dashboardApp',
           filename: 'static/chunks/remoteEntry.js',
-          remotes: {
-            // Nombre del host: 'nombre_del_host@URL_del_remoteEntry'
-            'root-config': 'root-config@http://root-config:3000/_next/static/chunks/remoteEntry.js',
-          },
+          remotes: getHost(options),
           exposes: {
             // Componente principal del dashboard (ejemplo de exposición)
             './E-commerce': './components/Dashboard/E-commerce.tsx',
-            // ¡ATENCIÓN!: Habilita estas exposiciones a medida que las necesites y las consumas dinámicamente.
-            // Es buena práctica asignarles nombres más específicos para evitar colisiones globales
-            // y para que la importación en el host sea más clara.
             './AuthSignInPage': './pages/auth/signin/index.tsx',
             './AuthSignUpPage': './pages/auth/signup/index.tsx',
             './CalendarPage': './pages/calendar/index.tsx',
@@ -93,6 +88,11 @@ const nextConfig = {
               eager: true,
               requiredVersion: '14.1.4',
             },
+            "next/dynamic": {
+              singleton: true,
+              eager: false,  //no puede ser eager
+              requiredVersion: "14.1.4"
+            },
             // Otras dependencias compartidas
             axios: {
               singleton: true,
@@ -137,8 +137,8 @@ const nextConfig = {
               requiredVersion: '0.5.9',
             },
             // Si `postcss` o `autoprefixer` se usaran en runtime compartido, también se podrían añadir
-            // "postcss": { singleton: true, requiredVersion: "8.4.35" },
-            // "autoprefixer": { singleton: true, requiredVersion: "10.4.20" },
+            "postcss": { singleton: true, requiredVersion: "8.4.35" },
+            "autoprefixer": { singleton: true, requiredVersion: "10.4.20" }
           },
         })
       );

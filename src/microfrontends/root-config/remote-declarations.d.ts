@@ -1,5 +1,5 @@
 // src/microfrontends/root-config/remote-declarations.d.ts
-declare module 'dashboardApp/E-Commerce' {
+declare module 'dashboardApp/E-commerce' {
   import { ComponentType } from 'react';
   const ECommerce: ComponentType;
   export default ECommerce;

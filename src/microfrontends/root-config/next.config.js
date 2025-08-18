@@ -21,12 +21,10 @@ const nextConfig = {
 
       config.plugins.push(
         new NextFederationPlugin({
-          name: 'root-config',
+          name: 'rootConfig',
           filename: 'static/chunks/remoteEntry.js', // Ruta del remoteEntry del host
           remotes: getRemotes(options), // Configuración de remotos del host
-          exposes: {
-            './GlobalStyles': './src/shared/GlobalStyles.tsx',
-          },
+          exposes: {},
           shared: {
             // Dependencias React
             react: {
@@ -66,6 +64,11 @@ const nextConfig = {
               eager: true,
               requiredVersion: '14.1.4',              
             },
+            "next/dynamic": {
+              singleton: true,
+              eager: false,  //no puede ser eager
+              requiredVersion: "14.1.4"
+            },
             // Otras dependencias compartidas
             axios: {
               singleton: true,
@@ -77,6 +80,8 @@ const nextConfig = {
               singleton: true,
               requiredVersion: '2.6.0',              
             },
+            "postcss": { singleton: true, requiredVersion: "8.4.35" },
+            "autoprefixer": { singleton: true, requiredVersion: "10.4.20" }
           },
         })
       );

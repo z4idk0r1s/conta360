@@ -1,12 +1,12 @@
-// root-config/mf-remotes.config.js
+// src\microfrontends\dashboard-app\host.config.js
 
 const REMOTE_PORTS = {
-  dashboardApp: 3001,
+  rootConfig: 3000,
   // Para añadir un nuevo MF, añade una entrada aquí:
   // nuevoMfApp: 3005,
 };
 
-const getRemotes = (options) => {
+const getHost = (options) => {
   const isDevelopment = process.env.NODE_ENV === 'development';
   const isDockerComposeEnv = isDevelopment && process.env.IS_DOCKER_COMPOSE === 'true';
 
@@ -31,12 +31,12 @@ const getRemotes = (options) => {
     
     remotesConfig[mfName] = `${mfName}@${remoteEntryPath}`;
   }
-  console.log('[mf-remotes.config] remotesConfig:', remotesConfig);
+  console.log('[rootConfig.config] remotesConfig:', remotesConfig);
 
   return remotesConfig;
 };
 
 module.exports = {
   REMOTE_PORTS,
-  getRemotes,
+  getHost,
 };

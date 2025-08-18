@@ -20,8 +20,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "root-config/*": ["../root-config/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -29,8 +28,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "out/types/**/*.ts",
-    "host-declarations.d.ts"
+    "out/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -5,8 +5,6 @@ import ReactDOM from 'react-dom';
 import type { AppProps } from 'next/app';
 import Head from 'next/head'; // Para gestionar <head>
 import { Inter } from 'next/font/google'; // Para la fuente Inter
-
-// Importación de los estilos globales.
 import './globals.css';
 
 // Inicializa la fuente Inter
