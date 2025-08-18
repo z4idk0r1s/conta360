@@ -1,8 +1,8 @@
 // src/microfrontends/root-config/remote-declarations.d.ts
-declare module 'dashboardApp/Dashboard' {
+declare module 'dashboardApp/E-Commerce' {
   import { ComponentType } from 'react';
-  const Dashboard: ComponentType;
-  export default Dashboard;
+  const ECommerce: ComponentType;
+  export default ECommerce;
 }
 
 declare module 'dashboardApp/AuthSignInPage' {

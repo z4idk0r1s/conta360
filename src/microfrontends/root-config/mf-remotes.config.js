@@ -17,8 +17,8 @@ const getRemotes = (options) => {
 
     if (isDevelopment) {
       if (isDockerComposeEnv) {
-        //remoteEntryPath = `http://${mfName}:${mfPort}/_next/static/chunks/remoteEntry.js`;
-        remoteEntryPath = `http://localhost:${mfPort}/_next/static/chunks/remoteEntry.js`;
+        remoteEntryPath = `http://${mfName}:${mfPort}/_next/static/chunks/remoteEntry.js`;
+        //remoteEntryPath = `http://localhost:${mfPort}/_next/static/chunks/remoteEntry.js`;
       } else {
         //remoteEntryPath = `http://localhost:${mfPort}/_next/static/chunks/remoteEntry.js`;
         remoteEntryPath = `http://${mfName}:${mfPort}/_next/static/chunks/remoteEntry.js`;

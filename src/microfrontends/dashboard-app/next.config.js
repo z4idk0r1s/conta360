@@ -29,15 +29,15 @@ const nextConfig = {
           filename: 'static/chunks/remoteEntry.js',
           remotes: {
             // Nombre del host: 'nombre_del_host@URL_del_remoteEntry'
-            'root-config': 'root-config@http://localhost:3000/_next/static/chunks/remoteEntry.js',
+            'root-config': 'root-config@http://root-config:3000/_next/static/chunks/remoteEntry.js',
           },
           exposes: {
             // Componente principal del dashboard (ejemplo de exposición)
-            './Dashboard': './components/Dashboard/E-commerce.tsx',
+            './E-commerce': './components/Dashboard/E-commerce.tsx',
             // ¡ATENCIÓN!: Habilita estas exposiciones a medida que las necesites y las consumas dinámicamente.
             // Es buena práctica asignarles nombres más específicos para evitar colisiones globales
             // y para que la importación en el host sea más clara.
-            /*'./AuthSignInPage': './pages/auth/signin/index.tsx',
+            './AuthSignInPage': './pages/auth/signin/index.tsx',
             './AuthSignUpPage': './pages/auth/signup/index.tsx',
             './CalendarPage': './pages/calendar/index.tsx',
             './ChartPage': './pages/chart/index.tsx',
@@ -47,7 +47,7 @@ const nextConfig = {
             './SettingsPage': './pages/settings/index.tsx',
             './TablesPage': './pages/tables/index.tsx',
             './AlertsPage': './pages/ui/alerts/index.tsx',
-            './ButtonsPage': './pages/ui/buttons/index.tsx',*/
+            './ButtonsPage': './pages/ui/buttons/index.tsx',
             // Puedes añadir más componentes reutilizables o layouts específicos si es necesario exponerlos:
             // './CommonLoader': './components/common/Loader/index.tsx',
           },

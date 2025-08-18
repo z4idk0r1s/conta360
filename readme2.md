@@ -1644,3 +1644,7 @@ C:.
                     TipoSubvencionRepository.cs
                     TramoRepository.cs
                     UnidadAdministrativaRepository.cs
+
+
+
+COAMNDOS::: tree /F | findstr /V "\\node_modules"
