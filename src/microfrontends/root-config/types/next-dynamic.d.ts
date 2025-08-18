@@ -8,7 +8,6 @@ declare module 'next/dynamic' {
   export default dynamic;
 }
 
-
 // Declaraciones para módulos de Next.js que TypeScript no encuentra
 declare module 'next/font/google' {
   type FontOptions = { subsets?: string[]; weight?: string | string[]; style?: string | string[]; display?: string };
@@ -39,4 +38,21 @@ declare module 'next/app' {
   const App: ComponentType<AppProps>;
   export default App;
 }
+
+declare module 'next/document' {
+  import { ComponentType, ReactNode } from 'react';
+
+  interface DocumentProps {}
+
+  const Document: ComponentType<DocumentProps>;
+
+  // declarar sus componentes internos si los usas
+  export const Html: ComponentType<{ children?: ReactNode; lang?: string }>;
+  export const Head: ComponentType<{ children?: ReactNode }>;
+  export const Main: ComponentType;
+  export const NextScript: ComponentType;
+
+  export default Document;
+}
+
 

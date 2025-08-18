@@ -2,6 +2,10 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import './globals.css';
+import { Inter } from 'next/font/google';
+
+// Inicializa la fuente Inter aquí.
+const inter = Inter({ subsets: ['latin'] });
 
 /**
  * Componente _app.tsx de la aplicación host (root-config)
@@ -22,9 +26,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="Aplicación Contable de Escritorio con Tauri y Micro-frontends"
         />
       </Head>
-
-      {/* Renderiza la página actual */}
-      <Component {...pageProps} />
+      
+      {/* Aplica la clase de la fuente a un contenedor que envuelva los componentes. */}
+      <div className={inter.className}>
+        <Component {...pageProps} />
+      </div>
     </>
   );
 }
