@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json .
 
 # Instala las dependencias. '--frozen-lockfile' asegura versiones exactas.
-RUN npm install
+RUN npm install --legacy-peer-deps
 # Copia el resto del código fuente al directorio de trabajo.
 COPY . .
 

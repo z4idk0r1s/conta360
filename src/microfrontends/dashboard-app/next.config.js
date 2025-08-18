@@ -1,5 +1,5 @@
+// src/microfrontends/dashboard-app/next.config.js
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
-const { getHost } = require('./host.config'); // Asegúrate de que esta ruta sea correcta
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,31 +7,28 @@ const nextConfig = {
 
   webpack(config, options) {
     config.output.publicPath = 'auto';
-    // Configuración para @svgr/webpack 
+
+    // ✅ SVGR config
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: { and: [/\.(ts|tsx|js|jsx|md|mdx)$/] },
       use: [
         {
           loader: '@svgr/webpack',
-          options: {
-            svgo: false,
-            titleProp: true,
-            ref: true,
-          },
+          options: { svgo: false, titleProp: true, ref: true },
         },
       ],
     });
 
+    // ✅ Solo en cliente: el remoto expone módulos, no consume del host
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({
           name: 'dashboardApp',
           filename: 'static/chunks/remoteEntry.js',
-          remotes: getHost(options),
           exposes: {
-            // Componente principal del dashboard (ejemplo de exposición)
             './E-commerce': './components/Dashboard/E-commerce.tsx',
+            /*
             './AuthSignInPage': './pages/auth/signin/index.tsx',
             './AuthSignUpPage': './pages/auth/signup/index.tsx',
             './CalendarPage': './pages/calendar/index.tsx',
@@ -43,102 +40,30 @@ const nextConfig = {
             './TablesPage': './pages/tables/index.tsx',
             './AlertsPage': './pages/ui/alerts/index.tsx',
             './ButtonsPage': './pages/ui/buttons/index.tsx',
-            // Puedes añadir más componentes reutilizables o layouts específicos si es necesario exponerlos:
-            // './CommonLoader': './components/common/Loader/index.tsx',
+            */
           },
           shared: {
-            // Dependencias React
-            react: {
-              singleton: true,
-              eager: true,
-              requiredVersion: '18.2.0', // **Versión exacta y fija** de tu package.json
-              import: 'react',
-            },
-            'react-dom': {
-              singleton: true,
-              eager: true,
-              requiredVersion: '18.2.0', // **Versión exacta y fija**
-              import: 'react-dom',
-            },
-            // Dependencia Next.js principal
-            next: {
-              singleton: true,
-              eager: true,
-              requiredVersion: '14.1.4', // **Versión exacta y fija**
-              import: 'next',              
-            },
-            // Submódulos críticos de Next.js (deben coincidir con los del host)
-            'next/router': {
-              singleton: true,
-              eager: true,
-              requiredVersion: '14.1.4',
-            },
-            'next/link': {
-              singleton: true,
-              eager: true,
-              requiredVersion: '14.1.4',
-            },
-            'next/head': {
-              singleton: true,
-              eager: true,
-              requiredVersion: '14.1.4',
-            },
-            'next/image': {
-              singleton: true,
-              eager: true,
-              requiredVersion: '14.1.4',
-            },
-            "next/dynamic": {
-              singleton: true,
-              eager: false,  //no puede ser eager
-              requiredVersion: "14.1.4"
-            },
-            // Otras dependencias compartidas
-            axios: {
-              singleton: true,
-              eager: true,
-              requiredVersion: '1.6.8', // **Versión exacta y fija**
-            },
-            'tailwind-merge': {
-              singleton: true,
-              requiredVersion: '2.6.0', // **Versión exacta y fija**
-              import: 'tailwind-merge'
-            },
-            // Agrega aquí otras librerías grandes que uses y quieras compartir
-            // para evitar duplicados en el bundle del microfrontend.
-            // Por ejemplo, las de FullCalendar si se utilizan en el host o en otros MF.
-            '@fullcalendar/core': {
-              singleton: true,
-              requiredVersion: '6.1.15',
-            },
-            '@fullcalendar/react': {
-              singleton: true,
-              requiredVersion: '6.1.15',
-            },
-            '@fullcalendar/daygrid': {
-              singleton: true,
-              requiredVersion: '6.1.15',
-            },
-            '@fullcalendar/interaction': {
-              singleton: true,
-              requiredVersion: '6.1.15',
-            },
-            '@fullcalendar/list': {
-              singleton: true,
-              requiredVersion: '6.1.15',
-            },
-            '@fullcalendar/timegrid': {
-              singleton: true,
-              requiredVersion: '6.1.15',
-            },
-            // Si `@tailwindcss/forms` se va a compartir
-            '@tailwindcss/forms': {
-              singleton: true,
-              requiredVersion: '0.5.9',
-            },
-            // Si `postcss` o `autoprefixer` se usaran en runtime compartido, también se podrían añadir
-            "postcss": { singleton: true, requiredVersion: "8.4.35" },
-            "autoprefixer": { singleton: true, requiredVersion: "10.4.20" }
+            react: { singleton: true, eager: false, requiredVersion: '18.2.0' },
+            'react-dom': { singleton: true, eager: false, requiredVersion: '18.2.0' },
+
+            // ⚠️ No compartir "next" entero
+            'next/router': { singleton: true, eager: true, requiredVersion: '14.1.4' },
+            'next/link': { singleton: true, eager: true, requiredVersion: '14.1.4' },
+            'next/head': { singleton: true, eager: true, requiredVersion: '14.1.4' },
+            'next/image': { singleton: true, eager: true, requiredVersion: '14.1.4' },
+            'next/dynamic': { singleton: true, eager: false, requiredVersion: '14.1.4' },
+
+            axios: { singleton: true, eager: true, requiredVersion: '1.6.8' },
+            'tailwind-merge': { singleton: true, requiredVersion: '2.6.0' },
+            '@fullcalendar/core': { singleton: true, requiredVersion: '6.1.15' },
+            '@fullcalendar/react': { singleton: true, requiredVersion: '6.1.15' },
+            '@fullcalendar/daygrid': { singleton: true, requiredVersion: '6.1.15' },
+            '@fullcalendar/interaction': { singleton: true, requiredVersion: '6.1.15' },
+            '@fullcalendar/list': { singleton: true, requiredVersion: '6.1.15' },
+            '@fullcalendar/timegrid': { singleton: true, requiredVersion: '6.1.15' },
+            '@tailwindcss/forms': { singleton: true, requiredVersion: '0.5.9' },
+            postcss: { singleton: true, requiredVersion: '8.4.35' },
+            autoprefixer: { singleton: true, requiredVersion: '10.4.20' },
           },
         })
       );
