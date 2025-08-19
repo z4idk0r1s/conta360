@@ -1,4 +1,21 @@
-// src/microfrontends/root-config/remote-declarations.d.ts
+// src/microfrontends/root-config/types/remote-declarations.d.ts
+
+declare module 'dashboard-app/*' {
+  import { ComponentType } from 'react';
+  const Component: ComponentType<any>;
+  export default Component;
+}
+
+// Extender tipos globales para Module Federation
+declare global {
+  const __webpack_init_sharing__: (scope: string) => Promise<void>;
+  const __webpack_share_scopes__: Record<string, any>;
+  
+  interface Window {
+    __FEDERATION_TIMEOUT__?: number;
+  }
+}
+/*
 declare module 'dashboard-app/E-commerce' {
   import { ComponentType } from 'react';
   const ECommerce: ComponentType;
@@ -70,3 +87,4 @@ declare module 'dashboard-app/ButtonsPage' {
   const ButtonsPage: ComponentType;
   export default ButtonsPage;
 }
+  */

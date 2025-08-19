@@ -47,6 +47,8 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - IS_DOCKER_COMPOSE=true
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PRIVATE_LOCAL_WEBPACK=true
     depends_on:
       dashboard-app:
         condition: service_healthy
@@ -67,15 +69,17 @@ services:
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     ports:
-      - "3001:3001"
+      - "3001:3000"
     volumes:
       - ./src/microfrontends/dashboard-app:/app
       - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
       - IS_DOCKER_COMPOSE=true
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PRIVATE_LOCAL_WEBPACK=true
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/_next/static/chunks/remoteEntry.js || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/_next/static/chunks/remoteEntry.js || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
