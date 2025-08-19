@@ -4,11 +4,10 @@ const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-
   webpack(config, options) {
     config.output.publicPath = 'auto';
-
-    // ✅ SVGR config
+    
+    // SVGR config
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: { and: [/\.(ts|tsx|js|jsx|md|mdx)$/] },
@@ -20,7 +19,7 @@ const nextConfig = {
       ],
     });
 
-    // ✅ Solo en cliente: el remoto expone módulos, no consume del host
+    // ✅ Solo en cliente - el remoto expone módulos
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({
@@ -28,47 +27,86 @@ const nextConfig = {
           filename: 'static/chunks/remoteEntry.js',
           exposes: {
             './E-commerce': './components/Dashboard/E-commerce.tsx',
-            /*
-            './AuthSignInPage': './pages/auth/signin/index.tsx',
-            './AuthSignUpPage': './pages/auth/signup/index.tsx',
-            './CalendarPage': './pages/calendar/index.tsx',
-            './ChartPage': './pages/chart/index.tsx',
-            './FormElementsPage': './pages/forms/form-elements/index.tsx',
-            './FormLayoutPage': './pages/forms/form-layout/index.tsx',
-            './ProfilePage': './pages/profile/index.tsx',
-            './SettingsPage': './pages/settings/index.tsx',
-            './TablesPage': './pages/tables/index.tsx',
-            './AlertsPage': './pages/ui/alerts/index.tsx',
-            './ButtonsPage': './pages/ui/buttons/index.tsx',
-            */
           },
           shared: {
-            react: { singleton: true, eager: false, requiredVersion: '18.2.0' },
-            'react-dom': { singleton: true, eager: false, requiredVersion: '18.2.0' },
+            // ✅ CONFIGURACIÓN IDÉNTICA a la del HOST
+            react: { 
+              singleton: true, 
+              eager: false,
+              requiredVersion: '18.2.0',
+              strictVersion: false 
+            },
+            'react-dom': { 
+              singleton: true, 
+              eager: false,
+              requiredVersion: '18.2.0',
+              strictVersion: false 
+            },
 
-            // ⚠️ No compartir "next" entero
-            'next/router': { singleton: true, eager: true, requiredVersion: '14.1.4' },
-            'next/link': { singleton: true, eager: true, requiredVersion: '14.1.4' },
-            'next/head': { singleton: true, eager: true, requiredVersion: '14.1.4' },
-            'next/image': { singleton: true, eager: true, requiredVersion: '14.1.4' },
-            'next/dynamic': { singleton: true, eager: false, requiredVersion: '14.1.4' },
+            // ✅ Next.js components - MISMA configuración que HOST
+            'next/router': { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '14.1.4',
+              strictVersion: false 
+            },
+            'next/link': { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '14.1.4',
+              strictVersion: false 
+            },
+            'next/head': { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '14.1.4',
+              strictVersion: false 
+            },
+            'next/image': { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '14.1.4',
+              strictVersion: false 
+            },
+            'next/dynamic': { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '14.1.4',
+              strictVersion: false 
+            },
 
-            axios: { singleton: true, eager: true, requiredVersion: '1.6.8' },
-            'tailwind-merge': { singleton: true, requiredVersion: '2.6.0' },
-            '@fullcalendar/core': { singleton: true, requiredVersion: '6.1.15' },
-            '@fullcalendar/react': { singleton: true, requiredVersion: '6.1.15' },
-            '@fullcalendar/daygrid': { singleton: true, requiredVersion: '6.1.15' },
-            '@fullcalendar/interaction': { singleton: true, requiredVersion: '6.1.15' },
-            '@fullcalendar/list': { singleton: true, requiredVersion: '6.1.15' },
-            '@fullcalendar/timegrid': { singleton: true, requiredVersion: '6.1.15' },
-            '@tailwindcss/forms': { singleton: true, requiredVersion: '0.5.9' },
-            postcss: { singleton: true, requiredVersion: '8.4.35' },
-            autoprefixer: { singleton: true, requiredVersion: '10.4.20' },
+            // ✅ Otras dependencias - MISMA configuración que HOST
+            axios: { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '1.6.8',
+              strictVersion: false 
+            },
+            'tailwind-merge': { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '2.6.0',
+              strictVersion: false 
+            },
+
+            // ✅ Solo las dependencias específicas del remoto (no en HOST)
+            '@fullcalendar/core': { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '6.1.15',
+              strictVersion: false 
+            },
+            '@fullcalendar/react': { 
+              singleton: true, 
+              eager: false, 
+              requiredVersion: '6.1.15',
+              strictVersion: false 
+            },
           },
         })
       );
     }
-
+    
     return config;
   },
 };
