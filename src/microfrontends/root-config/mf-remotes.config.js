@@ -17,8 +17,8 @@ const getRemotes = (options) => {
 
     if (isDevelopment) {
       if (isDockerComposeEnv) {
-        //remoteEntryPath = `http://${mfName}:${mfPort}/_next/static/chunks/remoteEntry.js`;
-        remoteEntryPath = `http://localhost:${mfPort}/_next/static/chunks/remoteEntry.js`;
+        remoteEntryPath = `http://${mfName}:${mfPort}/_next/static/chunks/remoteEntry.js`;
+        //remoteEntryPath = `http://localhost:${mfPort}/_next/static/chunks/remoteEntry.js`;
       } else {
         remoteEntryPath = `http://localhost:${mfPort}/_next/static/chunks/remoteEntry.js`;
         //remoteEntryPath = `http://${mfName}:${mfPort}/_next/static/chunks/remoteEntry.js`;
@@ -29,7 +29,7 @@ const getRemotes = (options) => {
       // a la ruta esperada dentro del directorio 'out' del host.
     }
     
-    remotesConfig[mfName] = `${mfName}@${remoteEntryPath}`;
+    remotesConfig[mfName] = remoteEntryPath;
   }
   console.log('[mf-remotes.config] remotesConfig:', remotesConfig);
 
