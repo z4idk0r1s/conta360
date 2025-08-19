@@ -24,7 +24,6 @@ const nextConfig = {
           remotes: remotes,
           exposes: {},
           shared: {
-            // ✅ CONFIGURACIÓN IDÉNTICA en HOST y REMOTO
             react: { 
               singleton: true, 
               eager: true, 

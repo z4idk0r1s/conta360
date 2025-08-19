@@ -1,7 +1,7 @@
 // root-config/mf-remotes.config.js
 
 const REMOTE_PORTS = {
-  dashboardApp: 3001,
+  'dashboard-app': 3001,
   // Para añadir un nuevo MF, añade una entrada aquí:
   // nuevoMfApp: 3005,
 };

@@ -23,7 +23,7 @@ const nextConfig = {
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({
-          name: 'dashboardApp',
+          name: 'dashboard-app',
           filename: 'static/chunks/remoteEntry.js',
           exposes: {
             './E-commerce': './components/Dashboard/E-commerce.tsx',
