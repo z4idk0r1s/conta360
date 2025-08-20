@@ -1,8 +1,7 @@
 // src/microfrontends/root-config/next.config.js
-const path = require('path'); 
+const path = require('path');
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 const { getRemotes } = require('./mf-remotes.config');
-
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -12,7 +11,7 @@ const nextConfig = {
   reactStrictMode: true,
   // Optimización para Docker Compose
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
-  
+
   // Configuración experimental para mejorar el rendimiento
   experimental: {
     // Reduce el tiempo de compilación en desarrollo
@@ -43,12 +42,12 @@ const nextConfig = {
 
   webpack(config, options) {
     const { isServer, dev } = options;
-    
+
     console.log(`[next.config] webpack - isServer: ${isServer}, isDev: ${dev}, NODE_ENV: ${process.env.NODE_ENV}`);
-    
+
     // Configuración del publicPath
     config.output.publicPath = 'auto';
-    
+
     // Optimizaciones específicas para cada contexto
     if (isServer) {
       // Configuración del servidor
@@ -72,42 +71,37 @@ const nextConfig = {
         },
       };
     }
-    // Solo importa el plugin de runtime si no estamos en el servidor
-    const runtimePlugins = options.isServer
-      ? []
-      : [path.resolve(__dirname, './federation-runtime-plugin.js')];
 
 
+    // Esto previene que el runtime de Webpack se inyecte en el bundle de Node.js
+    if (!isServer) {
+        // Solo importa el plugin de runtime si no estamos en el servidor
+        const runtimePlugins = [path.resolve(__dirname, './federation-runtime-plugin.js')];
 
-    // Obtener la configuración de remotos con cache
-    const remotes = getRemotes(options);
-    
-    // En Docker Compose, tanto servidor como cliente usan la misma configuración
-    // porque ambos se ejecutan dentro de la red Docker
-    const remotesForPlugin = remotes;
-    
-    // Log de la configuración de remotos para debugging
-    if (!isServer && dev) {
-      console.log('[next.config] Remotos configurados:', remotesForPlugin);
+        // Obtener la configuración de remotos con cache
+        const remotes = getRemotes(options);
+        
+        // En Docker Compose, tanto servidor como cliente usan la misma configuración
+        const remotesForPlugin = remotes;
+        
+        // Log de la configuración de remotos para debugging
+        if (dev) {
+          console.log('[next.config] Remotos configurados:', remotesForPlugin);
+        }
+
+        config.plugins.push(
+          new NextFederationPlugin({
+            name: 'rootConfig',
+            filename: 'static/chunks/remoteEntry.js',
+            remotes: remotesForPlugin,
+            exposes: {},
+            shared: getSharedDependencies(),
+            // Configuración adicional para optimizar el rendimiento
+            runtimePlugins: runtimePlugins,
+          })
+        );
     }
 
-    config.plugins.push(
-      new NextFederationPlugin({
-        name: 'rootConfig',
-        filename: 'static/chunks/remoteEntry.js',
-        remotes: remotesForPlugin,
-        exposes: {},
-        shared: getSharedDependencies(),
-        // Configuración adicional para optimizar el rendimiento
-        runtimePlugins: runtimePlugins,
-        // Configuración específica para el servidor
-        ...(isServer && {
-          // En el servidor, configurar para evitar intentos de conexión real
-          library: { type: 'commonjs-module' },
-        }),
-      })
-    );
-   
     return config;
   },
 };
@@ -115,7 +109,7 @@ const nextConfig = {
 // Función para centralizar las dependencias compartidas
 function getSharedDependencies() {
   const isDevelopment = process.env.NODE_ENV === 'development';
-  
+
   return {
     react: {
       singleton: true,
