@@ -3,6 +3,7 @@ const path = require('path');
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 const { getRemotes } = require('./mf-remotes.config');
 
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -71,6 +72,12 @@ const nextConfig = {
         },
       };
     }
+    // Solo importa el plugin de runtime si no estamos en el servidor
+    const runtimePlugins = options.isServer
+      ? []
+      : [path.resolve(__dirname, './federation-runtime-plugin.js')];
+
+
 
     // Obtener la configuración de remotos con cache
     const remotes = getRemotes(options);
@@ -92,9 +99,7 @@ const nextConfig = {
         exposes: {},
         shared: getSharedDependencies(),
         // Configuración adicional para optimizar el rendimiento
-        runtimePlugins: [
-          path.resolve(__dirname, './federation-runtime-plugin.js')
-        ],
+        runtimePlugins: runtimePlugins,
         // Configuración específica para el servidor
         ...(isServer && {
           // En el servidor, configurar para evitar intentos de conexión real
