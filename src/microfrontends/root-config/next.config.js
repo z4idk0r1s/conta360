@@ -1,4 +1,5 @@
 // src/microfrontends/root-config/next.config.js
+const path = require('path'); 
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 const { getRemotes } = require('./mf-remotes.config');
 
@@ -91,8 +92,8 @@ const nextConfig = {
         exposes: {},
         shared: getSharedDependencies(),
         // Configuración adicional para optimizar el rendimiento
-        runtimePlugins: isServer ? [] : [
-          require.resolve('./federation-runtime-plugin.js')
+        runtimePlugins: [
+          path.resolve(__dirname, './federation-runtime-plugin.js')
         ],
         // Configuración específica para el servidor
         ...(isServer && {
