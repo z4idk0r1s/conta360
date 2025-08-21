@@ -2,7 +2,7 @@
   "build": {
     "beforeDevCommand": "npm run dev --workspace=root_config",
     "beforeBuildCommand": "npm run build:frontend && npm run postbuild:frontend",
-    "devPath": "http://localhost:3000",
+    "devPath": "http://localhost:3004",
     "distDir": "../src/microfrontends/root_config/out"
   },
   "package": {

@@ -32,7 +32,7 @@ WORKDIR /app
 # Copia los artefactos de la etapa 'builder' a la etapa 'runner'.
 COPY --from=builder /app .
 
-EXPOSE 3000
+EXPOSE 3002
 # Comando por defecto para ejecutar al iniciar el contenedor.
 # En desarrollo, se usa 'npm run dev' para habilitar el hot reload del servidor Next.js.
 CMD ["npm", "run", "dev"]

@@ -4,10 +4,10 @@
 // - internal: el que usa Docker Compose (expuesto dentro de la red de contenedores).
 // - external: el que ve el navegador cuando accede desde el host (localhost).
 const REMOTE_PORTS = {
-  dashboard_app: { internal: 3000, external: 3001 },
+  dashboard_app: { internal: 3001, external: 3001 },
   // Para añadir un nuevo MF, añade una entrada aquí:
-  // user-management: { internal: 3000, external: 3002 },
-  // analytics-app: { internal: 3000, external: 3003 },
+  // user-management: { internal: 3002, external: 3002 },
+  // analytics-app: { internal: 3003, external: 3003 },
 };
 
 // Cache para evitar recalcular la configuración en cada llamada
@@ -70,15 +70,17 @@ const getRemotes = (options = {}) => {
   return remotesConfig;
 };
 
-// 🔧 NUEVA FUNCIÓN: Validación específica para Docker Compose
+// Validación específica para Docker Compose
 const validateDockerRemoteAvailability = async (remoteName, remoteUrl, isServer = false) => {
   if (process.env.NODE_ENV !== 'development') return true;
-  
+
   try {
     // En Docker Compose, validar usando curl desde el contenedor
     if (process.env.IS_DOCKER_COMPOSE === 'true' && isServer) {
       // Para SSR, validar usando nombre de servicio interno
-      const internalUrl = remoteUrl.replace('localhost:3001', `${remoteName}:3000`);
+      const externalPort = REMOTE_PORTS[remoteName].external;
+      const internalPort = REMOTE_PORTS[remoteName].internal;
+      const internalUrl = remoteUrl.replace(`localhost:${externalPort}`, `${remoteName}:${internalPort}`);
       console.log(`[mf-remotes] Validando remoto interno: ${internalUrl}`);
       return true; // Asumir disponible en Docker network
     } else {
@@ -151,15 +153,15 @@ const debugRemotesConfig = (options = {}) => {
   const { isServer = false } = options;
   const isDevelopment = process.env.NODE_ENV === 'development';
   const isDockerComposeEnv = isDevelopment && process.env.IS_DOCKER_COMPOSE === 'true';
-  
+
   console.log('[mf-remotes] DEBUG INFO:');
-  console.log('  - NODE_ENV:', process.env.NODE_ENV);
-  console.log('  - IS_DOCKER_COMPOSE:', process.env.IS_DOCKER_COMPOSE);
-  console.log('  - isDevelopment:', isDevelopment);
-  console.log('  - isDockerComposeEnv:', isDockerComposeEnv);
-  console.log('  - isServer:', isServer);
-  console.log('  - REMOTE_PORTS:', REMOTE_PORTS);
-  
+  console.log(' - NODE_ENV:', process.env.NODE_ENV);
+  console.log(' - IS_DOCKER_COMPOSE:', process.env.IS_DOCKER_COMPOSE);
+  console.log(' - isDevelopment:', isDevelopment);
+  console.log(' - isDockerComposeEnv:', isDockerComposeEnv);
+  console.log(' - isServer:', isServer);
+  console.log(' - REMOTE_PORTS:', REMOTE_PORTS);
+
   return getRemotes(options);
 };
 
