@@ -1,9 +1,9 @@
 {
   "build": {
-    "beforeDevCommand": "npm run dev --workspace=root-config",
+    "beforeDevCommand": "npm run dev --workspace=root_config",
     "beforeBuildCommand": "npm run build:frontend && npm run postbuild:frontend",
     "devPath": "http://localhost:3000",
-    "distDir": "../src/microfrontends/root-config/out"
+    "distDir": "../src/microfrontends/root_config/out"
   },
   "package": {
     "productName": "Conta360",

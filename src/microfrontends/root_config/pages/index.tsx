@@ -1,20 +1,22 @@
-//src/microfrontends/root-config/pages/index.tsx
+//src/microfrontends/root_config/pages/index.tsx
 import dynamic from 'next/dynamic';
 import { fetchBackendData } from '../src/lib/api';
-import { useState } from 'react';
+import { ComponentType, useState } from 'react';
 
-console.log('[root-config] Importing dashboardApp/Dashboard...');
+console.log('[root_config] Importing dashboard_app/E-commerce...');
 
-const DashboardApp = dynamic(
-  () => import('dashboardApp/Dashboard').catch(err => {
-    console.error('Error loading Dashboard:', err);
-    return () => <div>Error al cargar el Dashboard</div>;
-  }),
-  { 
-    ssr: false,
-    loading: () => <p>Cargando el Dashboard...</p>,
-  }
+const ECommerceApp: ComponentType = dynamic(
+  () =>
+    import('dashboard_app/E-commerce')
+      .then((mod) => mod)
+      .catch((err) => {
+        console.error('Error loading E-commerce:', err);
+        // Retornamos un objeto con default
+        return { default: () => <div>Error al cargar E-commerce</div> };
+      }),
+  { ssr: false }
 );
+
 
 export default function Home() {
   const [backendData, setBackendData] = useState<string | null>(null);
@@ -55,7 +57,7 @@ export default function Home() {
       )}
 
       <section style={{ marginTop: 30 }}>
-        <DashboardApp />
+        <ECommerceApp />
       </section>
     </main>
   );

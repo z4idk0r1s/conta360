@@ -1,10 +1,9 @@
 {
   "name": "conta360",
   "dockerComposeFile": ["../docker-compose.yml"],
-  "service": "devcontainer-service",
+  "service": "workspaces-service",
   "workspaceFolder": "/workspaces/conta360",
   "postCreateCommand": "bash ./.devcontainer/star2.sh",
-  "forwardPorts": [3000, 3001, 3004, 5000, 5001, 5432, 8080, 8081],
   "customizations": {
     "vscode": {
       "extensions": [

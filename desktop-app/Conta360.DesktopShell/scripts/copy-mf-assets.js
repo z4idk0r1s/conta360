@@ -3,9 +3,9 @@ const path = require('path');
 const rimraf = require('rimraf'); // Para limpiar directorios
 
 const rootDir = path.join(__dirname, '..', '..'); // Apunta a la raíz del monorepo
-const rootConfigOutDir = path.join(rootDir, 'src', 'microfrontends', 'root-config', 'out');
-const remoteApps = ['dashboard-app', 'analisis-app', 'pgc-app', 'shared-components'];
-// const remoteApps = ['dashboard-app', 'analisis-app', 'pgc-app', 'shared-components'];
+const rootConfigOutDir = path.join(rootDir, 'src', 'microfrontends', 'root_config', 'out');
+const remoteApps = ['dashboard_app'];
+// const remoteApps = ['dashboard_app', 'analisis-app', 'pgc-app', 'shared-components'];
 
 console.log('Iniciando copia de assets de Module Federation para Tauri...');
 

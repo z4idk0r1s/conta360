@@ -17,7 +17,7 @@
 # --------------------------------------------------------------------------------------
 
 services:
-  devcontainer-service:
+  workspaces-service:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
@@ -31,10 +31,36 @@ services:
       - .env
     command: sleep infinity
     user: vscode
-
-  root-config:
+  
+  dashboard_app:
     build:
-      context: ./src/microfrontends/root-config
+      context: ./src/microfrontends/dashboard_app
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./src/microfrontends/dashboard_app:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - IS_DOCKER_COMPOSE=true
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PRIVATE_LOCAL_WEBPACK=true
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/_next/static/chunks/remoteEntry.js || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - conta360-network
+    env_file:
+      - .env
+
+  root_config:
+    build:
+      context: ./src/microfrontends/root_config
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
@@ -42,40 +68,18 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./src/microfrontends/root-config:/app
+      - ./src/microfrontends/root_config:/app
       - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
       - IS_DOCKER_COMPOSE=true
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PRIVATE_LOCAL_WEBPACK=true
     depends_on:
-      dashboard-app:
-        condition: service_started
+      dashboard_app:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-    networks:
-      - conta360-network
-    env_file:
-      - .env
-  
-  dashboard-app:
-    build:
-      context: ./src/microfrontends/dashboard-app
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-    ports:
-      - "3001:3001"
-    volumes:
-      - ./src/microfrontends/dashboard-app:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - IS_DOCKER_COMPOSE=true
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/_next/static/chunks/remoteEntry.js || exit 1"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -122,8 +126,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    ports:
-      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./init-uuid-ossp.sql:/docker-entrypoint-initdb.d/init-uuid-ossp.sql:ro
@@ -163,6 +165,8 @@ services:
     depends_on:
       postgres-db:
         condition: service_healthy
+      subvenciones-migrations:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "dotnet", "--info"]
       interval: 30s
@@ -172,6 +176,22 @@ services:
       - conta360-network
     env_file:
       - .env
+
+  subvenciones-migrations:
+    build:
+      context: .
+      dockerfile: ./src/SubvencionesApp/Dockerfile.Migrations
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__POSTGRESQLConnection=Host=${POSTGRES_HOST_SUBVENCIONES};Port=${POSTGRES_PORT_SUBVENCIONES};Database=${POSTGRES_DB_SUBVENCIONES};Username=${POSTGRES_USER_SUBVENCIONES};Password=${POSTGRES_PASSWORD_SUBVENCIONES}
+    networks:
+      - conta360-network
+    env_file:
+      - .env
+    restart: "no"
 
 networks:
   conta360-network:

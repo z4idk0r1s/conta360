@@ -23,8 +23,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "dashboardApp/*": ["../dashboard-app/src/*"]       
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -33,7 +32,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "out/types/**/*.ts",
-    "remote-declarations.d.ts"
+    "types/remote-declarations.d.ts"
   ],
   "exclude": [
     "node_modules"

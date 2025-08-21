@@ -1,72 +1,90 @@
-// src/microfrontends/root-config/remote-declarations.d.ts
-declare module 'dashboardApp/Dashboard' {
-  import { ComponentType } from 'react'; // Importar ComponentType para mayor claridad
-  const Dashboard: ComponentType;
-  export default Dashboard;
+// src/microfrontends/root_config/types/remote-declarations.d.ts
+
+declare module 'dashboard_app/*' {
+  import { ComponentType } from 'react';
+  const Component: ComponentType<any>;
+  export default Component;
 }
 
-declare module 'dashboardApp/AuthSignInPage' {
+// Extender tipos globales para Module Federation
+declare global {
+  const __webpack_init_sharing__: (scope: string) => Promise<void>;
+  const __webpack_share_scopes__: Record<string, any>;
+  
+  interface Window {
+    __FEDERATION_TIMEOUT__?: number;
+  }
+}
+/*
+declare module 'dashboard_app/E-commerce' {
+  import { ComponentType } from 'react';
+  const ECommerce: ComponentType;
+  export default ECommerce;
+}
+
+declare module 'dashboard_app/AuthSignInPage' {
   import { ComponentType } from 'react';
   const AuthSignInPage: ComponentType;
   export default AuthSignInPage;
 }
 
-declare module 'dashboardApp/AuthSignUpPage' {
+declare module 'dashboard_app/AuthSignUpPage' {
   import { ComponentType } from 'react';
   const AuthSignUpPage: ComponentType;
   export default AuthSignUpPage;
 }
 
-declare module 'dashboardApp/CalendarPage' {
+declare module 'dashboard_app/CalendarPage' {
   import { ComponentType } from 'react';
   const CalendarPage: ComponentType;
   export default CalendarPage;
 }
 
-declare module 'dashboardApp/ChartPage' {
+declare module 'dashboard_app/ChartPage' {
   import { ComponentType } from 'react';
   const ChartPage: ComponentType;
   export default ChartPage;
 }
 
-declare module 'dashboardApp/FormElementsPage' {
+declare module 'dashboard_app/FormElementsPage' {
   import { ComponentType } from 'react';
   const FormElementsPage: ComponentType;
   export default FormElementsPage;
 }
 
-declare module 'dashboardApp/FormLayoutPage' {
+declare module 'dashboard_app/FormLayoutPage' {
   import { ComponentType } from 'react';
   const FormLayoutPage: ComponentType;
   export default FormLayoutPage;
 }
 
-declare module 'dashboardApp/ProfilePage' {
+declare module 'dashboard_app/ProfilePage' {
   import { ComponentType } from 'react';
   const ProfilePage: ComponentType;
   export default ProfilePage;
 }
 
-declare module 'dashboardApp/SettingsPage' {
+declare module 'dashboard_app/SettingsPage' {
   import { ComponentType } from 'react';
   const SettingsPage: ComponentType;
   export default SettingsPage;
 }
 
-declare module 'dashboardApp/TablesPage' {
+declare module 'dashboard_app/TablesPage' {
   import { ComponentType } from 'react';
   const TablesPage: ComponentType;
   export default TablesPage;
 }
 
-declare module 'dashboardApp/AlertsPage' {
+declare module 'dashboard_app/AlertsPage' {
   import { ComponentType } from 'react';
   const AlertsPage: ComponentType;
   export default AlertsPage;
 }
 
-declare module 'dashboardApp/ButtonsPage' {
+declare module 'dashboard_app/ButtonsPage' {
   import { ComponentType } from 'react';
   const ButtonsPage: ComponentType;
   export default ButtonsPage;
 }
+  */

@@ -1,5 +1,5 @@
-# src/microfrontends/root-config/Dockerfile
-# Dockerfile para construir la imagen del microfrontend 'root-config'.
+# src/microfrontends/root_config/Dockerfile
+# Dockerfile para construir la imagen del microfrontend 'root_config'.
 
 # --- Etapa de construcción (builder stage) ---
 # Utiliza una imagen base de Node.js ligera para la construcción.
@@ -32,6 +32,7 @@ WORKDIR /app
 # Copia los artefactos de la etapa 'builder' a la etapa 'runner'.
 COPY --from=builder /app .
 
+EXPOSE 3000
 # Comando por defecto para ejecutar al iniciar el contenedor.
 # En desarrollo, se usa 'npm run dev' para habilitar el hot reload del servidor Next.js.
 CMD ["npm", "run", "dev"]

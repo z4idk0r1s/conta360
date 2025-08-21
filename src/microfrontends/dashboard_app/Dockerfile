@@ -1,4 +1,4 @@
-# src/microfrontends/dashboard-app/Dockerfile
+# src/microfrontends/dashboard_app/Dockerfile
 # Dockerfile para construir la imagen del microfrontend 'dashboardApp'.
 
 # --- Etapa de construcción (builder stage) ---
