@@ -1,13 +1,13 @@
-//src/microfrontends/root-config/pages/index.tsx
+//src/microfrontends/root_config/pages/index.tsx
 import dynamic from 'next/dynamic';
 import { fetchBackendData } from '../src/lib/api';
 import { ComponentType, useState } from 'react';
 
-console.log('[rootConfig] Importing dashboard-app/E-commerce...');
+console.log('[root_config] Importing dashboard_app/E-commerce...');
 
 const ECommerceApp: ComponentType = dynamic(
   () =>
-    import('dashboard-app/E-commerce')
+    import('dashboard_app/E-commerce')
       .then((mod) => mod)
       .catch((err) => {
         console.error('Error loading E-commerce:', err);

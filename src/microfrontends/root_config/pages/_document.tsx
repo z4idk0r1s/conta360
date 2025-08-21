@@ -1,4 +1,4 @@
-// root-config/pages/_document.tsx
+// root_config/pages/_document.tsx
 import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {

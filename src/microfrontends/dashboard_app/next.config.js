@@ -1,4 +1,4 @@
-// src/microfrontends/dashboard-app/next.config.js
+// src/microfrontends/dashboard_app/next.config.js
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 
 /** @type {import('next').NextConfig} */
@@ -23,16 +23,28 @@ const nextConfig = {
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({
-          name: 'dashboard-app',
+          name: 'dashboard_app',
           filename: 'static/chunks/remoteEntry.js',
           exposes: {
-            './E-commerce': './components/Dashboard/E-commerce.tsx',
+            './E-commerce': './pages/index.tsx',
+            './AuthSignInPage': './pages/auth/signin/index.tsx',
+            './AuthSignUpPage': './pages/auth/signup/index.tsx',
+            './CalendarPage': './pages/calendar/index.tsx',
+            './ChartPage': './pages/chart/index.tsx',
+            './FormElementsPage': './pages/forms/form-elements/index.tsx',
+            './FormLayoutPage': './pages/forms/form-layout/index.tsx',
+            './ProfilePage': './pages/profile/index.tsx',
+            './SettingsPage': './pages/settings/index.tsx',
+            './TablesPage': './pages/tables/index.tsx',
+            './AlertsPage': './pages/ui/alerts/index.tsx',
+            './ButtonsPage': './pages/ui/buttons/index.tsx',
+            // Puedes añadir más componentes reutilizables o layouts específicos si es necesario exponerlos:
+            // './CommonLoader': './components/common/Loader/index.tsx',
           },
           shared: {
-            // ✅ CONFIGURACIÓN IDÉNTICA a la del HOST
             react: { 
               singleton: true, 
-              eager: false,
+              eager: true,
               requiredVersion: '18.2.0',
               strictVersion: false 
             },
@@ -46,7 +58,7 @@ const nextConfig = {
             // ✅ Next.js components - MISMA configuración que HOST
             'next/router': { 
               singleton: true, 
-              eager: false, 
+              eager: true, 
               requiredVersion: '14.1.4',
               strictVersion: false 
             },

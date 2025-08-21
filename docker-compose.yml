@@ -31,10 +31,36 @@ services:
       - .env
     command: sleep infinity
     user: vscode
-
-  root-config:
+  
+  dashboard_app:
     build:
-      context: ./src/microfrontends/root-config
+      context: ./src/microfrontends/dashboard_app
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./src/microfrontends/dashboard_app:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - IS_DOCKER_COMPOSE=true
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PRIVATE_LOCAL_WEBPACK=true
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/_next/static/chunks/remoteEntry.js || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - conta360-network
+    env_file:
+      - .env
+
+  root_config:
+    build:
+      context: ./src/microfrontends/root_config
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
@@ -42,7 +68,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./src/microfrontends/root-config:/app
+      - ./src/microfrontends/root_config:/app
       - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
@@ -50,37 +76,11 @@ services:
       - NEXT_TELEMETRY_DISABLED=1
       - NEXT_PRIVATE_LOCAL_WEBPACK=true
     depends_on:
-      dashboard-app:
+      dashboard_app:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3000 || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/_next/static/chunks/remoteEntry.js || exit 1"]
       interval: 30s
-      timeout: 5s
-      retries: 3
-    networks:
-      - conta360-network
-    env_file:
-      - .env
-  
-  dashboard-app:
-    build:
-      context: ./src/microfrontends/dashboard-app
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-    ports:
-      - "3001:3000"
-    volumes:
-      - ./src/microfrontends/dashboard-app:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - IS_DOCKER_COMPOSE=true
-      - NEXT_TELEMETRY_DISABLED=1
-      - NEXT_PRIVATE_LOCAL_WEBPACK=true
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/_next/static/chunks/remoteEntry.js || exit 1"]
-      interval: 10s
       timeout: 5s
       retries: 3
     networks:

@@ -1,4 +1,4 @@
-// src/microfrontends/dashboard-app/pages/_app.tsx
+// src/microfrontends/dashboard_app/pages/_app.tsx
 import { useState, useEffect } from "react";
 import Loader from "@/components/common/Loader";
 import Sidebar from "@/components/Sidebar";

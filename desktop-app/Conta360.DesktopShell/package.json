@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run dev --workspace=root-config",
+    "dev": "npm run dev --workspace=root_config",
     "tauri:dev": "tauri dev",
-    "build:frontend": "npm run build --workspace=root-config && npm run build --workspace=dashboard-app && npm run build --workspace=analisis-app && npm run build --workspace=pgc-app && npm run build --workspace=shared-components",
+    "build:frontend": "npm run build --workspace=root_config && npm run build --workspace=dashboard_app && npm run build --workspace=analisis-app && npm run build --workspace=pgc-app && npm run build --workspace=shared-components",
     "postbuild:frontend": "node ./scripts/copy-mf-assets.js",
     "tauri:build": "tauri build",
     "build:tauri-release": "npm run build:frontend && npm run postbuild:frontend && tauri build"

@@ -48,8 +48,8 @@ echo "✅ Compilación de proyectos .NET completada <<<<<<<<<<<<<<<<<"
 
 # --- DEPENDENCIAS DE MICROFRONTENDS ---
 MICROFRONTEND_DIRS=(
-  "src/microfrontends/root-config"
-  "src/microfrontends/dashboard-app"
+  "src/microfrontends/root_config"
+  "src/microfrontends/dashboard_app"
 )
 
 echo "📦 Instalando dependencias npm..."

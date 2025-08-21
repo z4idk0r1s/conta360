@@ -1,4 +1,4 @@
-// src/microfrontends/root-config/types/next-dynamic.d.ts
+// src/microfrontends/root_config/types/next-dynamic.d.ts
 declare module 'next/dynamic' {
   import { ComponentType } from 'react';
   function dynamic<P = {}>(

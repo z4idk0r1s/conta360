@@ -219,7 +219,7 @@ Requisitos Previos
 │         └── tauri.conf.json
 │
 ├───microfrontends
-│   └───root-config
+│   └───root_config
 │         ├── .gitignore
 │         ├── next.config.js
 │         ├── package.json
@@ -581,7 +581,7 @@ C:.
 ├── desktop-app
 │   └── Conta360.DesktopShell
 ├── microfrontends
-│   └── root-config
+│   └── root_config
 └── src
     └── backend
         ├── Core
@@ -951,7 +951,7 @@ C:.
     │               DInjection.cs
     │
     ├───microfrontends
-    │   ├───dashboard-app
+    │   ├───dashboard_app
     │   │   │   .dockerignore
     │   │   │   .gitignore
     │   │   │   Dockerfile
@@ -1221,7 +1221,7 @@ C:.
     │   │           package.ts
     │   │           product.ts
     │   │
-    │   └───root-config
+    │   └───root_config
     │       │   .dockerignore
     │       │   .gitignore
     │       │   Dockerfile
@@ -1655,7 +1655,7 @@ C:\DevWorkspace\proyectos\microservices\conta360\src\microfrontends>tree /F
 Listado de rutas de carpetas
 El número de serie del volumen es 6EE0-B276
 C:.
-├───dashboard-app
+├───dashboard_app
 │   │   .dockerignore
 │   │   .gitignore
 │   │   Dockerfile
@@ -1863,7 +1863,7 @@ C:.
 │           package.ts
 │           product.ts
 │
-└───root-config
+└───root_config
     │   .dockerignore
     │   .gitignore
     │   Dockerfile

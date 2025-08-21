@@ -1,3 +1,4 @@
+// src/microfrontends/dashboard_app/pages/index.tsx
 // index.tsx de pages
 import ECommerce from "@/components/Dashboard/E-commerce";
 import { Metadata } from "next";

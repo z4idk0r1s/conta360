@@ -1,5 +1,5 @@
-# src/microfrontends/root-config/Dockerfile
-# Dockerfile para construir la imagen del microfrontend 'root-config'.
+# src/microfrontends/root_config/Dockerfile
+# Dockerfile para construir la imagen del microfrontend 'root_config'.
 
 # --- Etapa de construcción (builder stage) ---
 # Utiliza una imagen base de Node.js ligera para la construcción.

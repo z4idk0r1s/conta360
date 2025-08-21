@@ -3,13 +3,13 @@ import defaultTheme from "tailwindcss/defaultTheme"; // Necesario para extender 
 
 const config: Config = {
   // Asegúrate de que este 'content' escanea TODOS los archivos donde usas clases de Tailwind.
-  // Esto incluye tanto el root-config como el dashboard-app.
+  // Esto incluye tanto el root_config como el dashboard_app.
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx,css}', // Rutas para el root-config
-    './node_modules/flowbite/**/*.js', // Flowbite para root-config
-    '../dashboard-app/pages/**/*.{js,ts,jsx,tsx,mdx}', // Rutas para el dashboard-app
-    '../dashboard-app/components/**/*.{js,ts,jsx,tsx,mdx}', // Rutas para el dashboard-app
-    '../dashboard-app/node_modules/flowbite/**/*.js', // Flowbite para dashboard-app
+    './pages/**/*.{js,ts,jsx,tsx,mdx,css}', // Rutas para el root_config
+    './node_modules/flowbite/**/*.js', // Flowbite para root_config
+    '../dashboard_app/pages/**/*.{js,ts,jsx,tsx,mdx}', // Rutas para el dashboard_app
+    '../dashboard_app/components/**/*.{js,ts,jsx,tsx,mdx}', // Rutas para el dashboard_app
+    '../dashboard_app/node_modules/flowbite/**/*.js', // Flowbite para dashboard_app
   ],
   darkMode: "class",
   theme: {

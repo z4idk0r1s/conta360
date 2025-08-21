@@ -1,4 +1,4 @@
-// root-config/federation-runtime-plugin.js
+// root_config/federation-runtime-plugin.js
 // Plugin de runtime para manejar errores y optimizar la carga de módulos remotos
 
 const FederationRuntimePlugin = () => ({
@@ -85,7 +85,7 @@ const FederationRuntimePlugin = () => ({
       if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
         window.requestIdleCallback(() => {
           userOptions.remotes.forEach(remote => {
-            if (remote.includes('dashboard-app')) {
+            if (remote.includes('dashboard_app')) {
               // Precargar el dashboard que es crítico
               import(remote).catch(() => {
                 // Ignorar errores de precarga

@@ -1,4 +1,4 @@
-// root-config/pages/_app.tsx
+// root_config/pages/_app.tsx
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import './globals.css';
@@ -8,7 +8,7 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 /**
- * Componente _app.tsx de la aplicación host (root-config)
+ * Componente _app.tsx de la aplicación host (root_config)
  *
  * Función principal:
  * - Inicializar páginas de Next.js

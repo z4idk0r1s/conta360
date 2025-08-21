@@ -1,4 +1,4 @@
-// src/microfrontends/root-config/next.config.js
+// src/microfrontends/root_config/next.config.js
 const path = require('path');
 const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 const { getRemotes } = require('./mf-remotes.config');
@@ -27,7 +27,8 @@ const nextConfig = {
     if (process.env.NODE_ENV === 'production') {
       return [
         {
-          source: '/_next/static/chunks/remoteEntry.js',
+          // Cachea remoteEntry del root_config y de cualquier microfrontend
+          source: '/_next/static/chunks/:path*remoteEntry.js',
           headers: [
             {
               key: 'Cache-Control',
@@ -72,34 +73,33 @@ const nextConfig = {
       };
     }
 
-
     // Esto previene que el runtime de Webpack se inyecte en el bundle de Node.js
     if (!isServer) {
-        // Solo importa el plugin de runtime si no estamos en el servidor
-        const runtimePlugins = [path.resolve(__dirname, './federation-runtime-plugin.js')];
+      // Solo importa el plugin de runtime si no estamos en el servidor
+      const runtimePlugins = [path.resolve(__dirname, './federation-runtime-plugin.js')];
 
-        // Obtener la configuración de remotos con cache
-        const remotes = getRemotes(options);
-        
-        // En Docker Compose, tanto servidor como cliente usan la misma configuración
-        const remotesForPlugin = remotes;
-        
-        // Log de la configuración de remotos para debugging
-        if (dev) {
-          console.log('[next.config] Remotos configurados:', remotesForPlugin);
-        }
+      // Obtener la configuración de remotos con cache
+      const remotes = getRemotes(options);
 
-        config.plugins.push(
-          new NextFederationPlugin({
-            name: 'rootConfig',
-            filename: 'static/chunks/remoteEntry.js',
-            remotes: remotesForPlugin,
-            exposes: {},
-            shared: getSharedDependencies(),
-            // Configuración adicional para optimizar el rendimiento
-            runtimePlugins: runtimePlugins,
-          })
-        );
+      // En Docker Compose, tanto servidor como cliente usan la misma configuración
+      const remotesForPlugin = remotes;
+
+      // Log de la configuración de remotos para debugging
+      if (dev) {
+        console.log('[next.config] Remotos configurados:', remotesForPlugin);
+      }
+
+      config.plugins.push(
+        new NextFederationPlugin({
+          name: 'root_config',
+          filename: 'static/chunks/remoteEntry.js',
+          remotes: remotesForPlugin,
+          exposes: {},
+          shared: getSharedDependencies(),
+          // Configuración adicional para optimizar el rendimiento
+          runtimePlugins: runtimePlugins,
+        })
+      );
     }
 
     return config;

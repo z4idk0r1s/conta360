@@ -1,5 +1,5 @@
 {
-  "name": "root-config",
+  "name": "root_config",
   "version": "0.1.0",
   "private": true,
   "scripts": {
