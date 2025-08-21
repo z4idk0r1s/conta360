@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NEXT_PRIVATE_LOCAL_WEBPACK=true next dev -p 3000",
+    "dev": "NEXT_PRIVATE_LOCAL_WEBPACK=true next dev -p 3002",
     "build": "NEXT_PRIVATE_LOCAL_WEBPACK=true next build && next export -o out",
-    "start": "next start -H 0.0.0.0 -p 3000",
+    "start": "next start -H 0.0.0.0 -p 3002",
     "lint": "next lint"
   },
   "dependencies": {
