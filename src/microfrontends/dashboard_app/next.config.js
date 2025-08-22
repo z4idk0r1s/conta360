@@ -26,7 +26,7 @@ const nextConfig = {
           name: 'dashboard_app',
           filename: 'static/chunks/remoteEntry.js',
           exposes: {
-            './E-commerce': './pages/index.tsx',
+            './dashboard_v1': './pages/FederatedDashboardV1.tsx', 
             './AuthSignInPage': './pages/auth/signin/index.tsx',
             './AuthSignUpPage': './pages/auth/signup/index.tsx',
             './CalendarPage': './pages/calendar/index.tsx',
@@ -50,7 +50,7 @@ const nextConfig = {
             },
             'react-dom': { 
               singleton: true, 
-              eager: false,
+              eager: true,
               requiredVersion: '18.2.0',
               strictVersion: false 
             },
