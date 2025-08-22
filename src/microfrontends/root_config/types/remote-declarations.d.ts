@@ -16,10 +16,10 @@ declare global {
   }
 }
 /*
-declare module 'dashboard_app/E-commerce' {
+declare module 'dashboard_app/dashboard_v1' {
   import { ComponentType } from 'react';
-  const ECommerce: ComponentType;
-  export default ECommerce;
+  const dashboard_v1: ComponentType;
+  export default dashboard_v1;
 }
 
 declare module 'dashboard_app/AuthSignInPage' {
@@ -87,4 +87,4 @@ declare module 'dashboard_app/ButtonsPage' {
   const ButtonsPage: ComponentType;
   export default ButtonsPage;
 }
-  */
+*/

@@ -3,16 +3,16 @@ import dynamic from 'next/dynamic';
 import { fetchBackendData } from '../src/lib/api';
 import { ComponentType, useState } from 'react';
 
-console.log('[root_config] Importing dashboard_app/E-commerce...');
+console.log('[root_config] Importing dashboard_app/dashboard_v1...');
 
 const ECommerceApp: ComponentType = dynamic(
   () =>
-    import('dashboard_app/E-commerce')
+    import('dashboard_app/dashboard_v1')
       .then((mod) => mod)
       .catch((err) => {
-        console.error('Error loading E-commerce:', err);
+        console.error('Error loading dashboard_v1:', err);
         // Retornamos un objeto con default
-        return { default: () => <div>Error al cargar E-commerce</div> };
+        return { default: () => <div>Error al cargar dashboard_v1</div> };
       }),
   { ssr: false }
 );
