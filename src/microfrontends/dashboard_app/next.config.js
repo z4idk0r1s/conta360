@@ -6,6 +6,7 @@ const nextConfig = {
   reactStrictMode: true,
   webpack(config, options) {
     config.output.publicPath = 'auto';
+    const isDevelopment = process.env.NODE_ENV === 'development';
     
     // SVGR config
     config.module.rules.push({
@@ -19,7 +20,7 @@ const nextConfig = {
       ],
     });
 
-    // ✅ Solo en cliente - el remoto expone módulos
+    // Solo en cliente - remoto expone módulos
     if (!options.isServer) {
       config.plugins.push(
         new NextFederationPlugin({
@@ -55,65 +56,28 @@ const nextConfig = {
               strictVersion: false 
             },
 
-            // ✅ Next.js components - MISMA configuración que HOST
-            'next/router': { 
-              singleton: true, 
-              eager: true, 
-              requiredVersion: '14.1.4',
-              strictVersion: false 
-            },
-            'next/link': { 
-              singleton: true, 
-              eager: false, 
-              requiredVersion: '14.1.4',
-              strictVersion: false 
-            },
-            'next/head': { 
-              singleton: true, 
-              eager: false, 
-              requiredVersion: '14.1.4',
-              strictVersion: false 
-            },
-            'next/image': { 
-              singleton: true, 
-              eager: false, 
-              requiredVersion: '14.1.4',
-              strictVersion: false 
-            },
-            'next/dynamic': { 
-              singleton: true, 
-              eager: false, 
-              requiredVersion: '14.1.4',
-              strictVersion: false 
-            },
+            // Next.js components - MISMA configuración que HOST
+            'next/router': { singleton: true, eager: false, requiredVersion: '14.1.4', strictVersion: false },
+            'next/link': { singleton: true, eager: false, requiredVersion: '14.1.4', strictVersion: false },
+            'next/head': { singleton: true, eager: false, requiredVersion: '14.1.4', strictVersion: false },
+            'next/image': { singleton: true, eager: false, requiredVersion: '14.1.4', strictVersion: false },
+            'next/dynamic': { singleton: true, eager: false, requiredVersion: '14.1.4', strictVersion: false },
 
-            // ✅ Otras dependencias - MISMA configuración que HOST
-            axios: { 
-              singleton: true, 
-              eager: false, 
-              requiredVersion: '1.6.8',
-              strictVersion: false 
-            },
-            'tailwind-merge': { 
-              singleton: true, 
-              eager: false, 
-              requiredVersion: '2.6.0',
-              strictVersion: false 
-            },
+            // Otras dependencias - MISMA configuración que HOST
+            axios: { singleton: true, eager: false, requiredVersion: '1.6.8', strictVersion: false },
+            'tailwind-merge': { singleton: true, eager: false, requiredVersion: '2.6.0', strictVersion: false },
 
-            // ✅ Solo las dependencias específicas del remoto (no en HOST)
-            '@fullcalendar/core': { 
-              singleton: true, 
-              eager: false, 
-              requiredVersion: '6.1.15',
-              strictVersion: false 
-            },
-            '@fullcalendar/react': { 
-              singleton: true, 
-              eager: false, 
-              requiredVersion: '6.1.15',
-              strictVersion: false 
-            },
+            // Solo las dependencias específicas del remoto (no en HOST)
+            '@fullcalendar/core': { singleton: true, eager: false, requiredVersion: '6.1.15', strictVersion: false },
+            '@fullcalendar/react': { singleton: true, eager: false, requiredVersion: '6.1.15', strictVersion: false },
+
+            // Solo para desarrollo
+            ...(isDevelopment && {
+              'react-refresh': {
+                singleton: true,
+                eager: false
+              }
+            }),
           },
         })
       );

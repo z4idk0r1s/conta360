@@ -45,7 +45,12 @@ const nextConfig = {
     const { isServer, dev } = options;
 
     console.log(`[next.config] webpack - isServer: ${isServer}, isDev: ${dev}, NODE_ENV: ${process.env.NODE_ENV}`);
-
+/*
+    // Fix: evitar eval-source-map en desarrollo
+    if (dev) {
+      config.devtool = 'source-map';
+    }
+*/
     // Configuración del publicPath
     config.output.publicPath = 'auto';
 
@@ -72,36 +77,37 @@ const nextConfig = {
         },
       };
     }
-
-    // Esto previene que el runtime de Webpack se inyecte en el bundle de Node.js
-    if (!isServer) {
-      // Solo importa el plugin de runtime si no estamos en el servidor
-      const runtimePlugins = [path.resolve(__dirname, './federation-runtime-plugin.js')];
-
-      // Obtener la configuración de remotos con cache
-      const remotes = getRemotes(options);
-
-      // En Docker Compose, tanto servidor como cliente usan la misma configuración
-      const remotesForPlugin = remotes;
-
-      // Log de la configuración de remotos para debugging
-      if (dev) {
+    // Mueve la configuración del plugin fuera del condicional 'if (!isServer)'
+    const runtimePlugins = [path.resolve(__dirname, './federation-runtime-plugin.js')];
+    
+    // Obtener la configuración de remotos con cache
+    const remotes = getRemotes(options);
+    
+    // En Docker Compose, tanto servidor como cliente usan la misma configuración
+    const remotesForPlugin = remotes;
+    
+    // Log de la configuración de remotos para debugging
+    if (dev) {
         console.log('[next.config] Remotos configurados:', remotesForPlugin);
-      }
-
-      config.plugins.push(
-        new NextFederationPlugin({
-          name: 'root_config',
-          filename: 'static/chunks/remoteEntry.js',
-          remotes: remotesForPlugin,
-          exposes: {},
-          shared: getSharedDependencies(),
-          // Configuración adicional para optimizar el rendimiento
-          runtimePlugins: runtimePlugins,
-        })
-      );
     }
+    
+    config.plugins.push(
+        new NextFederationPlugin({
+            name: 'root_config',
+            filename: 'static/chunks/remoteEntry.js',
+            remotes: remotesForPlugin,
+            exposes: {},
+            shared: getSharedDependencies(),
+            // Configuración adicional para optimizar el rendimiento
+            runtimePlugins: runtimePlugins,
+        })
+    );
 
+    // dejar aquí cualquier lógica específica para el cliente
+    // si es que existiera, ya que el 'if (!isServer)' aún tiene una utilidad.
+    // if (!isServer) {
+    //  // Lógica del cliente aquí
+    // }
     return config;
   },
 };
