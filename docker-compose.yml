@@ -47,7 +47,6 @@ services:
       - NODE_ENV=${NODE_ENV}
       - IS_DOCKER_COMPOSE=true
       - NEXT_TELEMETRY_DISABLED=1
-      - NEXT_PRIVATE_LOCAL_WEBPACK=true
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:3001/_next/static/chunks/remoteEntry.js || exit 1"]
       interval: 10s
