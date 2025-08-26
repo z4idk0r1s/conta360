@@ -4,7 +4,7 @@ import { fetchBackendData } from '../src/lib/api';
 import { ComponentType, useState } from 'react';
 
 console.log('[root_config] Importing dashboard_app/dashboard_v1...');
-
+/*
 const ECommerceApp: ComponentType = dynamic(
   () =>
     import('dashboard_app/dashboard_v1')
@@ -15,7 +15,10 @@ const ECommerceApp: ComponentType = dynamic(
         return { default: () => <div>Error al cargar dashboard_v1</div> };
       }),
   { ssr: false }
-);
+);*/
+
+
+const ButtonsPage: ComponentType = dynamic(() => import('dashboard_app/ButtonsPage'), { ssr: false });
 
 
 export default function Home() {
@@ -56,8 +59,8 @@ export default function Home() {
         </pre>
       )}
 
-      <section style={{ marginTop: 30 }}>
-        <ECommerceApp />
+      <section style={{ marginTop: 30 }}>     
+        <ButtonsPage />
       </section>
     </main>
   );

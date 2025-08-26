@@ -21,7 +21,7 @@ declare module 'dashboard_app/dashboard_v1' {
   const dashboard_v1: ComponentType;
   export default dashboard_v1;
 }
-
+/*
 declare module 'dashboard_app/AuthSignInPage' {
   import { ComponentType } from 'react';
   const AuthSignInPage: ComponentType;
@@ -45,7 +45,7 @@ declare module 'dashboard_app/ChartPage' {
   const ChartPage: ComponentType;
   export default ChartPage;
 }
-
+*/
 declare module 'dashboard_app/FormElementsPage' {
   import { ComponentType } from 'react';
   const FormElementsPage: ComponentType;

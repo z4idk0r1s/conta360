@@ -77,37 +77,67 @@ const nextConfig = {
         },
       };
     }
-    // Mueve la configuración del plugin fuera del condicional 'if (!isServer)'
-    const runtimePlugins = [path.resolve(__dirname, './federation-runtime-plugin.js')];
-    
-    // Obtener la configuración de remotos con cache
-    const remotes = getRemotes(options);
-    
-    // En Docker Compose, tanto servidor como cliente usan la misma configuración
-    const remotesForPlugin = remotes;
-    
-    // Log de la configuración de remotos para debugging
-    if (dev) {
-        console.log('[next.config] Remotos configurados:', remotesForPlugin);
-    }
-    
-    config.plugins.push(
-        new NextFederationPlugin({
-            name: 'root_config',
-            filename: 'static/chunks/remoteEntry.js',
-            remotes: remotesForPlugin,
-            exposes: {},
-            shared: getSharedDependencies(),
-            // Configuración adicional para optimizar el rendimiento
-            runtimePlugins: runtimePlugins,
-        })
-    );
+   /* if (!isServer) {
+      //const runtimePlugins = [path.resolve(__dirname, './federation-runtime-plugin.js')];
+      
+      // Obtener la configuración de remotos con cache
+      const remotes = getRemotes(options);
+      
+      // En Docker Compose, tanto servidor como cliente usan la misma configuración
+      const remotesForPlugin = remotes;
+      
+      // Log de la configuración de remotos para debugging
+      if (dev) {
+          console.log('[next.config] Remotos configurados:', remotesForPlugin);
+      }
+      
+      config.plugins.push(
+          new NextFederationPlugin({
+              name: 'root_config',
+              filename: 'static/chunks/remoteEntry.js',
+              remotes: remotesForPlugin,
+              exposes: {},
+              shared: getSharedDependencies(),
+              // Configuración adicional para optimizar el rendimiento
+              //runtimePlugins: runtimePlugins,
+          })
+      );
+    }*/
+    // Inside webpack function:
 
-    // dejar aquí cualquier lógica específica para el cliente
-    // si es que existiera, ya que el 'if (!isServer)' aún tiene una utilidad.
-    // if (!isServer) {
-    //  // Lógica del cliente aquí
-    // }
+    // Remove the existing if (!isServer) block around the plugin.
+
+    // Add this instead:
+
+    const remotes = getRemotes(options);
+
+    if (isServer) {
+      const dummyRemotes = {};
+      Object.keys(remotes).forEach((mfName) => {
+        dummyRemotes[mfName] = `promise new Promise(() => {})`;
+      });
+      config.plugins.push(
+        new NextFederationPlugin({
+          name: 'root_config',
+          filename: 'static/chunks/remoteEntry.js',
+          remotes: dummyRemotes,
+          exposes: {},
+          shared: getSharedDependencies(),
+          // Other options if needed
+        })
+      );
+    } else {
+      config.plugins.push(
+        new NextFederationPlugin({
+          name: 'root_config',
+          filename: 'static/chunks/remoteEntry.js',
+          remotes: remotes,
+          exposes: {},
+          shared: getSharedDependencies(),
+          // Other options if needed
+        })
+      );
+    }
     return config;
   },
 };
