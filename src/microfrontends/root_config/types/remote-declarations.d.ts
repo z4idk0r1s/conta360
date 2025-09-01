@@ -1,11 +1,11 @@
 // src/microfrontends/root_config/types/remote-declarations.d.ts
-
+/*
 declare module 'dashboard_app/*' {
   import { ComponentType } from 'react';
   const Component: ComponentType<any>;
   export default Component;
 }
-
+*/
 // Extender tipos globales para Module Federation
 declare global {
   const __webpack_init_sharing__: (scope: string) => Promise<void>;
@@ -15,13 +15,13 @@ declare global {
     __FEDERATION_TIMEOUT__?: number;
   }
 }
-/*
+
 declare module 'dashboard_app/dashboard_v1' {
   import { ComponentType } from 'react';
   const dashboard_v1: ComponentType;
   export default dashboard_v1;
 }
-
+/*
 declare module 'dashboard_app/AuthSignInPage' {
   import { ComponentType } from 'react';
   const AuthSignInPage: ComponentType;
@@ -45,7 +45,7 @@ declare module 'dashboard_app/ChartPage' {
   const ChartPage: ComponentType;
   export default ChartPage;
 }
-
+*/
 declare module 'dashboard_app/FormElementsPage' {
   import { ComponentType } from 'react';
   const FormElementsPage: ComponentType;
@@ -87,4 +87,3 @@ declare module 'dashboard_app/ButtonsPage' {
   const ButtonsPage: ComponentType;
   export default ButtonsPage;
 }
-*/

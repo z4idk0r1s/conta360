@@ -1,6 +1,6 @@
 // root_config/mf-remotes.config.js
 
-// ⚙️ Puertos internos/externos
+// Puertos internos/externos
 // - internal: el que usa Docker Compose (expuesto dentro de la red de contenedores).
 // - external: el que ve el navegador cuando accede desde el host (localhost).
 const REMOTE_PORTS = {

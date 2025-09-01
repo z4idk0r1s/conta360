@@ -33,7 +33,7 @@ COPY ["./src/backend/Infrastructure/Conta360.Infrastructure.A3Cash/Conta360.Infr
 RUN dotnet restore "backend/Presentation/Conta360.Presentation.Api/Conta360.Presentation.Api.csproj"
 COPY . .
 COPY ["./src/backend/Presentation/entrypointsqlite.sh", "backend/Presentation/entrypointsqlite.sh"]
-WORKDIR src/backend/Presentation/Conta360.Presentation.Api
+WORKDIR /src/backend/Presentation/Conta360.Presentation.Api
 RUN dotnet build "Conta360.Presentation.Api.csproj" -c Release -o /app/build
 RUN dotnet publish "Conta360.Presentation.Api.csproj" -c Release -o /app/publish
 
@@ -65,3 +65,5 @@ ENV ASPNETCORE_URLS=$ASPNETCORE_URLS \
 EXPOSE 80
 # Se elimina el COPY del código para que el volumen montado sea el origen del código.
 # El código se usará directamente desde el host para hot reload
+WORKDIR /src/backend/Presentation/Conta360.Presentation.Api
+ENTRYPOINT ["dotnet", "watch", "run"]

@@ -153,7 +153,7 @@ app.MapGet("/api/accounts/{id}", async (Guid id, IMediator mediator) =>
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
 
-// --- Novedad: Endpoint para integrar Excel con A3 ---
+// --- Endpoint para integrar Excel con A3 ---
 app.MapPost("/api/a3/generate-from-excel", async (GenerateA3Request request, ExcelToA3IntegrationService service, ILogger<Program> programLogger) =>
 {
     programLogger.LogInformation("API: Solicitud recibida para generar fichero A3 desde Excel. Archivo: '{ExcelPath}'", request.ExcelFilePath);
