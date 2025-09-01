@@ -47,9 +47,14 @@ services:
       - NODE_ENV=${NODE_ENV}
       - IS_DOCKER_COMPOSE=true
       - NEXT_TELEMETRY_DISABLED=1
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      subvenciones-migrations:
+        condition: service_completed_successfully
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/_next/static/chunks/remoteEntry.js || exit 1"]
-      interval: 10s
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001 || exit 1"]
+      interval: 30s
       timeout: 5s
       retries: 3
     networks:
@@ -105,7 +110,7 @@ services:
       - ASPNETCORE_URLS=${ASPNETCORE_URLS}
       - ConnectionStrings__SqliteConnection=Data Source=/app/data/conta360.db
     healthcheck:
-      test: ["CMD", "dotnet", "--info"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:80 || exit 1"]
       interval: 30s
       timeout: 3s
       retries: 3

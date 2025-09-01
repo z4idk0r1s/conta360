@@ -36,20 +36,20 @@
   --color-current: currentColor;
   --color-transparent: transparent;
   --color-white: #ffffff;
-  --color-black: #101828;
+  --color-black: #000000;
 
-  --color-brand-25: #f2f7ff;
-  --color-brand-50: #ecf3ff;
-  --color-brand-100: #dde9ff;
-  --color-brand-200: #c2d6ff;
-  --color-brand-300: #9cb9ff;
-  --color-brand-400: #7592ff;
-  --color-brand-500: #465fff;
-  --color-brand-600: #3641f5;
-  --color-brand-700: #2a31d8;
-  --color-brand-800: #252dae;
-  --color-brand-900: #262e89;
-  --color-brand-950: #161950;
+  --color-brand-25: #f2f5fc;
+  --color-brand-50: #e7eef8;
+  --color-brand-100: #d4e0f1;
+  --color-brand-200: #b9cbe7;
+  --color-brand-300: #98add8;
+  --color-brand-400: #7b94c9;
+  --color-brand-500: #5f74bc;
+  --color-brand-600: #495e99;
+  --color-brand-700: #3b4d7c;
+  --color-brand-800: #2c3a5e;
+  --color-brand-900: #1b2742;
+  --color-brand-950: #0f182c;
 
   --color-blue-light-25: #f5fbff;
   --color-blue-light-50: #f0f9ff;
@@ -74,7 +74,7 @@
   --color-gray-600: #475467;
   --color-gray-700: #344054;
   --color-gray-800: #1d2939;
-  --color-gray-900: #101828;
+  --color-gray-900: #000000;
   --color-gray-950: #0c111d;
   --color-gray-dark: #1a2231;
 
@@ -148,7 +148,7 @@
     0px 20px 24px -4px rgba(16, 24, 40, 0.08),
     0px 8px 8px -4px rgba(16, 24, 40, 0.03);
   --shadow-datepicker: -5px 0 0 #262d3c, 5px 0 0 #262d3c;
-  --shadow-focus-ring: 0px 0px 0px 4px rgba(70, 95, 255, 0.12);
+  --shadow-focus-ring: 0px 0px 0px 4px rgba(95, 116, 188, 0.12);
   --shadow-slider-navigation:
     0px 1px 2px 0px rgba(16, 24, 40, 0.1), 0px 1px 3px 0px rgba(16, 24, 40, 0.1);
   --shadow-tooltip:
@@ -167,14 +167,6 @@
   --z-index-999999: 999999;
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   *,
   ::after,
@@ -188,7 +180,7 @@
     cursor: pointer;
   }
   body {
-    @apply relative font-normal font-outfit z-1 bg-gray-50;
+    @apply relative font-normal font-outfit z-1 bg-gradient-to-br from-brand-50 to-brand-100 text-gray-900 dark:bg-gradient-to-br dark:from-black dark:from-50% dark:to-orange-950 dark:text-orange-500;
   }
 }
 
@@ -197,23 +189,23 @@
 }
 
 @utility menu-item-active {
-  @apply bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12] dark:text-brand-400;
+  @apply bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12] dark:text-orange-500;
 }
 
 @utility menu-item-inactive {
-  @apply text-gray-700 hover:bg-gray-100 group-hover:text-gray-700 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-gray-300;
+  @apply text-gray-700 hover:bg-gray-50 group-hover:text-gray-700 dark:text-orange-500 dark:hover:bg-white/5 dark:hover:text-orange-500;
 }
 
 @utility menu-item-icon {
-  @apply text-gray-500 group-hover:text-gray-700 dark:text-gray-400;
+  @apply text-gray-500 group-hover:text-gray-700 dark:text-orange-500;
 }
 
 @utility menu-item-icon-active {
-  @apply text-brand-500 dark:text-brand-400;
+  @apply text-brand-500 dark:text-orange-500;
 }
 
 @utility menu-item-icon-inactive {
-  @apply text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300;
+  @apply text-gray-500 group-hover:text-gray-700 dark:text-orange-500 dark:group-hover:text-orange-500;
 }
 
 @utility menu-item-arrow {
@@ -221,11 +213,11 @@
 }
 
 @utility menu-item-arrow-active {
-  @apply rotate-180 text-brand-500 dark:text-brand-400;
+  @apply rotate-180 text-brand-500 dark:text-orange-500;
 }
 
 @utility menu-item-arrow-inactive {
-  @apply text-gray-500 group-hover:text-gray-700 dark:text-gray-400 dark:group-hover:text-gray-300;
+  @apply text-gray-500 group-hover:text-gray-700 dark:text-orange-500 dark:group-hover:text-orange-500;
 }
 
 @utility menu-dropdown-item {
@@ -233,15 +225,15 @@
 }
 
 @utility menu-dropdown-item-active {
-  @apply bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12] dark:text-brand-400;
+  @apply bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12] dark:text-orange-500;
 }
 
 @utility menu-dropdown-item-inactive {
-  @apply text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5;
+  @apply text-gray-700 hover:bg-gray-100 dark:text-orange-500 dark:hover:bg-white/5;
 }
 
 @utility menu-dropdown-badge {
-  @apply block rounded-full px-2.5 py-0.5 text-xs font-medium uppercase text-brand-500 dark:text-brand-400;
+  @apply block rounded-full px-2.5 py-0.5 text-xs font-medium uppercase text-brand-500 dark:text-orange-500;
 }
 
 @utility menu-dropdown-badge-active {
@@ -278,8 +270,6 @@
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #344054;
 }
-
-
 
 @layer utilities {
   /* For Remove Date Icon */
@@ -376,7 +366,9 @@
 .flatpickr-months > .flatpickr-month {
   background: none !important;
 }
-.flatpickr-month .flatpickr-current-month .flatpickr-monthDropdown-months {
+.flatpickr-month
+.flatpickr-current-month
+.flatpickr-monthDropdown-months {
   background: none !important;
   appearance: none;
   background-image: none !important;
@@ -414,7 +406,7 @@ span.flatpickr-weekday,
   @apply !bg-none;
 }
 .flatpickr-day.inRange {
-  box-shadow: -5px 0 0 #f9fafb, 5px 0 0 #f9fafb !important;
+  box-shadow: -5px 0 0 #f2f4f7, 5px 0 0 #f2f4f7 !important;
   @apply dark:!shadow-datepicker;
 }
 .flatpickr-day.inRange,
@@ -455,13 +447,13 @@ span.flatpickr-weekday,
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: #465fff;
+  background: #5f74bc;
   @apply !border-brand-500 !bg-brand-500 hover:!border-brand-50 hover:!bg-brand-500;
 }
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
-  box-shadow: -10px 0 0 #465fff;
+  box-shadow: -10px 0 0 #5f74bc;
 }
 
 .flatpickr-months .flatpickr-prev-month svg,
@@ -527,9 +519,6 @@ span.flatpickr-weekday,
 }
 .fc-header-toolbar.fc-toolbar .fc-toolbar-chunk:last-child {
   @apply rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900;
-}
-.fc-header-toolbar.fc-toolbar .fc-toolbar-chunk:last-child .fc-button {
-  @apply !h-auto !w-auto rounded-md !border-0 bg-transparent !px-5 !py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:shadow-none! dark:text-gray-400;
 }
 .fc-header-toolbar.fc-toolbar
   .fc-toolbar-chunk:last-child
@@ -634,7 +623,7 @@ span.flatpickr-weekday,
 
 .stocks-slider-outer .swiper-button-next,
 .stocks-slider-outer .swiper-button-prev {
-  @apply !static mt-0 h-8 w-9 rounded-full border dark:hover:bg-white/[0.05] border-gray-200 !text-gray-700 transition hover:bg-gray-100 dark:border-white/[0.03] dark:bg-gray-800 dark:!text-gray-400  dark:hover:!text-white/90;
+  @apply !static mt-0 h-8 w-9 rounded-full border dark:hover:bg-white/[0.05] border-gray-200 !text-gray-700 transition hover:bg-gray-100 dark:border-white/[0.03] dark:bg-gray-800 dark:!text-gray-400 dark:hover:!text-white/90;
 }
 
 .stocks-slider-outer .swiper-button-next.swiper-button-disabled,

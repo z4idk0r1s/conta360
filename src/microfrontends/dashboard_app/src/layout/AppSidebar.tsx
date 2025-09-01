@@ -30,23 +30,27 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    subItems: [{ name: "Resumen", path: "/", pro: false }],
   },
   {
     icon: <CalenderIcon />,
-    name: "Calendar",
+    name: "Calendario",
     path: "/calendar",
   },
   {
     icon: <UserCircleIcon />,
-    name: "User Profile",
+    name: "Perfil Usuario",
     path: "/profile",
   },
 
   {
-    name: "Forms",
+    name: "A3",
     icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+    subItems: [
+      { name: "Empresas", path: "/form-elements", pro: false },
+      { name: "A3 Suenlace", path: "/A3suenlace", pro: false },
+      { name: "A3 Banks", path: "/A3bank", pro: false },
+    ],
   },
   {
     name: "Tables",
@@ -293,9 +297,9 @@ const AppSidebar: React.FC = () => {
       className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
         ${
           isExpanded || isMobileOpen
-            ? "w-[290px]"
+            ? "w-[232px]"
             : isHovered
-            ? "w-[290px]"
+            ? "w-[232px]"
             : "w-[90px]"
         }
         ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
@@ -305,7 +309,7 @@ const AppSidebar: React.FC = () => {
     >
       <div
         className={`py-8 flex  ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+          !isExpanded && !isHovered ? "lg:justify-center" : "justify-center"
         }`}
       >
         <Link href="/">
@@ -315,14 +319,14 @@ const AppSidebar: React.FC = () => {
                 className="dark:hidden"
                 src="/images/logo/logo.svg"
                 alt="Logo"
-                width={150}
+                width={75}
                 height={40}
               />
               <Image
                 className="hidden dark:block"
                 src="/images/logo/logo-dark.svg"
                 alt="Logo"
-                width={150}
+                width={75}
                 height={40}
               />
             </>

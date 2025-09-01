@@ -18,5 +18,5 @@ fi
 echo " - MIGRACIONES SQLITE OK - (PORCESO EN entrypointsqlite.sh finalizado)"
 
 # Se arranca la aplicación de forma segura
-echo "Iniciando la aplicación..."
+echo "Iniciando API (BACKEND) CONTA360..."
 exec dotnet "Conta360.Presentation.Api.dll"
